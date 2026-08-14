@@ -1,8 +1,14 @@
 from accounting_rag.clean import join_lines
 
 
-def test_cesure_recollee():
-    assert join_lines(["les immobili-", "sations existantes."]) == "les immobilisations existantes."
+def test_tiret_conserve_articule():
+    """Le tiret de fin de ligne est CONSERVÉ (Word ne coupe pas les mots)"""
+    assert join_lines(["...articles 214-15 à 214-", "18."]) == "...articles 214-15 à 214-18."
+
+
+def test_tiret_conserve_micro():
+    """Tiret dans un composé est préservé"""
+    assert join_lines(["les micro-", "entreprises"]) == "les micro-entreprises"
 
 
 def test_paragraphes():
@@ -13,6 +19,12 @@ def test_paragraphes():
 def test_puce_conservee():
     txt = join_lines(["traitement suivant :", "- les frais de constitution ;", "- les frais de fusion."])
     assert txt == "traitement suivant :\n- les frais de constitution ;\n- les frais de fusion."
+
+
+def test_puce_vide():
+    """Puce seule est transformée en préfixe de la ligne suivante"""
+    txt = join_lines(["Traitement :", "-", "suite du texte"])
+    assert txt == "Traitement :\n- suite du texte"
 
 
 def test_espace_insecable():
