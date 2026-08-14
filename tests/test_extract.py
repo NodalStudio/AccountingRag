@@ -107,3 +107,34 @@ def test_regression_fix3_page95_materiaux_extraits(recueil_path):
     assert mat_lines, "Ligne 'matériaux extraits' non trouvée p.95"
     for l in mat_lines:
         assert 'matériauxextraits' not in l.text, f"Fusion indésirable : {l.text}"
+
+
+def test_regression_fix4_page461_chiffre_affaires_pivoted_text(recueil_path):
+    """Fix Round 4: texte pivoté à 90° — p.461 'Chiffre d'affaires hors taxes'
+    (pas 'Chiffre d' affaires') : un span blanc de largeur ~nulle ne doit pas
+    forcer d'espace au milieu d'un mot élidé."""
+    lines = extract_lines(recueil_path, pages=range(460, 461))
+    normalized = [l.text.replace("’", "'") for l in lines]
+    matches = [t for t in normalized if "Chiffre d'affaires hors taxes" in t]
+    assert matches, [t for t in normalized if "affaires" in t or "Chiffre" in t]
+    for t in matches:
+        assert "d' affaires" not in t, f"Mot élidé cassé : {t}"
+
+
+def test_regression_fix4_page184_no_double_space(recueil_path):
+    """Fix Round 4: p.184 '3.  Lorsque' → aucun double espace dans la ligne
+    (span blanc suivi d'un span à espace de tête)."""
+    lines = extract_lines(recueil_path, pages=range(183, 184))
+    matches = [l for l in lines if "Lorsque" in l.text and l.text.lstrip().startswith("3.")]
+    assert matches, [l.text for l in lines if "Lorsque" in l.text]
+    for l in matches:
+        assert "  " not in l.text, f"Double espace détecté : {l.text!r}"
+
+
+def test_regression_fix4_page34_des_comptes_annuels_intact(recueil_path):
+    """Fix Round 4 (non-régression): p.34 'des comptes annuels' reste séparé —
+    la largeur du span blanc y est ~3pt, bien au-dessus du seuil de 0.15*size,
+    donc il doit continuer à agir comme séparateur."""
+    lines = extract_lines(recueil_path, pages=range(33, 34))
+    comptes_lines = [l for l in lines if 'des comptes annuels' in l.text]
+    assert comptes_lines, "Ligne 'des comptes annuels' non trouvée p.34"
