@@ -68,13 +68,21 @@ Constat empirique (sondage PyMuPDF sur le Recueil 2026, 662 p.) : la typographie
 
 **Génération** : citations obligatoires, vérification programmatique post-hoc (l'article cité existe et contient le passage), longueur d'extraits bornée (IFRS notamment).
 
-## 5. Benchmark
+## 5. Benchmark — cinq familles complémentaires
 
-Deux étages :
-1. **DCG UE9/UE10** — questions courtes, notation quasi automatique : banc de test de développement.
-2. **DSCG UE4** — cas pratiques complets (dossiers fusion / consolidation / audit), en conditions d'examen (sujet + annexes) : l'épreuve d'apparat. Sujets publics (ministère) ; **réponses gold rédigées par nous** (les corrigés privés ne sont pas réutilisables), avec citations d'articles attendues. Filtrage « réponse encore valable en 2026 ».
+Le DSCG seul ne suffit pas à juger le système (pas de citations gold, couverture limitée aux sujets d'examen, français académique). L'évaluation combine cinq familles, chacune avec son rôle :
 
-Catégories : question de règle / divergence fiscalo-comptable (métrique signature : taux de confusion fiscal↔comptable) / **écritures comptables** (quel compte, quelle écriture — ce qui distingue « agent comptable » de « chatbot juridique ») / vocabulaire courant / référence directe d'article. Complément : questions dérivées des divergences 2058-A et des commentaires ANC.
+| Famille | Rôle | Notation |
+|---|---|---|
+| **DSCG UE4** — cas pratiques complets (fusion / consolidation / audit), en conditions d'examen (sujet + annexes) | Épreuve d'apparat, résultat-titre | LLM-juge + barème par étape + contrôle humain |
+| **DCG UE9/UE10** — questions courtes | Banc de développement bout-en-bout | Quasi automatique |
+| **Questions ciblées à citations gold** (rédigées par nous : divergences 2058-A, écritures comptables, références directes, temporel) — construites pour *couvrir le corpus*, pas pour imiter l'examen | Instrument de mesure du retrieval | Recall@k / MRR / nDCG automatiques |
+| **Questions « vie réelle »** (formulations familières, cas de créateur d'entreprise) | Robustesse au fossé lexical (là où un embedding métier doit prouver sa valeur) | LLM-juge |
+| **Questions-pièges / hors-périmètre** (réponse absente du corpus, confusion IFRS/PCG induite, règle récemment changée) | **Abstention correcte** — un agent comptable qui invente est pire qu'inutile | Automatique (abstention attendue binaire) |
+
+Pour les familles d'examen : sujets publics (ministère) ; **réponses gold rédigées par nous** (les corrigés privés ne sont pas réutilisables), avec citations d'articles attendues ; filtrage « réponse encore valable en 2026 ». Catégories transverses : question de règle / divergence fiscalo-comptable (métrique signature : taux de confusion fiscal↔comptable) / **écritures comptables** (quel compte, quelle écriture — ce qui distingue « agent comptable » de « chatbot juridique »).
+
+Hors benchmark, l'évaluation inclut les contrôles non questionnels : tests unitaires du parseur, intégrité de la numérotation (double source), vérification programmatique des citations.
 
 **Split dev/test figé dès la création** (~30 % réservés, jamais utilisés pour régler le système).
 

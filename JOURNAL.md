@@ -134,6 +134,10 @@ Vérification croisée intégrée : la numérotation des articles (212-5 = Livre
 4. Significativité : bootstrap + comparaison appariée par question (gagne/perd/égalise).
 5. Lecture par catégorie : le gain d'un embedding métier doit se concentrer sur « vocabulaire courant » ; « référence directe » (routée regex) ne doit pas bouger.
 
+### « Il faudra plus que le DSCG pour juger tout ça » (remarque utilisateur, actée)
+
+Trois angles morts du DSCG comme instrument : pas de citations gold (donc pas de recall@k), couverture limitée aux chapitres fétiches d'examen, français académique (la robustesse au langage courant est invisible). → Benchmark restructuré en **cinq familles** : DSCG UE4 (apparat) / DCG UE9-UE10 (banc de développement) / questions ciblées à citations gold couvrant le corpus (instrument retrieval) / questions « vie réelle » en langage familier (fossé lexical) / **questions-pièges et hors-périmètre mesurant l'abstention correcte** — la famille qu'on oublie toujours et qui fait la crédibilité (un agent comptable qui invente est pire qu'inutile). Spec section 5 amendée.
+
 ### Spec écrite
 
 Design complet validé et rédigé dans `docs/superpowers/specs/2026-08-14-accountingrag-design.md`. Prochaine étape : revue de la spec par l'utilisateur, puis plan d'implémentation détaillé (skill writing-plans), exécution avec sous-agents économiques.
