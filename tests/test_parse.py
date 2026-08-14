@@ -67,14 +67,84 @@ def test_ids_uniques_sur_corpus_reel(recueil_path):
     assert len(collisions) == len(suffixed)
     assert len(collisions) > 0
 
-    # Vérifié empiriquement sur le corpus réel (662 pages) : 292 collisions au
-    # total, dont seulement 2 correspondent au cas anticipé (pcg-500-2@2026-01-01,
-    # « Article 1er » d'annexe hors format Art. NNN-N). Les 290 restantes ont une
-    # cause distincte, plus large : de longues zones sans aucun ARTICLE_HEADER
-    # (plan de comptes / annexes d'exemples chiffrés) où cur_article reste figé
-    # pendant que le contenu alterne entre les strates REGLEMENTAIRE et
-    # COMMENTAIRE, générant de nombreux fragments réglementaires qui partagent
-    # le même id de base. Compteur figé ici comme garde de régression — voir
-    # task-7-report.md pour l'analyse complète.
-    assert len(collisions) == 292
-    assert sum(1 for a in collisions if a.ligne == "pcg-500-2@2026-01-01") == 2
+    # Compteur mis à jour après Rulings 17/18 (SECTION_HEADER ferme l'article
+    # courant ; le contenu hors article devient un record pcg-na-<n> au lieu
+    # d'une anomalie-poubelle). Avant ces rulings : 292 collisions, dont 290
+    # provoquées par la fuite d'annexes/tableaux entiers sur le dernier
+    # article valide (34 % des records réglementaires mal attribués).
+    #
+    # Après Rulings 17/18, vérifié empiriquement : 80 collisions. Le cas
+    # anticipé « Article 1er » (pcg-500-2@2026-01-01, Titres 7/8) tombe à
+    # ZÉRO — pas à ~2 comme prévu à la consigne : Ruling 17 ferme déjà
+    # l'article sur le SECTION_HEADER « Titre 7 »/« Titre 8 » qui précède
+    # cette prose, donc ce contenu devient nativement un record pcg-na-<n>
+    # (voir test_zone_plan_de_comptes_produit_des_records_na) plutôt qu'une
+    # collision. Les 80 collisions résiduelles sont un phénomène RÉSIDUEL
+    # et DISTINCT, confirmé par investigation manuelle : un même article
+    # encore ouvert peut légitimement produire plusieurs fragments
+    # réglementaires non contigus (alinéas interrompus par une strate de
+    # commentaire intermédiaire, sans SECTION_HEADER intercalé) — l'id
+    # réglementaire n'a pas de compteur (contrairement au commentaire qui a
+    # com_count). Sur les 80 : ~41 sont de purs artefacts de folio (un
+    # numéro de page isolé classé par erreur dans la strate REGLEMENTAIRE,
+    # ex. pcg-628-18@2026-01-01#2 dont le texte est "302" — défaut de
+    # classify.py, hors périmètre T7) et ~39 portent du texte réglementaire
+    # réel (ex. pcg-223-4@2026-01-01#2, pcg-512-1@2026-01-01#2). Compteur
+    # figé en garde de régression — voir task-7-report.md pour l'analyse
+    # complète.
+    assert len(collisions) == 80
+    assert sum(1 for a in collisions if a.ligne == "pcg-500-2@2026-01-01") == 0
+
+    # Ruling 18 : plus aucune anomalie-poubelle « texte avant tout article »
+    # ni « commentaire orphelin » — tout ce contenu est désormais un record.
+    assert not any(a.raison.startswith("texte avant tout article") for a in anomalies)
+    assert not any(a.raison.startswith("commentaire orphelin") for a in anomalies)
+
+    # Les vrais articles réglementaires retombent près de la prévision du
+    # contrôleur (~554 = 845 − 291 anciens fragments mal attribués).
+    reg_avec_article = {r.article for r in records if r.type == "reglementaire" and r.article is not None}
+    assert len(reg_avec_article) == 554
+
+    # Les deux clusters massifs de fuite d'annexe (plan de comptes des
+    # coopératives / fonctionnement des comptes) ne portent plus la
+    # centaine de fragments observée avant Rulings 17/18.
+    assert sum(1 for r in records if r.article == "628-18") < 5
+    assert sum(1 for r in records if r.article == "1231-89") < 5
+
+
+def test_section_header_ferme_larticle_courant():
+    # Ruling 17 : un SECTION_HEADER ferme le périmètre de l'article courant.
+    # Le texte qui suit une section intercalée, sans nouvel « Art. », ne doit
+    # jamais hériter de l'article précédent.
+    b = _Builder("2026-01-01")
+    b.feed(_line("Chapitre 1 – Premier chapitre", page=1), Kind.SECTION_HEADER)
+    b.feed(_line("Art. 100-1", page=1), Kind.ARTICLE_HEADER)
+    b.feed(_line("Premier texte réglementaire, dans l'article 100-1.", page=1), Kind.REGLEMENTAIRE)
+    b.feed(_line("Chapitre 2 – Second chapitre", page=2), Kind.SECTION_HEADER)
+    b.feed(_line("Second texte, ne doit pas porter l'article 100-1.", page=2), Kind.REGLEMENTAIRE)
+    b.flush()
+
+    by_text = {r.texte: r for r in b.records}
+    premier = by_text["Premier texte réglementaire, dans l'article 100-1."]
+    second = by_text["Second texte, ne doit pas porter l'article 100-1."]
+
+    assert premier.article == "100-1"
+    assert premier.id == "pcg-100-1@2026-01-01"
+
+    assert second.article is None                      # Ruling 17 : pas d'héritage
+    assert second.id == "pcg-na-1@2026-01-01"           # Ruling 18 : record ancré à la section
+    assert "Chapitre 2" in second.chemin
+    assert not any(a.raison.startswith("collision") for a in b.anomalies)
+
+
+def test_zone_plan_de_comptes_produit_des_records_na(recueil_path):
+    # Ruling 18 : le contenu hors article (plans de comptes en tables,
+    # annexes d'exemples) devient un record pcg-na-<n> ancré à la section
+    # courante, plutôt qu'une anomalie-poubelle ou un article mal attribué.
+    records, _ = parse(recueil_path)
+    na_recs = [r for r in records if r.id.startswith("pcg-na-")]
+    plan_recs = [r for r in na_recs if "plan de comptes" in r.chemin.lower()]
+
+    assert plan_recs, "aucun record na-* rattaché à une zone « plan de comptes »"
+    assert all(r.article is None for r in plan_recs)
+    assert all(r.chemin for r in plan_recs)   # chemin non vide malgré l'absence d'article

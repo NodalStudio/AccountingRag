@@ -34,21 +34,39 @@ class _Builder:
         self.com_count: int = 0
         self.com_title: str = ""
         self.seen_ids: set[str] = set()
+        self.na_count: int = 0          # Ruling 18: compteur global des records ancrés à une section (sans article)
 
     def chemin(self) -> str:
         return " > ".join(self.path[lv] for lv in _LEVELS if lv in self.path)
 
+    def _check_orphan_suspect(self, line: Line):
+        # Ruling 18: le contenu hors article n'est plus une anomalie-poubelle
+        # (il devient un record pcg-na-<n>) — sauf cas suspect : aucun chemin
+        # de section ET hors des 14 premières pages (avant-propos/sommaire).
+        if self.cur_article is None and not self.chemin() and line.page > 14:
+            self.anomalies.append(Anomalie(
+                line.page, line.text, "texte hors article et hors section (cas suspect)",
+            ))
+
     def flush(self):
-        if not self.buf or self.cur_article is None:
+        if not self.buf:
             self.buf = []
             return
         texte = join_lines(self.buf)
         if self.cur_kind == "reglementaire":
-            rid = f"pcg-{self.cur_article}@{self.edition}"
+            if self.cur_article is not None:
+                rid = f"pcg-{self.cur_article}@{self.edition}"
+            else:
+                self.na_count += 1
+                rid = f"pcg-na-{self.na_count}@{self.edition}"
             rtype, citation = "reglementaire", None
         else:
-            self.com_count += 1
-            rid = f"pcg-{self.cur_article}-c{self.com_count}@{self.edition}"
+            if self.cur_article is not None:
+                self.com_count += 1
+                rid = f"pcg-{self.cur_article}-c{self.com_count}@{self.edition}"
+            else:
+                self.na_count += 1
+                rid = f"pcg-na-{self.na_count}@{self.edition}"
             rtype = "commentaire_ANC"
             m = _CITATION.search(self.com_title)
             citation = m.group(1).strip() if m else self.com_title[:200] or None
@@ -90,6 +108,13 @@ class _Builder:
             if _TOC_DOTS.search(line.text):
                 return
             self.flush()
+            # Ruling 17: une SECTION_HEADER ferme le périmètre de l'article
+            # courant — aucun article ne se poursuit après un titre de
+            # section intercalé (structure du Recueil vérifiée).
+            self.cur_article = None
+            self.cur_kind = None
+            self.com_title = ""
+            self.com_count = 0
             lowered = line.text.lower()
             for lv in _LEVELS:
                 if lowered.startswith(lv):
@@ -118,9 +143,10 @@ class _Builder:
         if kind == Kind.COMMENTAIRE_TITRE:
             if self.cur_kind != "commentaire" or self.buf:
                 self.flush()
-            if self.cur_article is None:
-                self.anomalies.append(Anomalie(line.page, line.text, "commentaire orphelin (aucun article ouvert)"))
-                return
+            # Ruling 18: un titre de commentaire sans article ouvert n'est
+            # plus rejeté en anomalie — il devient le titre d'un record
+            # ancré à la section (pcg-na-<n>), ex. annexes d'exemples.
+            self._check_orphan_suspect(line)
             if self.cur_kind == "commentaire" and not self.buf:
                 self.com_title = (self.com_title + " " + line.text).strip()  # titre multi-lignes
             else:
@@ -137,9 +163,10 @@ class _Builder:
                 self.buf.append("- ")
                 self.buf_end = line.page
                 return
-            if self.cur_article is None:
-                self.anomalies.append(Anomalie(line.page, line.text, "texte avant tout article (préambule ?)"))
-                return
+            # Ruling 18: du texte réglementaire/commentaire sans article
+            # ouvert n'est plus rejeté en anomalie — il devient un record
+            # ancré à la section courante (pcg-na-<n>).
+            self._check_orphan_suspect(line)
             if self.cur_kind != expected:
                 self.flush()
                 self.cur_kind = expected
