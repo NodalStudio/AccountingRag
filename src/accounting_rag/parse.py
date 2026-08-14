@@ -33,6 +33,7 @@ class _Builder:
         self.buf_end: int = 0
         self.com_count: int = 0
         self.com_title: str = ""
+        self.seen_ids: set[str] = set()
 
     def chemin(self) -> str:
         return " > ".join(self.path[lv] for lv in _LEVELS if lv in self.path)
@@ -52,6 +53,21 @@ class _Builder:
             m = _CITATION.search(self.com_title)
             citation = m.group(1).strip() if m else self.com_title[:200] or None
             texte = (self.com_title + "\n" + texte).strip() if self.com_title else texte
+        if rid in self.seen_ids:
+            # Collision d'identifiant — le plus souvent un article d'annexe
+            # rédigé hors format « Art. NNN-N » (ex. « Article 1er »), qui ne
+            # matche jamais _ART_NUM et laisse cur_article figé sur le dernier
+            # article régulièrement numéroté. On garantit l'unicité par un
+            # suffixe plutôt que d'écraser silencieusement un record existant.
+            suffix = 2
+            while f"{rid}#{suffix}" in self.seen_ids:
+                suffix += 1
+            self.anomalies.append(Anomalie(
+                self.buf_start, rid,
+                "collision d'identifiant — article probablement hors format (Article 1er ?)",
+            ))
+            rid = f"{rid}#{suffix}"
+        self.seen_ids.add(rid)
         self.records.append(Record(
             id=rid, article=self.cur_article, chemin=self.chemin(), texte=texte,
             type=rtype, nature="comptable", opposable=False,
