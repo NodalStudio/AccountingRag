@@ -47,3 +47,35 @@ def test_regression_page25_chapter_non_bold(recueil_path):
     h = chapter_lines[0]
     assert h.size == 12.0, f"Size incorrect : {h.size}"
     assert h.bold is False, f"Ne doit pas être gras : {h.bold}"
+
+
+def test_regression_fix2_page5_small_caps_chapitre(recueil_path):
+    """Fix Round 2: petites capitales 'CHAPITRE' non fragmentées — p.5 'CHAPITRE I – OBJET DE LA COMPTABILITÉ'"""
+    lines = extract_lines(recueil_path, pages=range(4, 5))
+    chapitre_lines = [l for l in lines if 'CHAPITRE' in l.text and 'OBJET' in l.text]
+    assert chapitre_lines, "CHAPITRE I line non trouvée p.5"
+    for l in chapitre_lines:
+        # Doit contenir 'CHAPITRE' sans espaces internes (pas 'C HAPITRE')
+        assert 'CHAPITRE' in l.text, f"CHAPITRE fragmenté : {l.text}"
+        assert 'C HAPITRE' not in l.text, f"Petits espaces parasites détectés : {l.text}"
+
+
+def test_regression_fix2_page480_co2_intact(recueil_path):
+    """Fix Round 2: indices chimiques 'CO2' non fragmentés — p.480 'gestion du risque CO2'"""
+    lines = extract_lines(recueil_path, pages=range(479, 480))
+    co2_lines = [l for l in lines if 'CO' in l.text and '2' in l.text and 'risque' in l.text]
+    assert co2_lines, "Ligne CO2 non trouvée p.480"
+    for l in co2_lines:
+        # Doit contenir 'CO2' ou au minimum pas d'espace entre CO et 2
+        assert 'CO2' in l.text or 'CO 2' not in l.text, f"CO2 fragmenté : {l.text}"
+
+
+def test_regression_fix2_page313_bilan(recueil_path):
+    """Fix Round 2: petites capitales 'Bilan' non fragmentées — p.313 'Bilan'"""
+    lines = extract_lines(recueil_path, pages=range(312, 313))
+    bilan_lines = [l for l in lines if l.text.startswith('Bilan')]
+    assert bilan_lines, "Bilan non trouvé p.313"
+    for l in bilan_lines:
+        # Doit contenir 'Bilan' sans espace interne
+        assert 'Bilan' in l.text, f"Bilan fragmenté : {l.text}"
+        assert 'B ilan' not in l.text, f"Espaces parasites : {l.text}"

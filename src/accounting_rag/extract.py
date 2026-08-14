@@ -6,13 +6,10 @@ from .model import Line
 def _merge_spans(spans: list[dict]) -> tuple[str, dict]:
     """Fusionne les spans d'une ligne ; retourne (texte, span_dominant).
 
-    Règles:
-    - Exposants vrais (size < 0.8×dominant ET précédent finit par chiffre): recollés sans espace
-    - Autres spans: espaces préservés entre spans
-    - Puce en première position: normalisée en « - » + espace + reste
+    Critère GÉOMÉTRIQUE: écart horizontal réel entre spans détermine les séparations.
+    - Petites capitales, exposants, indices: géométriquement contigus → collés
+    - Blanc typographique (puce→texte, mot→repère): écart mesurable → espace
     """
-    import re
-
     dominant = max(spans, key=lambda s: len(s["text"]))
 
     # Détecte si le premier span est une puce
@@ -23,26 +20,21 @@ def _merge_spans(spans: list[dict]) -> tuple[str, dict]:
         first_span["font"].startswith("Symbol") or first_text in _BULLETS
     ) and len(spans) > 1
 
-    parts: list[str] = []
-    for i, s in enumerate(spans):
-        t = s["text"]
+    # Fusion basée sur écart géométrique
+    text = spans[0]["text"]
+    for prev, cur in zip(spans, spans[1:]):
+        gap = cur["bbox"][0] - prev["bbox"][2]  # écart horizontal
 
-        # exposant vrais: nettement plus petit ET le span précédent finit par un chiffre (1er, 2ème, etc.)
-        is_superscript = (
-            s["size"] < 0.8 * dominant["size"]
-            and parts
-            and re.search(r"\d\s*$", parts[-1])  # précédent finit par chiffre (possiblement suivi d'espace)
-        )
+        # Décide si on ajoute un espace
+        sep = ""
+        if text and not text[-1].isspace() and cur["text"][:1] and not cur["text"][0].isspace():
+            # Seuil géométrique: écart > 0.2 * taille dominante → espace
+            if gap > 0.2 * dominant["size"]:
+                sep = " "
 
-        if is_superscript:
-            parts[-1] = parts[-1].rstrip() + t.strip()
-        else:
-            # Préserver les espaces entre spans (sauf recollage d'exposant)
-            if parts and not parts[-1].endswith(" ") and not t.startswith(" "):
-                parts[-1] += " "
-            parts.append(t)
+        text += sep + cur["text"]
 
-    text = "".join(parts).strip()
+    text = text.strip()
 
     # Normalise puce en première position: « - » + espace + reste
     if is_first_bullet:
