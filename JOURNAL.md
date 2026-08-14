@@ -143,3 +143,17 @@ Trois angles morts du DSCG comme instrument : pas de citations gold (donc pas de
 Design complet validé et rédigé dans `docs/superpowers/specs/2026-08-14-accountingrag-design.md`. Prochaine étape : revue de la spec par l'utilisateur, puis plan d'implémentation détaillé (skill writing-plans), exécution avec sous-agents économiques.
 
 ---
+## Session du 14-15 août 2026 — Exécution du jalon 1 : la saga de l'extraction
+
+Exécution du plan en mode sous-agents (implémenteurs Haiku/Sonnet, relecteurs Sonnet, contrôleur qui n'écrit jamais le code lui-même). T1/T2 (scaffolding, modèle de données) : sans histoire, revue propre du premier coup.
+
+**T3/T4 (extraction PDF + classification typographique) : quatre rounds de correction — et une leçon.** Le code « évident » d'extraction PyMuPDF a caché quatre causes racines de corruption de texte, toutes invisibles sur les pages de test initiales, toutes débusquées par des relecteurs qui vérifiaient sur les 662 pages réelles :
+
+1. **La fusion naïve des spans perd des espaces** : « propres(1) », et 469 lignes où la puce « • » se collait au mot suivant (« •le bénéfice »), cassant leur classification en cascade.
+2. **Le premier correctif (espace par défaut) a cassé pire** : les titres en petites capitales sont composés en deux spans (initiale pleine taille + reste à ~80 %) → « C HAPITRE », « B ilan », 114 lignes sur 38 pages. Et « CO2 » devenait « CO 2 ». Leçon : les heuristiques textuelles (seuils de ratio, « finit par un chiffre ») sont des rustines ; le signal fiable est GÉOMÉTRIQUE (l'écart bbox réel entre spans).
+3. **Le critère géométrique a révélé un troisième piège** : en texte justifié, le PDF matérialise souvent l'espace inter-mots comme un span dédié — que le code filtrait avant le calcul d'écart. Résultat : « comptesannuels », « cetévénement ». Correctif : les spans blancs sont des séparateurs, les spans invisibles (<2pt, artefacts de croisement Word « 58B », 87 occurrences, tous du motif \d+[BF]) sont supprimés, la puce « o » en police Courier est un glyphe de liste.
+4. **Et le séparateur forcé a cassé le texte pivoté à 90°** (bbox horizontaux sans signification, spans blancs de largeur nulle) : « d' affaires ». Correctif final : un span blanc ne sépare que si sa largeur propre dépasse 0,15× la taille de police ; espaces multiples normalisés.
+
+Découverte au passage, en recensant les 34 740 lignes : **plus de lignes de commentaires ANC (12 863) que de texte réglementaire (9 342)** — la doctrine publique de l'ANC est la moitié la plus grosse du Recueil, ce qui valide l'intuition fondatrice du projet. Et les titres de haut niveau (Livre, Chapitre, Partie) sont NON GRAS dans le document réel — le sondage initial (pages 30-80) ne les avait jamais croisés : 100 % des lignes inclassables étaient exactement ces titres. Taux final d'inclassables : 0/34 740.
+
+Morale pour le blog : « le parsing de PDF est résolu » est vrai à 97,7 % — et les 2,3 % restants (échantillon réel : 909 lignes corrigées) sont invisibles tant qu'on ne diffe pas l'extraction complète entre deux versions du code. Le protocole qui a tout attrapé : des relecteurs frais, l'accès au document réel, et l'exigence de preuves d'exécution plutôt que d'affirmations.
