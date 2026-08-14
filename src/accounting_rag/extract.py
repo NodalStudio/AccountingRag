@@ -4,17 +4,53 @@ from .model import Line
 
 
 def _merge_spans(spans: list[dict]) -> tuple[str, dict]:
-    """Fusionne les spans d'une ligne ; retourne (texte, span_dominant)."""
+    """Fusionne les spans d'une ligne ; retourne (texte, span_dominant).
+
+    Règles:
+    - Exposants vrais (size < 0.8×dominant ET précédent finit par chiffre): recollés sans espace
+    - Autres spans: espaces préservés entre spans
+    - Puce en première position: normalisée en « - » + espace + reste
+    """
+    import re
+
     dominant = max(spans, key=lambda s: len(s["text"]))
+
+    # Détecte si le premier span est une puce
+    _BULLETS = {"•", "-", "–", "*"}
+    first_span = spans[0]
+    first_text = first_span["text"].strip()
+    is_first_bullet = (
+        first_span["font"].startswith("Symbol") or first_text in _BULLETS
+    ) and len(spans) > 1
+
     parts: list[str] = []
-    for s in spans:
+    for i, s in enumerate(spans):
         t = s["text"]
-        # exposant : nettement plus petit que le span dominant -> collé sans espace
-        if s["size"] < 0.8 * dominant["size"] and parts:
+
+        # exposant vrais: nettement plus petit ET le span précédent finit par un chiffre (1er, 2ème, etc.)
+        is_superscript = (
+            s["size"] < 0.8 * dominant["size"]
+            and parts
+            and re.search(r"\d\s*$", parts[-1])  # précédent finit par chiffre (possiblement suivi d'espace)
+        )
+
+        if is_superscript:
             parts[-1] = parts[-1].rstrip() + t.strip()
         else:
+            # Préserver les espaces entre spans (sauf recollage d'exposant)
+            if parts and not parts[-1].endswith(" ") and not t.startswith(" "):
+                parts[-1] += " "
             parts.append(t)
-    return "".join(parts).strip(), dominant
+
+    text = "".join(parts).strip()
+
+    # Normalise puce en première position: « - » + espace + reste
+    if is_first_bullet:
+        # Enlève le premier span (la puce) et le remplace par « - »
+        rest = text[len(first_text):].lstrip()
+        text = "- " + rest if rest else "-"
+
+    return text, dominant
 
 
 def extract_lines(pdf_path: Path, pages: range | None = None) -> list[Line]:

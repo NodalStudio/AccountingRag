@@ -23,3 +23,28 @@ def test_page40_reelle_sans_inconnu(recueil_path):
     lines = extract_lines(recueil_path, pages=range(39, 41))
     kinds = [classify(l) for l in lines]
     assert Kind.INCONNU not in kinds, [l.text for l, k in zip(lines, kinds) if k == Kind.INCONNU]
+
+
+def test_regression_page25_chapter_non_bold_classified(recueil_path):
+    """Regression: titre de haut niveau non gras classé comme SECTION_HEADER — p.25 'Chapitre I', size=12.0, bold=False"""
+    lines = extract_lines(recueil_path, pages=range(24, 25))
+    chapter_lines = [l for l in lines if l.text.startswith("Chapitre I")]
+    assert chapter_lines, "Chapitre I non trouvé p.25"
+    h = chapter_lines[0]
+    # Chapitre I n'est pas gras mais a size 12.0 >= 10.4
+    assert classify(h) == Kind.SECTION_HEADER, \
+        f"Chapitre I doit être SECTION_HEADER même sans gras, got {classify(h)}"
+
+
+def test_regression_page25_bullet_classified_as_puce(recueil_path):
+    """Regression: ligne normalisée '- le bénéfice...' classée comme puce de paragraphe (reste REGLEMENTAIRE)"""
+    lines = extract_lines(recueil_path, pages=range(24, 25))
+    bullet_lines = [l for l in lines if l.text.startswith("- le bénéfice ou la perte")]
+    assert bullet_lines, "Ligne '- le bénéfice...' non trouvée p.25"
+    # La ligne devrait être classée comme REGLEMENTAIRE (le tiret normalisé n'est pas une PUCE isolée)
+    # car elle contient du texte après le tiret
+    for l in bullet_lines:
+        kind = classify(l)
+        # Avec la normalisation, le texte commençant par "- " et size 10.0 devrait être REGLEMENTAIRE
+        assert kind in [Kind.REGLEMENTAIRE, Kind.PUCE], \
+            f"Ligne bullet devrait être REGLEMENTAIRE ou PUCE, got {kind}"

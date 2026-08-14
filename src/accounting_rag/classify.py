@@ -11,7 +11,7 @@ def classify(line: Line) -> Kind:
         return Kind.PUCE
     if line.size <= 9.1:                       # en-têtes, pieds, folios
         return Kind.BRUIT
-    if line.size >= 10.4 and line.bold:        # titres de haut niveau (10.6, 12.0)
+    if line.size >= 10.4:                      # titres de haut niveau (10.6, 12.0, 11.0, 20.0) — gras ou non
         return Kind.SECTION_HEADER
     if 9.8 <= line.size <= 10.3:               # strate réglementaire (10.0)
         if line.bold:
