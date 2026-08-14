@@ -79,3 +79,31 @@ def test_regression_fix2_page313_bilan(recueil_path):
         # Doit contenir 'Bilan' sans espace interne
         assert 'Bilan' in l.text, f"Bilan fragmenté : {l.text}"
         assert 'B ilan' not in l.text, f"Espaces parasites : {l.text}"
+
+
+def test_regression_fix3_page34_comptes_annuels(recueil_path):
+    """Fix Round 3: spans blancs conservés — p.34 'des comptes annuels' (pas 'comptesannuels')"""
+    lines = extract_lines(recueil_path, pages=range(33, 34))
+    comptes_lines = [l for l in lines if 'comptes' in l.text and 'annuels' in l.text]
+    assert comptes_lines, "Ligne 'comptes annuels' non trouvée p.34"
+    for l in comptes_lines:
+        assert 'comptes annuels' in l.text or 'comptes  annuels' in l.text, f"Mots fusionnés : {l.text}"
+        assert 'comptesannuels' not in l.text, f"Fusion indésirable : {l.text}"
+
+
+def test_regression_fix3_page144_cet_evenement(recueil_path):
+    """Fix Round 3: spans blancs conservés — p.144 'cet événement' (pas 'cetévénement')"""
+    lines = extract_lines(recueil_path, pages=range(143, 144))
+    evt_lines = [l for l in lines if 'cet' in l.text and 'événement' in l.text]
+    assert evt_lines, "Ligne 'cet événement' non trouvée p.144"
+    for l in evt_lines:
+        assert 'cetévénement' not in l.text, f"Fusion indésirable : {l.text}"
+
+
+def test_regression_fix3_page95_materiaux_extraits(recueil_path):
+    """Fix Round 3: spans blancs conservés — p.95 'matériaux extraits'"""
+    lines = extract_lines(recueil_path, pages=range(94, 95))
+    mat_lines = [l for l in lines if 'matériaux' in l.text and 'extraits' in l.text]
+    assert mat_lines, "Ligne 'matériaux extraits' non trouvée p.95"
+    for l in mat_lines:
+        assert 'matériauxextraits' not in l.text, f"Fusion indésirable : {l.text}"

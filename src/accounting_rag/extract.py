@@ -6,39 +6,63 @@ from .model import Line
 def _merge_spans(spans: list[dict]) -> tuple[str, dict]:
     """Fusionne les spans d'une ligne ; retourne (texte, span_dominant).
 
-    Critère GÉOMÉTRIQUE: écart horizontal réel entre spans détermine les séparations.
-    - Petites capitales, exposants, indices: géométriquement contigus → collés
-    - Blanc typographique (puce→texte, mot→repère): écart mesurable → espace
+    Fix Round 3:
+    1. Garde tous les spans (même blancs) pour préserver l'espacement justifié
+    2. Spans blancs → séparateurs forcés (« » )
+    3. Supprime spans invisibles (size < 2.0 pt)
+    4. Puce « o » Courier → normalisée comme puce
     """
-    dominant = max(spans, key=lambda s: len(s["text"]))
+    # Filtre les spans invisibles (artefacts Word)
+    visible_spans = [s for s in spans if s["size"] >= 2.0]
+    if not visible_spans:
+        return "", spans[0] if spans else {"size": 10.0, "font": "Tahoma"}
 
-    # Détecte si le premier span est une puce
+    # Span dominant sur spans NON BLANCS seulement
+    non_blank_spans = [s for s in visible_spans if s["text"].strip()]
+    dominant = max(non_blank_spans, key=lambda s: len(s["text"])) if non_blank_spans else visible_spans[0]
+
+    # Détecte puce « o » Courier en premier span non blanc
     _BULLETS = {"•", "-", "–", "*"}
-    first_span = spans[0]
-    first_text = first_span["text"].strip()
-    is_first_bullet = (
-        first_span["font"].startswith("Symbol") or first_text in _BULLETS
-    ) and len(spans) > 1
+    first_non_blank = next((s for s in visible_spans if s["text"].strip()), None)
+    is_puce_o = (
+        first_non_blank
+        and first_non_blank["text"].strip() == "o"
+        and first_non_blank["font"].startswith("Courier")
+        and len(non_blank_spans) > 1
+    )
 
-    # Fusion basée sur écart géométrique
-    text = spans[0]["text"]
-    for prev, cur in zip(spans, spans[1:]):
-        gap = cur["bbox"][0] - prev["bbox"][2]  # écart horizontal
+    # Fusion avec gestion des spans blancs
+    text = ""
+    for s in visible_spans:
+        s_text = s["text"]
 
-        # Décide si on ajoute un espace
+        # Span blanc → séparateur forcé
+        if not s_text.strip():
+            if text and not text[-1].isspace():
+                text += " "
+            continue
+
+        # Premier span non blanc
+        if not text:
+            text = s_text
+            continue
+
+        # Décide de l'espacement avant ce span
         sep = ""
-        if text and not text[-1].isspace() and cur["text"][:1] and not cur["text"][0].isspace():
+        if text and not text[-1].isspace() and s_text[:1] and not s_text[0].isspace():
             # Seuil géométrique: écart > 0.2 * taille dominante → espace
+            prev_bbox = visible_spans[visible_spans.index(s) - 1]["bbox"]
+            gap = s["bbox"][0] - prev_bbox[2]
             if gap > 0.2 * dominant["size"]:
                 sep = " "
 
-        text += sep + cur["text"]
+        text += sep + s_text
 
     text = text.strip()
 
-    # Normalise puce en première position: « - » + espace + reste
-    if is_first_bullet:
-        # Enlève le premier span (la puce) et le remplace par « - »
+    # Normalise puce « o » ou autres glyphes de puce en début
+    if is_puce_o or (first_non_blank and (first_non_blank["font"].startswith("Symbol") or first_non_blank["text"].strip() in _BULLETS) and len(non_blank_spans) > 1):
+        first_text = first_non_blank["text"].strip()
         rest = text[len(first_text):].lstrip()
         text = "- " + rest if rest else "-"
 
@@ -55,17 +79,21 @@ def extract_lines(pdf_path: Path, pages: range | None = None) -> list[Line]:
             if block["type"] != 0:
                 continue
             for raw_line in block["lines"]:
-                spans = [s for s in raw_line["spans"] if s["text"].strip()]
-                if not spans:
+                # NE FILTRE PLUS les spans blancs — garde tous les spans pour préserver l'espacement
+                spans = raw_line["spans"]
+                # Saute seulement si TOUS les spans sont blancs
+                if not any(s["text"].strip() for s in spans):
                     continue
                 text, dom = _merge_spans(spans)
+                # Pour x, y, utilise le premier span NON blanc
+                first_non_blank = next((s for s in spans if s["text"].strip()), spans[0])
                 out.append(Line(
                     text=text,
                     size=round(dom["size"], 1),
                     bold="Bold" in dom["font"],
                     font=dom["font"],
-                    x=round(spans[0]["bbox"][0], 1),
-                    y=round(spans[0]["bbox"][1], 1),
+                    x=round(first_non_blank["bbox"][0], 1),
+                    y=round(first_non_blank["bbox"][1], 1),
                     page=pno + 1,
                 ))
     return out
