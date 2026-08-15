@@ -66,6 +66,22 @@ def test_crc_ordre_inverse():
     assert ("crc-04-01", "historique") in c
 
 
+def test_externe_sans_prefixe_code_civil():
+    """Ruling 19 (F3): 'article 1844-5 du code civil' est externe, pas interne PCG"""
+    c = _cibles("article 1844-5 du code civil")
+    assert ("legi-1844-5-code-civil", "externe_legal") in c
+    assert ("pcg-1844-5", "interne") not in c
+
+
+def test_interne_inchange_apres_ruling19():
+    """Ruling 19 (F3): les cas internes existants ne doivent pas régresser"""
+    c1 = _cibles("définis aux articles 212-1 et 212-2.")
+    assert ("pcg-212-1", "interne") in c1 and ("pcg-212-2", "interne") in c1
+
+    c2 = _cibles("Cf. article 1214-48")
+    assert ("pcg-1214-48", "interne") in c2
+
+
 def test_historique_crc_et_avis():
     txt = ("du règlement n° 2004-06 du CRC ; Avis CNC n° 2004-15 du 23 juin 2004 ; "
            "Avis CU n° 2006-C du 4 octobre 2006")
