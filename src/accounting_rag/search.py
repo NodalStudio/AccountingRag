@@ -6,7 +6,7 @@ from pathlib import Path
 from .normalize import normalize
 
 _REF_QUERY = re.compile(r"\bart(?:icle)?s?\.?\s*(\d{2,4}-\d+(?:-\d+)*)", re.I)
-_REF_LETTREE = re.compile(r"\b([LRD])\.?\s*(\d{1,4}(?:-\d+)+)", re.I)
+# Routage des références lettrées (L./R./D., code de commerce) différé à l'ingestion LEGI — aucun article lettré dans le corpus PCG actuel.
 _RRF_K = 60
 
 
@@ -37,6 +37,7 @@ class Searcher:
         nums = _REF_QUERY.findall(query)
         out = []
         for num in nums:
+            # type='reglementaire' : le routeur renvoie le texte canonique de l'article, pas les commentaires ANC.
             for (rid,) in self.con.execute(
                 "SELECT id FROM records WHERE article = ? AND type = 'reglementaire'", (num,)
             ).fetchall():

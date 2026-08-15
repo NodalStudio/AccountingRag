@@ -27,6 +27,7 @@ def build_index(db_path: Path, embedder=None) -> dict:
         CREATE TABLE chunks(chunk_id TEXT PRIMARY KEY, record_id TEXT NOT NULL, seq INT, texte TEXT);
         CREATE VIRTUAL TABLE chunks_norm USING fts5(texte_norm, chemin_norm);
     """)
+    # Toute connexion SQLite séparée doit charger l'extension sqlite_vec pour lire cette table.
     con.execute(f"CREATE VIRTUAL TABLE chunks_vec USING vec0(embedding float[{embedder.dim}])")
     rows = con.execute("SELECT id, texte, chemin FROM records").fetchall()
     all_chunks: list[tuple[str, str, int, str, str]] = []
