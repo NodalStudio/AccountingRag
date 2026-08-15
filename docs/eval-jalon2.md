@@ -15,56 +15,56 @@ Campagne exécutée le **15 août 2026** sur la branche `jalon-2-retrieval`, à 
 | Machine | Linux 6.19.8-arch1-3-surface, x86_64, 8 threads, CPU uniquement (pas de GPU exploité — `torch` signale l'absence de driver CUDA compatible, sans conséquence : e5-small tourne en CPU) |
 | Environnement | Python 3.13.14, `sentence-transformers` 5.7.0, `torch` 2.13.0+cu130 (CPU), `sqlite-vec` 0.1.9 — versions résolues par `uv.lock` |
 
-**Contrôle de non-régression** : `bm25`/dev donne recall@5=0,833, recall@10=0,857, MRR=0,735 — identique aux chiffres de contrôle connus avant la campagne. Pas de blocage.
+**Contrôle de non-régression (campagne initiale, avant la vague finale)** : `bm25`/dev donnait recall@5=0,833, recall@10=0,857, MRR=0,735. **Ces chiffres sont désormais obsolètes** : la revue finale du jalon 2 a corrigé un bug critique de normalisation (table d'apostrophes typographiques U+2019 no-op, ordre stem→fold inversé) et l'index a été reconstruit — les chiffres ci-dessous sont mesurés sur l'index post-correction. Voir l'avant/après complet dans `.superpowers/sdd/2026-08-15-retrieval-jalon2/task-8-report.md`, section « Vague finale ».
 
-## Résultats — split dev (21 questions)
+## Résultats — split dev (21 questions), post-correction apostrophes/stemming (15 août 2026)
 
 | mode | recall@5 | recall@10 | MRR | n |
 |---|---|---|---|---|
-| bm25 | 0,833 | 0,857 | 0,735 | 21 |
+| bm25 | 0,833 | 0,833 | 0,754 | 21 |
 | dense | 0,571 | 0,738 | 0,518 | 21 |
-| hybrid | 0,81 | 0,857 | 0,764 | 21 |
-| hybrid+graph | 0,81 | 0,857 | 0,764 | 21 |
+| hybrid | 0,81 | 0,81 | 0,763 | 21 |
+| hybrid+graph | 0,81 | 0,81 | 0,763 | 21 |
 
 ### Ventilation par catégorie (recall@10)
 
 | mode | reference_directe (n=4) | regle (n=10) | vocabulaire_courant (n=7) |
 |---|---|---|---|
-| bm25 | 1,0 | 0,95 | 0,643 |
+| bm25 | 1,0 | 0,95 | 0,571 |
 | dense | 1,0 | 1,0 | 0,214 |
-| hybrid | 1,0 | 0,95 | 0,643 |
-| hybrid+graph | 1,0 | 0,95 | 0,643 |
+| hybrid | 1,0 | 0,95 | 0,5 |
+| hybrid+graph | 1,0 | 0,95 | 0,5 |
 
-Sortie brute de `scripts/run_eval.py --mode all --split dev` :
+Sortie brute de `scripts/run_eval.py --mode all --split dev` (post-correction) :
 
 ```
 | mode | recall@5 | recall@10 | MRR | n |
 |---|---|---|---|---|
-| bm25 | 0.833 | 0.857 | 0.735 | 21 |
+| bm25 | 0.833 | 0.833 | 0.754 | 21 |
 |   ↳ reference_directe | | 1.0 | | 4 |
 |   ↳ regle | | 0.95 | | 10 |
-|   ↳ vocabulaire_courant | | 0.643 | | 7 |
+|   ↳ vocabulaire_courant | | 0.571 | | 7 |
 | dense | 0.571 | 0.738 | 0.518 | 21 |
 |   ↳ reference_directe | | 1.0 | | 4 |
 |   ↳ regle | | 1.0 | | 10 |
 |   ↳ vocabulaire_courant | | 0.214 | | 7 |
-| hybrid | 0.81 | 0.857 | 0.764 | 21 |
+| hybrid | 0.81 | 0.81 | 0.763 | 21 |
 |   ↳ reference_directe | | 1.0 | | 4 |
 |   ↳ regle | | 0.95 | | 10 |
-|   ↳ vocabulaire_courant | | 0.643 | | 7 |
-| hybrid+graph | 0.81 | 0.857 | 0.764 | 21 |
+|   ↳ vocabulaire_courant | | 0.5 | | 7 |
+| hybrid+graph | 0.81 | 0.81 | 0.763 | 21 |
 |   ↳ reference_directe | | 1.0 | | 4 |
 |   ↳ regle | | 0.95 | | 10 |
-|   ↳ vocabulaire_courant | | 0.643 | | 7 |
+|   ↳ vocabulaire_courant | | 0.5 | | 7 |
 ```
 
 ### Lecture
 
-- **`bm25` seul est déjà fort** sur `reference_directe` et `regle` (vocabulaire technique partagé avec les articles), mais s'effondre sur `vocabulaire_courant` (0,643) — le fossé lexical entre langage courant et jargon PCG, déjà pressenti pendant T4-T5, se confirme et se chiffre.
-- **`dense` seul est pire que `bm25` globalement** (recall@5 0,571 contre 0,833) mais **meilleur sur `regle`** (1,0) : les embeddings e5-small captent bien la paraphrase professionnelle. Il est en revanche le plus faible mode sur `vocabulaire_courant` (0,214, pire que bm25) — la reformulation « grand public » s'éloigne trop du texte réglementaire pour que l'espace vectoriel généraliste fasse le pont.
-- **`hybrid` (RRF bm25+dense) récupère l'essentiel de la force de bm25** (recall@10 identique 0,857) tout en améliorant le MRR (0,764 contre 0,735) : quand bm25 et dense sont tous deux corrects, le bon résultat monte en tête plus souvent.
-- **`hybrid+graph` n'apporte aucun gain mesurable sur ce split** : recall et MRR strictement identiques à `hybrid`. L'expansion par renvois profite aux questions déjà résolues par le routeur/BM25 (elle enrichit le top-5 des `reference_directe`, cf. q001/q003 en analyse d'erreurs) mais ne comble aucun manque supplémentaire sur ces 21 questions — les articles gold manquants ne sont pas atteignables en 1-hop depuis les résultats déjà trouvés.
-- **Le routeur regex (`_route`) fonctionne exactement comme annoncé** : sur les 4 questions `reference_directe`, l'article cité est toujours renvoyé en position 1 avec `source: "route"`.
+- **`bm25` seul est déjà fort** sur `reference_directe` et `regle` (vocabulaire technique partagé avec les articles), mais s'effondre sur `vocabulaire_courant` (0,571) — le fossé lexical entre langage courant et jargon PCG, déjà pressenti pendant T4-T5, se confirme et se chiffre.
+- **`dense` seul est pire que `bm25` globalement** (recall@5 0,571 contre 0,833) mais **meilleur sur `regle`** (1,0) : les embeddings e5-small captent bien la paraphrase professionnelle. Il est en revanche le plus faible mode sur `vocabulaire_courant` (0,214, pire que bm25) — la reformulation « grand public » s'éloigne trop du texte réglementaire pour que l'espace vectoriel généraliste fasse le pont. Le mode `dense` est le seul strictement inchangé par la correction de normalisation (les embeddings sont calculés sur le texte brut des chunks, jamais sur `chunks_norm`), ce qui sert de témoin : les autres écarts avant/après viennent bien du canal lexical.
+- **`hybrid` (RRF bm25+dense) ne récupère plus tout à fait la force de bm25 seul** après correction (recall@10 0,81 contre 0,833 pour bm25 seul, où c'était l'inverse avant correction) mais reste **meilleur en MRR** (0,763 contre 0,754) : quand bm25 et dense sont tous deux corrects, le bon résultat monte en tête plus souvent, mais fusionner avec un dense plus faible sur `vocabulaire_courant` peut aussi faire descendre un résultat bm25 correct hors du top 10 sur quelques questions.
+- **`hybrid+graph` n'apporte toujours aucun gain mesurable sur ce split** : recall et MRR strictement identiques à `hybrid`. L'expansion par renvois profite aux questions déjà résolues par le routeur/BM25 (elle enrichit le top-5 des `reference_directe`) mais ne comble aucun manque supplémentaire sur ces 21 questions — les articles gold manquants ne sont pas atteignables en 1-hop depuis les résultats déjà trouvés.
+- **Le routeur regex (`_route`) fonctionne exactement comme annoncé, et tourne inconditionnellement dans les 4 modes** : `search()` appelle `_route(query)` avant même de brancher sur `mode`, donc le résultat routé s'ajoute au top-k quel que soit `bm25`/`dense`/`hybrid`/`hybrid+graph`. C'est la raison structurelle pour laquelle `reference_directe` = 1,0 même en `dense` et en `bm25` purs : ce n'est pas l'encodeur ni le BM25 qui trouvent ces questions, c'est le routeur regex sur le numéro d'article. Point important pour le protocole d'ablation : comparer `bm25` vs `dense` sur `reference_directe` ne mesure rien sur ces deux canaux, seulement l'effet (constant) du routeur.
 
 ## Durées (mesurées séparément, mêmes conditions)
 
@@ -82,7 +82,7 @@ Le chargement du modèle e5-small domine largement le temps total ; une fois cha
 
 ## Analyse d'erreurs — 3 questions dev au recall le plus bas (mode `hybrid+graph`)
 
-Sélection : les 3 questions dev de plus faible recall@10 en mode `hybrid+graph` (ex-aequo à recall@10 nul départagés par MRR le plus faible). Aucune correction n'est implémentée ici — ce diagnostic nourrit le jalon 2.5.
+Sélection : les 3 questions dev de plus faible recall@10 en mode `hybrid+graph` (ex-aequo à recall@10 nul départagés par MRR le plus faible). Aucune correction n'est implémentée ici — ce diagnostic nourrit le jalon 2.5. **Note** : les top-5 détaillés ci-dessous ont été capturés sur l'index d'avant la correction d'apostrophes/stemming (revue finale) ; le diagnostic qualitatif (fossé lexical, synonyme manquant, question à deux volets) reste valable — ces trois questions dépendent d'un rapprochement sémantique que ni bm25 ni dense ne couvraient avant ou après le fix, qui ne touche que la normalisation typographique — mais les identifiants de rang exacts n'ont pas été revérifiés post-rebuild.
 
 ### q021 — recall@5 = 0, recall@10 = 0
 
@@ -95,7 +95,7 @@ Sélection : les 3 questions dev de plus faible recall@10 en mode `hybrid+graph`
   3. `pcg-na-280@2026-01-01` — même section, avis non repris
   4. `pcg-na-42@2026-01-01` — Livre I > Titre II > Chapitre II > Section 3 (désendettement de fait)
   5. `pcg-na-149@2026-01-01` — Livre II > Titre VI > Section 8 (instruments financiers à terme)
-- **Diagnostic** : fossé lexical total — la question ne contient aucun terme (« amortir », « amortissement », « durée d'utilisation ») partagé avec le texte de l'article 214-13, et aucune entrée de synonymes ne relie « répartir le coût sur les années » à « amortissement » ; le dense (e5-small généraliste) ne comble pas non plus ce pont sémantique, d'où un top-5 entièrement hors-sujet.
+- **Diagnostic** : fossé lexical total — la question ne contient aucun token normalisé (« amortir », « amortissement », « durée d'utilisation ») partagé avec le texte de l'article 214-13, et aucune entrée de synonymes ne relie « répartir le coût sur les années » à « amortissement » ; le dense (e5-small généraliste) ne comble pas non plus ce pont sémantique, d'où un top-5 entièrement hors-sujet.
 
 ### q026 — recall@5 = 0, recall@10 = 0
 
@@ -125,13 +125,15 @@ Sélection : les 3 questions dev de plus faible recall@10 en mode `hybrid+graph`
 
 ### Pistes qui se dégagent (à instruire en jalon 2.5, sans implémentation ici)
 
-1. Le fossé lexical `vocabulaire_courant` est le principal goulot (recall@10 0,643 en bm25/hybrid contre 0,95-1,0 pour les autres catégories) — candidat naturel pour un reranker ou un enrichissement ciblé de synonymes, mais rappel du ruling T1 : n'ajouter une entrée de synonymes qu'après un échec mesuré, jamais par intuition.
+1. Le fossé lexical `vocabulaire_courant` est le principal goulot (recall@10 0,571 en bm25, 0,5 en hybrid, contre 0,95-1,0 pour les autres catégories) — candidat naturel pour un reranker ou un enrichissement ciblé de synonymes, mais rappel du ruling T1 : n'ajouter une entrée de synonymes qu'après un échec mesuré, jamais par intuition.
 2. `hybrid+graph` n'aide pas sur ce split dev (0 gain observé) — l'expansion 1-hop ne compense pas un échec initial de bm25/dense, elle ne fait qu'enrichir un top-5 déjà correct. À revérifier sur un split plus large avant de conclure définitivement.
 3. Les questions à citations multiples (`vocabulaire_courant` notamment) exposent une limite du recall global : une seule des N citations trouvée suffit à un score partiel qui masque un échec complet sur l'autre volet — pas un défaut de l'outil de mesure, mais un signal que ces questions méritent un examen qualitatif séparé, pas seulement l'agrégat.
 
 ## Référence gelée jalon 2 — split test (9 questions, exécuté une seule fois)
 
 Conformément au protocole du benchmark (`benchmark/README.md`) : le split test est **gelé**, on ne le consulte qu'une fois par jalon, à la toute fin, après verrouillage du système, et jamais pour du tuning. Résultat exécuté une unique fois pour cette campagne, à titre de référence non biaisée — **non utilisé** dans l'analyse d'erreurs ci-dessus.
+
+**Note (revue finale, vague de correctifs du 15 août 2026)** : référence mesurée sur l'index d'avant la correction d'apostrophes (revue finale) ; sera re-mesurée une seule fois au verrouillage du jalon 3. Conformément au protocole, elle n'est **pas** rejouée ici malgré le rebuild de l'index dev — rejouer le split test à chaque correctif viderait le gel de son sens.
 
 ```
 | mode | recall@5 | recall@10 | MRR | n |
