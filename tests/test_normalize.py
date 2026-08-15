@@ -3,17 +3,15 @@ from accounting_rag.normalize import normalize
 
 def test_meme_normalisation_flexions():
     # le stem rapproche singulier/pluriel et formes fléchies
-    assert normalize("les amortissements des immobilisations") == normalize(
-        "l'amortissement de l'immobilisation"
-    ).replace("de ", "").strip() or set(normalize("les amortissements").split()) & set(
-        normalize("l'amortissement").split()
-    )
+    a = set(normalize("les amortissements des immobilisations").split())
+    b = set(normalize("l'amortissement de l'immobilisation").split())
+    assert a & b == {"amort", "de", "immobilis"}
 
 
 def test_stems_partages():
     a = set(normalize("les amortissements dérogatoires").split())
     b = set(normalize("un amortissement dérogatoire").split())
-    assert a & b >= {"amort", "derogatoir"} or len(a & b) >= 2
+    assert a & b == {"amort", "derogatoir"}
 
 
 def test_reference_atomique():
@@ -46,8 +44,20 @@ def test_requete_et_document_identiques():
     # invariant central : même fonction pour les deux côtés
     doc = "Le titulaire d'un contrat de crédit-bail comptabilise en charges"
     query = "comptabiliser les charges d'un contrat de crédit-bail"
-    assert set(normalize(doc).split()) & set(normalize(query).split()) >= {"contrat", "charg"} or \
-           len(set(normalize(doc).split()) & set(normalize(query).split())) >= 3
+    assert set(normalize(doc).split()) & set(normalize(query).split()) == {
+        "comptabilis", "le", "charg", "un", "contrat", "de", "credit-bail",
+    }
+
+
+def test_apostrophe_typographique_equivalente_ascii():
+    assert normalize("l’exercice") == normalize("l'exercice")
+    assert normalize("d’amortissement") == normalize("d'amortissement")
+
+
+def test_flexions_accentuees_fusionnent():
+    # Le stemmer Snowball français doit recevoir du texte ACCENTUÉ (pas déjà plié) :
+    # généré/génération/générer stemment tous en "géner", plié en "gener".
+    assert normalize("généré") == normalize("génération") == normalize("générer") == "gener"
 
 
 def test_amortissement_degressif_et_derogatoire_distincts():

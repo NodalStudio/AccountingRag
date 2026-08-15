@@ -5,7 +5,7 @@ import snowballstemmer
 
 _stemmer = snowballstemmer.stemmer("french")
 
-_APOSTROPHES = str.maketrans({"'": "'", "'": "'", "ʼ": "'"})
+_APOSTROPHES = str.maketrans({"’": "'", "‘": "'", "ʼ": "'"})
 _ELISION = re.compile(
     r"\b(?:jusqu|lorsqu|puisqu|quoiqu|presqu|aujourd|qu|[ldjmnstc])'", re.I
 )
@@ -35,10 +35,25 @@ def normalize(text: str) -> str:
     t = text.lower().translate(_APOSTROPHES)
     t = _ELISION.sub("", t)
     t = _REF_LETTREE.sub(lambda m: f"{m.group(1)}{m.group(2)}", t)
-    folded = _fold(t)
+    # Vue repliée utilisée uniquement pour détecter les synonymes de façon insensible
+    # aux accents (les clés de SYNONYMES sont écrites sans accent). _fold conserve la
+    # longueur caractère pour caractère sur le français (une lettre accentuée -> une
+    # lettre de base), donc les positions trouvées dans `matching` sont valides dans `t`.
+    matching = _fold(t)
     for src, dst in SYNONYMES.items():
-        folded = folded.replace(_fold(src), _fold(dst))
-    tokens = [tok for tok in _TOKEN_SPLIT.split(folded) if tok and tok != "-"]
+        idx = 0
+        while True:
+            pos = matching.find(src, idx)
+            if pos == -1:
+                break
+            end = pos + len(src)
+            t = t[:pos] + dst + t[end:]
+            matching = matching[:pos] + dst + matching[end:]
+            idx = pos + len(dst)
+    # Tokenise sur le texte ACCENTUÉ : le stemmer Snowball français attend des flexions
+    # accentuées (ex. "généré"/"génération"/"générer" -> "géner") ; le pliage n'intervient
+    # qu'en dernier, sur chaque stem, pour produire des tokens ASCII comparables.
+    tokens = [tok for tok in _TOKEN_SPLIT.split(t) if tok and tok != "-"]
     out = []
     for tok in tokens:
         if _HAS_DIGIT.search(tok):
