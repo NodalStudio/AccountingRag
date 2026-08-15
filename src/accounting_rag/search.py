@@ -8,6 +8,7 @@ from .normalize import normalize
 _REF_QUERY = re.compile(r"\bart(?:icle)?s?\.?\s*(\d{2,4}-\d+(?:-\d+)*)", re.I)
 # Routage des références lettrées (L./R./D., code de commerce) différé à l'ingestion LEGI — aucun article lettré dans le corpus PCG actuel.
 _RRF_K = 60
+_MODES = {"bm25", "dense", "hybrid", "hybrid+graph"}
 
 
 class Searcher:
@@ -108,6 +109,8 @@ class Searcher:
         return merged[:k]
 
     def search(self, query: str, k: int = 10, mode: str = "hybrid") -> list[dict]:
+        if mode not in _MODES:
+            raise ValueError(f"mode inconnu : {mode}")
         routed = self._route(query)
         routed_ids = {r["record_id"] for r in routed}
         if mode == "bm25":

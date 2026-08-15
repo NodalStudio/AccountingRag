@@ -14,8 +14,8 @@ questions = load_benchmark(Path(f"benchmark/{args.split}.jsonl"))
 searcher = Searcher(Path("data/corpus.db"))
 modes = ["bm25", "dense", "hybrid", "hybrid+graph"] if args.mode == "all" else [args.mode]
 
-print(f"| mode | recall@5 | recall@10 | MRR | n |")
-print(f"|---|---|---|---|---|")
+print("| mode | recall@5 | recall@10 | MRR | n |")
+print("|---|---|---|---|---|")
 for mode in modes:
     m = evaluate(searcher, questions, mode=mode, k=args.k)
     print(f"| {mode} | {m['recall@5']} | {m['recall@10']} | {m['mrr']} | {m['n']} |")

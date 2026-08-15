@@ -99,6 +99,15 @@ class TestSearcherCorpusReel:
 # de data/corpus.db. Même patron que tests/test_index.py (write_db + FakeEmbedder + build_index).
 
 
+def test_mode_inconnu_leve_value_error(tmp_path):
+    db = tmp_path / "mode.db"
+    write_db([_rec("pcg-1-1@2026-01-01", "1-1", texte="x")], db)
+    build_index(db, embedder=FakeEmbedder())
+    s = Searcher(db, embedder=FakeEmbedder())
+    with pytest.raises(ValueError):
+        s.search("x", mode="bogus")
+
+
 def test_searcher_leve_filenotfounderror_si_corpus_absent(tmp_path):
     # I2 : sur un clone frais sans data/corpus.db, sqlite3.connect créerait sinon
     # silencieusement une base vide et l'erreur ne surviendrait qu'au premier accès.
