@@ -12,13 +12,13 @@ Ce projet est une **expérimentation de recherche**. Le corpus est produit par u
 
 Le jalon 1 livre un **parseur typographique déterministe** du Recueil des normes comptables françaises 2026 (Autorité des normes comptables), qui transforme le PDF source en un dataset SQLite structuré, sans passer par un LLM (le PDF a une typographie discriminante : taille et graisse de police distinguent réglementaire, commentaires et titres de section — voir la spec, section 3).
 
-Chiffres du corpus produit :
+Chiffres du corpus produit (mesurés sur le build courant) :
 
-- **1 868 enregistrements** : 869 réglementaires, 999 commentaires infra-réglementaires ANC
+- **1 660 enregistrements** : 739 réglementaires, 921 commentaires infra-réglementaires ANC
 - **602 articles** distincts
-- **~950 renvois** en graphe (internes, externes au PCG, historiques)
+- **981 renvois** en graphe : 711 internes (PCG), 173 externes légaux (autres codes), 97 historiques (CRC/Avis)
 - Index de recherche plein texte **FTS5**
-- **253 anomalies** cataloguées en 5 catégories, documentées dans [`docs/rapport-build.md`](docs/rapport-build.md)
+- **203 anomalies** cataloguées en 5 catégories, documentées dans [`docs/rapport-build.md`](docs/rapport-build.md)
 - Validé par échantillonnage sur 15 pages du document source, voir [`docs/validation-echantillon.md`](docs/validation-echantillon.md)
 
 ## Démarrage rapide
@@ -48,14 +48,14 @@ Un enregistrement par article réglementaire ou par commentaire ANC.
 
 | Champ | Description |
 |---|---|
-| `id` | Identifiant stable, ex. `pcg-214-1@2026-01-01` (annexes sectorielles suffixées `#n` en cas de réutilisation de numérotation) |
+| `id` | Identifiant stable, ex. `pcg-214-1@2026-01-01` — suffixé `#n` en cas de collision d'identifiant : fragments multiples d'un même article (alinéas non contigus, sans titre de section intercalé) ou numérotation réutilisée par une annexe sectorielle (ex. secteur du logement social) |
 | `article` | Numéro d'article PCG (`214-1`), ou `null` hors article (avant-propos, annexes non numérotées) |
 | `chemin` | Position hiérarchique, ex. `Livre II > Titre I > Chapitre IV > Section 1` |
 | `type` | `reglementaire` ou `commentaire_ANC` |
 | `nature` | Domaine du contenu (`comptable`) |
-| `opposable` | Vrai pour le texte réglementaire, faux pour les commentaires |
+| `opposable` | Toujours `false` sur ce corpus, par conception : rien n'est opposable dans les commentaires infra-réglementaires de l'ANC ; le champ est prévu pour le BOFiP (doctrine fiscale opposable), en phase 2 |
 | `valide_du` / `valide_au` | Fenêtre de validité temporelle (édition 2026 uniquement en v1 : `valide_au` toujours nul) |
-| `source_citation` | Référence de la source pour les commentaires (ex. avis CU) |
+| `source_citation` | Citation normative extraite du titre du commentaire quand elle existe (Avis CNC/CU, règlement CRC cité en tête — mesuré : ~12 % des commentaires ANC), sinon le titre du commentaire lui-même |
 | `page_debut` / `page_fin` | Bornes de pages dans le PDF source |
 
 ### Table `renvois`
@@ -71,7 +71,7 @@ Graphe des références croisées extraites du texte.
 ## Limitations connues
 
 - **Strate typographique 9,0 non capturée** : citations de textes de rang supérieur (Code de commerce, lois), notes de bas de page et cellules de tableaux de modèles (~2 037 lignes sur 120 pages) sont actuellement classées comme bruit et absentes du corpus. Différé en v1.1 — voir [`docs/validation-echantillon.md`](docs/validation-echantillon.md).
-- Les annexes sectorielles qui réutilisent la numérotation du PCG (ex. secteur du logement social) ont leurs identifiants suffixés `#n` pour éviter les collisions.
+- Certains identifiants sont suffixés `#n` (54 cas) : le plus souvent des fragments réglementaires multiples pour un même article déjà ouvert (alinéas non contigus), ou une numérotation réutilisée par une annexe sectorielle qui reprend partiellement celle du PCG (ex. secteur du logement social).
 - **45 renvois pendants résiduels** (cibles non trouvées dans le corpus, essentiellement vers le plan de comptes en tableau, hors périmètre du parseur v1).
 - Seule l'édition 2026 du Recueil est couverte : pas d'historique des versions antérieures en v1 (le schéma prévoit les champs temporels pour une extension future).
 

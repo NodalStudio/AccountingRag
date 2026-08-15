@@ -166,7 +166,7 @@ Morale pour le blog : « le parsing de PDF est résolu » est vrai à 97,7 % —
 **État du corpus après T10 + ruling 23** : `corpus.db` 3,8 Mo — 1 868 enregistrements (869 réglementaires, 999 commentaires ANC), 602 articles distincts, 950+ renvois en graphe, FTS5 fonctionnel, 253 anomalies toutes catégorisées et documentées. Le fichier SQLite promis (« tout le droit comptable français dans un fichier ») existe.
 ### Jalon 1 livré — bilan d'exécution
 
-**Livré** : `corpus.db` (3,8 Mo) — 1 868 enregistrements (869 réglementaires, 999 commentaires ANC), 602 articles distincts, ~950 renvois en graphe, FTS5, 253 anomalies cataloguées en 5 catégories ; README honnête (limitations mesurées), licences MIT + Licence Ouverte 2.0, validation par échantillonnage sur 15 pages.
+**Livré** : `corpus.db` (3,7 Mo) — 1 660 enregistrements (739 réglementaires, 921 commentaires ANC), 602 articles distincts, 981 renvois en graphe, FTS5, 203 anomalies cataloguées en 5 catégories ; README honnête (limitations mesurées), licences MIT + Licence Ouverte 2.0, validation par échantillonnage sur 15 pages.
 
 **La validation par échantillonnage a payé une dernière fois** : découverte d'une troisième strate typographique (taille 9,0) — extraits de lois citées, notes de bas de page, cellules de tableaux de modèles — confondue avec les en-têtes/pieds de page et donc non capturée : 2 037 lignes sur 120 pages, mesurées et différées en connaissance de cause (les lois citées arriveront plus propres via LEGI en phase 2). Leçon : sans échantillonnage adversarial sur le document réel, cette absence aurait été invisible — le corpus « semblait » complet.
 
