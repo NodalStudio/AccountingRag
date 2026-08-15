@@ -35,6 +35,8 @@ class _Builder:
         self.com_title: str = ""
         self.seen_ids: set[str] = set()
         self.na_count: int = 0          # Ruling 18: compteur global des records ancrés à une section (sans article)
+        self.last_level: str | None = None          # F2: dernier niveau de path posé par un SECTION_HEADER
+        self.last_was_section_header: bool = False  # F2: le précédent non-BRUIT était-il un SECTION_HEADER ?
 
     def chemin(self) -> str:
         return " > ".join(self.path[lv] for lv in _LEVELS if lv in self.path)
@@ -107,6 +109,16 @@ class _Builder:
             # « .... » — ne doivent pas polluer le chemin hiérarchique.
             if _TOC_DOTS.search(line.text):
                 return
+            lowered = line.text.lower()
+            starts_with_level = any(lowered.startswith(lv) for lv in _LEVELS)
+            # F2: un SECTION_HEADER sans mot-clé de niveau, arrivant
+            # IMMÉDIATEMENT après un autre SECTION_HEADER (aucune autre ligne
+            # non-BRUIT interposée), est la SUITE du titre précédent —
+            # concatène-le au dernier niveau posé au lieu de l'anomalie.
+            if not starts_with_level and self.last_was_section_header and self.last_level is not None:
+                self.path[self.last_level] = self.path[self.last_level] + " " + line.text
+                self.last_was_section_header = True
+                return
             self.flush()
             # Ruling 17: une SECTION_HEADER ferme le périmètre de l'article
             # courant — aucun article ne se poursuit après un titre de
@@ -115,16 +127,19 @@ class _Builder:
             self.cur_kind = None
             self.com_title = ""
             self.com_count = 0
-            lowered = line.text.lower()
             for lv in _LEVELS:
                 if lowered.startswith(lv):
                     self.path[lv] = line.text
                     idx = _LEVELS.index(lv)
                     for deeper in _LEVELS[idx + 1:]:
                         self.path.pop(deeper, None)
+                    self.last_level = lv
+                    self.last_was_section_header = True
                     return
             self.anomalies.append(Anomalie(line.page, line.text, "section sans niveau reconnu"))
+            self.last_was_section_header = True
             return
+        self.last_was_section_header = False
         if kind == Kind.ARTICLE_HEADER:
             self.flush()
             m = _ART_NUM.match(line.text)
@@ -141,18 +156,27 @@ class _Builder:
                 self.buf.append(reste)
             return
         if kind == Kind.COMMENTAIRE_TITRE:
-            if self.cur_kind != "commentaire" or self.buf:
+            # F1: décide AVANT de flusher si ce titre est un nouveau titre
+            # (je viens de flusher un commentaire déjà pourvu d'un corps, ou
+            # je change de strate) ou la suite d'un titre multi-lignes (le
+            # titre précédent n'a pas encore de corps ET je ne flush pas).
+            # flush() vide self.buf, donc ce calcul doit précéder l'appel.
+            just_flushed = self.cur_kind != "commentaire" or bool(self.buf)
+            if just_flushed:
                 self.flush()
             # Ruling 18: un titre de commentaire sans article ouvert n'est
             # plus rejeté en anomalie — il devient le titre d'un record
             # ancré à la section (pcg-na-<n>), ex. annexes d'exemples.
             self._check_orphan_suspect(line)
-            if self.cur_kind == "commentaire" and not self.buf:
-                self.com_title = (self.com_title + " " + line.text).strip()  # titre multi-lignes
-            else:
+            if just_flushed:
+                # Nouveau titre : réinitialise le titre ET les pages du
+                # buffer sur la ligne courante — sinon le nouveau commentaire
+                # hérite des pages de l'ancien (F1).
                 self.cur_kind = "commentaire"
                 self.com_title = line.text
                 self.buf_start = self.buf_end = line.page
+            else:
+                self.com_title = (self.com_title + " " + line.text).strip()  # titre multi-lignes
             return
         if kind in (Kind.REGLEMENTAIRE, Kind.COMMENTAIRE, Kind.PUCE):
             expected = "reglementaire" if kind == Kind.REGLEMENTAIRE else "commentaire"

@@ -148,3 +148,70 @@ def test_zone_plan_de_comptes_produit_des_records_na(recueil_path):
     assert plan_recs, "aucun record na-* rattaché à une zone « plan de comptes »"
     assert all(r.article is None for r in plan_recs)
     assert all(r.chemin for r in plan_recs)   # chemin non vide malgré l'absence d'article
+
+
+def test_f1_titre_commentaire_ne_herite_pas_des_pages():
+    # F1 (revue) : quand un COMMENTAIRE_TITRE arrive avec cur_kind=="commentaire"
+    # et buf déjà pourvu d'un corps, le flush() vide buf AVANT que le code ne
+    # décide "titre multi-lignes" (car buf est alors vide) — le nouveau titre
+    # héritait à tort de buf_start/buf_end de l'ancien commentaire. Correctif :
+    # "just_flushed" calculé avant le flush() distingue les deux cas.
+    b = _Builder("2026-01-01")
+    b.feed(_line("Art. 200-1", page=1), Kind.ARTICLE_HEADER)
+    b.feed(_line("Texte réglementaire.", page=1), Kind.REGLEMENTAIRE)
+    b.feed(_line("Premier titre de commentaire", page=1), Kind.COMMENTAIRE_TITRE)
+    b.feed(_line("Corps du premier commentaire.", page=1), Kind.COMMENTAIRE)
+    b.feed(_line("Second titre de commentaire", page=3), Kind.COMMENTAIRE_TITRE)
+    b.feed(_line("Corps du second commentaire.", page=3), Kind.COMMENTAIRE)
+    b.flush()
+
+    by_id = {r.id: r for r in b.records}
+    c1 = by_id["pcg-200-1-c1@2026-01-01"]
+    c2 = by_id["pcg-200-1-c2@2026-01-01"]
+    assert c1.page_debut == 1
+    assert c2.page_debut == 3   # avant le correctif : héritait de 1 (celle de c1)
+    assert c2.page_fin == 3
+
+
+def test_f1_pcg_212_3_c2_page_debut_reelle(recueil_path):
+    # F1 (revue), cas réel signalé par le contrôleur : pcg-212-3-c2 portait
+    # page_debut=36 (hérité de c1) alors que son titre est en page 37-38.
+    records, _ = parse(recueil_path)
+    by_id = {r.id: r for r in records}
+    c2 = by_id["pcg-212-3-c2@2026-01-01"]
+    assert c2.page_debut == 37
+
+
+def test_f2_section_header_multiligne_synthetique():
+    # F2 (revue) : un SECTION_HEADER sans mot-clé de niveau, immédiatement
+    # après un autre SECTION_HEADER (aucune ligne non-BRUIT interposée), est
+    # la suite du titre précédent — concatène-le au lieu de l'anomalie.
+    b = _Builder("2026-01-01")
+    b.feed(_line("Chapitre 3 – Un titre très long qui", page=1), Kind.SECTION_HEADER)
+    b.feed(_line("continue sur une seconde ligne", page=1), Kind.SECTION_HEADER)
+    b.feed(_line("Art. 300-1", page=1), Kind.ARTICLE_HEADER)
+    b.feed(_line("Texte.", page=1), Kind.REGLEMENTAIRE)
+    b.flush()
+
+    r = b.records[0]
+    assert "Chapitre 3 – Un titre très long qui continue sur une seconde ligne" in r.chemin
+    assert not any(a.raison == "section sans niveau reconnu" for a in b.anomalies)
+
+
+def test_f2_titre_section_multiligne_complet_p25(recueil_path):
+    # F2 (revue), cas réel : « Livre I : principes généraux applicables aux »
+    # (p.25) était tronqué avant sa suite « différents postes des documents
+    # de synthèse » (seconde ligne du même titre, size 20.0, sans mot-clé de
+    # niveau). Le chemin doit maintenant porter le titre complet.
+    records, anomalies = parse(recueil_path)
+    r = next(rec for rec in records if rec.article == "111-1")
+    assert ("Livre I : principes généraux applicables aux différents postes des documents de synthèse"
+            in r.chemin)
+
+    # Le nombre d'anomalies "section sans niveau reconnu" chute fortement :
+    # les titres multi-lignes ne sont plus comptés comme anomalies — ne
+    # restent que les vrais labels hors nomenclature (avant-propos, « Partie
+    # législative », en-têtes d'annexes, libellés de schémas/tableaux).
+    # Vérifié empiriquement : 76 → 25.
+    sans_niveau = [a for a in anomalies if a.raison == "section sans niveau reconnu"]
+    assert len(sans_niveau) == 25
