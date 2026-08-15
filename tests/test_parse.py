@@ -78,21 +78,29 @@ def test_ids_uniques_sur_corpus_reel(recueil_path):
     # ZÉRO — pas à ~2 comme prévu à la consigne : Ruling 17 ferme déjà
     # l'article sur le SECTION_HEADER « Titre 7 »/« Titre 8 » qui précède
     # cette prose, donc ce contenu devient nativement un record pcg-na-<n>
-    # (voir test_zone_plan_de_comptes_produit_des_records_na) plutôt qu'une
-    # collision. Les 80 collisions résiduelles sont un phénomène RÉSIDUEL
-    # et DISTINCT, confirmé par investigation manuelle : un même article
-    # encore ouvert peut légitimement produire plusieurs fragments
-    # réglementaires non contigus (alinéas interrompus par une strate de
-    # commentaire intermédiaire, sans SECTION_HEADER intercalé) — l'id
-    # réglementaire n'a pas de compteur (contrairement au commentaire qui a
-    # com_count). Sur les 80 : ~41 sont de purs artefacts de folio (un
+    # (voir test_na_titre7_8_produit_des_records_ancres_a_la_section)
+    # plutôt qu'une collision. Les 80 collisions résiduelles sont un
+    # phénomène RÉSIDUEL et DISTINCT, confirmé par investigation manuelle :
+    # un même article encore ouvert peut légitimement produire plusieurs
+    # fragments réglementaires non contigus (alinéas interrompus par une
+    # strate de commentaire intermédiaire, sans SECTION_HEADER intercalé) —
+    # l'id réglementaire n'a pas de compteur (contrairement au commentaire
+    # qui a com_count). Sur les 80 : ~41 sont de purs artefacts de folio (un
     # numéro de page isolé classé par erreur dans la strate REGLEMENTAIRE,
     # ex. pcg-628-18@2026-01-01#2 dont le texte est "302" — défaut de
     # classify.py, hors périmètre T7) et ~39 portent du texte réglementaire
-    # réel (ex. pcg-223-4@2026-01-01#2, pcg-512-1@2026-01-01#2). Compteur
-    # figé en garde de régression — voir task-7-report.md pour l'analyse
-    # complète.
-    assert len(collisions) == 80
+    # réel (ex. pcg-223-4@2026-01-01#2, pcg-512-1@2026-01-01#2).
+    #
+    # Ruling 23 (forme longue « Article NNN-N ») ajoute 24 collisions de plus
+    # (80 → 104) : 58 en-têtes « Article NNN-N » nouvellement reconnus dans
+    # une annexe sectorielle jusqu'ici invisible (p.562-593, « Secteur du
+    # logement social », règlement ANC n° 2015-04) réutilisent PARTIELLEMENT
+    # la même numérotation que le corps principal du PCG (ex. 111-1, 121-1,
+    # 122-1…) — collision légitime entre deux numérotations distinctes qui
+    # partagent un numéro, désormais désambiguïsée par le suffixe #n plutôt
+    # que silencieusement absorbée dans l'article principal. Compteur figé
+    # en garde de régression — voir task-7-report.md pour l'analyse complète.
+    assert len(collisions) == 104
     assert sum(1 for a in collisions if a.ligne == "pcg-500-2@2026-01-01") == 0
 
     # Ruling 18 : plus aucune anomalie-poubelle « texte avant tout article »
@@ -100,14 +108,19 @@ def test_ids_uniques_sur_corpus_reel(recueil_path):
     assert not any(a.raison.startswith("texte avant tout article") for a in anomalies)
     assert not any(a.raison.startswith("commentaire orphelin") for a in anomalies)
 
-    # Les vrais articles réglementaires retombent près de la prévision du
-    # contrôleur (~554 = 845 − 291 anciens fragments mal attribués).
+    # Les vrais articles réglementaires : 554 (post Rulings 17/18) → 602
+    # (post Ruling 23, +48) — 58 nouveaux en-têtes « Article NNN-N »
+    # reconnus, dont 10 coïncident avec un numéro déjà attribué par le corps
+    # principal (donc comptés comme collision, pas comme numéro distinct
+    # supplémentaire) : 58 - 10 = 48.
     reg_avec_article = {r.article for r in records if r.type == "reglementaire" and r.article is not None}
-    assert len(reg_avec_article) == 554
+    assert len(reg_avec_article) == 602
 
     # Les deux clusters massifs de fuite d'annexe (plan de comptes des
     # coopératives / fonctionnement des comptes) ne portent plus la
-    # centaine de fragments observée avant Rulings 17/18.
+    # centaine de fragments observée avant Rulings 17/18, et ne sont pas
+    # concernés par l'extension Ruling 23 (numéros 628-18/1231-89 absents
+    # des nouveaux en-têtes « Article NNN-N »).
     assert sum(1 for r in records if r.article == "628-18") < 5
     assert sum(1 for r in records if r.article == "1231-89") < 5
 
@@ -137,17 +150,80 @@ def test_section_header_ferme_larticle_courant():
     assert not any(a.raison.startswith("collision") for a in b.anomalies)
 
 
-def test_zone_plan_de_comptes_produit_des_records_na(recueil_path):
+def test_na_titre7_8_produit_des_records_ancres_a_la_section(recueil_path):
     # Ruling 18 : le contenu hors article (plans de comptes en tables,
     # annexes d'exemples) devient un record pcg-na-<n> ancré à la section
     # courante, plutôt qu'une anomalie-poubelle ou un article mal attribué.
+    #
+    # NB (Ruling 23) : l'exemple historique de ce test (zone « plan de
+    # comptes » p.579-593, Secteur du logement social) a cessé d'être
+    # anchorless — l'extension de _ART_NUM à la forme longue « Article
+    # NNN-N » y reconnaît désormais de vrais articles (111-1, 121-1…), ce
+    # qui est le résultat RECHERCHÉ par Ruling 23 (moins de contenu mal
+    # attribué), mais invalide cet exemple précis. Remplacé par un exemple
+    # toujours anchorless : Titre 7/8 (Commissaires/Huissiers de justice),
+    # dont l'« Article 1er »/« Article 2 » sans tiret ne matche jamais
+    # _ART_NUM (pas de numéro composé) et reste donc une anomalie « en-tête
+    # d'article illisible », laissant leur corps réglementaire orphelin.
     records, _ = parse(recueil_path)
     na_recs = [r for r in records if r.id.startswith("pcg-na-")]
-    plan_recs = [r for r in na_recs if "plan de comptes" in r.chemin.lower()]
+    titre78_recs = [r for r in na_recs if "Titre 7" in r.chemin or "Titre 8" in r.chemin]
 
-    assert plan_recs, "aucun record na-* rattaché à une zone « plan de comptes »"
-    assert all(r.article is None for r in plan_recs)
-    assert all(r.chemin for r in plan_recs)   # chemin non vide malgré l'absence d'article
+    assert titre78_recs, "aucun record na-* rattaché à Titre 7/8 (Commissaires/Huissiers de justice)"
+    assert all(r.article is None for r in titre78_recs)
+    assert all(r.chemin for r in titre78_recs)   # chemin non vide malgré l'absence d'article
+
+
+def test_ruling23_articles_619_forme_longue(recueil_path):
+    # Ruling 23 : les amendements ANC récents (cryptoactifs, p.242-253)
+    # rédigent leurs en-têtes en forme longue « Article NNN-N » — jusqu'ici
+    # invisibles au parseur (0 record 619-x), désormais capturés au même
+    # titre que la forme abrégée « Art. NNN-N ».
+    records, _ = parse(recueil_path)
+    by_id = {r.id: r for r in records}
+    for num in ("619-1", "619-2", "619-3", "619-4"):
+        rid = f"pcg-{num}@2026-01-01"
+        assert rid in by_id, f"{rid} manquant"
+        art = by_id[rid]
+        assert art.type == "reglementaire"
+        assert art.texte.strip(), f"{rid} a un texte vide"
+        assert art.article == num
+
+
+def test_ruling23_article_1er_reste_anomalie_pas_faux_positif():
+    # Ruling 23 : « Article 1er »/« Article N » (numérotation simple, sans
+    # tiret composé) matche ART_RE (classify.py, gras+bande réglementaire)
+    # mais PAS _ART_NUM (parse.py, qui exige un numéro composé NNN-N) — reste
+    # donc une anomalie « en-tête d'article illisible », sans créer de faux
+    # article ni avaler le corps réglementaire qui suit sous un id erroné.
+    b = _Builder("2026-01-01")
+    b.feed(_line("Chapitre 9 – Un titre", page=1), Kind.SECTION_HEADER)
+    b.feed(_line("Article 1er", page=1), Kind.ARTICLE_HEADER)
+    b.feed(_line("Corps du texte qui suit l'article 1er.", page=1), Kind.REGLEMENTAIRE)
+    b.flush()
+
+    assert any(a.raison == "en-tête d'article illisible" and a.ligne == "Article 1er"
+               for a in b.anomalies)
+    # Le corps qui suit devient un record ancré à la section (Ruling 18),
+    # jamais un article numéroté "1er".
+    assert not any(r.article == "1er" for r in b.records)
+    corps = next(r for r in b.records if "Corps du texte" in r.texte)
+    assert corps.article is None
+    assert corps.chemin == "Chapitre 9 – Un titre"
+
+
+def test_ruling23_ne_matche_pas_article_premier_ni_phrase_de_corps():
+    # Ruling 23 (garde-fou explicite de la consigne) : "Article premier"
+    # (lettre, pas chiffre) et une phrase de corps mentionnant "l'article
+    # 628" en cours de ligne ne doivent jamais devenir ARTICLE_HEADER.
+    from accounting_rag.classify import classify
+    from accounting_rag.model import Kind as K
+
+    premier = _line("Article premier – Dispositions générales", page=1)
+    assert classify(premier) != K.ARTICLE_HEADER
+
+    phrase = _line("Conformément à l'article 628 dispose que...", page=1)
+    assert classify(phrase) != K.ARTICLE_HEADER
 
 
 def test_f1_titre_commentaire_ne_herite_pas_des_pages():
@@ -301,3 +377,28 @@ def test_ruling20_bruit_intercale_casse_adjacence_p101_102(recueil_path):
         assert len(cout_pattern.findall(r.chemin)) <= 1, (
             f"chemin avec plusieurs motifs 'N Coûts' concaténés : {r.chemin!r}"
         )
+
+
+def test_ruling23_scan_faux_positifs_article_gras(recueil_path):
+    # Ruling 23, étape 3 (scan préalable demandé par la consigne) : recense
+    # toutes les lignes GRASSES de la bande réglementaire (9.8-10.3) qui
+    # commencent par « Article <chiffre> » sur les 662 pages — verrouillé en
+    # garde de régression après vérification manuelle par échantillon (toutes
+    # sont de vrais en-têtes : 619-1..619-19, 628-17, 629-1..629-3, la série
+    # 111-x/121-x/.../401-x de l'annexe « Secteur du logement social », plus
+    # 9 numérotations simples sans tiret « Article 1er/2/3/4 » dans les
+    # mini-règlements Titre 6/7/8, qui restent anomalie "en-tête d'article
+    # illisible" sans devenir de faux pseudo-articles — cf.
+    # test_ruling23_article_1er_reste_anomalie_pas_faux_positif).
+    from accounting_rag.extract import extract_lines
+    import re
+
+    lines = extract_lines(recueil_path)
+    pat = re.compile(r"^Article\s+\d")
+    matches = [l for l in lines if l.bold and 9.8 <= l.size <= 10.3 and pat.match(l.text)]
+    assert len(matches) == 67
+
+    num_pat = re.compile(r"^\d{3,4}-\d+(?:-\d+)?")
+    with_dash = [l for l in matches if num_pat.match(l.text[len("Article"):].strip())]
+    assert len(with_dash) == 58  # numéro composé -> vrai ARTICLE_HEADER reconnu
+    assert len(matches) - len(with_dash) == 9  # numéro simple -> anomalie, pas de faux positif

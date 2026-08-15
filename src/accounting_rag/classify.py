@@ -1,7 +1,17 @@
 import re
 from .model import Line, Kind
 
-ART_RE = re.compile(r"^Art\.\s*\d")
+# Ruling 23: les amendements ANC récents (cryptoactifs 619-x, adaptations
+# sectorielles 111-x/121-x/.../401-x) rédigent l'en-tête en forme LONGUE
+# « Article NNN-N » au lieu de la forme abrégée « Art. NNN-N » du texte de
+# 2014. Étendu pour couvrir les deux formes — sans risque de faux positif :
+# « Article » doit être immédiatement suivi (après espace(s)) d'un CHIFFRE,
+# ce qui exclut « Article premier » (lettre) ; les phrases de corps du type
+# « ...l'article 628 dispose... » ne sont jamais concernées puisque ART_RE
+# n'est testé que sur des lignes en gras de la bande réglementaire qui
+# COMMENCENT la ligne (ancre ^), jamais sur du texte à l'intérieur d'une
+# phrase.
+ART_RE = re.compile(r"^Art(?:\.\s*|icle\s+)\d")
 SECTION_RE = re.compile(r"^(Livre|Titre|Chapitre|Section|Sous-section)\b", re.I)
 _BULLETS = {"•", "-", "–", "*"}
 

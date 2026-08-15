@@ -7,7 +7,11 @@ from .classify import classify
 from .clean import join_lines
 from .refs import extract_renvois
 
-_ART_NUM = re.compile(r"^Art\.\s*(\d{3,4}-\d+(?:-\d+)?)")
+# Ruling 23: même extension que ART_RE (classify.py) — les en-têtes en forme
+# longue « Article NNN-N » (amendements ANC récents : cryptoactifs 619-x,
+# adaptations sectorielles 111-x/121-x/.../401-x) doivent être capturés au
+# même titre que la forme abrégée « Art. NNN-N ».
+_ART_NUM = re.compile(r"^Art(?:\.\s*|icle\s+)(\d{3,4}-\d+(?:-\d+)?)")
 _LEVELS = ["livre", "titre", "chapitre", "section", "sous-section"]
 _CITATION = re.compile(r"(Avis\s+(?:CNC|CU)\s+n°\s*[\w\-]+[^–]*|règlement\s+n°\s*[\d\-]+\s+du\s+CRC[^–]*)", re.I)
 _TOC_DOTS = re.compile(r"\.{4,}")  # entrées de sommaire (points de conduite) — Ruling 7
