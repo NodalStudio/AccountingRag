@@ -1,5 +1,4 @@
 import sqlite3
-from pathlib import Path
 from accounting_rag.db import write_db
 from accounting_rag.model import Renvoi
 from conftest import _rec

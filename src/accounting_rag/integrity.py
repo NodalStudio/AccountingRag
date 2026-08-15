@@ -3,7 +3,6 @@ from collections import Counter
 from .model import Record
 from .parse import Anomalie
 
-_LIVRE = re.compile(r"Livre\s+([IVXLC]+)", re.I)
 _ROMANS = {"I": 1, "V": 5, "X": 10, "L": 50, "C": 100}
 
 
@@ -25,7 +24,7 @@ def check(records: list[Record]) -> list[Anomalie]:
     ids = Counter(r.id for r in records)
     for rid, n in ids.items():
         if n > 1:
-            out.append(Anomalie(0, rid, f"identifiant en double ({n}×)"))
+            out.append(Anomalie(0, rid, f"identifiant en double ({n}×)", "identifiant en double"))
 
     # (b) Articles connus pour le contrôle des renvois internes
     known_articles = {r.article for r in records if r.article}
@@ -33,7 +32,7 @@ def check(records: list[Record]) -> list[Anomalie]:
     for r in records:
         # (c) Texte vide
         if not r.texte.strip():
-            out.append(Anomalie(r.page_debut, r.id, "texte vide"))
+            out.append(Anomalie(r.page_debut, r.id, "texte vide", "texte vide"))
 
         # (a) Cohérence numérotation ↔ chemin (Ruling 21: TITRE, pas LIVRE)
         # Le 1er chiffre de l'article doit correspondre au numéro du TITRE du chemin
@@ -47,7 +46,7 @@ def check(records: list[Record]) -> list[Anomalie]:
                         titre_num = int(titre_str)
                     else:
                         titre_num = _roman_to_int(titre_str)
-                except:
+                except KeyError:
                     titre_num = None
 
                 if titre_num is not None and int(r.article[0]) != titre_num:
@@ -56,6 +55,7 @@ def check(records: list[Record]) -> list[Anomalie]:
                             r.page_debut,
                             r.id,
                             f"article {r.article} sous {titre_match.group(0)} : incohérence de Titre",
+                            "incohérence de Titre"
                         )
                     )
 
@@ -66,7 +66,8 @@ def check(records: list[Record]) -> list[Anomalie]:
                 if num not in known_articles:
                     out.append(
                         Anomalie(
-                            r.page_debut, r.id, f"renvoi interne sans cible : {num}"
+                            r.page_debut, r.id, f"renvoi interne sans cible : {num}",
+                            "renvoi interne sans cible"
                         )
                     )
 
@@ -74,7 +75,7 @@ def check(records: list[Record]) -> list[Anomalie]:
 
 
 def report(records: list[Record], anomalies: list[Anomalie]) -> str:
-    """Génère un rapport markdown des anomalies."""
+    """Génère un rapport markdown des anomalies, groupé par catégorie stable."""
     n_reg = sum(1 for r in records if r.type == "reglementaire")
     n_com = sum(1 for r in records if r.type == "commentaire_ANC")
     lines = [
@@ -84,11 +85,11 @@ def report(records: list[Record], anomalies: list[Anomalie]) -> str:
         f"- **{len(anomalies)} anomalie(s)**",
         "",
     ]
-    by_reason = Counter(a.raison.split(":")[0] for a in anomalies)
-    for reason, n in by_reason.most_common():
-        lines.append(f"## {reason} ({n})")
+    by_categorie = Counter(a.categorie for a in anomalies)
+    for categorie, n in by_categorie.most_common():
+        lines.append(f"## {categorie} ({n})")
         for a in anomalies:
-            if a.raison.split(":")[0] == reason:
+            if a.categorie == categorie:
                 lines.append(f"- p.{a.page} — `{a.ligne[:100]}` — {a.raison}")
         lines.append("")
     return "\n".join(lines)

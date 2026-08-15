@@ -18,6 +18,7 @@ class Anomalie:
     page: int
     ligne: str
     raison: str
+    categorie: str  # catégorie stable pour groupage (ex: "renvoi interne sans cible", "incohérence de Titre")
 
 
 class _Builder:
@@ -49,6 +50,7 @@ class _Builder:
         if self.cur_article is None and not self.chemin() and line.page > 14:
             self.anomalies.append(Anomalie(
                 line.page, line.text, "texte hors article et hors section (cas suspect)",
+                "cas suspect"
             ))
 
     def flush(self):
@@ -86,6 +88,7 @@ class _Builder:
             self.anomalies.append(Anomalie(
                 self.buf_start, rid,
                 "collision d'identifiant — article probablement hors format (Article 1er ?)",
+                "collision d'identifiant"
             ))
             rid = f"{rid}#{suffix}"
         self.seen_ids.add(rid)
@@ -154,13 +157,13 @@ class _Builder:
                         self.path.pop(deeper, None)
                     self.last_level = lv
                     return
-            self.anomalies.append(Anomalie(line.page, line.text, "section sans niveau reconnu"))
+            self.anomalies.append(Anomalie(line.page, line.text, "section sans niveau reconnu", "section sans niveau reconnu"))
             return
         if kind == Kind.ARTICLE_HEADER:
             self.flush()
             m = _ART_NUM.match(line.text)
             if not m:
-                self.anomalies.append(Anomalie(line.page, line.text, "en-tête d'article illisible"))
+                self.anomalies.append(Anomalie(line.page, line.text, "en-tête d'article illisible", "en-tête d'article illisible"))
                 return
             self.cur_article = m.group(1)
             self.cur_kind = "reglementaire"
@@ -219,7 +222,7 @@ class _Builder:
                 self.buf.append(line.text)
             self.buf_end = line.page
             return
-        self.anomalies.append(Anomalie(line.page, line.text, f"ligne inclassable ({line.size}/{line.font})"))
+        self.anomalies.append(Anomalie(line.page, line.text, f"ligne inclassable ({line.size}/{line.font})", "ligne inclassable"))
 
 
 def parse(pdf_path: Path, edition: str = "2026-01-01") -> tuple[list[Record], list[Anomalie]]:
