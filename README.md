@@ -40,6 +40,47 @@ sqlite3 data/corpus.db "SELECT id, chemin, texte FROM records WHERE article = '2
 sqlite3 data/corpus.db "SELECT r.id, r.chemin FROM records_fts f JOIN records r ON r.rowid = f.rowid WHERE f.texte MATCH 'amortissements';"
 ```
 
+## Jalon 2 — retrieval hybride et première évaluation
+
+Le jalon 2 ajoute, au-dessus du corpus SQLite du jalon 1, une chaîne d'analyse lexicale (élisions, références atomiques, synonymes, stemming FR), un index de recherche (chunking + FTS5 normalisé + embeddings vectoriels sqlite-vec) et un retrieval hybride (routeur de références, BM25, dense, fusion RRF, expansion par renvois 1-hop).
+
+### Démarrage rapide — index et recherche
+
+```sh
+uv run python scripts/build_index.py
+```
+
+Ajoute l'index de recherche (chunks, FTS5 normalisé, vecteurs) à `data/corpus.db` (~14 min sur CPU ; télécharge le modèle d'embeddings `intfloat/multilingual-e5-small` au premier lancement, ~130 Mo).
+
+Exemple de recherche en Python :
+
+```python
+from pathlib import Path
+from accounting_rag.search import Searcher
+
+searcher = Searcher(Path("data/corpus.db"))
+resultats = searcher.search("comment amortir un logiciel acheté ?", k=5, mode="hybrid+graph")
+```
+
+`mode` accepte `bm25`, `dense`, `hybrid` ou `hybrid+graph`.
+
+### Résultats — première campagne (dev, 21 questions, 15 août 2026)
+
+| mode | recall@5 | recall@10 | MRR |
+|---|---|---|---|
+| bm25 | 0,833 | 0,857 | 0,735 |
+| dense | 0,571 | 0,738 | 0,518 |
+| hybrid | 0,81 | 0,857 | 0,764 |
+| hybrid+graph | 0,81 | 0,857 | 0,764 |
+
+Le fossé lexical entre langage courant et jargon PCG reste le principal goulot (recall@10 de 0,643 sur la catégorie `vocabulaire_courant`, contre 0,95-1,0 sur les questions qui citent un article ou emploient le vocabulaire professionnel). Détail complet (ventilation par catégorie, durées, analyse d'erreurs, conditions de reproduction) : [`docs/eval-jalon2.md`](docs/eval-jalon2.md). Méthodologie et format du benchmark : [`benchmark/README.md`](benchmark/README.md).
+
+Reproduire la campagne :
+
+```sh
+uv run python scripts/run_eval.py --mode all --split dev
+```
+
 ## Schéma
 
 ### Table `records`
