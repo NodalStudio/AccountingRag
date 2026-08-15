@@ -198,20 +198,79 @@ def test_f2_section_header_multiligne_synthetique():
     assert not any(a.raison == "section sans niveau reconnu" for a in b.anomalies)
 
 
+def test_ruling20_bruit_intercale_casse_adjacence_synthetique():
+    # Ruling 20 : une ligne BRUIT intercalée entre deux SECTION_HEADER casse
+    # l'adjacence stricte — le second devient un titre DISTINCT (anomalie),
+    # pas la suite du premier, même s'il ne commence par aucun mot-clé.
+    b = _Builder("2026-01-01")
+    b.feed(_line("Chapitre 3 – I Coûts internes", page=101), Kind.SECTION_HEADER)
+    b.feed(_line("(pied de page / folio)", page=101), Kind.BRUIT)
+    b.feed(_line("II Coûts externes", page=102), Kind.SECTION_HEADER)
+    b.feed(_line("Art. 400-1", page=102), Kind.ARTICLE_HEADER)
+    b.feed(_line("Texte.", page=102), Kind.REGLEMENTAIRE)
+    b.flush()
+
+    r = b.records[0]
+    assert r.chemin == "Chapitre 3 – I Coûts internes"          # pas de fuite
+    assert "II Coûts externes" not in r.chemin
+    assert any(a.ligne == "II Coûts externes" and a.raison == "section sans niveau reconnu"
+               for a in b.anomalies)
+
+
+def test_ruling20_adjacence_stricte_meme_page_requise():
+    # Ruling 20 : même sans BRUIT intercalé, un changement de page rompt
+    # l'adjacence (« ET sur la même page »).
+    b = _Builder("2026-01-01")
+    b.feed(_line("Chapitre 4 – Un titre qui", page=200), Kind.SECTION_HEADER)
+    b.feed(_line("continue page suivante", page=201), Kind.SECTION_HEADER)
+    b.feed(_line("Art. 500-1", page=201), Kind.ARTICLE_HEADER)
+    b.feed(_line("Texte.", page=201), Kind.REGLEMENTAIRE)
+    b.flush()
+
+    r = b.records[0]
+    assert r.chemin == "Chapitre 4 – Un titre qui"
+    assert any(a.ligne == "continue page suivante" and a.raison == "section sans niveau reconnu"
+               for a in b.anomalies)
+
+
 def test_f2_titre_section_multiligne_complet_p25(recueil_path):
-    # F2 (revue), cas réel : « Livre I : principes généraux applicables aux »
-    # (p.25) était tronqué avant sa suite « différents postes des documents
-    # de synthèse » (seconde ligne du même titre, size 20.0, sans mot-clé de
-    # niveau). Le chemin doit maintenant porter le titre complet.
+    # F2/Ruling 20, cas réel LÉGITIME : « Livre I : principes généraux
+    # applicables aux » (p.25) et sa suite « différents postes des documents
+    # de synthèse » sont deux lignes STRICTEMENT ADJACENTES (aucune ligne
+    # intercalée, même page) — la concaténation doit rester acquise.
     records, anomalies = parse(recueil_path)
     r = next(rec for rec in records if rec.article == "111-1")
     assert ("Livre I : principes généraux applicables aux différents postes des documents de synthèse"
             in r.chemin)
 
-    # Le nombre d'anomalies "section sans niveau reconnu" chute fortement :
-    # les titres multi-lignes ne sont plus comptés comme anomalies — ne
-    # restent que les vrais labels hors nomenclature (avant-propos, « Partie
-    # législative », en-têtes d'annexes, libellés de schémas/tableaux).
-    # Vérifié empiriquement : 76 → 25.
+    # Le nombre d'anomalies "section sans niveau reconnu" chute par rapport à
+    # l'avant-F2 (76) mais REMONTE par rapport au F2 non corrigé (25) une
+    # fois l'adjacence stricte (Ruling 20) appliquée : les titres multi-lignes
+    # non strictement adjacents (BRUIT intercalé, ex. p.101-102) redeviennent
+    # des anomalies. Vérifié empiriquement : 76 → 25 (F2) → 29 (Ruling 20).
     sans_niveau = [a for a in anomalies if a.raison == "section sans niveau reconnu"]
-    assert len(sans_niveau) == 25
+    assert len(sans_niveau) == 29
+
+
+def test_ruling20_bruit_intercale_casse_adjacence_p101_102(recueil_path):
+    # Ruling 20, cas réel signalé par le contrôleur : p.101 « I Coûts
+    # internes » est suivi de 12 lignes de tableau classées BRUIT, puis p.102
+    # « II Coûts externes » — un titre DISTINCT, pas la suite du premier.
+    # Avant le correctif, ce dernier était absorbé dans le chemin de la
+    # Sous-section 2 en cours (12 records pcg-na-44..55 corrompus).
+    records, anomalies = parse(recueil_path)
+
+    corrompus = [r for r in records if "II Coûts externes" in r.chemin]
+    assert corrompus == [], "II Coûts externes ne doit plus polluer aucun chemin"
+
+    assert any(a.ligne == "II Coûts externes" and a.raison == "section sans niveau reconnu"
+               for a in anomalies)
+
+    # Le motif générique : deux titres "I/II/III Coûts..." ne doivent jamais
+    # se retrouver concatènés dans un même chemin (scan corpus).
+    import re
+    cout_pattern = re.compile(r"\b[IVX]+\s+Coûts\b")
+    for r in records:
+        assert len(cout_pattern.findall(r.chemin)) <= 1, (
+            f"chemin avec plusieurs motifs 'N Coûts' concaténés : {r.chemin!r}"
+        )

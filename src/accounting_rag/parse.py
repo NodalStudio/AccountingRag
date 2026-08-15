@@ -36,7 +36,8 @@ class _Builder:
         self.seen_ids: set[str] = set()
         self.na_count: int = 0          # Ruling 18: compteur global des records ancrés à une section (sans article)
         self.last_level: str | None = None          # F2: dernier niveau de path posé par un SECTION_HEADER
-        self.last_was_section_header: bool = False  # F2: le précédent non-BRUIT était-il un SECTION_HEADER ?
+        self.last_was_section_header: bool = False  # Ruling 20: la ligne PRÉCÉDENTE (toute nature, BRUIT compris) était-elle un SECTION_HEADER ?
+        self.last_page: int | None = None           # Ruling 20: page de cette ligne précédente
 
     def chemin(self) -> str:
         return " > ".join(self.path[lv] for lv in _LEVELS if lv in self.path)
@@ -102,6 +103,17 @@ class _Builder:
             self.com_title = ""
 
     def feed(self, line: Line, kind: Kind):
+        # Ruling 20: l'adjacence stricte requise pour la concaténation d'un
+        # titre multi-lignes se calcule sur CHAQUE ligne du flux, BRUIT
+        # compris — une ligne de bruit intercalée (ex. p.101-102 : 12 lignes
+        # de tableau classées BRUIT entre « I Coûts internes » et
+        # « II Coûts externes », deux titres DISTINCTS) invalide la
+        # continuation. On capture l'état "ligne précédente" AVANT de le
+        # mettre à jour pour la ligne courante.
+        prev_was_section_header = self.last_was_section_header and self.last_page == line.page
+        self.last_was_section_header = (kind == Kind.SECTION_HEADER)
+        self.last_page = line.page
+
         if kind == Kind.BRUIT:
             return
         if kind == Kind.SECTION_HEADER:
@@ -111,13 +123,14 @@ class _Builder:
                 return
             lowered = line.text.lower()
             starts_with_level = any(lowered.startswith(lv) for lv in _LEVELS)
-            # F2: un SECTION_HEADER sans mot-clé de niveau, arrivant
-            # IMMÉDIATEMENT après un autre SECTION_HEADER (aucune autre ligne
-            # non-BRUIT interposée), est la SUITE du titre précédent —
-            # concatène-le au dernier niveau posé au lieu de l'anomalie.
-            if not starts_with_level and self.last_was_section_header and self.last_level is not None:
+            # F2/Ruling 20: un SECTION_HEADER sans mot-clé de niveau,
+            # IMMÉDIATEMENT successeur d'un autre SECTION_HEADER (aucune
+            # ligne intercalée d'aucune sorte, BRUIT compris) ET sur la même
+            # page, est la SUITE du titre précédent — concatène-le au dernier
+            # niveau posé au lieu de l'anomalie. Sinon (adjacence non
+            # satisfaite), comportement d'avant F2 : anomalie.
+            if not starts_with_level and prev_was_section_header and self.last_level is not None:
                 self.path[self.last_level] = self.path[self.last_level] + " " + line.text
-                self.last_was_section_header = True
                 return
             self.flush()
             # Ruling 17: une SECTION_HEADER ferme le périmètre de l'article
@@ -134,12 +147,9 @@ class _Builder:
                     for deeper in _LEVELS[idx + 1:]:
                         self.path.pop(deeper, None)
                     self.last_level = lv
-                    self.last_was_section_header = True
                     return
             self.anomalies.append(Anomalie(line.page, line.text, "section sans niveau reconnu"))
-            self.last_was_section_header = True
             return
-        self.last_was_section_header = False
         if kind == Kind.ARTICLE_HEADER:
             self.flush()
             m = _ART_NUM.match(line.text)
