@@ -119,7 +119,13 @@ class _Builder:
         if kind == Kind.SECTION_HEADER:
             # Ruling 7: entrées de sommaire (pages ~5-12) — points de conduite
             # « .... » — ne doivent pas polluer le chemin hiérarchique.
+            # Ruling 20 (correctif angle mort) : une ligne de sommaire ignorée
+            # ne doit PAS se faire passer pour un vrai titre — elle rompt
+            # l'adjacence (comme le BRUIT) mais ne l'établit JAMAIS. Sans ce
+            # correctif, le passage au sommet de feed() l'aurait déjà classée
+            # last_was_section_header = True juste avant cette garde.
             if _TOC_DOTS.search(line.text):
+                self.last_was_section_header = False
                 return
             lowered = line.text.lower()
             starts_with_level = any(lowered.startswith(lv) for lv in _LEVELS)

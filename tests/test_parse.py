@@ -198,6 +198,33 @@ def test_f2_section_header_multiligne_synthetique():
     assert not any(a.raison == "section sans niveau reconnu" for a in b.anomalies)
 
 
+def test_ruling20_ligne_toc_ne_doit_pas_etablir_ladjacence():
+    # Ruling 20 (correctif angle mort signalé par le contrôleur) : une ligne
+    # de sommaire (_TOC_DOTS, kind SECTION_HEADER) écartée par sa propre
+    # garde ne doit JAMAIS se faire passer pour un vrai titre. Séquence
+    # reproduisant le bug : Chapitre 5 → texte réglementaire (adjacence déjà
+    # rompue, cur_article=None accepté par Ruling 18) → ligne sommaire à
+    # points de conduite (kind SECTION_HEADER, ignorée) → « Suite parasite »
+    # sans mot-clé. Avant le correctif, le passage de la ligne sommaire
+    # reposait last_was_section_header à True juste avant sa propre garde,
+    # ce qui ré-établissait à tort l'adjacence pour la ligne suivante.
+    b = _Builder("2026-01-01")
+    b.feed(_line("Chapitre 5 – Un vrai titre", page=1), Kind.SECTION_HEADER)
+    b.feed(_line("Un texte quelconque.", page=1), Kind.REGLEMENTAIRE)
+    b.feed(_line("Titre I – Objet .................... 12", page=1), Kind.SECTION_HEADER)
+    b.feed(_line("Suite parasite sans mot-clé", page=1), Kind.SECTION_HEADER)
+    b.flush()
+
+    # Le chemin ne doit JAMAIS absorber « Suite parasite sans mot-clé ».
+    assert all("Suite parasite" not in r.chemin for r in b.records)
+    assert any(r.chemin == "Chapitre 5 – Un vrai titre" for r in b.records)
+
+    # « Suite parasite sans mot-clé » doit finir en anomalie, pas en
+    # concaténation silencieuse.
+    assert any(a.ligne == "Suite parasite sans mot-clé" and a.raison == "section sans niveau reconnu"
+               for a in b.anomalies)
+
+
 def test_ruling20_bruit_intercale_casse_adjacence_synthetique():
     # Ruling 20 : une ligne BRUIT intercalée entre deux SECTION_HEADER casse
     # l'adjacence stricte — le second devient un titre DISTINCT (anomalie),
