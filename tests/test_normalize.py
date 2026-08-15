@@ -48,3 +48,21 @@ def test_requete_et_document_identiques():
     query = "comptabiliser les charges d'un contrat de crédit-bail"
     assert set(normalize(doc).split()) & set(normalize(query).split()) >= {"contrat", "charg"} or \
            len(set(normalize(doc).split()) & set(normalize(query).split())) >= 3
+
+
+def test_amortissement_degressif_et_derogatoire_distincts():
+    # F1: Amortissement dégressif (mode de calcul) ≠ Amortissement dérogatoire (provision réglementée)
+    # Concepts distincts du plan comptable — ne pas les fusionner (risque de biais retrieval)
+    degressif = set(normalize("amortissement dégressif").split())
+    derogatoire = set(normalize("amortissement dérogatoire").split())
+    assert degressif != derogatoire, "Amortissement dégressif et dérogatoire doivent rester distincts"
+
+
+def test_stock_options_couverture_droits_francais():
+    # F2: Stock-options doit couvrir à la fois options de souscription ET d'achat (droit français)
+    stock_opts = set(normalize("stock-options").split())
+    souscription = set(normalize("options de souscription d'actions").split())
+    achat = set(normalize("options d'achat d'actions").split())
+    # Les tokens de stock-options doivent avoir une intersection non vide avec chacun
+    assert stock_opts & souscription, "stock-options doit couvrir options de souscription"
+    assert stock_opts & achat, "stock-options doit couvrir options d'achat"

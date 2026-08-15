@@ -22,9 +22,8 @@ SYNONYMES: dict[str, str] = {
     "indemnite de depart a la retraite": "indemnites de fin de carriere",
     "actif incorporel": "immobilisation incorporelle",
     "actif corporel": "immobilisation corporelle",
-    "stock-options": "options de souscription d'actions",
+    "stock-options": "options de souscription ou d'achat d'actions",
     "goodwill": "fonds commercial",
-    "amortissement degressif": "amortissement derogatoire",
 }
 
 
