@@ -8,7 +8,7 @@ Spécification complète : [`docs/superpowers/specs/2026-08-14-accountingrag-des
 
 Ce projet est une **expérimentation de recherche**. Le corpus est produit par un parseur automatisé et le futur agent produira des synthèses assistées par LLM — **ceci n'est pas une doctrine comptable** et ne remplace pas l'avis d'un expert-comptable. En cas de doute ou d'usage professionnel, seuls les textes originaux font foi : [anc.gouv.fr](https://www.anc.gouv.fr/) et [Légifrance](https://www.legifrance.gouv.fr/).
 
-## État du projet — jalon 1 livré
+## État du projet
 
 Le jalon 1 livre un **parseur typographique déterministe** du Recueil des normes comptables françaises 2026 (Autorité des normes comptables), qui transforme le PDF source en un dataset SQLite structuré, sans passer par un LLM (le PDF a une typographie discriminante : taille et graisse de police distinguent réglementaire, commentaires et titres de section — voir la spec, section 3).
 
@@ -36,8 +36,52 @@ Deux exemples de requêtes sur le corpus obtenu :
 # Un article donné
 sqlite3 data/corpus.db "SELECT id, chemin, texte FROM records WHERE article = '214-1';"
 
-# Recherche plein texte (FTS5, correspondance exacte des tokens — pas de stemming en v1)
+# Recherche plein texte (FTS5, correspondance exacte des tokens — pas de stemming
+# sur records_fts ; le stemming FR n'est appliqué qu'à l'index jalon 2, chunks_norm)
 sqlite3 data/corpus.db "SELECT r.id, r.chemin FROM records_fts f JOIN records r ON r.rowid = f.rowid WHERE f.texte MATCH 'amortissements';"
+```
+
+## Jalon 2 — retrieval hybride et première évaluation
+
+Le jalon 2 ajoute, au-dessus du corpus SQLite du jalon 1, une chaîne d'analyse lexicale (élisions, références atomiques, synonymes, stemming FR), un index de recherche (chunking + FTS5 normalisé + embeddings vectoriels sqlite-vec) et un retrieval hybride (routeur de références, BM25, dense, fusion RRF, expansion par renvois 1-hop).
+
+### Démarrage rapide — index et recherche
+
+```sh
+uv run python scripts/build_index.py
+```
+
+Ajoute l'index de recherche (chunks, FTS5 normalisé, vecteurs) à `data/corpus.db` (~14 min sur CPU ; télécharge le modèle d'embeddings `intfloat/multilingual-e5-small` au premier lancement, ~470 Mo mesurés dans le cache Hugging Face local).
+
+L'encodeur dense est configurable via la variable d'environnement `ACCRAG_EMB_MODEL` (point d'extension dans `src/accounting_rag/embed.py`) : positionnez-la avec l'identifiant Hugging Face d'un autre modèle `sentence-transformers` pour remplacer le défaut `intfloat/multilingual-e5-small` (les préfixes `query:`/`passage:` ne sont ajoutés automatiquement que si `"e5"` figure dans le nom du modèle).
+
+Exemple de recherche en Python :
+
+```python
+from pathlib import Path
+from accounting_rag.search import Searcher
+
+searcher = Searcher(Path("data/corpus.db"))
+resultats = searcher.search("comment amortir un logiciel acheté ?", k=5, mode="hybrid+graph")
+```
+
+`mode` accepte `bm25`, `dense`, `hybrid` ou `hybrid+graph`.
+
+### Résultats — campagne dev (21 questions), post-correction apostrophes/stemming du 15 août 2026
+
+| mode | recall@5 | recall@10 | MRR |
+|---|---|---|---|
+| bm25 | 0,833 | 0,833 | 0,754 |
+| dense | 0,571 | 0,738 | 0,518 |
+| hybrid | 0,81 | 0,81 | 0,763 |
+| hybrid+graph | 0,81 | 0,81 | 0,763 |
+
+Chiffres mesurés après la correction de la table d'apostrophes typographiques (U+2019) et de l'ordre stem→fold dans `normalize.py` (revue finale du jalon 2, index reconstruit) — voir l'avant/après complet dans `docs/eval-jalon2.md`. Le fossé lexical entre langage courant et jargon PCG reste le principal goulot (recall@10 de 0,571 sur la catégorie `vocabulaire_courant` en bm25, contre 0,95-1,0 sur les questions qui citent un article ou emploient le vocabulaire professionnel). Détail complet (ventilation par catégorie, durées, analyse d'erreurs, conditions de reproduction) : [`docs/eval-jalon2.md`](docs/eval-jalon2.md). Méthodologie et format du benchmark : [`benchmark/README.md`](benchmark/README.md).
+
+Reproduire la campagne :
+
+```sh
+uv run python scripts/run_eval.py --mode all --split dev
 ```
 
 ## Schéma
@@ -74,6 +118,7 @@ Graphe des références croisées extraites du texte.
 - Certains identifiants sont suffixés `#n` (54 cas) : le plus souvent des fragments réglementaires multiples pour un même article déjà ouvert (alinéas non contigus), ou une numérotation réutilisée par une annexe sectorielle qui reprend partiellement celle du PCG (ex. secteur du logement social).
 - **45 renvois pendants résiduels** (cibles non trouvées dans le corpus, essentiellement vers le plan de comptes en tableau, hors périmètre du parseur v1).
 - Seule l'édition 2026 du Recueil est couverte : pas d'historique des versions antérieures en v1 (le schéma prévoit les champs temporels pour une extension future).
+- **Jalon 2 (retrieval)** : pas de reranker, pas de réécriture de requête (query rewriting), pas de pondération par champ (`chemin` vs `texte` — spec §4 item 4 non implémentée à ce stade) ; le benchmark d'amorçage ne compte que n=30 questions au total (21 dev + 9 test), volontairement petit — voir les réserves statistiques dans [`docs/eval-jalon2.md`](docs/eval-jalon2.md).
 
 ## Feuille de route
 
