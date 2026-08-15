@@ -21,13 +21,13 @@ def evaluate(searcher, questions: list[dict], mode: str, k: int = 10) -> dict:
     recalls5, recalls10, mrrs = [], [], []
     par_cat: dict[str, list[float]] = defaultdict(list)
     for q in questions:
-        hits = searcher.search(q["question"], k=k, mode=mode)
+        hits = searcher.search(q["question"], k=max(k, 10), mode=mode)
         ids = [h["record_id"] for h in hits]
         covered10 = sum(any(match(i, c) for i in ids[:10]) for c in q["citations"])
         covered5 = sum(any(match(i, c) for i in ids[:5]) for c in q["citations"])
         recalls10.append(covered10 / len(q["citations"]))
         recalls5.append(covered5 / len(q["citations"]))
-        rank = next((r + 1 for r, i in enumerate(ids)
+        rank = next((r + 1 for r, i in enumerate(ids[:k])
                      if any(match(i, c) for c in q["citations"])), None)
         mrrs.append(1.0 / rank if rank else 0.0)
         par_cat[q["categorie"]].append(covered10 / len(q["citations"]))

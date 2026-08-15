@@ -5,7 +5,7 @@ from accounting_rag.evalrag import load_benchmark, evaluate
 from accounting_rag.search import Searcher
 
 p = argparse.ArgumentParser()
-p.add_argument("--mode", default="all")
+p.add_argument("--mode", default="all", choices=["bm25", "dense", "hybrid", "hybrid+graph", "all"])
 p.add_argument("--split", default="dev", choices=["dev", "test"])
 p.add_argument("--k", type=int, default=10)
 args = p.parse_args()
