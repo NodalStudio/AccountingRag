@@ -7,9 +7,11 @@ def test_roman():
     assert _roman_to_int("II") == 2 and _roman_to_int("IX") == 9
 
 
-def test_incoherence_livre_detectee():
-    bad = _rec("pcg-312-1@2026-01-01", "312-1", chemin="Livre II > Titre I")
-    assert any("Livre" in a.raison for a in check([bad]))
+def test_incoherence_titre_detectee():
+    # Article 312-1 : 1er chiffre = 3, doit être sous Titre III
+    # Mais on le met sous Titre II → incohérence
+    bad = _rec("pcg-312-1@2026-01-01", "312-1", chemin="Livre II > Titre II")
+    assert any("Titre" in a.raison for a in check([bad]))
 
 
 def test_dangling_renvoi():

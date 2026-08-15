@@ -35,17 +35,29 @@ def check(records: list[Record]) -> list[Anomalie]:
         if not r.texte.strip():
             out.append(Anomalie(r.page_debut, r.id, "texte vide"))
 
-        # (a) Cohérence numérotation ↔ chemin (si article non None)
+        # (a) Cohérence numérotation ↔ chemin (Ruling 21: TITRE, pas LIVRE)
+        # Le 1er chiffre de l'article doit correspondre au numéro du TITRE du chemin
         if r.article and len(r.article.split("-")[0]) == 3:
-            m = _LIVRE.search(r.chemin)
-            if m and int(r.article[0]) != _roman_to_int(m.group(1)):
-                out.append(
-                    Anomalie(
-                        r.page_debut,
-                        r.id,
-                        f"article {r.article} sous {m.group(0)} : incohérence de Livre",
+            # Extraire le numéro du TITRE du chemin (peut être romain ou arabe)
+            titre_match = re.search(r"Titre\s+([IVXLC0-9]+)", r.chemin, re.I)
+            if titre_match:
+                titre_str = titre_match.group(1)
+                try:
+                    if titre_str.isdigit():
+                        titre_num = int(titre_str)
+                    else:
+                        titre_num = _roman_to_int(titre_str)
+                except:
+                    titre_num = None
+
+                if titre_num is not None and int(r.article[0]) != titre_num:
+                    out.append(
+                        Anomalie(
+                            r.page_debut,
+                            r.id,
+                            f"article {r.article} sous {titre_match.group(0)} : incohérence de Titre",
+                        )
                     )
-                )
 
         # (d) Renvois internes pointant vers un article inexistant (dangling)
         for rv in r.renvois:
