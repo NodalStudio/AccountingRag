@@ -1,5 +1,6 @@
 import sqlite3
 import sqlite_vec
+import pytest
 from pathlib import Path
 from accounting_rag.db import write_db
 from accounting_rag.index import build_index
@@ -24,6 +25,13 @@ class FakeEmbedder:
 
     def encode_query(self, text):
         return [1.0, 0.0, 0.0, 0.0]
+
+
+def test_build_index_leve_filenotfounderror_si_corpus_absent(tmp_path):
+    # I2 : sur un clone frais sans data/corpus.db, sqlite3.connect créerait sinon
+    # silencieusement une base vide, cassant les gardes DB.exists() des tests.
+    with pytest.raises(FileNotFoundError):
+        build_index(tmp_path / "absent.db", embedder=FakeEmbedder())
 
 
 def test_build_index_cree_les_tables(tmp_path):

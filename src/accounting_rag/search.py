@@ -12,6 +12,11 @@ _RRF_K = 60
 
 class Searcher:
     def __init__(self, db_path: Path, embedder=None):
+        if not Path(db_path).exists():
+            raise FileNotFoundError(
+                f"corpus introuvable : {db_path} — lancez scripts/download_data.py, "
+                "scripts/build_corpus.py puis scripts/build_index.py"
+            )
         import sqlite_vec
         self.con = sqlite3.connect(db_path)
         self.con.enable_load_extension(True)

@@ -16,6 +16,11 @@ def _connect(db_path: Path) -> sqlite3.Connection:
 
 
 def build_index(db_path: Path, embedder=None) -> dict:
+    if not Path(db_path).exists():
+        raise FileNotFoundError(
+            f"corpus introuvable : {db_path} — lancez scripts/download_data.py "
+            "puis scripts/build_corpus.py avant scripts/build_index.py"
+        )
     if embedder is None:
         from .embed import Embedder
         embedder = Embedder()
