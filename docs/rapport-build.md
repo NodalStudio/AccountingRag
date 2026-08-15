@@ -1,0 +1,319 @@
+# Rapport de build du corpus
+
+- **1848 enregistrement(s)** : 850 réglementaires, 998 commentaires ANC
+- **305 anomalie(s)**
+
+## renvoi interne sans cible (135)
+- p.27 — `pcg-121-5-c1@2026-01-01` — renvoi interne sans cible : 628-12
+- p.27 — `pcg-121-5-c1@2026-01-01` — renvoi interne sans cible : 628-13
+- p.28 — `pcg-122-2@2026-01-01` — renvoi interne sans cible : 122-5
+- p.69 — `pcg-214-25@2026-01-01` — renvoi interne sans cible : 619-12
+- p.72 — `pcg-221-1-c6@2026-01-01` — renvoi interne sans cible : 231-2
+- p.72 — `pcg-221-1-c6@2026-01-01` — renvoi interne sans cible : 232-9
+- p.80 — `pcg-na-14@2026-01-01` — renvoi interne sans cible : 311-2
+- p.81 — `pcg-na-15@2026-01-01` — renvoi interne sans cible : 122-5
+- p.118 — `pcg-323-2-c6@2026-01-01` — renvoi interne sans cible : 944-48
+- p.127 — `pcg-324-1-c8@2026-01-01` — renvoi interne sans cible : 833-12
+- p.183 — `pcg-420-1@2026-01-01` — renvoi interne sans cible : 628-12
+- p.183 — `pcg-420-1@2026-01-01` — renvoi interne sans cible : 628-13
+- p.184 — `pcg-420-6@2026-01-01` — renvoi interne sans cible : 628-6
+- p.184 — `pcg-420-6@2026-01-01` — renvoi interne sans cible : 628-7
+- p.185 — `pcg-420-8-c1@2026-01-01` — renvoi interne sans cible : 272-21
+- p.186 — `pcg-511-2@2026-01-01` — renvoi interne sans cible : 619-12
+- p.187 — `pcg-512-1@2026-01-01#2` — renvoi interne sans cible : 619-12
+- p.209 — `pcg-na-94@2026-01-01` — renvoi interne sans cible : 615-2
+- p.215 — `pcg-615-19@2026-01-01` — renvoi interne sans cible : 615-2
+- p.218 — `pcg-616-1-c3@2026-01-01` — renvoi interne sans cible : 616-24
+- p.240 — `pcg-618-8@2026-01-01#2` — renvoi interne sans cible : 618-9
+- p.242 — `pcg-618-14@2026-01-01` — renvoi interne sans cible : 231-35
+- p.243 — `pcg-na-104@2026-01-01` — renvoi interne sans cible : 619-1
+- p.243 — `pcg-na-107@2026-01-01` — renvoi interne sans cible : 619-2
+- p.243 — `pcg-na-107@2026-01-01` — renvoi interne sans cible : 619-3
+- p.243 — `pcg-na-109@2026-01-01` — renvoi interne sans cible : 619-4
+- p.243 — `pcg-na-109@2026-01-01` — renvoi interne sans cible : 619-7
+- p.243 — `pcg-na-109@2026-01-01` — renvoi interne sans cible : 619-17
+- p.244 — `pcg-na-112@2026-01-01` — renvoi interne sans cible : 619-17
+- p.244 — `pcg-na-113@2026-01-01` — renvoi interne sans cible : 619-5
+- p.244 — `pcg-na-115@2026-01-01` — renvoi interne sans cible : 619-6
+- p.245 — `pcg-na-117@2026-01-01` — renvoi interne sans cible : 619-7
+- p.245 — `pcg-na-117@2026-01-01` — renvoi interne sans cible : 619-8
+- p.245 — `pcg-na-120@2026-01-01` — renvoi interne sans cible : 628-7
+- p.245 — `pcg-na-120@2026-01-01` — renvoi interne sans cible : 628-8
+- p.245 — `pcg-na-121@2026-01-01` — renvoi interne sans cible : 619-9
+- p.246 — `pcg-na-122@2026-01-01` — renvoi interne sans cible : 619-10
+- p.246 — `pcg-na-122@2026-01-01` — renvoi interne sans cible : 619-11
+- p.246 — `pcg-na-122@2026-01-01` — renvoi interne sans cible : 619-12
+- p.246 — `pcg-na-126@2026-01-01` — renvoi interne sans cible : 619-12
+- p.246 — `pcg-na-126@2026-01-01` — renvoi interne sans cible : 619-13
+- p.246 — `pcg-na-126@2026-01-01` — renvoi interne sans cible : 619-14
+- p.247 — `pcg-na-128@2026-01-01` — renvoi interne sans cible : 619-15
+- p.247 — `pcg-na-128@2026-01-01` — renvoi interne sans cible : 619-16
+- p.247 — `pcg-na-129@2026-01-01` — renvoi interne sans cible : 619-17
+- p.247 — `pcg-na-129@2026-01-01` — renvoi interne sans cible : 619-4
+- p.248 — `pcg-na-130@2026-01-01` — renvoi interne sans cible : 619-4
+- p.253 — `pcg-na-133@2026-01-01` — renvoi interne sans cible : 619-18
+- p.253 — `pcg-na-133@2026-01-01` — renvoi interne sans cible : 619-12
+- p.253 — `pcg-na-133@2026-01-01` — renvoi interne sans cible : 619-8
+- p.253 — `pcg-na-135@2026-01-01` — renvoi interne sans cible : 629-2
+- p.253 — `pcg-na-136@2026-01-01` — renvoi interne sans cible : 619-19
+- p.253 — `pcg-na-137@2026-01-01` — renvoi interne sans cible : 628-11
+- p.259 — `pcg-622-1-c4@2026-01-01` — renvoi interne sans cible : 380-1
+- p.260 — `pcg-622-3-c1@2026-01-01` — renvoi interne sans cible : 122-5
+- p.285 — `pcg-625-9-c1@2026-01-01` — renvoi interne sans cible : 945-50
+- p.291 — `pcg-na-155@2026-01-01` — renvoi interne sans cible : 628-14
+- p.293 — `pcg-na-158@2026-01-01` — renvoi interne sans cible : 420-6-2
+- p.293 — `pcg-na-160@2026-01-01` — renvoi interne sans cible : 628-8
+- p.295 — `pcg-na-169@2026-01-01` — renvoi interne sans cible : 628-12
+- p.295 — `pcg-na-169@2026-01-01` — renvoi interne sans cible : 628-13
+- p.296 — `pcg-na-175@2026-01-01` — renvoi interne sans cible : 628-12
+- p.298 — `pcg-na-179@2026-01-01` — renvoi interne sans cible : 628-11
+- p.298 — `pcg-na-179@2026-01-01` — renvoi interne sans cible : 628-7
+- p.300 — `pcg-na-187@2026-01-01` — renvoi interne sans cible : 628-17
+- p.300 — `pcg-na-187@2026-01-01` — renvoi interne sans cible : 628-11
+- p.306 — `pcg-na-202@2026-01-01` — renvoi interne sans cible : 342-5
+- p.319 — `pcg-na-231@2026-01-01` — renvoi interne sans cible : 629-1
+- p.319 — `pcg-na-231@2026-01-01` — renvoi interne sans cible : 619-12
+- p.319 — `pcg-na-231@2026-01-01` — renvoi interne sans cible : 619-8
+- p.319 — `pcg-na-232@2026-01-01` — renvoi interne sans cible : 629-1
+- p.319 — `pcg-na-233@2026-01-01` — renvoi interne sans cible : 629-2
+- p.319 — `pcg-na-233@2026-01-01` — renvoi interne sans cible : 619-18
+- p.320 — `pcg-na-234@2026-01-01` — renvoi interne sans cible : 619-1
+- p.321 — `pcg-na-236@2026-01-01` — renvoi interne sans cible : 629-3
+- p.321 — `pcg-na-236@2026-01-01` — renvoi interne sans cible : 619-12
+- p.392 — `pcg-743-3@2026-01-01` — renvoi interne sans cible : 743-2
+- p.397 — `pcg-745-3-c2@2026-01-01` — renvoi interne sans cible : 942-27
+- p.400 — `pcg-745-10-c1@2026-01-01` — renvoi interne sans cible : 946-67
+- p.400 — `pcg-745-10-c1@2026-01-01` — renvoi interne sans cible : 942-27
+- p.413 — `pcg-na-456@2026-01-01` — renvoi interne sans cible : 743-2
+- p.452 — `pcg-831-1-c2@2026-01-01` — renvoi interne sans cible : 628-12
+- p.452 — `pcg-831-1-c2@2026-01-01` — renvoi interne sans cible : 628-13
+- p.486 — `pcg-838-15@2026-01-01` — renvoi interne sans cible : 619-11
+- p.486 — `pcg-838-15@2026-01-01` — renvoi interne sans cible : 619-12
+- p.486 — `pcg-838-15@2026-01-01` — renvoi interne sans cible : 619-14
+- p.488 — `pcg-838-16@2026-01-01` — renvoi interne sans cible : 629-1
+- p.548 — `pcg-1214-47@2026-01-01` — renvoi interne sans cible : 619-8
+- p.548 — `pcg-1214-47@2026-01-01` — renvoi interne sans cible : 619-18
+- p.551 — `pcg-1215-52@2026-01-01` — renvoi interne sans cible : 619-12
+- p.551 — `pcg-1215-52@2026-01-01` — renvoi interne sans cible : 619-14
+- p.551 — `pcg-1215-52@2026-01-01` — renvoi interne sans cible : 619-18
+- p.574 — `pcg-na-524@2026-01-01` — renvoi interne sans cible : 131-2
+- p.574 — `pcg-na-526@2026-01-01` — renvoi interne sans cible : 131-3
+- p.576 — `pcg-na-529@2026-01-01` — renvoi interne sans cible : 141-1
+- p.576 — `pcg-na-529@2026-01-01` — renvoi interne sans cible : 141-2
+- p.576 — `pcg-na-529@2026-01-01` — renvoi interne sans cible : 141-3
+- p.578 — `pcg-na-531@2026-01-01` — renvoi interne sans cible : 141-3
+- p.578 — `pcg-na-532@2026-01-01` — renvoi interne sans cible : 141-3
+- p.579 — `pcg-na-534@2026-01-01` — renvoi interne sans cible : 151-1
+- p.579 — `pcg-na-534@2026-01-01` — renvoi interne sans cible : 151-2
+- p.581 — `pcg-na-535@2026-01-01` — renvoi interne sans cible : 151-2
+- p.581 — `pcg-na-536@2026-01-01` — renvoi interne sans cible : 161-1
+- p.581 — `pcg-na-536@2026-01-01` — renvoi interne sans cible : 161-2
+- p.583 — `pcg-na-538@2026-01-01` — renvoi interne sans cible : 162-1
+- p.583 — `pcg-na-540@2026-01-01` — renvoi interne sans cible : 171-1
+- p.584 — `pcg-na-542@2026-01-01` — renvoi interne sans cible : 172-1
+- p.584 — `pcg-na-542@2026-01-01` — renvoi interne sans cible : 172-2
+- p.589 — `pcg-na-544@2026-01-01` — renvoi interne sans cible : 181-1
+- p.589 — `pcg-na-544@2026-01-01` — renvoi interne sans cible : 182-1
+- p.589 — `pcg-na-544@2026-01-01` — renvoi interne sans cible : 183-2
+- p.589 — `pcg-na-545@2026-01-01` — renvoi interne sans cible : 182-1
+- p.589 — `pcg-na-545@2026-01-01` — renvoi interne sans cible : 183-2
+- p.590 — `pcg-na-548@2026-01-01` — renvoi interne sans cible : 182-1
+- p.590 — `pcg-na-548@2026-01-01` — renvoi interne sans cible : 183-2
+- p.590 — `pcg-na-549@2026-01-01` — renvoi interne sans cible : 182-1
+- p.590 — `pcg-na-552@2026-01-01` — renvoi interne sans cible : 182-2
+- p.590 — `pcg-na-553@2026-01-01` — renvoi interne sans cible : 181-1
+- p.591 — `pcg-na-554@2026-01-01` — renvoi interne sans cible : 182-2
+- p.591 — `pcg-na-557@2026-01-01` — renvoi interne sans cible : 182-3
+- p.591 — `pcg-na-557@2026-01-01` — renvoi interne sans cible : 182-4
+- p.592 — `pcg-na-559@2026-01-01` — renvoi interne sans cible : 183-1
+- p.592 — `pcg-na-562@2026-01-01` — renvoi interne sans cible : 183-2
+- p.593 — `pcg-na-563@2026-01-01` — renvoi interne sans cible : 191-1
+- p.608 — `pcg-na-608@2026-01-01` — renvoi interne sans cible : 131-2
+- p.608 — `pcg-na-608@2026-01-01` — renvoi interne sans cible : 131-8
+- p.608 — `pcg-na-609@2026-01-01` — renvoi interne sans cible : 131-2
+- p.608 — `pcg-na-609@2026-01-01` — renvoi interne sans cible : 131-3
+- p.608 — `pcg-na-609@2026-01-01` — renvoi interne sans cible : 131-4
+- p.608 — `pcg-na-609@2026-01-01` — renvoi interne sans cible : 131-5
+- p.608 — `pcg-na-609@2026-01-01` — renvoi interne sans cible : 131-6
+- p.608 — `pcg-na-609@2026-01-01` — renvoi interne sans cible : 131-7
+- p.608 — `pcg-na-609@2026-01-01` — renvoi interne sans cible : 131-8
+- p.641 — `pcg-202-1@2026-01-01#2` — renvoi interne sans cible : 202-2
+- p.644 — `pcg-na-634@2026-01-01` — renvoi interne sans cible : 401-1
+
+## collision d'identifiant (80)
+- p.79 — `pcg-223-4@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.124 — `pcg-324-1@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.186 — `pcg-420-8@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.187 — `pcg-512-1@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.188 — `pcg-512-1@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.189 — `pcg-512-1@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.191 — `pcg-513-5@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.192 — `pcg-513-5@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.193 — `pcg-515-1@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.194 — `pcg-515-2@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.195 — `pcg-611-1@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.195 — `pcg-611-2@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.197 — `pcg-611-2@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.197 — `pcg-611-4@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.199 — `pcg-611-8@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.201 — `pcg-613-2@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.209 — `pcg-615-1@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.210 — `pcg-615-3@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.211 — `pcg-615-5@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.213 — `pcg-615-11@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.213 — `pcg-615-15@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.216 — `pcg-615-20@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.218 — `pcg-616-1@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.219 — `pcg-616-2@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.220 — `pcg-616-3@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.221 — `pcg-616-4@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.222 — `pcg-616-5@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.222 — `pcg-616-9@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.225 — `pcg-616-15@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.225 — `pcg-616-15@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.226 — `pcg-616-16@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.226 — `pcg-616-16@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.227 — `pcg-616-17@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.227 — `pcg-616-17@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.228 — `pcg-616-21@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.229 — `pcg-616-23@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.230 — `pcg-616-23@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.231 — `pcg-616-23@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.232 — `pcg-616-23@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.232 — `pcg-616-23@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.234 — `pcg-617-2@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.235 — `pcg-617-3@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.237 — `pcg-617-5@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.240 — `pcg-618-8@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.241 — `pcg-618-10@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.242 — `pcg-618-13@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.256 — `pcg-621-11@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.256 — `pcg-621-11@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.257 — `pcg-621-11@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.259 — `pcg-622-1@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.262 — `pcg-622-5@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.265 — `pcg-623-2@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.266 — `pcg-623-4@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.268 — `pcg-623-8@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.271 — `pcg-624-2@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.278 — `pcg-624-14@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.281 — `pcg-625-2@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.282 — `pcg-625-3@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.283 — `pcg-625-5@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.284 — `pcg-625-6@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.284 — `pcg-625-7@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.285 — `pcg-625-8@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.286 — `pcg-625-10@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.287 — `pcg-625-12@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.290 — `pcg-627-1@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.302 — `pcg-628-18@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.392 — `pcg-743-1@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.432 — `pcg-811-12@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.433 — `pcg-811-12@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.433 — `pcg-811-12@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.473 — `pcg-836-1@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.475 — `pcg-836-1@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.476 — `pcg-836-4@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.622 — `pcg-111-1@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.622 — `pcg-121-1@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.623 — `pcg-121-2@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.627 — `pcg-121-3@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.628 — `pcg-121-4@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.636 — `pcg-111-1@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+- p.641 — `pcg-202-1@2026-01-01` — collision d'identifiant — article probablement hors format (Article 1er ?)
+
+## incohérence de Titre (56)
+- p.622 — `pcg-111-1@2026-01-01#2` — article 111-1 sous Titre 5 : incohérence de Titre
+- p.622 — `pcg-111-1-c1@2026-01-01` — article 111-1 sous Titre 5 : incohérence de Titre
+- p.622 — `pcg-111-2@2026-01-01` — article 111-2 sous Titre 5 : incohérence de Titre
+- p.622 — `pcg-121-1@2026-01-01#2` — article 121-1 sous Titre 5 : incohérence de Titre
+- p.623 — `pcg-121-2@2026-01-01#2` — article 121-2 sous Titre 5 : incohérence de Titre
+- p.623 — `pcg-121-2-c1@2026-01-01` — article 121-2 sous Titre 5 : incohérence de Titre
+- p.627 — `pcg-121-3@2026-01-01#2` — article 121-3 sous Titre 5 : incohérence de Titre
+- p.628 — `pcg-121-4@2026-01-01#2` — article 121-4 sous Titre 5 : incohérence de Titre
+- p.629 — `pcg-131-1@2026-01-01` — article 131-1 sous Titre 5 : incohérence de Titre
+- p.634 — `pcg-132-1@2026-01-01` — article 132-1 sous Titre 5 : incohérence de Titre
+- p.634 — `pcg-132-2@2026-01-01` — article 132-2 sous Titre 5 : incohérence de Titre
+- p.634 — `pcg-132-3@2026-01-01` — article 132-3 sous Titre 5 : incohérence de Titre
+- p.636 — `pcg-111-1@2026-01-01#3` — article 111-1 sous Titre 6 : incohérence de Titre
+- p.639 — `pcg-201-2@2026-01-01` — article 201-2 sous Titre 6 : incohérence de Titre
+- p.639 — `pcg-201-2-c1@2026-01-01` — article 201-2 sous Titre 6 : incohérence de Titre
+- p.639 — `pcg-201-2-c2@2026-01-01` — article 201-2 sous Titre 6 : incohérence de Titre
+- p.639 — `pcg-201-3@2026-01-01` — article 201-3 sous Titre 6 : incohérence de Titre
+- p.639 — `pcg-201-3-c1@2026-01-01` — article 201-3 sous Titre 6 : incohérence de Titre
+- p.639 — `pcg-201-3-c2@2026-01-01` — article 201-3 sous Titre 6 : incohérence de Titre
+- p.639 — `pcg-201-3-c3@2026-01-01` — article 201-3 sous Titre 6 : incohérence de Titre
+- p.640 — `pcg-201-4@2026-01-01` — article 201-4 sous Titre 6 : incohérence de Titre
+- p.640 — `pcg-201-4-c1@2026-01-01` — article 201-4 sous Titre 6 : incohérence de Titre
+- p.640 — `pcg-201-4-c2@2026-01-01` — article 201-4 sous Titre 6 : incohérence de Titre
+- p.640 — `pcg-202-1@2026-01-01` — article 202-1 sous Titre 6 : incohérence de Titre
+- p.640 — `pcg-202-1-c1@2026-01-01` — article 202-1 sous Titre 6 : incohérence de Titre
+- p.641 — `pcg-202-1@2026-01-01#2` — article 202-1 sous Titre 6 : incohérence de Titre
+- p.641 — `pcg-203-1@2026-01-01` — article 203-1 sous Titre 6 : incohérence de Titre
+- p.641 — `pcg-203-1-c1@2026-01-01` — article 203-1 sous Titre 6 : incohérence de Titre
+- p.641 — `pcg-203-2@2026-01-01` — article 203-2 sous Titre 6 : incohérence de Titre
+- p.641 — `pcg-203-2-c1@2026-01-01` — article 203-2 sous Titre 6 : incohérence de Titre
+- p.641 — `pcg-203-3@2026-01-01` — article 203-3 sous Titre 6 : incohérence de Titre
+- p.642 — `pcg-300-1@2026-01-01` — article 300-1 sous Titre 6 : incohérence de Titre
+- p.642 — `pcg-300-1-c1@2026-01-01` — article 300-1 sous Titre 6 : incohérence de Titre
+- p.643 — `pcg-300-2@2026-01-01` — article 300-2 sous Titre 6 : incohérence de Titre
+- p.643 — `pcg-300-2-c1@2026-01-01` — article 300-2 sous Titre 6 : incohérence de Titre
+- p.643 — `pcg-300-3@2026-01-01` — article 300-3 sous Titre 6 : incohérence de Titre
+- p.643 — `pcg-300-4@2026-01-01` — article 300-4 sous Titre 6 : incohérence de Titre
+- p.644 — `pcg-400-1@2026-01-01` — article 400-1 sous Titre 6 : incohérence de Titre
+- p.647 — `pcg-402-1@2026-01-01` — article 402-1 sous Titre 6 : incohérence de Titre
+- p.648 — `pcg-402-1-c1@2026-01-01` — article 402-1 sous Titre 6 : incohérence de Titre
+- p.648 — `pcg-430-1@2026-01-01` — article 430-1 sous Titre 6 : incohérence de Titre
+- p.649 — `pcg-430-2@2026-01-01` — article 430-2 sous Titre 6 : incohérence de Titre
+- p.649 — `pcg-430-2-c1@2026-01-01` — article 430-2 sous Titre 6 : incohérence de Titre
+- p.649 — `pcg-430-2-c2@2026-01-01` — article 430-2 sous Titre 6 : incohérence de Titre
+- p.649 — `pcg-430-3@2026-01-01` — article 430-3 sous Titre 6 : incohérence de Titre
+- p.650 — `pcg-430-4@2026-01-01` — article 430-4 sous Titre 6 : incohérence de Titre
+- p.650 — `pcg-430-5@2026-01-01` — article 430-5 sous Titre 6 : incohérence de Titre
+- p.650 — `pcg-430-6@2026-01-01` — article 430-6 sous Titre 6 : incohérence de Titre
+- p.650 — `pcg-430-6-c1@2026-01-01` — article 430-6 sous Titre 6 : incohérence de Titre
+- p.650 — `pcg-430-7@2026-01-01` — article 430-7 sous Titre 6 : incohérence de Titre
+- p.650 — `pcg-430-8@2026-01-01` — article 430-8 sous Titre 6 : incohérence de Titre
+- p.650 — `pcg-430-9@2026-01-01` — article 430-9 sous Titre 6 : incohérence de Titre
+- p.651 — `pcg-500-1@2026-01-01` — article 500-1 sous Titre 6 : incohérence de Titre
+- p.651 — `pcg-500-2@2026-01-01` — article 500-2 sous Titre 6 : incohérence de Titre
+- p.658 — `pcg-500-2-c1@2026-01-01` — article 500-2 sous Titre 6 : incohérence de Titre
+- p.659 — `pcg-500-2-c2@2026-01-01` — article 500-2 sous Titre 6 : incohérence de Titre
+
+## section sans niveau reconnu (29)
+- p.1 — `Objectifs du recueil des normes comptables françaises` — section sans niveau reconnu
+- p.1 — `Présentation du recueil` — section sans niveau reconnu
+- p.2 — `Mise à jour du recueil` — section sans niveau reconnu
+- p.4 — `Structure du recueil des normes comptables françaises` — section sans niveau reconnu
+- p.15 — `Partie législative` — section sans niveau reconnu
+- p.19 — `Partie réglementaire` — section sans niveau reconnu
+- p.80 — `ANNEXES AU TITRE II` — section sans niveau reconnu
+- p.100 — `Schéma de comptabilisation des dépenses afférentes à l’acquisition ou à la production d’une immobili` — section sans niveau reconnu
+- p.100 — `Actif` — section sans niveau reconnu
+- p.100 — `Charges` — section sans niveau reconnu
+- p.101 — `I Coûts internes` — section sans niveau reconnu
+- p.101 — `II Coûts externes` — section sans niveau reconnu
+- p.182 — `Annexes au Titre III` — section sans niveau reconnu
+- p.302 — `Exemples relatifs à la section 8` — section sans niveau reconnu
+- p.359 — `Annexes au Titre VI` — section sans niveau reconnu
+- p.360 — `Phase d’exploitation` — section sans niveau reconnu
+- p.377 — `Comptabilisation (Modèle Production)` — section sans niveau reconnu
+- p.377 — `Comptabilisation (Modèle Production)` — section sans niveau reconnu
+- p.406 — `Annexes au Titre VII – Exemples` — section sans niveau reconnu
+- p.562 — `Secteur` — section sans niveau reconnu
+- p.572 — `1` — section sans niveau reconnu
+- p.616 — `TABLEAU DE FINANCEMENT` — section sans niveau reconnu
+- p.616 — `EXPLOITATION` — section sans niveau reconnu
+- p.617 — `TABLEAU DE FINANCEMENT` — section sans niveau reconnu
+- p.617 — `REPARTITION` — section sans niveau reconnu
+- p.617 — `INVESTISSEMENT` — section sans niveau reconnu
+- p.618 — `+` — section sans niveau reconnu
+- p.618 — `+` — section sans niveau reconnu
+- p.618 — `FINANCEMENT` — section sans niveau reconnu
+
+## en-tête d'article illisible (5)
+- p.535 — `Art. 1212` — en-tête d'article illisible
+- p.539 — `Art. 1213` — en-tête d'article illisible
+- p.540 — `Art. 1214` — en-tête d'article illisible
+- p.552 — `Art. 1221` — en-tête d'article illisible
+- p.557 — `Art. 1222` — en-tête d'article illisible
