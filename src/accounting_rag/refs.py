@@ -24,8 +24,26 @@ _CODE_PATTERNS = [
     "code de l'urbanisme",
     "code du travail",
     "code du sport",
+    # F7 (revue finale) : codes supplémentaires cités dans le Recueil
+    # (annexes sectorielles), whitelistés au même titre que les 10 premiers.
+    "code rural et de la pêche maritime",
+    "code de l'environnement",
+    "code de l'énergie",
+    "code du patrimoine",
+    "code de la propriété intellectuelle",
+    "code minier",
 ]
-_CODE_ALTS = "|".join(re.escape(c) for c in _CODE_PATTERNS)
+# F7 : le PDF source utilise très majoritairement l'apostrophe typographique
+# « ’ » (ex. « code de l’environnement », « code de l’énergie ») alors que
+# les motifs ci-dessus sont écrits avec l'apostrophe droite « ' » — sans ce
+# correctif, la quasi-totalité des occurrences réelles de ces codes (et,
+# rétroactivement, de « code de la construction et de l'habitation » déjà
+# whitelisté) ne matchaient jamais. re.escape() ne touche pas l'apostrophe
+# (non spéciale en regex) : on l'élargit après coup en classe de caractères
+# acceptant les deux formes.
+_CODE_ALTS = "|".join(
+    re.escape(c).replace("'", "['’]") for c in _CODE_PATTERNS
+)
 
 # F2: Support articles pluriel avec liste de références
 _EXTERNE = re.compile(
@@ -58,12 +76,22 @@ _CODE_SLUGS = {
     "code de l'urbanisme": "code-de-l-urbanisme",
     "code du travail": "code-du-travail",
     "code du sport": "code-du-sport",
+    "code rural et de la pêche maritime": "code-rural",
+    "code de l'environnement": "code-de-l-environnement",
+    "code de l'énergie": "code-de-l-energie",
+    "code du patrimoine": "code-du-patrimoine",
+    "code de la propriété intellectuelle": "cpi",
+    "code minier": "code-minier",
 }
 
 
 def _slug_code(code: str) -> str:
-    key = " ".join(code.lower().split())
-    return _CODE_SLUGS.get(key, key.replace(" ", "-"))
+    # F7 : normalise l'apostrophe typographique « ’ » en apostrophe droite
+    # avant la recherche dans _CODE_SLUGS (clés écrites avec l'apostrophe
+    # droite) — sinon un code matché via la classe ['’] retombe dans le
+    # fallback générique et produit un slug avec apostrophe brute.
+    key = " ".join(code.lower().split()).replace("’", "'").replace("‘", "'")
+    return _CODE_SLUGS.get(key, key.replace(" ", "-").replace("'", "-"))
 
 
 def extract_renvois(texte: str) -> list[Renvoi]:

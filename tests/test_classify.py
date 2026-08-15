@@ -36,6 +36,31 @@ def test_regression_page25_chapter_non_bold_classified(recueil_path):
         f"Chapitre I doit être SECTION_HEADER même sans gras, got {classify(h)}"
 
 
+def test_folio_haut_de_page_est_bruit():
+    """Correctif positionnel : le folio dupliqué en haut de page (y<60), dont
+    le texte est purement numérique et égal au numéro de la page, est BRUIT
+    même s'il tombe dans la bande typographique réglementaire (taille 10.0,
+    non gras) — cas réel p.186 : ligne '186' à y=39.1."""
+    folio = Line(text="186", size=10.0, bold=False, font="Tahoma", x=99.0, y=39.1, page=186)
+    assert classify(folio) == Kind.BRUIT
+
+
+def test_cellule_tableau_meme_valeur_que_page_survit_si_x_et_y_de_corps():
+    """Cas réel p.518 : le compte '518' (Intérêts courus, x=106.2/y=253.8,
+    colonne des codes de compte) vaut par coïncidence le numéro de page mais
+    n'est ni à x<60 ni à y<60 — il doit survivre (rester REGLEMENTAIRE)."""
+    compte = Line(text="518", size=10.0, bold=False, font="Tahoma", x=106.2, y=253.8, page=518)
+    assert classify(compte) != Kind.BRUIT
+
+
+def test_folio_haut_de_page_pivote_est_bruit():
+    """Sur les pages pivotées à 90° (annexes en tableau large), le même folio
+    dupliqué se retrouve à x<60 (et non plus y<60) — cas réel p.250, x=39.1,
+    y=272.7. Doit être BRUIT malgré un y de corps."""
+    folio_pivote = Line(text="250", size=10.0, bold=False, font="Tahoma", x=39.1, y=272.7, page=250)
+    assert classify(folio_pivote) == Kind.BRUIT
+
+
 def test_regression_page25_bullet_classified_as_puce(recueil_path):
     """Regression: ligne normalisée '- le bénéfice...' classée comme puce de paragraphe (reste REGLEMENTAIRE)"""
     lines = extract_lines(recueil_path, pages=range(24, 25))

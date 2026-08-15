@@ -30,6 +30,19 @@ def test_pages_40_41(recueil_path):
     assert "Sous-section 2" in by_id["pcg-212-6@2026-01-01"].chemin
 
 
+def test_aucun_record_nest_un_pur_numero_de_page(recueil_path):
+    # Correctif positionnel (classify.py) : le folio dupliqué en haut de page
+    # ne doit plus jamais produire de record dont le texte strippé est un
+    # nombre pur égal à une de ses propres pages (page_debut..page_fin).
+    records, _ = parse(recueil_path)
+    for r in records:
+        texte = r.texte.strip()
+        if texte.isdigit():
+            assert int(texte) not in range(r.page_debut, r.page_fin + 1), (
+                f"{r.id} : texte '{texte}' est un pur numéro de page dans son intervalle de pages"
+            )
+
+
 def test_articles_reglementaires_opposables_non(recueil_path):
     records, _ = parse(recueil_path)
     assert all(r.opposable is False for r in records)  # rien d'opposable dans l'ANC (≠ BOFiP)
@@ -98,9 +111,18 @@ def test_ids_uniques_sur_corpus_reel(recueil_path):
     # la même numérotation que le corps principal du PCG (ex. 111-1, 121-1,
     # 122-1…) — collision légitime entre deux numérotations distinctes qui
     # partagent un numéro, désormais désambiguïsée par le suffixe #n plutôt
-    # que silencieusement absorbée dans l'article principal. Compteur figé
-    # en garde de régression — voir task-7-report.md pour l'analyse complète.
-    assert len(collisions) == 104
+    # que silencieusement absorbée dans l'article principal.
+    #
+    # Revue finale (correctif 1, classify.py) : le folio dupliqué en haut de
+    # page (taille 10.0, non gras) était classé à tort REGLEMENTAIRE et
+    # produisait, entre autres, ~41 des 80 collisions post-Ruling-17/18 (ex.
+    # pcg-628-18@2026-01-01#2, texte "302") ainsi qu'une part des 24
+    # collisions Ruling 23. Corrigé en BRUIT (x<60 ou y<60, y compris sur les
+    # pages pivotées à 90° où ce même folio se retrouve à x<60/y de corps —
+    # ex. p.250-252/311/321-323/377/384). Compteur mesuré après correctif :
+    # 104 → 54. Figé en garde de régression — voir
+    # final-fix-report.md (revue finale) pour l'analyse complète.
+    assert len(collisions) == 54
     assert sum(1 for a in collisions if a.ligne == "pcg-500-2@2026-01-01") == 0
 
     # Ruling 18 : plus aucune anomalie-poubelle « texte avant tout article »
@@ -224,6 +246,31 @@ def test_ruling23_ne_matche_pas_article_premier_ni_phrase_de_corps():
 
     phrase = _line("Conformément à l'article 628 dispose que...", page=1)
     assert classify(phrase) != K.ARTICLE_HEADER
+
+
+def test_f8_article_header_illisible_reset_cur_article_synthetique():
+    # F8 (revue finale) : quand _ART_NUM échoue sur un ARTICLE_HEADER, sans
+    # SECTION_HEADER intercalaire pour l'avoir déjà fait, cur_article doit
+    # repasser à None après le flush — sinon le texte qui suit hérite à tort
+    # du dernier article régulièrement numéroté (mauvaise attribution latente).
+    b = _Builder("2026-01-01")
+    b.feed(_line("Art. 100-1", page=1), Kind.ARTICLE_HEADER)
+    b.feed(_line("Texte de l'article 100-1.", page=1), Kind.REGLEMENTAIRE)
+    # En-tête illisible, immédiatement après (aucun SECTION_HEADER intercalé) :
+    b.feed(_line("Article 1er", page=1), Kind.ARTICLE_HEADER)
+    b.feed(_line("Texte qui ne doit PAS être attribué à 100-1.", page=1), Kind.REGLEMENTAIRE)
+    b.flush()
+
+    by_text = {r.texte: r for r in b.records}
+    premier = by_text["Texte de l'article 100-1."]
+    assert premier.article == "100-1"
+
+    second = by_text["Texte qui ne doit PAS être attribué à 100-1."]
+    assert second.article is None            # F8 : pas d'héritage de l'ancien article
+    assert second.id == "pcg-na-1@2026-01-01"  # ancré à la section (Ruling 18), pas à 100-1
+
+    assert any(a.raison == "en-tête d'article illisible" and a.ligne == "Article 1er"
+               for a in b.anomalies)
 
 
 def test_f1_titre_commentaire_ne_herite_pas_des_pages():

@@ -82,6 +82,26 @@ def test_interne_inchange_apres_ruling19():
     assert ("pcg-1214-48", "interne") in c2
 
 
+def test_externe_code_rural():
+    """F7 (revue finale): code rural et de la pêche maritime whitelisté."""
+    c = _cibles("les dispositions de l'article L. 511-4 du code rural et de la pêche maritime")
+    assert ("legi-L511-4-code-rural", "externe_legal") in c
+
+
+def test_externe_code_environnement_apostrophe_typographique():
+    """F7: code de l'environnement, avec l'apostrophe typographique '’' du
+    PDF source (« code de l’environnement ») — pas seulement l'apostrophe
+    droite utilisée dans le code Python."""
+    c = _cibles("prévues à l’article L. 229-7 du code de l’environnement")
+    assert ("legi-L229-7-code-de-l-environnement", "externe_legal") in c
+
+
+def test_externe_cpi():
+    """F7: code de la propriété intellectuelle -> slug 'cpi'."""
+    c = _cibles("mentionnées à l'article L. 112-2 du code de la propriété intellectuelle")
+    assert ("legi-L112-2-cpi", "externe_legal") in c
+
+
 def test_historique_crc_et_avis():
     txt = ("du règlement n° 2004-06 du CRC ; Avis CNC n° 2004-15 du 23 juin 2004 ; "
            "Avis CU n° 2006-C du 4 octobre 2006")

@@ -81,17 +81,22 @@ class _Builder:
             citation = m.group(1).strip() if m else self.com_title[:200] or None
             texte = (self.com_title + "\n" + texte).strip() if self.com_title else texte
         if rid in self.seen_ids:
-            # Collision d'identifiant — le plus souvent un article d'annexe
-            # rédigé hors format « Art. NNN-N » (ex. « Article 1er »), qui ne
-            # matche jamais _ART_NUM et laisse cur_article figé sur le dernier
-            # article régulièrement numéroté. On garantit l'unicité par un
-            # suffixe plutôt que d'écraser silencieusement un record existant.
+            # Collision d'identifiant. Libellé neutre (revue finale) : la
+            # cause n'est PAS majoritairement « Article 1er » hors format
+            # (analysé sur les 104 collisions réelles, ce cas précis est
+            # minoritaire) — les causes dominantes sont des fragments
+            # réglementaires multiples pour un même article déjà ouvert
+            # (alinéas non contigus, sans SECTION_HEADER intercalé) et la
+            # réutilisation partielle de la numérotation du corps principal
+            # par des annexes sectorielles (Ruling 23). On garantit
+            # l'unicité par un suffixe plutôt que d'écraser silencieusement
+            # un record existant.
             suffix = 2
             while f"{rid}#{suffix}" in self.seen_ids:
                 suffix += 1
             self.anomalies.append(Anomalie(
                 self.buf_start, rid,
-                "collision d'identifiant — article probablement hors format (Article 1er ?)",
+                "collision d'identifiant — fragments multiples ou numérotation réutilisée",
                 "collision d'identifiant"
             ))
             rid = f"{rid}#{suffix}"
@@ -168,6 +173,17 @@ class _Builder:
             m = _ART_NUM.match(line.text)
             if not m:
                 self.anomalies.append(Anomalie(line.page, line.text, "en-tête d'article illisible", "en-tête d'article illisible"))
+                # F8 (revue finale) : sûreté — sans ce reset, un en-tête
+                # ARTICLE_HEADER illisible laissait cur_article figé sur le
+                # dernier article régulièrement numéroté, et le texte qui
+                # suit lui était attribué à tort (mauvaise attribution
+                # latente). Dans les 14 cas réels, un SECTION_HEADER
+                # intercalaire avait déjà remis cur_article à None avant cet
+                # en-tête (Ruling 17) — ce correctif ne change donc rien aux
+                # compteurs réels, mais ferme le trou pour le cas non encore
+                # observé où deux ARTICLE_HEADER se suivent sans section
+                # intercalaire et où le second échoue à _ART_NUM.
+                self.cur_article = None
                 return
             self.cur_article = m.group(1)
             self.cur_kind = "reglementaire"
