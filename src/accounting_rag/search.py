@@ -14,7 +14,8 @@ _MODES = {"bm25", "dense", "hybrid", "hybrid+graph", "hybrid+rerank"}
 class Searcher:
     def __init__(self, db_path: Path, embedder=None,
                  poids_chemin: float = 1.0, boost_commentaire: float = 1.0,
-                 reranker=None, df_max: float | None = None):
+                 reranker=None, df_max: float | None = None,
+                 pool: int = 50, dedup_termes: bool = False):
         if not Path(db_path).exists():
             raise FileNotFoundError(
                 f"corpus introuvable : {db_path} — lancez scripts/download_data.py, "
@@ -37,6 +38,25 @@ class Searcher:
         self.df_max = df_max
         self._df_cache: dict[str, int] = {}
         self._n_chunks: int | None = None
+        # pool : nombre de lignes récupérées par canal (bm25 et dense) AVANT fusion RRF
+        # (T2, jalon 3). 50 = comportement jalon 2.5. `search()` transmet toujours
+        # explicitement `self.pool` aux deux canaux (défaut du brief T2 constaté
+        # incohérent avec son propre test à l'exécution : un appel sans argument
+        # explicite est invérifiable par espionnage d'attribut d'instance, la fonction
+        # de substitution n'étant jamais liée comme méthode — cf. docs/eval-jalon3.md).
+        # `_bm25`/`_dense` gardent en outre leur propre défaut `limit=None -> self.pool`,
+        # pour les appelants directs qui n'en passent pas (ex. scripts/diagnostic_rangs.py).
+        self.pool = pool
+        # dedup_termes : déduplique les tokens de `_termes_match` avant construction du
+        # MATCH lexical (T2, jalon 3). False = comportement actuel (T1) : les tokens
+        # répétés dans la question restent répétés dans le MATCH, car bm25() de SQLite
+        # FTS5 pondère leur MULTIPLICITÉ, pas seulement l'ensemble des lignes
+        # sélectionnées (cf. _termes_match). N'a d'effet que sur le chemin neutre
+        # (df_max=None) : le chemin de filtrage actif déduplique déjà, pour raisonner
+        # sur des tokens uniques face au seuil — dedup_termes n'y change donc rien
+        # (ce cas combiné n'est pas mesuré, df_max ayant été rejeté en T1, mais reste
+        # ainsi défini sans incohérence : jamais moins déduplique que le filtrage lui-même).
+        self.dedup_termes = dedup_termes
 
     @property
     def n_chunks(self) -> int:
@@ -74,22 +94,33 @@ class Searcher:
         de contenu commun se fait quand même retrouver (et se classe alors dernier).
         Repli : si le filtrage ne laisse rien, on garde tous les tokens.
 
-        df_max=None retourne la liste BRUTE (non dédupliquée) : `bm25()` de SQLite
-        FTS5 est sensible à la MULTIPLICITÉ des termes dans l'expression MATCH, pas
-        seulement à l'ensemble des lignes qu'elle sélectionne (vérifié empiriquement
-        sur data/corpus.db, mode hybrid, dev : dédupliquer même à df_max=None fait
-        passer recall@10 de 0,672 à 0,689 — 49/61 questions dev contiennent au moins
-        un token répété après normalize()). Dédupliquer inconditionnellement, comme le
-        code de référence du brief, romprait donc la garantie explicite « None =
-        comportement jalon 2.5 inchangé » sur le corpus réel — défaut constaté à la
-        mesure (step 8), distinct de la ruling J3-1, corrigé ici. La déduplication
-        (nécessaire pour raisonner sur des tokens UNIQUES) n'a lieu qu'à l'intérieur du
-        chemin de filtrage actif, où elle ne change que l'ordre de calcul de `df()` par
-        token, jamais la construction du MATCH neutre.
+        df_max=None (chemin neutre) retourne la liste BRUTE (non dédupliquée) par
+        défaut : `bm25()` de SQLite FTS5 est sensible à la MULTIPLICITÉ des termes
+        dans l'expression MATCH, pas seulement à l'ensemble des lignes qu'elle
+        sélectionne (vérifié empiriquement sur data/corpus.db, mode hybrid, dev :
+        dédupliquer même à df_max=None fait passer recall@10 de 0,672 à 0,689 —
+        49/61 questions dev contiennent au moins un token répété après normalize()).
+        Dédupliquer inconditionnellement, comme le code de référence du brief T1,
+        romprait donc la garantie explicite « None = comportement jalon 2.5 inchangé »
+        sur le corpus réel — défaut constaté à la mesure T1 (step 8), corrigé alors.
+
+        `dedup_termes` (T2, jalon 3) rend ce comportement explicite et mesurable :
+        False (défaut) reproduit exactement la liste brute ci-dessus ; True déduplique
+        les tokens du chemin neutre (ordre préservé, premières occurrences), au prix de
+        cette pondération par multiplicité (mesuré : recall@10=0,689, cf. § Ablation E,
+        docs/eval-jalon3.md).
+
+        Sémantique retenue quand df_max ET dedup_termes sont actifs (cas non mesuré,
+        df_max ayant été rejeté en T1, mais qui doit rester cohérent) : le chemin de
+        filtrage actif déduplique TOUJOURS ses tokens en interne (nécessaire pour
+        raisonner sur des tokens UNIQUES face au seuil df(t) <= seuil) — indépendamment
+        de `dedup_termes`, qui ne gouverne que le chemin neutre. Le filtrage ne peut
+        donc jamais être MOINS déduplique que dedup_termes=True ; il n'y a pas de
+        combinaison qui redonnerait un MATCH non dédupliqué en présence de df_max.
         """
         bruts = normalize(query).split()
         if self.df_max is None:
-            return bruts
+            return list(dict.fromkeys(bruts)) if self.dedup_termes else bruts
         toks = list(dict.fromkeys(bruts))
         seuil = self.df_max * self.n_chunks
         gardes = [t for t in toks if 0 < self.df(t) <= seuil]
@@ -127,7 +158,8 @@ class Searcher:
                 out.append(self._record(rid, 100.0, "route"))
         return out
 
-    def _bm25(self, query: str, limit: int = 50) -> dict[str, float]:
+    def _bm25(self, query: str, limit: int | None = None) -> dict[str, float]:
+        limit = self.pool if limit is None else limit
         toks = self._termes_match(query)
         if not toks:
             return {}
@@ -157,7 +189,8 @@ class Searcher:
             scores[rid] = max(scores.get(rid, -1e9), s)
         return scores
 
-    def _dense(self, query: str, limit: int = 50) -> dict[str, float]:
+    def _dense(self, query: str, limit: int | None = None) -> dict[str, float]:
+        limit = self.pool if limit is None else limit
         vec = self.embedder.encode_query(query)
         rows = self.con.execute(
             "SELECT c.record_id, v.distance FROM chunks_vec v "
@@ -205,11 +238,11 @@ class Searcher:
         routed = self._route(query)
         routed_ids = {r["record_id"] for r in routed}
         if mode == "bm25":
-            scores = self._bm25(query)
+            scores = self._bm25(query, self.pool)
         elif mode == "dense":
-            scores = self._dense(query)
+            scores = self._dense(query, self.pool)
         else:
-            scores = self._rrf([self._bm25(query), self._dense(query)])
+            scores = self._rrf([self._bm25(query, self.pool), self._dense(query, self.pool)])
         ranked = sorted(scores, key=scores.get, reverse=True)
         source = "fusion" if mode.startswith("hybrid") else mode
         n_restants = max(k - len(routed), 0)

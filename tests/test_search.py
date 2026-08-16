@@ -375,3 +375,68 @@ def test_df_max_repli_si_tous_les_tokens_sont_ecartes(db_synthetique):
     s = Searcher(db_synthetique, embedder=FakeEmbedder(), df_max=0.0)
     termes = s._termes_match("le amortissement")
     assert set(termes) == set(normalize("le amortissement").split())
+
+
+# --- Ablation E (T2, jalon 3) : largeur du pool de candidats avant fusion (pool),
+# plus la déduplication des termes du MATCH (dedup_termes) comme configuration mesurée.
+
+
+def test_pool_neutre_par_defaut(db_synthetique):
+    a = Searcher(db_synthetique, embedder=FakeEmbedder())
+    b = Searcher(db_synthetique, embedder=FakeEmbedder(), pool=50)
+    for requete in ("amortissement", "immobilisation corporelle"):
+        assert [r["record_id"] for r in a.search(requete)] == \
+               [r["record_id"] for r in b.search(requete)]
+
+
+def test_pool_est_transmis_aux_deux_canaux(db_synthetique):
+    """Le pool doit piloter la limite lexicale ET le k dense, pas seulement l'un des deux.
+
+    Défaut du brief constaté à l'exécution : la mécanique d'espionnage verbatim
+    (`vus.setdefault("bm25", limit) or vrai_bm25(q, limit)`) casse dès que `limit` est
+    une valeur entière vraie (tout `pool` non nul) — `setdefault` renvoie alors cette
+    valeur, l'opérateur `or` court-circuite, et `vrai_bm25` n'est JAMAIS appelé : la
+    valeur renvoyée à `search()` (censée être un dict de scores) devient l'entier
+    `limit` lui-même, ce qui casse `_rrf()` (`AttributeError: 'int' object has no
+    attribute 'get'`). Le brief anticipait ce risque (« adapter la mécanique
+    d'espionnage... si un patron plus simple y est déjà en usage ») : ici, la capture
+    de `limit` est séparée du calcul de la vraie valeur de retour, pour ne jamais
+    dépendre de la véracité de `limit`.
+    """
+    s = Searcher(db_synthetique, embedder=FakeEmbedder(), pool=7)
+    vus = {}
+    vrai_bm25, vrai_dense = s._bm25, s._dense
+
+    def espion_bm25(q, limit=None):
+        vus["bm25"] = limit
+        return vrai_bm25(q, limit)
+
+    def espion_dense(q, limit=None):
+        vus["dense"] = limit
+        return vrai_dense(q, limit)
+
+    s._bm25 = espion_bm25
+    s._dense = espion_dense
+    s.search("amortissement", mode="hybrid")
+    assert vus["bm25"] == 7 and vus["dense"] == 7
+
+
+def test_dedup_termes_neutre_par_defaut(db_synthetique):
+    """dedup_termes=False doit reproduire exactement le comportement actuel (non dédupliqué)."""
+    a = Searcher(db_synthetique, embedder=FakeEmbedder())
+    b = Searcher(db_synthetique, embedder=FakeEmbedder(), dedup_termes=False)
+    for requete in ("amortissement", "le amortissement le", "immobilisation corporelle"):
+        assert a._termes_match(requete) == b._termes_match(requete)
+        assert [r["record_id"] for r in a.search(requete)] == \
+               [r["record_id"] for r in b.search(requete)]
+
+
+def test_dedup_termes_deduplique_le_match(db_synthetique):
+    """dedup_termes=True déduplique les tokens du MATCH, sans changer leur ensemble ni l'ordre."""
+    s_brut = Searcher(db_synthetique, embedder=FakeEmbedder(), dedup_termes=False)
+    s_dedup = Searcher(db_synthetique, embedder=FakeEmbedder(), dedup_termes=True)
+    requete = "le amortissement le amortissement"
+    termes_bruts = s_brut._termes_match(requete)
+    termes_dedup = s_dedup._termes_match(requete)
+    assert termes_bruts == ["le", "amort", "le", "amort"]
+    assert termes_dedup == ["le", "amort"]
