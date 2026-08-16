@@ -2,7 +2,7 @@ import pytest
 from pathlib import Path
 from accounting_rag.db import write_db
 from accounting_rag.index import build_index
-from accounting_rag.model import Renvoi
+from accounting_rag.model import Record, Renvoi
 from accounting_rag.search import Searcher
 from conftest import _rec
 
@@ -191,3 +191,107 @@ def test_invariant_apostrophe_build_query(tmp_path):
     hits_typo = s.search("l’exercice comptable", mode="bm25")
     assert hits_ascii and hits_typo
     assert {h["record_id"] for h in hits_ascii} == {h["record_id"] for h in hits_typo}
+
+
+# --- Ablation A (T3, jalon 2.5) : pondération par champ (chemin, type de record).
+# Deux nouveaux paramètres neutres par défaut sur Searcher : poids_chemin, boost_commentaire.
+
+
+def _rec_type(rid, article, type_, chemin="Livre II > Titre I", texte="x"):
+    """Comme _rec (conftest) mais avec type explicite (_rec fixe toujours 'reglementaire')."""
+    return Record(
+        id=rid, article=article, chemin=chemin, texte=texte, type=type_,
+        nature="comptable", opposable=False, valide_du="2026-01-01", valide_au=None,
+        source_citation=None, page_debut=1, page_fin=1, renvois=[],
+    )
+
+
+@pytest.fixture
+def searcher_synthetique(tmp_path):
+    """Petite base variée (route + bm25 multi-documents) pour comparer deux instances
+    de Searcher à paramètres différents mais censés produire un résultat identique."""
+    db = tmp_path / "neutre.db"
+    write_db([
+        _rec("pcg-214-1@2026-01-01", "214-1",
+             texte="Un immeuble s'amortit sur sa duree d'utilisation prevue."),
+        _rec("pcg-300-1@2026-01-01", "300-1",
+             texte="Les stocks sont valorises au cout d'achat, hors ristournes."),
+        _rec("pcg-400-1@2026-01-01", "400-1", chemin="Livre III > Titre II",
+             texte="Le contrat de credit-bail est comptabilise chez le locataire selon les regles applicables."),
+    ], db)
+    build_index(db, embedder=FakeEmbedder())
+    return db
+
+
+@pytest.fixture
+def db_synthetique(tmp_path):
+    """Base combinant deux paires de documents conçues pour isoler chacun des deux
+    nouveaux paramètres :
+    - pcg-100-1 (terme "wombat" UNIQUEMENT dans le chemin, chemin long) vs pcg-200-1
+      (terme "wombat" UNIQUEMENT dans le texte, texte court) — pcg-300/400-1 servent de
+      remplissage pour stabiliser les longueurs moyennes des colonnes FTS. Ordre de
+      référence vérifié empiriquement à poids neutre (1.0, 1.0) : pcg-200-1 devant
+      pcg-100-1 (le texte court l'emporte) ; à poids_chemin=3.0, pcg-100-1 passe devant.
+    - pcg-500-1 (type='reglementaire') et pcg-600-1 (type='commentaire_ANC') portent
+      exactement le même chemin et le même texte (même terme "zabulon", même empreinte
+      bm25) : seul le type diffère, pour isoler l'effet de boost_commentaire.
+    """
+    db = tmp_path / "ablation.db"
+    write_db([
+        _rec("pcg-100-1@2026-01-01", "100-1",
+             chemin="Livre wombat Deuxieme Titre Premier Chapitre Trois Section Deux Sous section Quatre",
+             texte="Un texte generique sans importance particuliere du tout ici et la pour remplir un peu plus encore."),
+        _rec("pcg-200-1@2026-01-01", "200-1",
+             chemin="Livre Deuxieme Titre Un",
+             texte="Un texte contenant wombat brievement."),
+        _rec("pcg-300-1@2026-01-01", "300-1",
+             chemin="Livre Deuxieme Titre Un Chapitre Deux",
+             texte="Un texte de remplissage sans aucun rapport avec le sujet traite ici pour equilibrer les longueurs moyennes des colonnes du corpus."),
+        _rec("pcg-400-1@2026-01-01", "400-1",
+             chemin="Livre Deuxieme Titre Un Chapitre Deux",
+             texte="Un texte de remplissage sans aucun rapport avec le sujet traite ici pour equilibrer les longueurs moyennes des colonnes du corpus."),
+        _rec_type("pcg-500-1@2026-01-01", "500-1", "reglementaire",
+                  chemin="Livre Deuxieme Titre Un", texte="Le traitement de zabulon est precise ici."),
+        _rec_type("pcg-600-1@2026-01-01", "600-1", "commentaire_ANC",
+                  chemin="Livre Deuxieme Titre Un", texte="Le traitement de zabulon est precise ici."),
+    ], db)
+    build_index(db, embedder=FakeEmbedder())
+    return db
+
+
+def test_poids_chemin_neutre_par_defaut(searcher_synthetique):
+    # Deux Searcher, poids_chemin=1.0 explicite vs défaut : mêmes résultats bm25 sur
+    # trois requêtes distinctes de la fixture (avant l'implémentation, poids_chemin
+    # n'existe pas encore -> TypeError sur la construction du second Searcher).
+    s_defaut = Searcher(searcher_synthetique, embedder=FakeEmbedder())
+    s_neutre = Searcher(searcher_synthetique, embedder=FakeEmbedder(), poids_chemin=1.0)
+    for query in ["amortissement immeuble", "stocks cout d'achat", "contrat de credit-bail"]:
+        ids_defaut = [h["record_id"] for h in s_defaut.search(query, mode="bm25")]
+        ids_neutre = [h["record_id"] for h in s_neutre.search(query, mode="bm25")]
+        assert ids_defaut == ids_neutre
+
+
+def test_poids_chemin_favorise_le_chemin(db_synthetique):
+    # pcg-100-1 : terme "wombat" uniquement dans le chemin. pcg-200-1 : uniquement
+    # dans le texte. À poids neutre l'ordre de référence place pcg-200-1 en tête ;
+    # à poids_chemin=3.0, pcg-100-1 doit passer devant.
+    s_neutre = Searcher(db_synthetique, embedder=FakeEmbedder(), poids_chemin=1.0)
+    s_favorise = Searcher(db_synthetique, embedder=FakeEmbedder(), poids_chemin=3.0)
+    ids_neutre = [h["record_id"] for h in s_neutre.search("wombat", mode="bm25", k=2)]
+    ids_favorise = [h["record_id"] for h in s_favorise.search("wombat", mode="bm25", k=2)]
+    assert ids_neutre[0] == "pcg-200-1@2026-01-01"
+    assert ids_favorise[0] == "pcg-100-1@2026-01-01"
+
+
+def test_boost_commentaire_penalise(db_synthetique):
+    # pcg-500-1 (reglementaire) et pcg-600-1 (commentaire_ANC) portent la même empreinte
+    # bm25 exacte pour le terme "zabulon". boost_commentaire=0.5 doit faire passer le
+    # réglementaire devant le commentaire (score du commentaire multiplié par 0.5).
+    s_neutre = Searcher(db_synthetique, embedder=FakeEmbedder(), boost_commentaire=1.0)
+    s_penalise = Searcher(db_synthetique, embedder=FakeEmbedder(), boost_commentaire=0.5)
+    hits_neutre = s_neutre.search("zabulon", mode="bm25", k=2)
+    hits_penalise = s_penalise.search("zabulon", mode="bm25", k=2)
+    assert {h["record_id"] for h in hits_neutre} == {
+        "pcg-500-1@2026-01-01", "pcg-600-1@2026-01-01",
+    }
+    assert hits_penalise[0]["record_id"] == "pcg-500-1@2026-01-01"

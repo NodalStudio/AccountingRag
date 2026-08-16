@@ -100,3 +100,61 @@ uv run pytest tests/test_evalrag.py -q
 ```
 
 Le split `test` ne doit être relancé qu'en fin de jalon suivant, jamais pendant le développement.
+
+## Ablation A — pondération par champ (chemin, type de record) (T3)
+
+Deux nouveaux paramètres sur `Searcher(db_path, embedder=None, poids_chemin: float = 1.0, boost_commentaire: float = 1.0)`, neutres par défaut (comportement jalon 2 inchangé) :
+- `poids_chemin` : poids de la colonne `chemin_norm` dans `bm25(chunks_norm, 1.0, poids_chemin)` (poids_texte fixé à 1.0). Lié en paramètre SQL — testé et validé sur SQLite 3.53.1 (les arguments de `bm25()` acceptent des paramètres liés sur cette version ; pas de repli par interpolation de littéral nécessaire, cf. Ruling J25-2).
+- `boost_commentaire` : multiplicateur appliqué au score bm25 agrégé d'un chunk quand `records.type != 'reglementaire'` (donc `commentaire_ANC`), avant le max par `record_id`.
+
+### Méthode
+
+Mesure une variable à la fois, par bootstrap apparié contre le run précédent, sur `benchmark/dev.jsonl` (61 questions), mode `hybrid`, k=10. Commande de mesure : script ad hoc (non versionné) instanciant plusieurs `Searcher` dans le même processus python (embedder e5 partagé) pour comparer :
+
+1. **A** = hybrid baseline, poids neutres (= baseline T2, re-mesurée dans le même processus pour garantir l'alignement des ids `par_question`).
+2. **B1** = hybrid avec `poids_chemin=2.0` seul → `paired_bootstrap(A, B1)`.
+3. **B2** = meilleur de {A, B1} (selon critère d'adoption) + `boost_commentaire=0.7` seul en plus → `paired_bootstrap(config_de_base, B2)`.
+4. Valeur voisine de robustesse (`poids_chemin=3.0` ou `boost_commentaire=0.5`) **seulement si le paramètre correspondant a été adopté** à l'étape précédente — non déclenchée ici (voir Résultats).
+
+Critère d'adoption (contrainte globale du plan) : `p_amelioration ≥ 0,95` **ET** aucune catégorie ne perd plus de 0,05 de recall@10 vs la configuration de référence.
+
+### Résultats
+
+| run | config | recall@5 | recall@10 | MRR |
+|---|---|---|---|---|
+| A | neutre (poids_chemin=1.0, boost_commentaire=1.0) | 0,639 | 0,672 | 0,565 |
+| B1 | poids_chemin=2.0 | 0,639 | 0,672 | 0,557 |
+| B2 | poids_chemin=1.0 (A retenu, B1 non adopté) + boost_commentaire=0.7 | 0,623 | 0,664 | 0,563 |
+
+Ventilation par catégorie (recall@10) :
+
+| run | reference_directe (n=7) | regle (n=23) | vocabulaire_courant (n=31) |
+|---|---|---|---|
+| A | 1,0 | 0,935 | 0,403 |
+| B1 | 1,0 | 0,935 | 0,403 |
+| B2 | 1,0 | 0,935 | 0,387 |
+
+Bootstrap apparié (`n_boot=10000`, `seed=42`, sur les scores `par_question` de `evaluate(..., mode="hybrid", k=10)`) :
+
+| comparaison | delta | IC95 | p_amelioration | pire perte par catégorie | adopté ? |
+|---|---|---|---|---|---|
+| A vs B1 (poids_chemin=2.0) | 0,0000 | (0,0000 ; 0,0000) | 0,000 | 0,000 | **non** |
+| A vs B2 (poids_chemin=1.0 + boost_commentaire=0.7, effet cumulé) | -0,0082 | (-0,0656 ; 0,0492) | 0,337 | -0,016 (vocabulaire_courant) | **non** |
+
+`A vs B2` ci-dessus sert aussi de comparaison « config de base retenue (A) vs B2 » puisque B1 n'a pas été adopté et que la config de base pour B2 est donc A elle-même.
+
+Aucune valeur voisine de robustesse (`poids_chemin=3.0`, `boost_commentaire=0.5`) n'a été mesurée : le brief ne la prévoit que pour un paramètre déjà adopté à l'étape précédente, et aucun des deux paramètres ne franchit le seuil `p_amelioration ≥ 0,95`.
+
+### Décision
+
+**Rejeté — les deux paramètres restent à leurs valeurs neutres par défaut** (`poids_chemin=1.0`, `boost_commentaire=1.0`), qui deviennent les défauts des flags `--poids-chemin` / `--boost-commentaire` de `scripts/run_eval.py`.
+
+Motivation :
+- `poids_chemin=2.0` produit un delta et un IC95 **exactement nuls** (`p_amelioration=0,000`) sur recall@10 : la fusion RRF (`_rrf`) combine les canaux bm25/dense par **rang**, pas par magnitude de score ; sur ce corpus, la colonne `chemin` est un intitulé de plan court et peu discriminant (ex. « Livre II > Titre I ») dont le poids ne suffit pas à faire basculer l'ordre bm25 sur aucune des 61 questions du split dev — seul le MRR bouge légèrement (0,565 → 0,557), signe d'un effet marginal sur l'ordre fin du canal bm25 sans jamais franchir le seuil de `k=10` pour recall@10. Un poids de chemin plus agressif (3.0) n'a pas été testé puisque le critère d'adoption échoue déjà nettement à 2.0 (le brief n'exige la valeur voisine que si le paramètre est adopté).
+- `boost_commentaire=0.7` va dans le sens **opposé** à l'amélioration (delta négatif, -0,0082) avec `p_amelioration=0,337`, largement sous le seuil de 0,95 — la pénalisation des commentaires ANC dégrade légèrement `vocabulaire_courant` (-0,016, dans la limite de -0,05 mais sans gain compensatoire ailleurs). Contrairement à `poids_chemin`, ce paramètre agit avant la fusion RRF (multiplicateur sur le score bm25 brut) et peut donc réordonner le canal bm25 — l'effet mesuré, bien que faible, est cohérent et défavorable.
+
+### Réserves
+
+- Les deux ablations ont été mesurées **une à la fois** (méthode imposée par le brief), pas en grid search ; une interaction positive entre `poids_chemin` et `boost_commentaire` à d'autres valeurs n'est pas exclue mais sort du périmètre de cette tâche.
+- `poids_chemin` n'a d'effet mesurable que via la position relative dans le classement bm25 **avant** fusion RRF ; sur un corpus où le champ `chemin` porte plus d'information distinctive (hiérarchie de plan plus profonde/variée), l'effet pourrait différer — ce résultat est spécifique à `data/corpus.db` (PCG 2026) tel qu'indexé aujourd'hui.
+- Les tests unitaires (`tests/test_search.py`) valident le comportement des deux paramètres sur une base synthétique conçue pour isoler chaque effet (voir `test_poids_chemin_favorise_le_chemin`, `test_boost_commentaire_penalise`) — ils démontrent que le mécanisme fonctionne, indépendamment de la décision de ne pas l'activer par défaut sur le corpus réel.

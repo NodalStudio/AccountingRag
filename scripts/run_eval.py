@@ -8,10 +8,17 @@ p = argparse.ArgumentParser()
 p.add_argument("--mode", default="all", choices=["bm25", "dense", "hybrid", "hybrid+graph", "all"])
 p.add_argument("--split", default="dev", choices=["dev", "test"])
 p.add_argument("--k", type=int, default=10)
+# Ablation A (T3, jalon 2.5) : pondération par champ. Défauts = valeurs neutres (1.0) —
+# ni poids_chemin=2.0 ni boost_commentaire=0.7 n'ont été adoptés (p_amelioration << 0,95
+# sur le bootstrap apparié, cf. docs/eval-jalon25.md, section « Ablation A »).
+p.add_argument("--poids-chemin", type=float, default=1.0)
+p.add_argument("--boost-commentaire", type=float, default=1.0)
 args = p.parse_args()
 
 questions = load_benchmark(Path(f"benchmark/{args.split}.jsonl"))
-searcher = Searcher(Path("data/corpus.db"))
+searcher = Searcher(Path("data/corpus.db"),
+                     poids_chemin=args.poids_chemin,
+                     boost_commentaire=args.boost_commentaire)
 modes = ["bm25", "dense", "hybrid", "hybrid+graph"] if args.mode == "all" else [args.mode]
 
 print("| mode | recall@5 | recall@10 | MRR | n |")
