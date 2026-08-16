@@ -14,18 +14,21 @@
 
 Deux sondes sur les questions dev en échec (`vocabulaire_courant`) ont établi :
 
-| question | gold | rang lexical (OR de tous les tokens) | rang lexical (tokens df ≤ 2 %) | rang dense |
-|---|---|---|---|---|
-| q021 | pcg-214-13 | **154/154** (dernier) | absent (40 candidats) | 178/1660 |
-| q026 | pcg-212-3 | **46/46** (dernier) | **14/14** | 248/1660 |
-| q060 | pcg-1222-74 | **1430/1430** (dernier) | absent (63 candidats) | 528/1660 |
-| q023 | pcg-214-22 | — | — | 257/1660 |
+> **Correction du 16 août 2026 (contrôleur).** La première version de ce tableau, produite par une sonde jetable, contenait une erreur de mesure : la sonde retournait dès qu'elle trouvait le gold, si bien que le « total » affiché valait toujours le rang (d'où un trompeur « 154/154, 46/46, 1430/1430 — le gold est toujours dernier »). Les totaux réels sont rétablis ci-dessous ; la conclusion « toujours dernier » était un **artefact de la sonde** et est retirée. Chiffres vérifiés dans la convention de production (sans déduplication des termes), reproductibles par `scripts/diagnostic_rangs.py`.
 
-Lectures qui fondent les trois ablations :
-1. Le gold est **toujours dernier** de sa liste : il n'est retrouvé que par des mots fonctionnels (`le`, `de`, `une`), sans aucun token de contenu partagé. Le canal lexical est structurellement muet sur ces questions.
-2. Filtrer les tokens à forte fréquence documentaire **réduit massivement le bruit** (q060 : 1430 → 63 candidats) et peut faire entrer le gold dans la fenêtre utile (q026 : rang 46 → 14). Mais si le gold ne partage aucun token rare, il disparaît du pool (q021, q060) — d'où la nécessité de mesurer, pas de supposer.
-3. Le canal dense place le gold aux rangs 178-528 : **hors de la fenêtre de 50, mais atteignable** par un pool de 200-400. C'est le reranker (seul composant qui lit le sens d'une paire question/passage) qui peut ensuite le promouvoir.
-4. La conjonction (`AND`) des tokens rares donne **zéro candidat** dans les trois cas : voie morte, exclue de ce plan.
+| question | gold | rang lexical / total | position | rang lexical (tokens df ≤ 2 %) | rang dense |
+|---|---|---|---|---|---|
+| q021 | pcg-214-13 | 154 / 1585 | 10 % du classement | absent (40 candidats) | 178/1660 |
+| q026 | pcg-212-3 | **46 / 1659** | **3 %** | 14 / 67 | 248/1660 |
+| q060 | pcg-1222-74 | 1453 / 1659 | 88 % | absent (63 candidats) | 528/1660 |
+| q023 | pcg-214-22 | — | — | — | 257/1660 |
+
+Lectures qui fondent les ablations (révisées après correction) :
+1. **Deux régimes d'échec distincts, à ne pas confondre.** q021 et q026 sont des *quasi-succès* : leur gold est dans les 3-10 % de tête du classement lexical, juste au-delà de la fenêtre de 50 candidats. q060 est un échec de fond (88 % du classement) : là, le canal lexical est effectivement muet. Une seule ablation ne peut pas traiter les deux régimes.
+2. Le régime « quasi-succès » désigne directement **l'élargissement du pool** (ablation E) : à 200 ou 400 candidats, les golds de q021 et q026 entrent dans le champ. Reste à savoir si leur rang dans la fusion suffit — d'où l'ablation F, le reranker étant le seul composant capable de les remonter.
+3. Filtrer les tokens à forte fréquence documentaire réduit massivement le bruit (q060 : 1659 → 63 candidats) et améliore le rang quand un token rare est partagé (q026 : 46/1659 → 14/67). Mais quand aucun token rare n'est partagé, le gold **disparaît du pool** (q021, q060) — d'où la nécessité de mesurer. *(Mesuré en T1 : rejeté, effet monotone négatif.)*
+4. Le canal dense place le gold aux rangs 178-528 : hors de la fenêtre de 50, atteignable par un pool de 200-400.
+5. La conjonction (`AND`) des tokens rares donne **zéro candidat** dans les trois cas : voie morte, exclue de ce plan.
 
 Corollaire de coût qui décide de l'ablation F : le reranker adopté (`bge`, ~4,7 s/candidat) est inutilisable sur pool large (200 candidats ≈ 15 min/question). Le modèle léger rejeté au jalon 2.5 (`mmarco`, ~0,4 s/candidat) redevient le seul viable (~80 s/question) — l'arbitrage « modèle faible sur pool large » contre « modèle fort sur pool étroit » est la vraie question de ce jalon.
 
