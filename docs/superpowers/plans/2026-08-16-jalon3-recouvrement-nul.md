@@ -272,6 +272,8 @@ def test_routes_restent_epingles_avec_pool_elargi(db_synthetique):
 
 ### Task 4: Campagne de clôture + documentation
 
+> **Ordre d'exécution : DERNIÈRE tâche du jalon, après la tâche 5** (ajoutée par amendement une fois la clé API fournie). La « configuration finale » inclut donc l'éventuelle adoption de la réécriture de requête.
+
 **Files:**
 - Modify: `docs/eval-jalon3.md`
 - Modify: `README.md`
@@ -290,6 +292,232 @@ def test_routes_restent_epingles_avec_pool_elargi(db_synthetique):
 - [ ] **Step 6 : Cohérence** — mêmes chiffres partout (README ↔ eval-jalon3.md ↔ JSON de `docs/mesures/jalon3/`), et vérifier qu'un exemple de recalcul de bootstrap depuis les JSON est fourni et **exécuté**.
 
 - [ ] **Step 7 : Commit** — `docs(jalon3): campagne de clôture — dev + référence test gelée, décisions d'ablation`
+
+---
+
+### Task 5: Réécriture de requête par LLM (ablation G)
+
+> **Amendement du 16 août 2026** : tâche ajoutée après la fourniture d'une clé API par l'utilisateur (`.env`, ignoré par git). Elle amende deux Global Constraints : la dépendance `anthropic` est désormais autorisée (SDK officiel), et le jalon acquiert un coût monétaire — borné ci-dessous. **Exécuter cette tâche AVANT la tâche 4** (clôture).
+
+**Files:**
+- Create: `src/accounting_rag/config.py`
+- Create: `src/accounting_rag/rewrite.py`
+- Create: `tests/test_rewrite.py`
+- Create: `.env.example`
+- Modify: `pyproject.toml`, `src/accounting_rag/search.py`, `scripts/ablations_jalon3.py`, `scripts/run_eval.py`, `docs/eval-jalon3.md`, `README.md`
+
+**Interfaces:**
+- Produces:
+  - `charge_env(chemin=".env") -> None` (`config.py`) — charge les paires `CLE=valeur` d'un fichier `.env` dans `os.environ` **sans écraser** une variable déjà définie ; silencieux si le fichier est absent. Aucune dépendance.
+  - `Rewriter(cache_path, modele=None, client=None)` (`rewrite.py`) — `modele` par défaut `"claude-sonnet-5"`, surchargeable par `ACCRAG_REWRITE_MODEL` ; `client` injectable (tests). Méthode `reecrire(question: str) -> str`, avec cache disque JSON : un appel API par question **au plus une fois dans la vie du projet**.
+  - `Searcher(..., rewriter=None, mode_reecriture="remplace"|"etend")` — `rewriter=None` = comportement actuel. Quand un rewriter est fourni, la requête transmise aux canaux lexical et dense est la réécriture (`remplace`) ou la concaténation `question + " " + réécriture` (`etend`). **Le routeur de références d'articles continue de lire la question ORIGINALE** (une référence explicite ne doit jamais dépendre d'une reformulation).
+
+**Intégrité du benchmark — exigence non négociable :** le rewriter ne reçoit QUE le texte de la question. Il ne voit jamais les citations gold, ni le corpus, ni les résultats de recherche. Toute autre conception ferait fuiter la réponse dans la requête et invaliderait la mesure. Un test structurel doit le garantir.
+
+**Bornes de coût :** un appel par question, ~150 tokens d'entrée et ~80 de sortie, sur 90 questions au plus → coût total de l'ordre de quelques centimes. Le cache JSON est **commité** (`docs/mesures/jalon3/reecritures.json`) : les mesures ultérieures et les revues sont donc gratuites et reproductibles à l'identique. Le script doit refuser de dépasser 200 appels API dans une exécution (garde-fou anti-boucle) et journaliser le total de tokens consommés.
+
+- [ ] **Step 1 : Écrire les tests d'abord** (`tests/test_rewrite.py` — aucun appel réseau) :
+
+```python
+import json
+from accounting_rag.config import charge_env
+from accounting_rag.rewrite import Rewriter
+
+
+class FauxBloc:
+    def __init__(self, texte):
+        self.type = "text"
+        self.text = texte
+
+
+class FauxMessage:
+    def __init__(self, texte):
+        self.content = [FauxBloc(texte)]
+
+
+class FauxClient:
+    """Client Anthropic factice : enregistre les appels, ne sort jamais sur le réseau."""
+
+    def __init__(self, reponse="amortissement immobilisation corporelle"):
+        self.reponse = reponse
+        self.appels = []
+        self.messages = self
+
+    def create(self, **kwargs):
+        self.appels.append(kwargs)
+        return FauxMessage(self.reponse)
+
+
+def test_charge_env_sans_ecraser(tmp_path, monkeypatch):
+    fichier = tmp_path / ".env"
+    fichier.write_text("ANTHROPIC_API_KEY=depuis-le-fichier\nAUTRE=x\n", encoding="utf-8")
+    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+    monkeypatch.setenv("AUTRE", "deja-defini")
+    charge_env(fichier)
+    import os
+    assert os.environ["ANTHROPIC_API_KEY"] == "depuis-le-fichier"
+    assert os.environ["AUTRE"] == "deja-defini"  # jamais écrasé
+
+
+def test_charge_env_silencieux_si_absent(tmp_path):
+    charge_env(tmp_path / "inexistant")  # ne doit pas lever
+
+
+def test_reecrire_appelle_le_modele_et_met_en_cache(tmp_path):
+    client = FauxClient()
+    r = Rewriter(cache_path=tmp_path / "cache.json", client=client)
+    a = r.reecrire("comment je répartis le coût d'une machine ?")
+    b = r.reecrire("comment je répartis le coût d'une machine ?")
+    assert a == b == "amortissement immobilisation corporelle"
+    assert len(client.appels) == 1  # deuxième appel servi par le cache
+    cache = json.loads((tmp_path / "cache.json").read_text(encoding="utf-8"))
+    assert cache["comment je répartis le coût d'une machine ?"] == a
+
+
+def test_cache_relu_depuis_le_disque(tmp_path):
+    (tmp_path / "cache.json").write_text(
+        json.dumps({"q": "reecriture-en-cache"}), encoding="utf-8"
+    )
+    client = FauxClient()
+    r = Rewriter(cache_path=tmp_path / "cache.json", client=client)
+    assert r.reecrire("q") == "reecriture-en-cache"
+    assert client.appels == []  # aucun appel API
+
+
+def test_le_rewriter_ne_recoit_que_la_question(tmp_path):
+    """Intégrité du benchmark : ni gold, ni corpus, ni résultats dans le prompt."""
+    client = FauxClient()
+    r = Rewriter(cache_path=tmp_path / "cache.json", client=client)
+    r.reecrire("ma question")
+    envoye = json.dumps(client.appels[0], default=str)
+    assert "ma question" in envoye
+    for interdit in ("pcg-", "citations", "gold", "record_id"):
+        assert interdit not in envoye
+```
+
+- [ ] **Step 2 : Run** `uv run pytest tests/test_rewrite.py -q` → FAIL (modules absents).
+
+- [ ] **Step 3 : Implémenter `config.py`** :
+
+```python
+"""Chargement d'un fichier .env sans dépendance externe (les secrets ne sont jamais versionnés)."""
+import os
+from pathlib import Path
+
+
+def charge_env(chemin: str | Path = ".env") -> None:
+    """Charge les paires CLE=valeur dans os.environ, sans écraser l'existant.
+
+    Silencieux si le fichier est absent : l'environnement peut déjà porter les variables.
+    """
+    p = Path(chemin)
+    if not p.is_file():
+        return
+    for ligne in p.read_text(encoding="utf-8").splitlines():
+        ligne = ligne.strip()
+        if not ligne or ligne.startswith("#") or "=" not in ligne:
+            continue
+        cle, _, valeur = ligne.partition("=")
+        cle, valeur = cle.strip(), valeur.strip().strip('"').strip("'")
+        os.environ.setdefault(cle, valeur)
+```
+
+- [ ] **Step 4 : Implémenter `rewrite.py`** :
+
+```python
+"""Réécriture d'une question en langage courant vers le vocabulaire du PCG (via l'API Claude).
+
+Le diagnostic du jalon 3 a montré que les questions « grand public » ne partagent aucun
+token de contenu avec l'article qui y répond : le canal lexical est alors muet. La
+réécriture vise ce cas précis. Le modèle ne voit QUE la question — jamais le corpus,
+jamais les citations attendues.
+"""
+import json
+import os
+from pathlib import Path
+
+_DEFAUT = os.environ.get("ACCRAG_REWRITE_MODEL", "claude-sonnet-5")
+
+_SYSTEME = (
+    "Tu traduis une question de comptabilité posée en langage courant vers le vocabulaire "
+    "technique du Plan comptable général français. Réponds UNIQUEMENT par une liste de "
+    "termes et expressions normalisés, séparés par des espaces, sans phrase, sans "
+    "explication, sans ponctuation superflue. N'invente aucun numéro d'article. "
+    "Exemple d'entrée : « comment je répartis le coût d'une machine sur plusieurs années ». "
+    "Exemple de sortie : amortissement immobilisation corporelle plan d'amortissement "
+    "durée d'utilisation base amortissable."
+)
+
+
+class Rewriter:
+    def __init__(self, cache_path: str | Path, modele: str | None = None, client=None):
+        self.cache_path = Path(cache_path)
+        self.modele = modele or _DEFAUT
+        self._client = client
+        self._cache: dict[str, str] = {}
+        if self.cache_path.is_file():
+            self._cache = json.loads(self.cache_path.read_text(encoding="utf-8"))
+        self.appels = 0
+        self.tokens_entree = 0
+        self.tokens_sortie = 0
+
+    @property
+    def client(self):
+        if self._client is None:
+            import anthropic  # import paresseux : le module s'importe sans clé ni réseau
+            from .config import charge_env
+            charge_env()
+            self._client = anthropic.Anthropic()
+        return self._client
+
+    def reecrire(self, question: str) -> str:
+        if question in self._cache:
+            return self._cache[question]
+        if self.appels >= 200:
+            raise RuntimeError("garde-fou : plus de 200 appels API dans une exécution")
+        reponse = self.client.messages.create(
+            model=self.modele,
+            max_tokens=200,
+            system=_SYSTEME,
+            messages=[{"role": "user", "content": question}],
+        )
+        self.appels += 1
+        usage = getattr(reponse, "usage", None)
+        if usage is not None:
+            self.tokens_entree += getattr(usage, "input_tokens", 0) or 0
+            self.tokens_sortie += getattr(usage, "output_tokens", 0) or 0
+        texte = " ".join(
+            bloc.text.strip() for bloc in reponse.content if getattr(bloc, "type", None) == "text"
+        ).strip()
+        self._cache[question] = texte
+        self.cache_path.parent.mkdir(parents=True, exist_ok=True)
+        self.cache_path.write_text(
+            json.dumps(self._cache, ensure_ascii=False, indent=2, sort_keys=True), encoding="utf-8"
+        )
+        return texte
+```
+
+- [ ] **Step 5 : Run** `uv run pytest tests/test_rewrite.py -q` → PASS (5 tests).
+
+- [ ] **Step 6 : Brancher sur `Searcher`** — ajouter `rewriter=None, mode_reecriture="remplace"` au constructeur ; dans `search()`, calculer une fois `requete_canaux = query` si `self.rewriter is None`, sinon la réécriture (`remplace`) ou `f"{query} {reecriture}"` (`etend`), et passer `requete_canaux` à `_bm25`/`_dense` **en laissant `_route(query)` sur la question originale**. Test à ajouter dans `tests/test_search.py` avec un faux rewriter (objet à méthode `reecrire`) : (a) `rewriter=None` reproduit le comportement actuel, (b) avec rewriter, une requête sans aucun token commun avec la fixture retrouve le document que la réécriture désigne, (c) une question contenant « article 111-1 » garde son résultat routé en position 0 même si la réécriture est absurde.
+
+- [ ] **Step 7 : Run** `uv run pytest tests/test_search.py tests/test_rewrite.py -q` → PASS ; `uv run pytest -q` (arrière-plan) → aucune régression.
+
+- [ ] **Step 8 : Ajouter la dépendance et l'exemple** — `pyproject.toml` : `"anthropic>=0.40"` dans `dependencies` ; `uv sync` ; créer `.env.example` contenant une seule ligne `ANTHROPIC_API_KEY=sk-ant-votre-cle-ici` avec un commentaire rappelant que `.env` est ignoré par git.
+
+- [ ] **Step 9 : Mesurer l'ablation G** — `--ablation G` dans `scripts/ablations_jalon3.py`, référence = meilleure config cumulée (D/E/F), configs :
+  1. réécriture `remplace` ;
+  2. réécriture `etend`.
+  Les réécritures des 61 questions dev sont produites une fois et mises en cache dans `docs/mesures/jalon3/reecritures.json` (le script journalise le nombre d'appels et les tokens consommés, à reporter dans le doc). Vérifier **avant** la mesure que le cache contient bien 61 entrées et **inspecter manuellement 5 réécritures** pour s'assurer qu'aucune ne contient de numéro d'article inventé (le prompt l'interdit ; une violation invaliderait la catégorie `reference_directe`) — reporter ces 5 exemples dans le rapport.
+
+- [ ] **Step 10 : Documenter** la section « Ablation G » de `docs/eval-jalon3.md` : les deux configs (delta/IC95/p/ventilation/latence/coût), la décision, 5 exemples de réécritures avant/après, et — point clé — le sort des questions que le diagnostic donnait hors d'atteinte (q021, q060 : leur gold entre-t-il enfin dans la fenêtre ?).
+
+- [ ] **Step 11 : Commit**
+
+```bash
+git add src/accounting_rag/config.py src/accounting_rag/rewrite.py tests/test_rewrite.py tests/test_search.py src/accounting_rag/search.py scripts/ablations_jalon3.py scripts/run_eval.py pyproject.toml uv.lock .env.example docs/eval-jalon3.md docs/mesures/jalon3
+git commit -m "feat(jalon3): réécriture de requête par LLM (ablation G) — mesurée par bootstrap, réécritures mises en cache"
+```
 
 ---
 
