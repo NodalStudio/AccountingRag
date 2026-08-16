@@ -337,3 +337,106 @@ Les 21 échecs dev identifiés en début de section restent **entièrement non r
 3. `_bm25()` utilise `limit=50` par défaut (`Searcher._bm25(self, query, limit=50)`) — ce paramètre n'a pas été modifié (hors périmètre de cette tâche, restreint à `SYNONYMES`) ; c'est pourtant la cause racine identifiée de l'inertie du lot. Une tâche future pourrait mesurer l'effet d'un `limit` plus large, indépendamment de tout ajout de synonyme.
 4. Le lot de candidats a été volontairement restreint à 3 entrées sur un maximum de 10 autorisé par le brief — la plupart des 21 échecs analysés ne présentaient aucune paire terme-à-terme légitime (ruling J2-5), et forcer le compte à 10 aurait signifié accepter des rapprochements plus risqués (paraphrases de clauses, catégories de devises) explicitement écartés par prudence ci-dessus.
 5. `docs/echecs-dev-jalon25.md` documente l'état des échecs **avant** le lot (matériau de la proposition) — comme le lot a été intégralement rejeté et retiré, cet état est aussi l'état **final** du split dev à l'issue de T5 ; aucune mise à jour de ce fichier n'était nécessaire après la mesure.
+
+## Clôture — dev final et référence test gelée (T6)
+
+Campagne exécutée le 16 août 2026, dernière tâche du jalon 2.5. **Configuration finale** évaluée (celle livrée par ce jalon) :
+
+- Mode `Searcher.search(mode="hybrid+rerank")` — reranker `BAAI/bge-reranker-v2-m3` (défaut de code, adopté en Ablation B / T4).
+- `Searcher` à paramètres neutres : `poids_chemin=1.0`, `boost_commentaire=1.0` (Ablation A / T3, **rejetée** — les deux paramètres restent à leur valeur neutre par défaut).
+- `SYNONYMES` d'origine, 9 entrées héritées du jalon 2 (Ablation C / T5, lot de 3 entrées candidates **rejeté** et retiré, index restauré à l'identique).
+
+Comparée systématiquement à la **baseline hybrid pure** (même `Searcher`, mode `hybrid`, mêmes paramètres neutres, mêmes synonymes) — c'est la config recommandée pour l'usage interactif (latence ~0,2 s/question), `hybrid+rerank` restant réservé aux campagnes batch ou au re-classement asynchrone (~130 s/question mesurés ici, cf. tableau ci-dessous).
+
+### Étape 1 — suite de tests complète
+
+```
+uv run pytest -q
+```
+
+→ **117 passed**, 3 warnings (avertissements CUDA/FutureWarning déjà connus, sans conséquence), en **167,56 s**. Aucune régression.
+
+### Étape 2 — campagne dev finale (61 questions)
+
+**Contrôle de fraîcheur préalable** (avant tout engagement sur la mesure coûteuse) : les dicts `par_question` bruts de la mesure T4 (`hybrid+rerank` sur dev) n'avaient **pas** été persistés sur disque — seuls les agrégats l'ont été, dans `resultat_BAAI_bge-reranker-v2-m3.json` (scratchpad). La persistance systématique des dicts `par_question` bruts (ruling J25-6) n'a été instaurée qu'à partir de T5, après la mesure T4. Or le bootstrap par catégorie demandé à cette étape nécessite ces dicts bruts filtrés par catégorie : ils ont donc été **régénérés** dans un script unique (`mesure_cloture.py`, scratchpad) qui exécute, dans le même processus (embedder + reranker partagés, alignement des ids garanti comme en T3/T4) :
+
+1. Un contrôle rapide — `hybrid` seul sur dev (13,3 s) — dont le `recall@10` est comparé à la référence T2/T3/T4 (0,672). **Résultat : 0,672, identique** (mrr=0,565 également identique) → l'index (`chunks=2160`, `records=1660`, `renvois=981`) et le code sont dans le même état qu'aux mesures précédentes ; la campagne complète peut procéder en confiance sur la même référence A que T3/T4/Ablation C.
+2. La campagne complète dev (baseline hybrid + config finale hybrid+rerank), avec persistance des dicts `par_question` bruts en JSON dans le scratchpad (`cloture_dev.json`, ruling J25-6).
+
+| run | config | recall@5 | recall@10 | MRR | latence/question |
+|---|---|---|---|---|---|
+| baseline | hybrid, neutre | 0,639 | 0,672 | 0,565 | 0,22 s |
+| finale | hybrid+rerank (bge-reranker-v2-m3) | 0,680 | 0,738 | 0,642 | 129,5 s |
+
+Ventilation par catégorie (recall@10) :
+
+| run | reference_directe (n=7) | regle (n=23) | vocabulaire_courant (n=31) |
+|---|---|---|---|
+| baseline | 1,0 | 0,935 | 0,403 |
+| finale | 1,0 | 1,0 | 0,484 |
+
+Bootstrap apparié global (`n_boot=10000`, `seed=42`) :
+
+| comparaison | delta | IC95 | p_amelioration |
+|---|---|---|---|
+| baseline vs finale (dev) | 0,0656 | (-0,0082 ; 0,1393) | 0,9524 |
+
+Ces chiffres sont **strictement identiques** à ceux mesurés en T4 (`resultat_BAAI_bge-reranker-v2-m3.json` : recall@5=0,68, recall@10=0,738, mrr=0,642, delta=0,0656, ic95=(-0,0082 ; 0,1393), p_amelioration=0,9524) — reproduction exacte, aucune dérive entre les deux mesures malgré la reconstruction complète des dicts `par_question`.
+
+Bootstrap apparié par catégorie (mêmes `n_boot`/`seed`, sous-ensemble des ids par catégorie) :
+
+| catégorie | n | delta | IC95 | p_amelioration |
+|---|---|---|---|---|
+| reference_directe | 7 | 0,0 | (0,0 ; 0,0) | 0,0 |
+| regle | 23 | 0,0652 | (0,0 ; 0,1739) | 0,8758 |
+| vocabulaire_courant | 31 | 0,0806 | (-0,0484 ; 0,2097) | 0,8642 |
+
+**Point notable** : le critère d'adoption formel (`p_amelioration ≥ 0,95`) n'est franchi par **aucune catégorie prise isolément** (`regle` 0,8758, `vocabulaire_courant` 0,8642 ; `reference_directe` reste à un plancher de 0 par effet de plafond, les deux runs valant déjà 1,0 sur les 7 questions) — seul le pool complet (n=61) franchit le seuil (0,9524). C'est un effet de puissance statistique attendu (n par catégorie 3 à 4 fois plus petit que n global), pas une contradiction : l'adoption T4 a toujours été jugée sur le critère global, avec la garde additionnelle « aucune catégorie ne perd de recall@10 » (vérifiée : les trois catégories sont à égalité ou en progrès).
+
+### Étape 3 — référence test gelée (29 questions), une seule exécution
+
+**Ce split ne sert à aucun choix.** Il est exécuté une unique fois, dans le même run que l'étape 2 (`mesure_cloture.py`), immédiatement après la campagne dev, sur `benchmark/test.jsonl` (29 questions : 3 `reference_directe`, 12 `regle`, 14 `vocabulaire_courant`), gelé depuis le 2026-08-16 (voir `benchmark/README.md`). Il est présenté ici comme **référence gelée jalon 2.5**, pas comme un signal d'ajustement — aucune décision de ce jalon ne s'appuie sur ces chiffres.
+
+| run | config | recall@5 | recall@10 | MRR | latence/question |
+|---|---|---|---|---|---|
+| baseline | hybrid, neutre | 0,621 | 0,690 | 0,470 | 0,20 s |
+| finale | hybrid+rerank (bge-reranker-v2-m3) | 0,707 | 0,759 | 0,626 | 120,6 s |
+
+Ventilation par catégorie (recall@10) :
+
+| run | reference_directe (n=3) | regle (n=12) | vocabulaire_courant (n=14) |
+|---|---|---|---|
+| baseline | 1,0 | 1,0 | 0,357 |
+| finale | 1,0 | 1,0 | 0,5 |
+
+Bootstrap apparié global (test) :
+
+| comparaison | delta | IC95 | p_amelioration |
+|---|---|---|---|
+| baseline vs finale (test) | 0,069 | (0,0 ; 0,1724) | 0,8773 |
+
+Bootstrap apparié par catégorie (test) :
+
+| catégorie | n | delta | IC95 | p_amelioration |
+|---|---|---|---|---|
+| reference_directe | 3 | 0,0 | (0,0 ; 0,0) | 0,0 |
+| regle | 12 | 0,0 | (0,0 ; 0,0) | 0,0 |
+| vocabulaire_courant | 14 | 0,1429 | (0,0 ; 0,3571) | 0,8884 |
+
+Dicts `par_question` bruts persistés (dev et test, baseline et finale) dans le scratchpad : `cloture_dev.json`, `cloture_test.json` (ruling J25-6).
+
+### Lecture
+
+- **Le gain de recall@10 réplique, voire s'accentue légèrement, sur test** : delta=0,069 (test) vs 0,0656 (dev) — le point d'estimation ne s'effondre pas hors dev, ce qui n'est pas le profil typique d'un sur-ajustement classique (un paramètre réglé sur le bruit du dev perd généralement de la valeur sur un split indépendant). Cohérent avec le fait que le reranker n'a reçu **aucun réglage** dérivé du dev (pas de seuil, pas d'hyperparamètre appris) — seul le **choix discret** du modèle (`bge-reranker-v2-m3` retenu contre `mmarco-mMiniLMv2-L12-H384-v1` rejeté, T4) a été décidé sur dev, ce qui reste une forme résiduelle et limitée de conditionnement au dev à garder en tête.
+- **Le `p_amelioration` global recule pourtant sur test** (0,8773 contre 0,9524 sur dev), sous le seuil d'adoption de 0,95. Lecture privilégiée : un effet de **taille d'échantillon**, pas de sur-ajustement — n=29 (test) contre n=61 (dev) réduit mécaniquement la puissance du bootstrap apparié pour un delta de magnitude comparable (voire supérieure) ; l'IC95 du test ((0,0 ; 0,1724)) est plus large en proportion et sa borne basse touche exactement 0. Si ce test avait dû arbitrer l'adoption (il ne l'a pas fait, cf. règle du jalon 2.5), le mode `hybrid+rerank` n'aurait pas franchi le seuil formel sur ce split seul — signal de fragilité statistique déjà noté en réserve de l'Ablation B (T4, réserve 1 : « réussite marginale du seuil »), maintenant partiellement corroboré par une deuxième mesure indépendante.
+- **`regle` est déjà à 1,0 en baseline sur test** (n=12, contre 0,935 sur dev, n=23) : la population test de cette catégorie ne laisse aucune marge de progression au reranker (`delta=0`, effet de plafond, comme `reference_directe` dans les deux splits) — c'est une différence de composition entre les tirages dev/test de cette catégorie, pas un signe que le reranker serait inefficace sur `regle` en général (il l'améliore nettement sur dev, 0,935→1,0).
+- **`vocabulaire_courant` confirme le bénéfice du reranker sur les deux splits** : dev 0,403→0,484 (delta catégorie 0,0806, p=0,8642), test 0,357→0,5 (delta catégorie 0,1429, p=0,8884) — la catégorie la plus difficile pour bm25/dense (fossé lexical, cf. Ablation C) reste celle qui bénéficie le plus du reranker sémantique, sur dev **et** sur test, ce qui est le signal le plus rassurant de cette clôture : le mécanisme (reclassement sémantique après fusion, indépendant des tokens bm25) répond bien au diagnostic structurel documenté en Ablation C, sur une population qu'il n'a jamais vue.
+- **La baseline hybrid elle-même diffère entre dev et test** (recall@10 0,672 vs 0,690, mrr 0,565 vs 0,470) sans qu'aucun réglage n'ait jamais touché ce mode pendant le jalon (paramètres neutres constants) : une partie de l'écart dev/test observé sur la config finale est donc de la variance d'échantillonnage inhérente à des populations de 61 et 29 questions tirées une fois, pas uniquement un effet du reranker ou de son choix de modèle.
+
+### Réserves
+
+1. Les dicts `par_question` bruts de `hybrid+rerank` sur dev n'existaient pas avant cette tâche (T4 n'avait persisté que les agrégats, ruling J25-6 instauré après T4) — ils ont été régénérés ici avec un contrôle de fraîcheur explicite (recall@10 et mrr baseline strictement identiques à T2/T3/T4) avant d'engager la mesure coûteuse ; la reproduction à l'identique des agrégats B face à T4 est une preuve supplémentaire d'absence de dérive entre les deux mesures (index, code, dépendances).
+2. La latence `hybrid+rerank` mesurée ici (129,5 s/question sur dev, 120,6 s/question sur test) diffère légèrement de celle mesurée en T4 (117,1 s/question) — variation attribuée à la charge de la machine au moment de la mesure (CPU partagé, pas de contrôle d'isolation), sans conséquence sur les conclusions (ordre de grandeur identique, ~600× le baseline).
+3. `test` (n=29) est une population presque deux fois plus petite que `dev` (n=61) : tout écart de quelques points de recall@10 doit être lu avec prudence, en particulier par catégorie (`reference_directe`, n=3 seulement sur test ; `regle`, n=12).
+4. `test` n'a été exécuté qu'une seule fois, jamais pendant le développement des tâches T1-T5 — conformément à la règle constante du jalon 2.5 ; ces chiffres ne doivent pas être réutilisés pour un nouvel ajustement, seulement cités comme référence gelée du jalon 2.5 dans les jalons suivants.
+5. Aucune comparaison n'est faite ici avec le benchmark v1 du jalon 2 (n=21 dev / n=9 test) : instruments différents, non comparables (cf. introduction de ce document).

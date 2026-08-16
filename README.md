@@ -76,12 +76,43 @@ resultats = searcher.search("comment amortir un logiciel acheté ?", k=5, mode="
 | hybrid | 0,81 | 0,81 | 0,763 |
 | hybrid+graph | 0,81 | 0,81 | 0,763 |
 
-Chiffres mesurés après la correction de la table d'apostrophes typographiques (U+2019) et de l'ordre stem→fold dans `normalize.py` (revue finale du jalon 2, index reconstruit) — voir l'avant/après complet dans `docs/eval-jalon2.md`. Le fossé lexical entre langage courant et jargon PCG reste le principal goulot (recall@10 de 0,571 sur la catégorie `vocabulaire_courant` en bm25, contre 0,95-1,0 sur les questions qui citent un article ou emploient le vocabulaire professionnel). Détail complet (ventilation par catégorie, durées, analyse d'erreurs, conditions de reproduction) : [`docs/eval-jalon2.md`](docs/eval-jalon2.md). Méthodologie et format du benchmark : [`benchmark/README.md`](benchmark/README.md).
+Chiffres mesurés après la correction de la table d'apostrophes typographiques (U+2019) et de l'ordre stem→fold dans `normalize.py` (revue finale du jalon 2, index reconstruit) — voir l'avant/après complet dans `docs/eval-jalon2.md`. Le fossé lexical entre langage courant et jargon PCG reste le principal goulot (recall@10 de 0,571 sur la catégorie `vocabulaire_courant` en bm25, contre 0,95-1,0 sur les questions qui citent un article ou emploient le vocabulaire professionnel). Détail complet (ventilation par catégorie, durées, analyse d'erreurs, conditions de reproduction) : [`docs/eval-jalon2.md`](docs/eval-jalon2.md). Méthodologie et format du benchmark de ce jalon (30 questions, remplacé depuis par le benchmark v2 ci-dessous) : voir l'historique dans [`benchmark/README.md`](benchmark/README.md).
 
-Reproduire la campagne :
+## Jalon 2.5 — benchmark étendu et reranker cross-encoder
+
+Le jalon 2.5 étend le benchmark à 90 questions (61 `dev` / 29 `test`, split stratifié et gelé) et mesure trois ablations par bootstrap apparié (`paired_bootstrap`, `n_boot=10000`, `seed=42`) : pondération par champ chemin/type (**rejetée**), reranker cross-encoder (**adoptée**), synonymes pilotés par les échecs mesurés (**rejetés**). Méthode, chiffres complets et réserves : [`docs/eval-jalon25.md`](docs/eval-jalon25.md) ; matériau d'analyse des échecs dev : [`docs/echecs-dev-jalon25.md`](docs/echecs-dev-jalon25.md) ; format et historique du benchmark v2 : [`benchmark/README.md`](benchmark/README.md).
+
+**Configuration finale livrée** : `Searcher.search(mode="hybrid+rerank")`, reranker `BAAI/bge-reranker-v2-m3` (défaut de code), paramètres `Searcher` neutres (`poids_chemin=1.0`, `boost_commentaire=1.0`), synonymes d'origine (9 entrées, jalon 2). Le reranker est configurable via la variable d'environnement `ACCRAG_RERANKER` (identifiant Hugging Face d'un autre modèle `sentence-transformers` de type `CrossEncoder`) :
+
+```python
+resultats = searcher.search("comment amortir un logiciel acheté ?", k=5, mode="hybrid+rerank")
+```
+
+`mode` accepte désormais `bm25`, `dense`, `hybrid`, `hybrid+graph` ou `hybrid+rerank`.
+
+**`hybrid+rerank` a un coût de latence majeur** (≈120-130 s/question mesurés sur cette machine, CPU 8 threads, aucun GPU — ≈600× la latence du hybrid baseline) et n'est **pas** inclus dans `scripts/run_eval.py --mode all` (qui reste rapide, ~1 min sur dev) : il s'invoque explicitement avec `--mode hybrid+rerank`. **Pour l'usage interactif, préférer `mode="hybrid"`** (~0,2 s/question, la baseline du tableau ci-dessous) ; `hybrid+rerank` convient aux campagnes d'évaluation batch ou à un re-classement asynchrone hors ligne.
+
+### Résultats — benchmark v2 (61 questions dev / 29 questions test gelé)
+
+| split | config | recall@5 | recall@10 | MRR | latence/question |
+|---|---|---|---|---|---|
+| dev (n=61) | hybrid (baseline, usage interactif) | 0,639 | 0,672 | 0,565 | 0,22 s |
+| dev (n=61) | hybrid+rerank (config finale) | 0,680 | 0,738 | 0,642 | 129,5 s |
+| test (n=29, **référence gelée**) | hybrid (baseline) | 0,621 | 0,690 | 0,470 | 0,20 s |
+| test (n=29, **référence gelée**) | hybrid+rerank (config finale) | 0,707 | 0,759 | 0,626 | 120,6 s |
+
+Le split `test` a été gelé le 16 août 2026 et exécuté **une seule fois**, à la clôture du jalon 2.5, sans avoir servi à aucun réglage — voir `benchmark/README.md`. Le gain de recall@10 du reranker réplique sur test (delta=0,069, comparable au delta=0,0656 mesuré sur dev), mais le test statistique global (bootstrap apparié) y est moins net (`p_amelioration`=0,877 contre 0,952 sur dev) : lecture privilégiée, un effet de taille d'échantillon (n=29 vs n=61, puissance statistique réduite) plutôt qu'un sur-ajustement du reranker au dev (il n'a reçu aucun réglage de seuil ou d'hyperparamètre dérivé du dev) — détail complet et réserves dans [`docs/eval-jalon25.md`](docs/eval-jalon25.md), section « Clôture ».
+
+Reproduire (dev, campagne rapide sans le reranker) :
 
 ```sh
 uv run python scripts/run_eval.py --mode all --split dev
+```
+
+Reproduire la config finale (lent, ≈130 s/question CPU sur cette machine) :
+
+```sh
+uv run python scripts/run_eval.py --mode hybrid+rerank --split dev
 ```
 
 ## Schéma
@@ -118,7 +149,7 @@ Graphe des références croisées extraites du texte.
 - Certains identifiants sont suffixés `#n` (54 cas) : le plus souvent des fragments réglementaires multiples pour un même article déjà ouvert (alinéas non contigus), ou une numérotation réutilisée par une annexe sectorielle qui reprend partiellement celle du PCG (ex. secteur du logement social).
 - **45 renvois pendants résiduels** (cibles non trouvées dans le corpus, essentiellement vers le plan de comptes en tableau, hors périmètre du parseur v1).
 - Seule l'édition 2026 du Recueil est couverte : pas d'historique des versions antérieures en v1 (le schéma prévoit les champs temporels pour une extension future).
-- **Jalon 2 (retrieval)** : pas de reranker, pas de réécriture de requête (query rewriting), pas de pondération par champ (`chemin` vs `texte` — spec §4 item 4 non implémentée à ce stade) ; le benchmark d'amorçage ne compte que n=30 questions au total (21 dev + 9 test), volontairement petit — voir les réserves statistiques dans [`docs/eval-jalon2.md`](docs/eval-jalon2.md).
+- **Jalon 2.5 (retrieval)** : reranker cross-encoder adopté (`hybrid+rerank`, ≈120-130 s/question CPU — batch/hors ligne uniquement, cf. ci-dessus) ; la pondération par champ (`chemin`/`type`) reste implémentée (`poids_chemin`, `boost_commentaire` sur `Searcher`) mais **non activée** (mesurée par bootstrap et rejetée, paramètres neutres par défaut) ; un lot de synonymes piloté par les échecs mesurés dev a également été rejeté (aucun effet mesurable, `p_amelioration=0`). Cause racine identifiée pour ce dernier rejet : la fenêtre `limit=50` de `_bm25()` (nombre de candidats bm25 retenus avant la fusion RRF) est trop étroite pour que les gains de rang mesurés (jusqu'à ~1200 rangs sur le cas contrôlé) atteignent le top-50 effectivement exploité — goulot identifié, non résolu ici (hors périmètre "dictionnaire de synonymes"), matière du **jalon 3**. Restent également hors périmètre du jalon 2.5, matière du jalon 3 : la **réécriture de requête** (vocabulaire courant → vocabulaire PCG, prévue par la spec §4) et des **embeddings métier** spécialisés (conditionnés à un plafonnement démontré du dense généraliste — spec §8, Phase 3). Détail des trois ablations (méthode, chiffres, décisions) : [`docs/eval-jalon25.md`](docs/eval-jalon25.md).
 
 ## Feuille de route
 
