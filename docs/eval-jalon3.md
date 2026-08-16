@@ -16,28 +16,28 @@ Campagne exécutée le **16 août 2026** sur la branche `jalon-3-recouvrement-nu
 
 ## Diagnostic fondateur
 
-Deux sondes jetables exécutées par le contrôleur avant la rédaction du plan de ce jalon (`sonde_discriminance.py`, `sonde_dense.py`, non versionnées) ont établi que le gold des questions dures de `vocabulaire_courant` se classe **systématiquement dernier** de sa liste de candidats lexicaux — retrouvé uniquement par des mots fonctionnels (aucun token de contenu partagé avec le record gold) — tandis que le canal dense le place dans une fenêtre atteignable (178-528 sur 1660) mais hors de la fenêtre `limit=50` utilisée par `hybrid` en production.
+Deux sondes jetables exécutées par le contrôleur avant la rédaction du plan de ce jalon (`sonde_discriminance.py`, `sonde_dense.py`, non versionnées) ont établi que le gold des questions dures de `vocabulaire_courant` se classe mal dans son classement lexical — retrouvé sans partager de token de contenu discriminant avec le record gold sur certaines questions — tandis que le canal dense le place dans une fenêtre atteignable (178-528 sur 1660) mais hors de la fenêtre `limit=50` utilisée par `hybrid` en production.
 
 `scripts/diagnostic_rangs.py` reproduit ce diagnostic à l'identique, sans reconstruire l'index, en calculant le rang du gold dans TROIS classements complets (sans troncature `LIMIT`) : lexical non filtré, lexical filtré à un `df_max` donné, dense.
 
-Reproduction (`uv run python scripts/diagnostic_rangs.py --questions q021,q026,q060,q023`) :
+**Correction (revue T2, 16 août 2026)** : la première version de cet outil avait hérité, sans le savoir, un bug de la sonde jetable fondatrice qu'il remplaçait (`sonde_discriminance.py`) : `_rang_gold_lexical` retournait DÈS la découverte du gold (`return rang, len(vus)` dans la boucle), si bien que le second nombre de la paire « rang/total » valait mécaniquement le rang lui-même — jamais la taille réelle du classement. D'où les paires "154/154", "46/46", "1430/1430" publiées dans une version antérieure de cette section : ce n'étaient PAS des données (« le gold est toujours dernier de son classement »), mais un pur artefact de sonde (« le gold est le n-ième et dernier record scanné avant l'arrêt anticipé de la boucle »). Corrigé : le total est désormais la taille RÉELLE du classement complet, calculée indépendamment de la position où le gold est trouvé (cf. docstring de `_rang_gold_lexical` dans `scripts/diagnostic_rangs.py`, et `tests/test_diagnostic_rangs.py` pour la non-régression). Le JSON committé (`docs/mesures/jalon3/diagnostic_rangs.json`) était en outre périmé : régénéré avec l'outil corrigé, et avec les tokens non dédupliqués (correction du défaut 3 de T1, cf. § Ablation D) — d'où 1453 pour q060 (au lieu de 1430 dans la version périmée).
+
+Reproduction (`uv run python scripts/diagnostic_rangs.py --questions q021,q026,q060,q023`), chiffres corrigés et vérifiés par SQL direct (contrôle indépendant) :
 
 | question | catégorie | gold | lexical (non filtré) | lexical (df≤2%) | dense |
 |---|---|---|---|---|---|
-| q021 | vocabulaire_courant | pcg-214-13 | 154/154 | ABSENT/38 | 178/1660 |
-| q026 | vocabulaire_courant | pcg-212-3 | 46/46 | **14/14** | 248/1660 |
-| q060 | vocabulaire_courant | pcg-1222-74 | 1430/1430 | ABSENT/63 | 528/1660 |
-| q023 | vocabulaire_courant | pcg-214-22 | 2/2 | ABSENT/52 | 257/1660 |
+| q021 | vocabulaire_courant | pcg-214-13 | 154/1585 | ABSENT/38 | 178/1660 |
+| q026 | vocabulaire_courant | pcg-212-3 | 46/1659 | **14/67** | 248/1660 |
+| q060 | vocabulaire_courant | pcg-1222-74 | 1453/1659 | ABSENT/63 | 528/1660 |
+| q023 | vocabulaire_courant | pcg-214-22 | 2/1653 | ABSENT/52 | 257/1660 |
 
-**Contrôle de l'outil (fidélité à la sonde fondatrice) — reproduction exacte, aucun écart** :
-- q021 : lexical **154/154** (attendu 154/154 ✓), dense **178**/1660 (attendu 178 ✓).
-- q026 : lexical **46/46** (attendu 46/46 ✓), filtré df≤2% **14/14** (attendu 14/14 ✓), dense **248** (attendu 248 ✓).
-- q060 : lexical **1430/1430** (attendu 1430/1430 ✓), dense **528** (attendu 528 ✓).
-- q023 : dense **257** (attendu 257 ✓) — aucun chiffre lexical fondateur n'existait pour q023 (la sonde `sonde_discriminance.py` n'exécutait que q021/q026/q060) ; le rang lexical non filtré de q023 (2/2) est une donnée nouvelle, produite par l'outil versionné, pas une reproduction.
+**Lecture — quatre profils distincts, pas un seul cas** : le diagnostic initial groupait ces quatre questions sous un même verdict (« le gold se classe mal en lexical ») ; les rangs corrigés montrent qu'il s'agit en réalité de quatre profils différents :
+- **q023** : rang lexical **2**/1653 — quasi immédiat, largement dans toute fenêtre réaliste (`limit=50` suffit déjà en production).
+- **q026** : rang lexical **46**/1659 — juste EN-DESSOUS de la fenêtre par défaut (`limit=50`) : son gold entre donc déjà dans le pool bm25 au réglage neutre du jalon 2.5, sans qu'aucun levier de ce jalon soit nécessaire pour cette question précise (confirmé à la mesure T2, § Ablation E : couvert dès `pool=50`). Le filtrage `df_max` l'améliore encore (46→14) en écartant les mots fonctionnels qui diluaient son score.
+- **q021** : rang lexical **154**/1585 — hors de la fenêtre par défaut, mais à portée d'un pool élargi (`pool≥154`, donc `pool=200` suffit) : confirmé à la mesure T2 (couvert dès `pool=200`, absent à 50 et 100).
+- **q060** : rang lexical **1453**/1659 (88 % du classement) — le seul véritablement muet côté lexical, hors d'atteinte de tout pool réaliste testé dans ce jalon (`pool=400` encore insuffisant, § Ablation E) et du filtrage `df_max` (disparaît du pool filtré, `ABSENT`).
 
-**Note de convention (documentée dans le code, `_rang_gold_lexical`/`_rang_gold_dense`)** : les deux sondes fondatrices avaient des conventions DIFFÉRENTES pour le second nombre de la paire "rang/total" — `sonde_discriminance.py` s'arrêtait dès le gold trouvé, si bien que ce second nombre est TOUJOURS égal au rang lui-même quand le gold est trouvé (ex. "154/154" ne signifie pas "154 candidats au total", mais "le gold est le 154e et dernier record distinct scanné avant l'arrêt") ; `sonde_dense.py` ne s'arrêtait pas et comptait la taille réelle du classement complet (1660, le corpus entier). `scripts/diagnostic_rangs.py` reproduit fidèlement les deux conventions, une par canal — sciemment conservées telles quelles pour que le contrôle ci-dessus soit un contrôle bit à bit, pas une réinterprétation.
-
-**Lecture** : le filtrage lexical (`df_max`) ne repêche le gold que lorsqu'il partage au moins un token RARE avec la question (cas q026, rang 46→14, entre dans une fenêtre `limit` réaliste) ; quand aucun token de contenu n'est commun (q021, q060), le gold disparaît purement et simplement du pool filtré (`ABSENT`) — le filtrage ne peut pas inventer un signal qui n'existe pas. Le canal dense reste, dans tous les cas mesurés ici, le seul à placer le gold dans une fenêtre non triviale (178-528).
+Le filtrage lexical (`df_max`) ne repêche donc le gold que lorsqu'il partage déjà au moins un token RARE avec la question (cas q026, rang 46→14) ; quand aucun token de contenu n'est commun (q021, q060), le gold disparaît purement et simplement du pool filtré (`ABSENT`) — le filtrage ne peut pas inventer un signal qui n'existe pas. Le canal dense reste, dans tous les cas mesurés ici, le seul à placer TOUS ces golds dans une fenêtre non triviale (178-528 sur 1660), y compris q060.
 
 ## Ablation D — filtrage par fréquence documentaire (`df_max`)
 

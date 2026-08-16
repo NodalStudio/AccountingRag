@@ -8,7 +8,7 @@
       "categorie": "vocabulaire_courant",
       "lexical_non_filtre": {
         "rang": 154,
-        "candidats": 154
+        "candidats": 1585
       },
       "lexical_filtre": {
         "df_max": 0.02,
@@ -25,12 +25,12 @@
       "categorie": "vocabulaire_courant",
       "lexical_non_filtre": {
         "rang": 46,
-        "candidats": 46
+        "candidats": 1659
       },
       "lexical_filtre": {
         "df_max": 0.02,
         "rang": 14,
-        "candidats": 14
+        "candidats": 67
       },
       "dense": {
         "rang": 248,
@@ -41,8 +41,8 @@
       "gold": "pcg-1222-74",
       "categorie": "vocabulaire_courant",
       "lexical_non_filtre": {
-        "rang": 1430,
-        "candidats": 1430
+        "rang": 1453,
+        "candidats": 1659
       },
       "lexical_filtre": {
         "df_max": 0.02,
@@ -59,7 +59,7 @@
       "categorie": "vocabulaire_courant",
       "lexical_non_filtre": {
         "rang": 2,
-        "candidats": 2
+        "candidats": 1653
       },
       "lexical_filtre": {
         "df_max": 0.02,

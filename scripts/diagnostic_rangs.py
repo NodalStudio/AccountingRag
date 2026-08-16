@@ -18,6 +18,13 @@ repêche un record gold qui se classe dernier en lexical non filtré faute de to
 discriminant commun avec la question — c'est le diagnostic qui motive `df_max`
 (cf. `Searcher._termes_match`, docs/eval-jalon3.md).
 
+Note (revue T2, corrigée) : la première version de cet outil avait hérité un bug de
+la sonde jetable fondatrice qu'il remplaçait : `_rang_gold_lexical` retournait dès la
+découverte du gold, si bien que le total affiché ("candidats") valait mécaniquement
+le rang lui-même (154/154, 46/46, 1430/1430 dans le diagnostic fondateur d'origine —
+un artefact, pas une donnée). Corrigé : le total est désormais la taille RÉELLE du
+classement complet, indépendante du rang trouvé (cf. `_rang_gold_lexical`).
+
 Coût : le canal dense charge le modèle d'embeddings (`Embedder`, e5-small) au premier
 appel, ~50 s sur cette machine (CPU). Le canal lexical est quasi instantané (SQLite
 FTS5). Le chargement n'a lieu qu'une fois pour toutes les questions demandées (`Embedder`
@@ -45,32 +52,31 @@ OUT_DIR = ROOT / "docs/mesures/jalon3"
 
 
 def _rang_gold_lexical(ranked: list[str], gold: str) -> tuple[int | None, int]:
-    """Rang du premier id de `ranked` qui matche `gold`, convention `sonde_discriminance.py`.
+    """Rang (1-indexé) du premier id de `ranked` qui matche `gold`, et TAILLE RÉELLE
+    de `ranked` (nombre de candidats distincts du classement complet).
 
-    Cette sonde s'arrêtait dès que le gold était trouvé (`return rang, len(vus)` DANS
-    la boucle) : à cet instant précis, le nombre de records distincts scannés (`vus`)
-    est TOUJOURS égal au rang lui-même (ils sont incrémentés ensemble à chaque record
-    distinct). D'où les paires "154/154", "46/46", "1430/1430" du diagnostic fondateur —
-    le second nombre n'est PAS la taille du classement complet, c'est le rang lui-même
-    répété. Convention conservée à l'identique pour reproduire ces chiffres bit à bit
-    (contrôle de l'outil, cf. docs/eval-jalon3.md). Si le gold est absent, la boucle va
-    jusqu'au bout : le second élément est alors la taille réelle de `ranked`.
+    Bug corrigé (revue T2) : la première version de cette fonction reproduisait à
+    l'identique un bug de la sonde jetable fondatrice (`sonde_discriminance.py`), qui
+    retournait DÈS la découverte du gold (`return rang, len(vus)` DANS la boucle) — à
+    cet instant, le nombre de records scannés est TOUJOURS égal au rang lui-même,
+    donc le second nombre valait mécaniquement le rang, jamais la taille réelle du
+    classement (d'où les paires artefactuelles "154/154", "46/46", "1430/1430" du
+    diagnostic fondateur — PAS des données, un artefact de sonde). Corrigé : le
+    total (`len(ranked)`) est maintenant calculé indépendamment de la position où le
+    gold est trouvé, comme `_rang_gold_dense` ci-dessous (même convention pour les
+    deux canaux désormais).
     """
+    total = len(ranked)
     for rang, rid in enumerate(ranked, start=1):
         if match(rid, gold):
-            return rang, rang
-    return None, len(ranked)
+            return rang, total
+    return None, total
 
 
 def _rang_gold_dense(ranked: list[str], gold: str) -> tuple[int | None, int]:
-    """Rang du premier id de `ranked` qui matche `gold`, convention `sonde_dense.py`.
-
-    Cette sonde ne s'arrêtait PAS à la première correspondance (elle continuait à
-    parcourir tous les rows pour compter `records_distincts`) : le second élément
-    retourné est donc la taille réelle du classement complet dédupliqué (ex. 1660,
-    le nombre total de records du corpus), pas le rang. Convention distincte de
-    `_rang_gold_lexical` ci-dessus, conservée à l'identique par canal.
-    """
+    """Rang (1-indexé) du premier id de `ranked` qui matche `gold`, et taille réelle
+    de `ranked` — même convention que `_rang_gold_lexical` ci-dessus (unifiée après
+    correction du bug de comptage, cf. sa docstring)."""
     rang = None
     for i, rid in enumerate(ranked, start=1):
         if rang is None and match(rid, gold):
