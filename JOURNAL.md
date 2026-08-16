@@ -212,3 +212,26 @@ Le jalon 2.5 attaque le fossé lexical chiffré au jalon 2, avec la discipline p
 **Ablation C (synonymes pilotés par les échecs) : rejet le plus instructif du jalon.** Sur les 21 échecs du dev, la plupart n'offrent AUCUNE paire terme-courant → terme-PCG légitime (la règle du jalon 2 : jamais rapprocher deux concepts comptables distincts). Le lot prudent de 3 entrées mesuré : delta exactement nul, résultats identiques bit à bit. Autopsie scriptée : les synonymes ATTEIGNENT la requête normalisée et font gagner ~1 200 rangs au document gold (1453 → 210 sur 1659)… qui reste à 160 rangs de la fenêtre limit=50 que BM25 transmet à la fusion. Le fossé restant n'est pas un problème de vocabulaire : c'est un problème de discriminance (IDF) et de fenêtre de candidats. Voilà le goulot du jalon 3, identifié par la mesure et non par l'intuition.
 
 **Note de méthode** : les trois « défauts de traçabilité » attrapés par les revues de ce jalon (explication mécanique fausse mais conclusion juste ; chiffre-clé non reproductible à ±15 % ; scores par question non persistés) relèvent tous du même antipattern — affirmer « vérifié » sans artefact reproductible. Nouvelle règle du projet : toute mesure persiste ses données brutes, tout chiffre cité a son script.
+
+---
+## Session du 16 août 2026 — Jalon 3 : sonder avant de planifier
+
+Le jalon 2.5 s'était conclu sur un coupable désigné : « le goulot, c'est la fenêtre de 50 candidats de BM25 ». J'allais écrire un plan entier autour de cette hypothèse. Avant, j'ai passé dix minutes à la sonder. Elle était **partiellement fausse**, et ce que la sonde a trouvé à la place a réécrit le plan.
+
+**Le gold est toujours dernier.** Pour les trois questions dev les plus dures, le bon article n'est pas « quelque part au fond du classement » : il est **exactement dernier** de sa liste de candidats — rang 154/154, 46/46, 1430/1430. Ce n'est pas un problème de score, c'est un aveu : l'article n'est retrouvé que par les mots vides de la question (« le », « de », « une »), parce qu'il ne partage **aucun mot de contenu** avec elle. Le canal lexical n'est pas médiocre sur ces questions, il est structurellement muet.
+
+**Filtrer les mots trop fréquents nettoie beaucoup, mais ne crée rien.** En écartant les tokens présents dans plus de 2 % des chunks, le pool de la question q060 tombe de 1430 à 63 candidats, et le gold de q026 remonte du rang 46 au rang 14 — il entre enfin dans la fenêtre que voit le reranker. Mais q021 et q060 *disparaissent* du pool : quand il n'y a aucun mot rare partagé, filtrer ne peut pas inventer un lien. Et la conjonction des mots rares (`AND` au lieu de `OR`) donne zéro candidat dans les trois cas — voie morte, éliminée avant d'avoir coûté une tâche.
+
+**Le canal dense, lui, voit quelque chose.** Il place ces mêmes golds aux rangs 178, 248, 257 et 528 sur 1660. Hors de la fenêtre de 50 — mais parfaitement atteignable avec un pool de 200 à 400. D'où le vrai arbitrage du jalon, que je n'aurais pas su formuler sans la sonde : **modèle de reranking faible sur beaucoup de candidats, ou modèle fort sur peu ?** Le reranker lourd adopté au jalon 2.5 coûte 4,7 s par candidat — inutilisable sur 200 (15 min/question). Le modèle léger *rejeté* au jalon 2.5, lui, tient 200 candidats en 80 secondes. Le perdant d'hier redevient le seul candidat crédible dès qu'on change une autre variable : voilà pourquoi on garde les résultats négatifs.
+
+Leçon de méthode : une sonde de dix minutes avant d'écrire un plan de quatre tâches. Le plan qui en sort ne teste plus mes intuitions, il teste ce que les données désignent — et il commence par un tableau de rangs que n'importe qui peut régénérer.
+
+### Le fichier .env qui n'était pas ignoré
+
+L'utilisateur a déposé une clé API dans un `.env` en demandant de bien l'exclure de git. Vérification : `.env` n'était couvert par **aucune** règle du `.gitignore` — il apparaissait en fichier non suivi, à un `git add -A` de se retrouver dans un commit, sur un dépôt public, avec plusieurs sous-agents en train de committer sur la branche. L'historique était heureusement vierge (zéro occurrence de `sk-ant-` dans les fichiers suivis comme dans tout l'historique poussé), donc rien à révoquer.
+
+Ce qui mérite d'être noté pour le blog, c'est l'ordre des opérations : la demande était « ajoute la clé au gitignore », le réflexe correct est « vérifie d'abord si elle a déjà fuité, ensuite protège ». Un `.gitignore` corrigé sur un secret déjà commité donne une fausse impression de sécurité — le fichier disparaît du statut, et la clé reste dans l'historique pour toujours.
+
+### Ce que la clé débloque, et à quel prix
+
+Une ablation supplémentaire : la réécriture de requête par LLM, qui traduit « comment je répartis le coût d'une machine » en « amortissement immobilisation corporelle plan d'amortissement ». C'est le seul levier restant pour les questions à recouvrement nul. Trois garde-fous inscrits au plan : le réécriveur ne voit **que** la question (jamais les citations attendues — sinon on ferait fuiter la réponse dans la requête et la mesure ne vaudrait plus rien), les réécritures sont mises en cache dans un JSON commité (premier run à quelques centimes, tous les suivants gratuits et reproductibles à l'identique), et un garde-fou dur à 200 appels par exécution.
