@@ -158,3 +158,63 @@ Motivation :
 - Les deux ablations ont été mesurées **une à la fois** (méthode imposée par le brief), pas en grid search ; une interaction positive entre `poids_chemin` et `boost_commentaire` à d'autres valeurs n'est pas exclue mais sort du périmètre de cette tâche.
 - `poids_chemin` n'a d'effet mesurable que via la position relative dans le classement bm25 **avant** fusion RRF ; sur un corpus où le champ `chemin` porte plus d'information distinctive (hiérarchie de plan plus profonde/variée), l'effet pourrait différer — ce résultat est spécifique à `data/corpus.db` (PCG 2026) tel qu'indexé aujourd'hui.
 - Les tests unitaires (`tests/test_search.py`) valident le comportement des deux paramètres sur une base synthétique conçue pour isoler chaque effet (voir `test_poids_chemin_favorise_le_chemin`, `test_boost_commentaire_penalise`) — ils démontrent que le mécanisme fonctionne, indépendamment de la décision de ne pas l'activer par défaut sur le corpus réel.
+
+## Ablation B — reranker cross-encoder (T4)
+
+Nouveau module `src/accounting_rag/rerank.py` (`Reranker(model_name=None)`, env `ACCRAG_RERANKER`) et nouveau mode `Searcher.search(mode="hybrid+rerank")` : les résultats routés (référence d'article exacte, source `route`) restent épinglés en tête **sans** repasser par le reranker ; la fusion RRF (bm25+dense, canaux à leurs limites par défaut) est récupérée à 25 candidats non routés, rerankée par le cross-encoder (`score_rerank` ajouté, tri décroissant), puis tronquée à `k - len(routed)`. Chaque texte est tronqué à 1000 caractères avant l'appel `predict()` pour borner la latence par paire.
+
+### Méthode
+
+Référence de mesure : le **hybrid baseline pur** (paramètres neutres `poids_chemin=1.0`, `boost_commentaire=1.0`), re-runné dans le même processus python que les runs `hybrid+rerank` (embedder e5 partagé) pour garantir l'alignement des ids `par_question` — la pondération par champ ayant été rejetée en T3, ce n'est pas une config candidate ici (ruling J25-1). Deux modèles de reranker mesurés indépendamment contre cette même référence A (une comparaison par modèle, pas de comparaison directe modèle-à-modèle) :
+
+1. **B1** = `cross-encoder/mmarco-mMiniLMv2-L12-H384-v1` (multilingue, léger — pressenti comme défaut dans le brief avant mesure).
+2. **B2** = `BAAI/bge-reranker-v2-m3` (2,2 Go — alternative prévue par le brief en cas de rejet de B1 ; testée ici car la machine dispose de 30 Gio de RAM et 69 Gio de disque libre, largement suffisant).
+
+`benchmark/dev.jsonl` (61 questions), `k=10`, script ad hoc (non versionné, scratchpad) instanciant un `Embedder` unique partagé entre les deux `Searcher` (A et B) de chaque run, et un `Reranker` par modèle testé. Critère d'adoption (contrainte globale du plan) : `p_amelioration ≥ 0,95` **ET** aucune catégorie ne perd plus de 0,05 de recall@10 vs A.
+
+### Résultats
+
+| run | config | recall@5 | recall@10 | MRR | latence/question |
+|---|---|---|---|---|---|
+| A | hybrid baseline neutre (re-mesuré) | 0,639 | 0,672 | 0,565 | 0,20 s |
+| B1 | hybrid+rerank, `mmarco-mMiniLMv2-L12-H384-v1` | 0,672 | 0,713 | 0,610 | 10,0 s |
+| B2 | hybrid+rerank, `bge-reranker-v2-m3` | 0,680 | 0,738 | 0,642 | 117,1 s |
+
+A re-mesuré ici (même processus python, embedder e5 partagé avec B1/B2) est identique au A de T3 et à la baseline hybrid du corps principal de ce document (recall@10=0,672, mrr=0,565) — alignement des ids `par_question` garanti (ruling J25-1).
+
+Ventilation par catégorie (recall@10) :
+
+| run | reference_directe (n=7) | regle (n=23) | vocabulaire_courant (n=31) |
+|---|---|---|---|
+| A | 1,0 | 0,935 | 0,403 |
+| B1 (mmarco) | 1,0 | 1,0 | 0,435 |
+| B2 (bge) | 1,0 | 1,0 | 0,484 |
+
+Bootstrap apparié (`n_boot=10000`, `seed=42`, sur `evaluate(..., mode=..., k=10)["par_question"]`) :
+
+| comparaison | delta | IC95 | p_amelioration | pire perte par catégorie | seuil (p≥0,95 et perte≤0,05) | adopté ? |
+|---|---|---|---|---|---|---|
+| A vs B1 (mmarco-mMiniLMv2-L12-H384-v1) | 0,0410 | (-0,0246 ; 0,1148) | 0,858 | 0,000 (aucune perte, seulement des gains) | non atteint | **non** |
+| A vs B2 (bge-reranker-v2-m3) | 0,0656 | (-0,0082 ; 0,1393) | 0,952 | 0,000 (aucune perte, seulement des gains) | **atteint** | **oui** |
+
+### Décision
+
+**Adopté — avec un coût de latence majeur à documenter.** Le mode `hybrid+rerank` est livré et son critère d'adoption est jugé sur le **meilleur des deux rerankers mesurés** (consigne explicite reçue en cours de tâche) :
+
+- **`cross-encoder/mmarco-mMiniLMv2-L12-H384-v1`** (modèle initialement pressenti comme défaut dans le brief, avant mesure) : `p_amelioration=0,858`, sous le seuil de 0,95 — **REJETÉ** malgré un gain de recall@10 réel et positif (0,672→0,713) et l'absence de toute perte de catégorie. Le gain existe mais n'est pas assez robuste statistiquement sur n=61 pour franchir le seuil fixé par le plan.
+- **`BAAI/bge-reranker-v2-m3`** : `p_amelioration=0,952`, **franchit** le seuil de 0,95 (de peu — IC95 = (-0,0082 ; 0,1393), la borne basse reste très légèrement négative) ; aucune catégorie ne perd de recall@10 (les trois s'améliorent ou restent égales) — **ADOPTÉ** au sens strict du critère.
+
+Conséquence de ce résultat : le défaut de `Reranker` (`_DEFAULT` dans `rerank.py`, utilisé si `ACCRAG_RERANKER` n'est pas positionné) devient `BAAI/bge-reranker-v2-m3` — et non `mmarco-mMiniLMv2-L12-H384-v1` comme initialement pressenti dans le brief avant mesure, ce dernier ayant été rejeté par la mesure elle-même. `hybrid+rerank` est ajouté à `--mode all` de `scripts/run_eval.py`.
+
+**Coût mesuré du gain (le point central de cette décision) :** `bge-reranker-v2-m3` coûte **117,1 s par question** sur cette machine (CPU, 8 threads, aucun GPU exploitable), soit **≈585× la latence du hybrid baseline** (0,20 s/question) et **≈11,7× celle de `mmarco-mMiniLMv2-L12-H384-v1`** (10,0 s/question, lui-même déjà rejeté). Une campagne `--mode all` sur les 61 questions du split dev, qui prenait auparavant environ une minute, passe désormais à environ deux heures à cause de ce seul mode. Ce coût n'entre pas dans le critère d'adoption formel (purement statistique), mais doit être visible pour tout appelant de `--mode all` ou de `hybrid+rerank` en contexte interactif — ce mode n'est **pas** adapté à une latence de requête utilisateur en l'état (117 s/requête), seulement à des campagnes d'évaluation batch ou du re-classement asynchrone hors ligne.
+
+`mmarco-mMiniLMv2-L12-H384-v1` reste documenté et disponible via `ACCRAG_RERANKER=cross-encoder/mmarco-mMiniLMv2-L12-H384-v1` pour les contextes où une latence de ~10 s/question est acceptable mais 117 s/question ne l'est pas — avec le rappel explicite que ce choix n'a **pas** franchi le seuil d'adoption statistique (rejeté, gain non garanti au sens du critère).
+
+### Réserves
+
+1. `p_amelioration=0,952` pour `bge-reranker-v2-m3` est une réussite **marginale** du seuil (0,95 exigé) — l'IC95 inclut encore une borne basse légèrement négative (-0,0082), signe qu'une petite fraction (~4,8 %) des tirages bootstrap ne montre pas d'amélioration. Ce n'est pas un résultat écrasant ; une mesure sur `test` (29 questions, en fin de jalon suivant, jamais avant) pourrait confirmer ou nuancer ce verdict.
+2. Le coût de latence (117 s/question) n'a pas été optimisé (pas de quantification, pas d'ONNX Runtime, pas de GPU, batch naïf de 25 paires par requête via `CrossEncoder.predict()` par défaut) — une latence bien plus faible est probablement atteignable avec des optimisations d'inférence hors périmètre de cette tâche. Le chiffre mesuré ici est celui d'une intégration directe, pas une borne physique du modèle.
+3. Les deux rerankers ont été mesurés **une fois chacun** contre la même référence A (pas de répétition ni de validation croisée) ; `n_boot=10000` avec `seed=42` fixe la reproductibilité du bootstrap, pas la variance d'échantillonnage du benchmark lui-même (n=61).
+4. Le chargement du modèle (téléchargement HuggingFace au premier appel, ~2,2 Go pour `bge-reranker-v2-m3`, ~470 Mo pour `mmarco-mMiniLMv2-L12-H384-v1`) n'est pas comptabilisé dans la latence par question ci-dessus (mesurée après chargement, sur les 61 appels `search()`) — chargé une fois en ~25-55 s dans le script de mesure.
+5. Aucune valeur voisine de robustesse n'a été mesurée pour un troisième modèle : le brief ne prévoit qu'UNE alternative en cas de rejet du défaut pressenti, ce qui a été fait (`bge-reranker-v2-m3`).
+6. Les tests (`tests/test_rerank.py`) utilisent exclusivement un `FakeCrossEncoder`/`FakeReranker` injecté — aucun téléchargement, aucune dépendance à la mesure ci-dessus pour passer. Le comportement d'épinglage du routeur (`test_mode_hybrid_rerank_epingle_le_route`) est vérifié sur la base synthétique déjà existante dans `tests/test_search.py` (fixture `searcher_synthetique` réutilisée par import direct).

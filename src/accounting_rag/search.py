@@ -8,12 +8,13 @@ from .normalize import normalize
 _REF_QUERY = re.compile(r"\bart(?:icle)?s?\.?\s*(\d{2,4}-\d+(?:-\d+)*)", re.I)
 # Routage des références lettrées (L./R./D., code de commerce) différé à l'ingestion LEGI — aucun article lettré dans le corpus PCG actuel.
 _RRF_K = 60
-_MODES = {"bm25", "dense", "hybrid", "hybrid+graph"}
+_MODES = {"bm25", "dense", "hybrid", "hybrid+graph", "hybrid+rerank"}
 
 
 class Searcher:
     def __init__(self, db_path: Path, embedder=None,
-                 poids_chemin: float = 1.0, boost_commentaire: float = 1.0):
+                 poids_chemin: float = 1.0, boost_commentaire: float = 1.0,
+                 reranker=None):
         if not Path(db_path).exists():
             raise FileNotFoundError(
                 f"corpus introuvable : {db_path} — lancez scripts/download_data.py, "
@@ -25,6 +26,7 @@ class Searcher:
         sqlite_vec.load(self.con)
         self.con.enable_load_extension(False)
         self._embedder = embedder
+        self._reranker = reranker
         # Valeurs neutres par défaut (1.0, 1.0) : comportement jalon 2 inchangé.
         # float() valide l'entrée avant de la lier en paramètre SQL (Ruling J25-2).
         self.poids_chemin = float(poids_chemin)
@@ -36,6 +38,13 @@ class Searcher:
             from .embed import Embedder
             self._embedder = Embedder()
         return self._embedder
+
+    @property
+    def reranker(self):
+        if self._reranker is None:
+            from .rerank import Reranker
+            self._reranker = Reranker()
+        return self._reranker
 
     def _record(self, record_id: str, score: float, source: str) -> dict:
         row = self.con.execute(
@@ -141,11 +150,23 @@ class Searcher:
         ranked = sorted(scores, key=scores.get, reverse=True)
         source = "fusion" if mode.startswith("hybrid") else mode
         n_restants = max(k - len(routed), 0)
-        results = [
-            self._record(rid, scores[rid], source)
-            for rid in ranked
-            if rid not in routed_ids
-        ][:n_restants]
+        if mode == "hybrid+rerank":
+            # Les résultats routés (référence d'article exacte) sont épinglés sans
+            # repasser par le reranker. La fusion est récupérée à 25 candidats
+            # (borne le nombre d'appels predict() du cross-encoder) puis rerankée,
+            # tronquée à n_restants.
+            candidates = [
+                self._record(rid, scores[rid], source)
+                for rid in ranked
+                if rid not in routed_ids
+            ][:25]
+            results = self.reranker.rerank(query, candidates, top_k=n_restants)
+        else:
+            results = [
+                self._record(rid, scores[rid], source)
+                for rid in ranked
+                if rid not in routed_ids
+            ][:n_restants]
         out = routed + results
         if mode == "hybrid+graph":
             out = self._expand_graph(out, k)
