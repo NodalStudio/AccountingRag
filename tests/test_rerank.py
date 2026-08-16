@@ -23,6 +23,19 @@ class RecordingFakeCrossEncoder:
         return [len(p) for _, p in pairs]
 
 
+class CountingFakeCrossEncoder:
+    """Comme FakeCrossEncoder, mais compte les appels à predict() — pour vérifier la
+    garde top_k<=0 (les routés remplissent déjà k : aucun appel predict ne doit avoir
+    lieu, jusqu'à ~2 min de calcul cross-encoder inutile évitées en production)."""
+
+    def __init__(self):
+        self.appels = 0
+
+    def predict(self, pairs):
+        self.appels += 1
+        return [len(set(q.lower().split()) & set(p.lower().split())) for q, p in pairs]
+
+
 class FakeReranker:
     """Reranker factice pour les tests de search.py : score = longueur du texte
     (déterministe), afin de vérifier que le mode hybrid+rerank rerank bien les
@@ -49,6 +62,20 @@ def test_rerank_resultats_vides():
     r = Reranker.__new__(Reranker)
     r.model = FakeCrossEncoder()
     assert r.rerank("peu importe", [], top_k=5) == []
+
+
+def test_rerank_top_k_zero_appelle_pas_predict():
+    # Cas réel : les routés remplissent déjà k (n_restants=0 dans search()). Sans cette
+    # garde, on appellerait predict() sur jusqu'à 25 candidats pour rien — jusqu'à ~2 min
+    # de calcul cross-encoder inutile sur bge-reranker-v2-m3.
+    r = Reranker.__new__(Reranker)
+    fake = CountingFakeCrossEncoder()
+    r.model = fake
+    results = [{"texte": "amortissement des logiciels", "record_id": "a"},
+               {"texte": "un autre texte quelconque", "record_id": "b"}]
+    out = r.rerank("amortissement logiciels", results, top_k=0)
+    assert out == []
+    assert fake.appels == 0
 
 
 def test_rerank_tronque_le_texte_a_1000_caracteres():

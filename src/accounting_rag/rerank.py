@@ -10,6 +10,7 @@ utilisable via ACCRAG_RERANKER pour les contextes sensibles à la latence
 (~10s/question contre ~117s/question pour bge-reranker-v2-m3 sur cette
 machine, cf. docs/eval-jalon25.md, section « Ablation B »)."""
 import os
+import sys
 
 _DEFAULT = "BAAI/bge-reranker-v2-m3"
 _MAX_CHARS = 1000  # borne la latence par appel predict() (paires (query, passage))
@@ -20,9 +21,15 @@ class Reranker:
         from sentence_transformers import CrossEncoder  # import paresseux (lourd), comme Embedder
 
         self.model_name = model_name or os.environ.get("ACCRAG_RERANKER", _DEFAULT)
+        print(f"[Reranker] chargement de {self.model_name} (~2,2 Go au premier "
+              f"téléchargement pour le défaut, latence CPU indicative ~117s/question "
+              f"pour 25 candidats — cf. docs/eval-jalon25.md, section « Ablation B »)",
+              file=sys.stderr)
         self.model = CrossEncoder(self.model_name)
 
     def rerank(self, query: str, results: list[dict], top_k: int) -> list[dict]:
+        if top_k <= 0:
+            return []
         if not results:
             return []
         pairs = [(query, r["texte"][:_MAX_CHARS]) for r in results]
