@@ -171,7 +171,7 @@ Référence de mesure : le **hybrid baseline pur** (paramètres neutres `poids_c
 1. **B1** = `cross-encoder/mmarco-mMiniLMv2-L12-H384-v1` (multilingue, léger — pressenti comme défaut dans le brief avant mesure).
 2. **B2** = `BAAI/bge-reranker-v2-m3` (2,2 Go — alternative prévue par le brief en cas de rejet de B1 ; testée ici car la machine dispose de 30 Gio de RAM et 69 Gio de disque libre, largement suffisant).
 
-`benchmark/dev.jsonl` (61 questions), `k=10`, script ad hoc (non versionné, scratchpad) instanciant un `Embedder` unique partagé entre les deux `Searcher` (A et B) de chaque run, et un `Reranker` par modèle testé. Critère d'adoption (contrainte globale du plan) : `p_amelioration ≥ 0,95` **ET** aucune catégorie ne perd plus de 0,05 de recall@10 vs A.
+`benchmark/dev.jsonl` (61 questions), `k=10`, script ad hoc instanciant un `Embedder` unique partagé entre les deux `Searcher` (A et B) de chaque run, et un `Reranker` par modèle testé. Critère d'adoption (contrainte globale du plan) : `p_amelioration ≥ 0,95` **ET** aucune catégorie ne perd plus de 0,05 de recall@10 vs A. Les dicts `par_question` bruts de cette mesure T4 n'ont pas été persistés à l'époque (seuls les agrégats l'ont été, cf. section Clôture) ; pour `bge-reranker-v2-m3` (B2, le modèle finalement adopté), les mêmes chiffres sont reproduits à l'identique et persistés dans `docs/mesures/jalon25/cloture_dev.json` (champ `b`, cf. section Clôture, T6) — pour `mmarco-mMiniLMv2-L12-H384-v1` (B1, rejeté), aucun dict `par_question` brut n'est versionné, seuls les agrégats ci-dessous.
 
 ### Résultats
 
@@ -265,7 +265,7 @@ Justification comptable et garde-fous techniques (vérifiés sur tout `data/corp
 
 ### Mesure (step 6)
 
-Lot appliqué dans `SYNONYMES`, tests unitaires ajoutés, **rebuild complet** (`uv run python scripts/build_index.py`, ~14 min), puis re-mesure sur `benchmark/dev.jsonl`, mode `hybrid`, k=10, avec persistance des dicts `par_question` bruts en JSON (ruling J25-6 — fichiers `avant.json`/`apres.json`, scratchpad, reproduits ci-dessous).
+Lot appliqué dans `SYNONYMES`, tests unitaires ajoutés, **rebuild complet** (`uv run python scripts/build_index.py`, ~14 min), puis re-mesure sur `benchmark/dev.jsonl`, mode `hybrid`, k=10, avec persistance des dicts `par_question` bruts en JSON (ruling J25-6 — fichiers `docs/mesures/jalon25/t5_avant.json`/`t5_apres.json`, reproduits ci-dessous).
 
 | run | recall@5 | recall@10 | MRR | n |
 |---|---|---|---|---|
@@ -287,7 +287,7 @@ Bootstrap apparié (`n_boot=10000`, `seed=42`) :
 
 Contrôle direct : les dicts `par_question` `avant` et `après` sont **identiques bit à bit** (`avant == après` → `True` en Python) — pas une seule des 61 questions ne change de score, y compris les 5 questions ciblées par le lot (q059, q060, q080, q086, q089, toutes à `recall@10=0.0` avant **et** après).
 
-**Cause racine** — contrôle reproduit avec `_bm25()` **sans limite** (`limit` = nombre total de lignes de `chunks_norm`, soit 2160, pour ne tronquer aucun candidat) et le lot rejeté appliqué **en mémoire** (monkeypatch in-place de `accounting_rag.normalize.SYNONYMES`, sans toucher au fichier ni à l'index), sur l'état actuel de `data/corpus.db` — script `controle_rang_q060.py` (scratchpad, sortie persistée en JSON à côté) :
+**Cause racine** — contrôle reproduit avec `_bm25()` **sans limite** (`limit` = nombre total de lignes de `chunks_norm`, soit 2160, pour ne tronquer aucun candidat) et le lot rejeté appliqué **en mémoire** (monkeypatch in-place de `accounting_rag.normalize.SYNONYMES`, sans toucher au fichier ni à l'index), sur l'état actuel de `data/corpus.db` — script `controle_rang_q060.py` (scratchpad ; sortie persistée dans `docs/mesures/jalon25/controle_rang_q060.json`) :
 
 | | rang du gold `pcg-1222-74` (1-indexé) | candidats bm25 (records distincts) |
 |---|---|---|
@@ -359,10 +359,10 @@ uv run pytest -q
 
 ### Étape 2 — campagne dev finale (61 questions)
 
-**Contrôle de fraîcheur préalable** (avant tout engagement sur la mesure coûteuse) : les dicts `par_question` bruts de la mesure T4 (`hybrid+rerank` sur dev) n'avaient **pas** été persistés sur disque — seuls les agrégats l'ont été, dans `resultat_BAAI_bge-reranker-v2-m3.json` (scratchpad). La persistance systématique des dicts `par_question` bruts (ruling J25-6) n'a été instaurée qu'à partir de T5, après la mesure T4. Or le bootstrap par catégorie demandé à cette étape nécessite ces dicts bruts filtrés par catégorie : ils ont donc été **régénérés** dans un script unique (`mesure_cloture.py`, scratchpad) qui exécute, dans le même processus (embedder + reranker partagés, alignement des ids garanti comme en T3/T4) :
+**Contrôle de fraîcheur préalable** (avant tout engagement sur la mesure coûteuse) : les dicts `par_question` bruts de la mesure T4 (`hybrid+rerank` sur dev) n'avaient **pas** été persistés sur disque — seuls les agrégats l'ont été, dans `resultat_BAAI_bge-reranker-v2-m3.json` (scratchpad, non versionné). La persistance systématique des dicts `par_question` bruts (ruling J25-6) n'a été instaurée qu'à partir de T5, après la mesure T4. Or le bootstrap par catégorie demandé à cette étape nécessite ces dicts bruts filtrés par catégorie : ils ont donc été **régénérés** dans un script unique (`scripts/mesure_cloture.py`, versionné) qui exécute, dans le même processus (embedder + reranker partagés, alignement des ids garanti comme en T3/T4) :
 
 1. Un contrôle rapide — `hybrid` seul sur dev (13,3 s) — dont le `recall@10` est comparé à la référence T2/T3/T4 (0,672). **Résultat : 0,672, identique** (mrr=0,565 également identique) → l'index (`chunks=2160`, `records=1660`, `renvois=981`) et le code sont dans le même état qu'aux mesures précédentes ; la campagne complète peut procéder en confiance sur la même référence A que T3/T4/Ablation C.
-2. La campagne complète dev (baseline hybrid + config finale hybrid+rerank), avec persistance des dicts `par_question` bruts en JSON dans le scratchpad (`cloture_dev.json`, ruling J25-6).
+2. La campagne complète dev (baseline hybrid + config finale hybrid+rerank), avec persistance des dicts `par_question` bruts en JSON dans `docs/mesures/jalon25/cloture_dev.json` (ruling J25-6).
 
 | run | config | recall@5 | recall@10 | MRR | latence/question |
 |---|---|---|---|---|---|
@@ -424,7 +424,15 @@ Bootstrap apparié par catégorie (test) :
 | regle | 12 | 0,0 | (0,0 ; 0,0) | 0,0 |
 | vocabulaire_courant | 14 | 0,1429 | (0,0 ; 0,3571) | 0,8884 |
 
-Dicts `par_question` bruts persistés (dev et test, baseline et finale) dans le scratchpad : `cloture_dev.json`, `cloture_test.json` (ruling J25-6).
+Dicts `par_question` bruts persistés (dev et test, baseline et finale) dans `docs/mesures/jalon25/` : `cloture_dev.json`, `cloture_test.json` (ruling J25-6).
+
+Pour recalculer un bootstrap depuis ces JSON versionnés (ex. baseline vs finale sur dev) :
+
+```sh
+uv run python -c "import json; from accounting_rag.evalrag import paired_bootstrap as pb; d = json.load(open('docs/mesures/jalon25/cloture_dev.json')); print(pb(d['a']['par_question'], d['b']['par_question']))"
+```
+
+Résultat attendu : `{'delta': 0.0656, 'ic95': (-0.0082, 0.1393), 'p_amelioration': 0.9524}` — identique à la table « Bootstrap apparié global » ci-dessus.
 
 ### Lecture
 

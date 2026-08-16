@@ -1,0 +1,14 @@
+{
+  "question": "q060",
+  "gold": "pcg-1222-74",
+  "methode": "_bm25() sans limite (limit=nombre total de lignes de chunks_norm), lot SYNONYMES rejeté appliqué en mémoire (monkeypatch in-place, pas de réassignation), sur l'état actuel de data/corpus.db (index reconstruit avec les 9 entrées SYNONYMES d'origine — le lot a été retiré du fichier après son rejet).",
+  "n_total_lignes_chunks_norm": 2160,
+  "sans_lot": {
+    "rang_1indexed": 1453,
+    "n_candidats_records": 1659
+  },
+  "avec_lot": {
+    "rang_1indexed": 210,
+    "n_candidats_records": 1659
+  }
+}
