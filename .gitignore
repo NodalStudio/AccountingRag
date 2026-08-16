@@ -1,5 +1,11 @@
 data/raw/
 *.db
+
+# Secrets — ne JAMAIS versionner (clés API). .env.example reste autorisé.
+.env
+.env.*
+!.env.example
+
 __pycache__/
 .pytest_cache/
 .venv/
