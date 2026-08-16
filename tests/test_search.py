@@ -232,9 +232,17 @@ def db_synthetique(tmp_path):
       remplissage pour stabiliser les longueurs moyennes des colonnes FTS. Ordre de
       référence vérifié empiriquement à poids neutre (1.0, 1.0) : pcg-200-1 devant
       pcg-100-1 (le texte court l'emporte) ; à poids_chemin=3.0, pcg-100-1 passe devant.
-    - pcg-500-1 (type='reglementaire') et pcg-600-1 (type='commentaire_ANC') portent
-      exactement le même chemin et le même texte (même terme "zabulon", même empreinte
-      bm25) : seul le type diffère, pour isoler l'effet de boost_commentaire.
+    - pcg-500-1 (type='reglementaire', terme "zabulon" une fois) et pcg-600-1
+      (type='commentaire_ANC', terme "zabulon" répété trois fois) : à poids neutre le
+      commentaire est un meilleur match bm25 (tf plus élevé) et passe devant le
+      réglementaire — condition nécessaire pour que le test puisse distinguer un boost
+      réellement appliqué d'un boost ignoré (avec une empreinte bm25 identique entre les
+      deux records, un boost ignoré ET un boost appliqué produisent le même ordre par
+      hasard, cf. revue). boost_commentaire=0.5 doit inverser cet ordre : le
+      réglementaire (score inchangé) doit repasser devant le commentaire (score divisé
+      par deux). Vérifié empiriquement (scores bruts) : neutre {600: 1.52e-6, 500:
+      1.07e-6} -> commentaire en tête ; boost=0.5 {600: 0.76e-6, 500: 1.07e-6} ->
+      réglementaire en tête.
     """
     db = tmp_path / "ablation.db"
     write_db([
@@ -253,7 +261,8 @@ def db_synthetique(tmp_path):
         _rec_type("pcg-500-1@2026-01-01", "500-1", "reglementaire",
                   chemin="Livre Deuxieme Titre Un", texte="Le traitement de zabulon est precise ici."),
         _rec_type("pcg-600-1@2026-01-01", "600-1", "commentaire_ANC",
-                  chemin="Livre Deuxieme Titre Un", texte="Le traitement de zabulon est precise ici."),
+                  chemin="Livre Deuxieme Titre Un",
+                  texte="Le traitement de zabulon zabulon est precise ici et zabulon encore."),
     ], db)
     build_index(db, embedder=FakeEmbedder())
     return db
@@ -284,14 +293,16 @@ def test_poids_chemin_favorise_le_chemin(db_synthetique):
 
 
 def test_boost_commentaire_penalise(db_synthetique):
-    # pcg-500-1 (reglementaire) et pcg-600-1 (commentaire_ANC) portent la même empreinte
-    # bm25 exacte pour le terme "zabulon". boost_commentaire=0.5 doit faire passer le
-    # réglementaire devant le commentaire (score du commentaire multiplié par 0.5).
+    # pcg-600-1 (commentaire_ANC, "zabulon" x3) est un meilleur match bm25 que pcg-500-1
+    # (reglementaire, "zabulon" x1) : à poids neutre le commentaire est donc STRICTEMENT
+    # en tête. boost_commentaire=0.5 doit inverser l'ordre : le réglementaire (score
+    # inchangé) passe devant le commentaire (score divisé par deux). Une empreinte bm25
+    # identique entre les deux records ne permettrait pas de distinguer un boost
+    # réellement appliqué d'un boost ignoré (tri stable + ordre d'insertion favoriseraient
+    # déjà le réglementaire par hasard) — d'où l'asymétrie délibérée de tf ci-dessus.
     s_neutre = Searcher(db_synthetique, embedder=FakeEmbedder(), boost_commentaire=1.0)
     s_penalise = Searcher(db_synthetique, embedder=FakeEmbedder(), boost_commentaire=0.5)
     hits_neutre = s_neutre.search("zabulon", mode="bm25", k=2)
     hits_penalise = s_penalise.search("zabulon", mode="bm25", k=2)
-    assert {h["record_id"] for h in hits_neutre} == {
-        "pcg-500-1@2026-01-01", "pcg-600-1@2026-01-01",
-    }
+    assert hits_neutre[0]["record_id"] == "pcg-600-1@2026-01-01"
     assert hits_penalise[0]["record_id"] == "pcg-500-1@2026-01-01"

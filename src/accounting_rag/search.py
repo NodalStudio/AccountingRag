@@ -61,7 +61,7 @@ class Searcher:
             return {}
         match = " OR ".join(f'"{t}"' for t in toks)
         # Poids par colonne liés en paramètres SQL (texte_norm, chemin_norm dans cet ordre) :
-        # bm25() aux5 accepte des paramètres liés sur cette version de SQLite (vérifié empiriquement,
+        # bm25() aux accepte des paramètres liés sur cette version de SQLite (vérifié empiriquement,
         # cf. Ruling J25-2) — pas de repli par interpolation nécessaire ici.
         rows = self.con.execute(
             "SELECT c.record_id, bm25(chunks_norm, ?, ?) AS b FROM chunks_norm "
