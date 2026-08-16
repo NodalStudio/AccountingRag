@@ -1,6 +1,5 @@
 """Tests du reranker cross-encoder (Ablation B, T4, jalon 2.5) — aucun téléchargement :
 FakeCrossEncoder injecté directement sur l'attribut `model`, jamais via __init__."""
-import pytest
 from accounting_rag.rerank import Reranker
 from accounting_rag.search import Searcher
 from test_search import searcher_synthetique, FakeEmbedder  # noqa: F401 (fixture réutilisée)

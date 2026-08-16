@@ -52,7 +52,7 @@ Le benchmark v1 (30 questions, jalon 2) était rédigé à 100 % en apostrophe A
 
 Les questions `q001`-`q030` couvrent : amortissement (durée, mode, composants, valeur résiduelle), dépréciation des stocks, crédit-bail, provisions (définition, provisions réglementées, engagements de retraite), fonds commercial (acquis vs généré en interne, amortissement, dépréciation), jetons numériques (émission, définition), écarts de conversion en devises, créances clients douteuses ou irrécouvrables, participation des salariés, société en participation, solutions informatiques (logiciels), subventions d'investissement.
 
-Les questions `q031`-`q090` (jalon 2.5) ajoutent 13 thèmes non couverts par `q001`-`q030` :
+Les questions `q031`-`q090` (jalon 2.5) ajoutent 11 thèmes absents de `q001`-`q030`, plus un approfondissement des écarts de conversion :
 
 - stocks et en-cours (définition, coût d'acquisition/production, cas particuliers de valorisation) ;
 - subventions d'exploitation (distinctes des subventions d'investissement déjà couvertes) ;

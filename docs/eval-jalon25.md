@@ -1,6 +1,6 @@
-# Jalon 2.5 — Fossé lexical : baseline v2 et bootstrap apparié
+# Jalon 2.5 — Fossé lexical : baseline v2, ablations et clôture
 
-Campagne exécutée le **16 août 2026** sur la branche `jalon-25-fosse-lexical`, à l'issue des tâches T1-T3 (bootstrap apparié, scores par question, mesure baseline 2.5). Objectif : établir la baseline sur le benchmark v2 (61 questions) avec décomposition par question et test statistique par bootstrap apparié (en préparation pour les comparaisons de tâches T4+).
+Campagne exécutée le **16 août 2026** sur la branche `jalon-25-fosse-lexical`, à l'issue des tâches T1-T6 (bootstrap apparié, scores par question, mesure baseline 2.5, ablations A/B/C, clôture dev/test). Objectif : établir la baseline sur le benchmark v2 (61 questions) avec décomposition par question et test statistique par bootstrap apparié, mesurer trois pistes d'amélioration (pondération par champ, reranker cross-encoder, synonymes pilotés par les échecs), puis clôturer le jalon avec la campagne dev finale et la référence test gelée.
 
 **Important** : le benchmark a changé depuis le jalon 2 — passage de n=21 (`dev` jalon 2) à n=61 (`dev` v2). Les chiffres ci-dessous ne sont **pas comparables** directement aux résultats du jalon 2 (instrument et population différents). Voir section « Conditions exactes ».
 
@@ -60,9 +60,9 @@ Sortie brute de `scripts/run_eval.py --mode all --split dev` :
 
 ## Lecture
 
-- **`bm25` seul reste leader sur `reference_directe` et `regle`** (0,664 et 0,891 de recall@10, vs 0,566 et 0,913 pour dense), cohérent avec le jalon 2, mais le fossé lexical sur `vocabulaire_courant` s'aggrave légèrement (0,419 sur n=31 questions, vs 0,571 sur n=7 au jalon 2) — population plus large et plus hétérogène du benchmark v2 révèle la fragilité du vocabulaire courant.
+- **`bm25` domine `dense` sur `vocabulaire_courant`** (0,419 vs 0,21 de recall@10) **et globalement** (0,664 vs 0,566), **`dense` étant légèrement meilleur sur `regle`** (0,913 vs 0,891) — le seul sous-ensemble où le canal dense dépasse le lexical sur ce split.
 - **`dense` seul s'effondre sur `vocabulaire_courant`** (0,21, pire que bm25) conformément au diagnostic du jalon 2 — les embeddings génériques e5-small ne comblent pas le fossé lexical entre langage réglementaire et courant.
-- **`hybrid` (RRF bm25+dense) améliore légèrement le MRR** (0,565 vs 0,547 pour bm25 seul) mais perd en recall@10 (0,672 vs 0,664), symptôme que la fusion RRF n'optimise pas recall@10 par rapport au meilleur canal seul sur ce type de question.
+- **`hybrid` (RRF bm25+dense) améliore le MRR et le recall@10 par rapport à `bm25` seul** (MRR 0,565 vs 0,547 ; recall@10 0,672 vs 0,664), mais marginalement (+0,008, soit une demi-question sur 61).
 - **`hybrid+graph` reste strictement égal à `hybrid`** sur ce split v2 également — l'expansion 1-hop ne comble aucun manque supplémentaire.
 - **Le routeur regex fonctionne toujours** : `reference_directe` = 1,0 dans tous les modes, signalant que le routeur regex résout ces questions avant même les heuristiques lexicales.
 
@@ -93,13 +93,14 @@ print(f"hybrid - bm25 : delta={comp['delta']}, ic95={comp['ic95']}, p={comp['p_a
 
 ```sh
 # Depuis la racine du dépôt, avec uv installé
+uv run python scripts/download_data.py    # télécharge le Recueil ANC, si data/raw n'existe pas encore
 uv run python scripts/build_corpus.py     # si data/corpus.db n'existe pas encore
 uv run python scripts/build_index.py      # construit chunks + FTS + vecteurs (~14 min CPU)
 uv run python scripts/run_eval.py --mode all --split dev
 uv run pytest tests/test_evalrag.py -q
 ```
 
-Le split `test` ne doit être relancé qu'en fin de jalon suivant, jamais pendant le développement.
+Le split `test` n'est relancé qu'une seule fois, à la clôture du présent jalon — voir section « Clôture » ci-dessous — jamais pendant le développement des tâches intermédiaires.
 
 ## Ablation A — pondération par champ (chemin, type de record) (T3)
 
@@ -325,10 +326,10 @@ Motivation détaillée : contrairement aux ablations A et B (T3/T4), où le reje
 
 Les 21 échecs dev identifiés en début de section restent **entièrement non résolus** (le lot rejeté n'a rien changé). Catégorisation pour le jalon 3 :
 
-- **Nécessitent une compréhension de requête au-delà du lexique** (10) : q021, q023, q026, q056, q057, q063, q065, q068, q070/071/074 (regroupées, même record gold sous-jacent sur la conversion de devises), q079/080/089 (regroupées, famille boni/mali de fusion) — la question décrit un scénario métier sans jamais nommer le terme PCG correspondant ; aucun dictionnaire de synonymes phrase-à-phrase ne peut combler cet écart sans dégénérer en paraphrase générale (hors périmètre, risque de sur-ajustement démontré par le rejet ci-dessus).
+- **Nécessitent une compréhension de requête au-delà du lexique** (10 groupes / 14 questions) : q021, q023, q026, q056, q057, q063, q065, q068, q070/071/074 (regroupées, même record gold sous-jacent sur la conversion de devises), q079/080/089 (regroupées, famille boni/mali de fusion) — la question décrit un scénario métier sans jamais nommer le terme PCG correspondant ; aucun dictionnaire de synonymes phrase-à-phrase ne peut combler cet écart sans dégénérer en paraphrase générale (hors périmètre, risque de sur-ajustement démontré par le rejet ci-dessus).
 - **Nécessitent une distinction comptable fine dans la même question** (2) : q022 (créance douteuse vs irrécouvrable), q085 (immobilisation en cours vs production immobilisée) — un rapprochement lexical générique risquerait ici une erreur de conflation (ruling J2-5) ; ces cas demandent un raisonnement contextuel, pas un lexique.
-- **Ne sont pas un fossé lexical mais un problème de rang dans la fusion** (3) : q008, q054 (et partiellement q085) — le vocabulaire est déjà quasi identique entre la question et le record gold ; le reranker cross-encoder (T4, adopté) est le mécanisme déjà mesuré qui adresse ce type de problème (il opère après la fusion RRF, sur le contenu sémantique complet, pas sur des tokens bm25).
-- **q059, q060, q080, q086, q089** : le lot rejeté ciblait ces questions ; elles restent à `recall@10` inchangé (0,0 pour toutes sauf partiellement couvertes par `q086` à 2 citations). La cause racine (tokens ajoutés trop peu discriminants pour ce corpus à `limit=50`) suggère qu'une future tentative devrait soit augmenter `limit` dans `_bm25()` (hors périmètre SYNONYMES de cette tâche), soit s'appuyer sur le reranker plutôt que sur bm25 seul pour ce sous-ensemble.
+- **Ne sont pas un fossé lexical mais un problème de rang dans la fusion** (2) : q008, q054 — le vocabulaire est déjà quasi identique entre la question et le record gold ; le reranker cross-encoder (T4, adopté) est le mécanisme déjà mesuré qui adresse ce type de problème (il opère après la fusion RRF, sur le contenu sémantique complet, pas sur des tokens bm25).
+- **q059, q060, q080, q086, q089** : le lot rejeté ciblait ces questions ; elles restent à `recall@10` inchangé (0,0 pour toutes). La cause racine (tokens ajoutés trop peu discriminants pour ce corpus à `limit=50`) suggère qu'une future tentative devrait soit augmenter `limit` dans `_bm25()` (hors périmètre SYNONYMES de cette tâche), soit s'appuyer sur le reranker plutôt que sur bm25 seul pour ce sous-ensemble.
 
 ### Réserves
 

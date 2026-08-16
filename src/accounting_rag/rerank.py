@@ -28,6 +28,16 @@ class Reranker:
         self.model = CrossEncoder(self.model_name)
 
     def rerank(self, query: str, results: list[dict], top_k: int) -> list[dict]:
+        """Rejuge `results` (dicts portant un champ `texte`) avec le cross-encoder et
+        retourne les `top_k` meilleurs par ordre décroissant de `score_rerank`.
+
+        Le champ `score` (score de fusion RRF bm25+dense, posé en amont par la
+        recherche hybride) n'est PAS réécrit ici : il reste présent, inchangé, sur
+        chaque dict d'entrée. Seul `score_rerank` est ajouté/écrasé. L'ordre de
+        sortie suit exclusivement `score_rerank` (tri décroissant) — pas `score` —
+        donc un appelant qui trierait par `score` après un appel à `rerank()`
+        obtiendrait un ordre différent (et incorrect pour ce mode).
+        """
         if top_k <= 0:
             return []
         if not results:
