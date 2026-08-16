@@ -3,6 +3,7 @@ from pathlib import Path
 from accounting_rag.db import write_db
 from accounting_rag.index import build_index
 from accounting_rag.model import Record, Renvoi
+from accounting_rag.normalize import normalize
 from accounting_rag.search import Searcher
 from conftest import _rec
 
@@ -243,6 +244,19 @@ def db_synthetique(tmp_path):
       par deux). Vérifié empiriquement (scores bruts) : neutre {600: 1.52e-6, 500:
       1.07e-6} -> commentaire en tête ; boost=0.5 {600: 0.76e-6, 500: 1.07e-6} ->
       réglementaire en tête.
+    - pcg-700-1 (ajout jalon 3, T1, `df_max`) : enregistrement isolé, terme
+      "amortissement" (df=1, un seul chunk sur les 7). Chemin composé uniquement de
+      tokens déjà communs à tous les autres chunks (livr/deuxiem/titr/un) : n'introduit
+      aucun nouveau token de chemin, ne recherche ni "wombat" ni "zabulon" — vérifié
+      sans effet sur les deux comparaisons ci-dessus (`test_poids_chemin_favorise_le_chemin`,
+      `test_boost_commentaire_penalise` passent toujours après cet ajout). Le brief
+      suppose "'le' dans tous les chunks" pour tester `df_max` ; en réalité, sur les 6
+      chunks d'origine, seuls "livr"/"titr"/"deuxiem"/"un" sont à 100 % — "le" n'est
+      que dans 4 chunks sur 6 (300, 400, 500, 600). Après ajout de pcg-700-1 (7 chunks
+      au total, "le" absent de ce nouveau chunk), "le" reste à 4/7 ≈ 57 %, toujours
+      strictement supérieur au seuil `df_max=0.5` exercé par
+      `test_df_max_ecarte_les_tokens_trop_frequents` — suffisant pour ce test sans
+      qu'aucun chunk n'ait besoin de contenir "le" à 100 %.
     """
     db = tmp_path / "ablation.db"
     write_db([
@@ -263,6 +277,9 @@ def db_synthetique(tmp_path):
         _rec_type("pcg-600-1@2026-01-01", "600-1", "commentaire_ANC",
                   chemin="Livre Deuxieme Titre Un",
                   texte="Le traitement de zabulon zabulon est precise ici et zabulon encore."),
+        _rec("pcg-700-1@2026-01-01", "700-1",
+             chemin="Livre Deuxieme Titre Un",
+             texte="Un amortissement neutre est mentionne dans ce chunk supplementaire."),
     ], db)
     build_index(db, embedder=FakeEmbedder())
     return db
@@ -306,3 +323,55 @@ def test_boost_commentaire_penalise(db_synthetique):
     hits_penalise = s_penalise.search("zabulon", mode="bm25", k=2)
     assert hits_neutre[0]["record_id"] == "pcg-600-1@2026-01-01"
     assert hits_penalise[0]["record_id"] == "pcg-500-1@2026-01-01"
+
+
+# --- Ablation D (T1, jalon 3) : filtrage des tokens peu discriminants de la requête
+# lexicale (df_max), par fréquence documentaire.
+
+
+def test_df_compte_les_chunks_contenant_le_token(db_synthetique):
+    s = Searcher(db_synthetique, embedder=FakeEmbedder())
+    # le corpus synthétique contient le terme dans un seul chunk
+    assert s.df("amortissement") == 1
+    assert s.df("motabsent") == 0
+
+
+def test_df_est_mis_en_cache(db_synthetique):
+    s = Searcher(db_synthetique, embedder=FakeEmbedder())
+    s.df("amortissement")
+    assert "amortissement" in s._df_cache
+    # deuxième appel : servi par le cache (pas de requête), valeur identique
+    assert s.df("amortissement") == s._df_cache["amortissement"]
+
+
+def test_df_max_neutre_par_defaut(db_synthetique):
+    """df_max=None doit reproduire exactement le comportement jalon 2.5."""
+    a = Searcher(db_synthetique, embedder=FakeEmbedder())
+    b = Searcher(db_synthetique, embedder=FakeEmbedder(), df_max=None)
+    for requete in ("amortissement", "immobilisation corporelle", "que dit l'article 111-1 ?"):
+        assert [r["record_id"] for r in a.search(requete, mode="bm25")] == \
+               [r["record_id"] for r in b.search(requete, mode="bm25")]
+
+
+def test_df_max_ecarte_les_tokens_trop_frequents(db_synthetique):
+    """Un token présent dans plus de 50 % des chunks est écarté ; le token rare décide seul.
+
+    Défaut du brief constaté à l'exécution (distinct de la ruling J3-1) : `_termes_match`
+    retourne des tokens déjà NORMALISÉS (stemmés) — "amortissement" y apparaît sous sa
+    forme stem "amort" (snowball FR), jamais littéralement "amortissement". La version
+    verbatim du brief (`assert "amortissement" in termes`) échoue donc systématiquement,
+    quelle que soit l'implémentation de `_termes_match`, puisque ce token normalisé
+    n'existe nulle part dans sa sortie. Assertion corrigée sur la forme normalisée
+    (vérifiée : `normalize("amortissement") == "amort"`) — signalé au rapport de tâche.
+    """
+    s = Searcher(db_synthetique, embedder=FakeEmbedder(), df_max=0.5)
+    termes = s._termes_match("le amortissement")  # 'le' dépasse 50 % des chunks de la fixture
+    assert "amort" in termes
+    assert "le" not in termes
+
+
+def test_df_max_repli_si_tous_les_tokens_sont_ecartes(db_synthetique):
+    """Si le filtrage vide la requête, on retombe sur tous les tokens (jamais zéro résultat gratuit)."""
+    s = Searcher(db_synthetique, embedder=FakeEmbedder(), df_max=0.0)
+    termes = s._termes_match("le amortissement")
+    assert set(termes) == set(normalize("le amortissement").split())

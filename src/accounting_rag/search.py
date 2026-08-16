@@ -14,7 +14,7 @@ _MODES = {"bm25", "dense", "hybrid", "hybrid+graph", "hybrid+rerank"}
 class Searcher:
     def __init__(self, db_path: Path, embedder=None,
                  poids_chemin: float = 1.0, boost_commentaire: float = 1.0,
-                 reranker=None):
+                 reranker=None, df_max: float | None = None):
         if not Path(db_path).exists():
             raise FileNotFoundError(
                 f"corpus introuvable : {db_path} — lancez scripts/download_data.py, "
@@ -31,6 +31,69 @@ class Searcher:
         # float() valide l'entrée avant de la lier en paramètre SQL (Ruling J25-2).
         self.poids_chemin = float(poids_chemin)
         self.boost_commentaire = float(boost_commentaire)
+        # df_max : fraction de n_chunks au-delà de laquelle un token de requête est
+        # écarté du MATCH lexical (T1, jalon 3). None = neutre, comportement jalon 2.5
+        # inchangé (aucun filtrage). Mesuré par bootstrap apparié, cf. docs/eval-jalon3.md.
+        self.df_max = df_max
+        self._df_cache: dict[str, int] = {}
+        self._n_chunks: int | None = None
+
+    @property
+    def n_chunks(self) -> int:
+        if self._n_chunks is None:
+            self._n_chunks = self.con.execute("SELECT COUNT(*) FROM chunks").fetchone()[0]
+        return self._n_chunks
+
+    def df(self, token: str) -> int:
+        """Fréquence documentaire : nombre de chunks contenant le token (mis en cache).
+
+        `chunks_norm` est indexé sur du texte déjà normalisé (normalize() appliqué à
+        l'ingestion, cf. index.py) : un token brut (mot du langage courant, comme dans
+        les tests) doit donc être normalisé avant la recherche FTS pour retrouver sa
+        forme indexée (ex. "amortissement" -> "amort"). Idempotent sur un token déjà
+        normalisé (appel interne depuis `_termes_match`) — vérifié empiriquement,
+        normalize() d'un stem déjà réduit retourne le même stem. Le cache est indexé
+        par le token tel que reçu (avant normalisation), pas par sa forme normalisée.
+        """
+        if token not in self._df_cache:
+            terme = normalize(token)
+            try:
+                n = self.con.execute(
+                    "SELECT COUNT(*) FROM chunks_norm WHERE chunks_norm MATCH ?", (f'"{terme}"',)
+                ).fetchone()[0] if terme else 0
+            except sqlite3.OperationalError:
+                n = 0  # token rejeté par la syntaxe FTS5
+            self._df_cache[token] = n
+        return self._df_cache[token]
+
+    def _termes_match(self, query: str) -> list[str]:
+        """Tokens retenus pour le MATCH, dans l'ordre.
+
+        Avec df_max, les tokens présents dans plus de df_max × n_chunks chunks sont
+        écartés : ce sont les mots fonctionnels par lesquels un article sans aucun mot
+        de contenu commun se fait quand même retrouver (et se classe alors dernier).
+        Repli : si le filtrage ne laisse rien, on garde tous les tokens.
+
+        df_max=None retourne la liste BRUTE (non dédupliquée) : `bm25()` de SQLite
+        FTS5 est sensible à la MULTIPLICITÉ des termes dans l'expression MATCH, pas
+        seulement à l'ensemble des lignes qu'elle sélectionne (vérifié empiriquement
+        sur data/corpus.db, mode hybrid, dev : dédupliquer même à df_max=None fait
+        passer recall@10 de 0,672 à 0,689 — 49/61 questions dev contiennent au moins
+        un token répété après normalize()). Dédupliquer inconditionnellement, comme le
+        code de référence du brief, romprait donc la garantie explicite « None =
+        comportement jalon 2.5 inchangé » sur le corpus réel — défaut constaté à la
+        mesure (step 8), distinct de la ruling J3-1, corrigé ici. La déduplication
+        (nécessaire pour raisonner sur des tokens UNIQUES) n'a lieu qu'à l'intérieur du
+        chemin de filtrage actif, où elle ne change que l'ordre de calcul de `df()` par
+        token, jamais la construction du MATCH neutre.
+        """
+        bruts = normalize(query).split()
+        if self.df_max is None:
+            return bruts
+        toks = list(dict.fromkeys(bruts))
+        seuil = self.df_max * self.n_chunks
+        gardes = [t for t in toks if 0 < self.df(t) <= seuil]
+        return gardes or toks
 
     @property
     def embedder(self):
@@ -65,7 +128,7 @@ class Searcher:
         return out
 
     def _bm25(self, query: str, limit: int = 50) -> dict[str, float]:
-        toks = normalize(query).split()
+        toks = self._termes_match(query)
         if not toks:
             return {}
         match = " OR ".join(f'"{t}"' for t in toks)

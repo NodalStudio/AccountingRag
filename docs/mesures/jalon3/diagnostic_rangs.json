@@ -1,0 +1,75 @@
+{
+  "split": "dev",
+  "n_chunks": 2160,
+  "df_max": 0.02,
+  "resultats": {
+    "q021": {
+      "gold": "pcg-214-13",
+      "categorie": "vocabulaire_courant",
+      "lexical_non_filtre": {
+        "rang": 154,
+        "candidats": 154
+      },
+      "lexical_filtre": {
+        "df_max": 0.02,
+        "rang": null,
+        "candidats": 38
+      },
+      "dense": {
+        "rang": 178,
+        "candidats": 1660
+      }
+    },
+    "q026": {
+      "gold": "pcg-212-3",
+      "categorie": "vocabulaire_courant",
+      "lexical_non_filtre": {
+        "rang": 46,
+        "candidats": 46
+      },
+      "lexical_filtre": {
+        "df_max": 0.02,
+        "rang": 14,
+        "candidats": 14
+      },
+      "dense": {
+        "rang": 248,
+        "candidats": 1660
+      }
+    },
+    "q060": {
+      "gold": "pcg-1222-74",
+      "categorie": "vocabulaire_courant",
+      "lexical_non_filtre": {
+        "rang": 1430,
+        "candidats": 1430
+      },
+      "lexical_filtre": {
+        "df_max": 0.02,
+        "rang": null,
+        "candidats": 63
+      },
+      "dense": {
+        "rang": 528,
+        "candidats": 1660
+      }
+    },
+    "q023": {
+      "gold": "pcg-214-22",
+      "categorie": "vocabulaire_courant",
+      "lexical_non_filtre": {
+        "rang": 2,
+        "candidats": 2
+      },
+      "lexical_filtre": {
+        "df_max": 0.02,
+        "rang": null,
+        "candidats": 52
+      },
+      "dense": {
+        "rang": 257,
+        "candidats": 1660
+      }
+    }
+  }
+}
