@@ -220,3 +220,111 @@ Conséquence de ce résultat : le défaut de `Reranker` (`_DEFAULT` dans `rerank
 4. Le chargement du modèle (téléchargement HuggingFace au premier appel, ~2,2 Go pour `bge-reranker-v2-m3`, ~470 Mo pour `mmarco-mMiniLMv2-L12-H384-v1`) n'est pas comptabilisé dans la latence par question ci-dessus (mesurée après chargement, sur les 61 appels `search()`) — chargé une fois en ~25-55 s dans le script de mesure.
 5. Aucune valeur voisine de robustesse n'a été mesurée pour un troisième modèle : le brief ne prévoit qu'UNE alternative en cas de rejet du défaut pressenti, ce qui a été fait (`bge-reranker-v2-m3`).
 6. Les tests (`tests/test_rerank.py`) utilisent exclusivement un `FakeCrossEncoder`/`FakeReranker` injecté — aucun téléchargement, aucune dépendance à la mesure ci-dessus pour passer. Le comportement d'épinglage du routeur (`test_mode_hybrid_rerank_epingle_le_route`) est vérifié sur la base synthétique déjà existante dans `tests/test_search.py` (fixture `searcher_synthetique` réutilisée par import direct).
+
+## Ablation C — synonymes pilotés par les échecs (T5)
+
+Nouveau script `scripts/analyse_echecs.py` (réutilise `Searcher` + `evalrag`, aucune logique dupliquée) : pour chaque question d'un split dont `recall@10 < 1`, affiche la question, ses citations gold, le top-10 obtenu, le texte des records gold et le diff des tokens normalisés (question ↔ gold). Sortie complète sur `benchmark/dev.jsonl` committée dans `docs/echecs-dev-jalon25.md` — c'est le matériau brut d'où est tiré le lot de synonymes candidats ci-dessous.
+
+**Config (ruling J25-7)** : mode `hybrid` (RRF bm25+dense, paramètres neutres) pour l'analyse des échecs (step 2) **et** pour la mesure avant/après (step 6) — pas `hybrid+rerank` : le canal synonymes n'agit que sur `_bm25()` (`normalize()` est appliqué avant l'appel `bm25()` de SQLite, jamais avant l'encodage dense), et `hybrid` tourne en ~1 min contre ~2h pour `hybrid+rerank` sur cette machine.
+
+### Analyse des échecs dev (61 questions, mode hybrid)
+
+21/61 questions à `recall@10 < 1` (`reference_directe` 1,0 ; `regle` 0,935 ; `vocabulaire_courant` 0,403 — identique à la baseline hybrid du corps principal de ce document). Détail complet dans `docs/echecs-dev-jalon25.md`.
+
+En lisant les diffs de tokens normalisés, trois familles d'échecs se distinguent :
+
+1. **Fossé lexical réel** — la question emploie un terme courant absent du vocabulaire réglementaire du record gold (ex. q059/q060/q086 : « aides » vs « subventions » ; q079/q080/q089 : décrivent un scénario de fusion sans jamais nommer « boni »/« mali » de fusion).
+2. **Pas de fossé lexical, problème de rang** — q008 et q054 partagent déjà presque tout leur vocabulaire normalisé avec le record gold (diff de 3-4 tokens seulement, dont une quasi-citation littérale pour q054 : « immobilisation créée par les moyens propres de l'entité ») mais le record gold ne sort pas dans le top-10 fusionné RRF. Aucun synonyme ne peut agir ici : il n'y a rien à rapprocher lexicalement, le problème est en aval (fusion bm25+dense, ou dilution par des tokens trop fréquents).
+3. **Distinction comptable fine requise dans la MÊME question** — q022 (« ne paie pas depuis des mois » = créance douteuse, pcg-1214-41, vs « ne paiera plus jamais » = créance irrécouvrable, pcg-1221-65) et q085 (immobilisation en cours de construction vs juste terminée, deux comptes différents 1212-23/1222-72). Un rapprochement lexical générique risquerait ici de conflater deux concepts comptables distincts — exactement l'écueil visé par le ruling J2-5 (précédent degressif/derogatoire du jalon 2).
+
+### Lot de candidats proposé (step 3)
+
+Règle appliquée (ruling J2-5) : une entrée relie un terme courant à SON équivalent PCG exact — jamais un rapprochement de deux concepts distincts, et jamais une clause/scénario entier substitué à un terme (risque de sur-généralisation et de sur-ajustement au benchmark). Sur les 21 échecs, seules deux relations terme-à-terme ont passé ce filtre :
+
+| # | clé (forme trouvée) | valeur (forme canonique) | questions ciblées | token gold visé |
+|---|---|---|---|---|
+| 1 | `aides` (pluriel uniquement) | `subventions` | q059 (verbe « aider », non couvert), q060, q086 | `subvent` |
+| 2 | `la boite` | `l'entite` | q059 | `entit` |
+| 3 | `une boite` | `une entite` | q080, q089 | `entit` |
+
+Justification comptable et garde-fous techniques (vérifiés sur tout `data/corpus.db`, 1660 records) :
+- **« aides » → « subventions »** : « aide » (financière) est l'usage courant pour ce que le PCG nomme uniformément « subvention » (comptes 74, 312-1) — relation terme-à-terme stable, aucun concept distinct conflaté. Clé au **pluriel uniquement** : le corpus contient l'idiome « à l'aide de » (= au moyen de, ex. `pcg-324-1-c15` : « actualisées à l'aide du taux ») qui n'a **aucun** rapport avec les subventions — un remplacement sur la forme singulière l'aurait corrompu (`normalize()` fait un remplacement de sous-chaîne sans limite de mot). La forme plurielle est, sur ce corpus, exclusivement utilisée au sens subvention/aide d'État (vérifié par balayage exhaustif des occurrences).
+- **« boîte » → « entité »** : argot très courant pour « entreprise/société », dont le PCG utilise partout le terme constant « entité » — relation non ambiguë, aucun autre référent possible pour « boîte » dans ce registre. Clé **avec déterminant** (`la boite`/`une boite`, jamais `boite` nu) : le corpus contient « boîtes aux lettres » (`pcg-191-1-c23`, équipement d'immeuble), qui aurait été corrompu par un remplacement du seul radical (« boite » est une sous-chaîne de « boites »).
+
+### Entrées écartées par prudence (step 3)
+
+| question(s) | rapprochement envisagé | motif de l'écart |
+|---|---|---|
+| q021, q023, q056, q063, q065, q068 | (aucun terme fixe identifiable) | la question décrit un scénario complet sans nommer de terme métier alternatif — il n'y a pas de paire terme-à-terme à ajouter, seulement une lacune de compréhension de requête (hors périmètre lexical) |
+| q022 | « ne paie plus jamais » / « ne paie pas depuis des mois » → un terme unique de créance | **écarté par prudence** (ruling J2-5) : la question mélange deux concepts PCG distincts dans la même phrase (créance douteuse, pcg-1214-41 ≠ créance irrécouvrable, pcg-1221-65) ; tout rapprochement générique risquerait de les conflater |
+| q057 | « en train d'être fabriqué » → « en cours de production » | **écarté par prudence** : correspondance plausible mais très spécifique à cette formulation exacte du benchmark — risque de sur-ajustement (pas un terme métier réutilisable comme « leasing »/« credit-bail »), pas une vraie synonymie de vocabulaire courant |
+| q070, q071, q074 | « dollar » → « devise étrangère » / « monnaie étrangère » | **écarté par prudence** : « dollar » n'est qu'UN exemple de devise parmi d'autres (yen, livre…) — c'est une relation d'appartenance à une catégorie, pas une synonymie terme-à-terme stable ; ne couvrir qu'une devise nommée serait arbitraire |
+| q079, q080, q089 | scénario de fusion → « boni de fusion » / « mali de fusion » / « mali technique » | **écarté par prudence** : ces termes sont déjà les termes techniques eux-mêmes ; il n'existe pas de synonyme courant unique et stable qui les désigne (contrairement à « leasing »=« crédit-bail ») — la question décrit une clause entière, pas un terme à rapprocher. Le rapprochement « boîte »→« entité » (lot retenu) reste appliqué à ces questions mais n'atteint pas le cœur du fossé (boni/mali) |
+| q008, q054, q085 | (aucun rapprochement pertinent) | pas un fossé lexical (diff de tokens minuscule, cf. § précédent) — problème de rang dans la fusion RRF, hors du périmètre "synonymes" de cette tâche |
+
+### Mesure (step 6)
+
+Lot appliqué dans `SYNONYMES`, tests unitaires ajoutés, **rebuild complet** (`uv run python scripts/build_index.py`, ~14 min), puis re-mesure sur `benchmark/dev.jsonl`, mode `hybrid`, k=10, avec persistance des dicts `par_question` bruts en JSON (ruling J25-6 — fichiers `avant.json`/`apres.json`, scratchpad, reproduits ci-dessous).
+
+| run | recall@5 | recall@10 | MRR | n |
+|---|---|---|---|---|
+| avant (SYNONYMES original, 9 entrées) | 0,639 | 0,672 | 0,565 | 61 |
+| après (SYNONYMES + lot de 3 entrées) | 0,639 | 0,672 | 0,565 | 61 |
+
+Ventilation par catégorie (recall@10) — **strictement identique avant/après** :
+
+| run | reference_directe (n=7) | regle (n=23) | vocabulaire_courant (n=31) |
+|---|---|---|---|
+| avant | 1,0 | 0,935 | 0,403 |
+| après | 1,0 | 0,935 | 0,403 |
+
+Bootstrap apparié (`n_boot=10000`, `seed=42`) :
+
+| comparaison | delta | IC95 | p_amelioration | pire perte par catégorie | adopté ? |
+|---|---|---|---|---|---|
+| avant vs après (lot de 3 entrées) | 0,0000 | (0,0000 ; 0,0000) | 0,000 | 0,000 (aucune perte, mais aucun gain non plus) | **non** |
+
+Contrôle direct : les dicts `par_question` `avant` et `après` sont **identiques bit à bit** (`avant == après` → `True` en Python) — pas une seule des 61 questions ne change de score, y compris les 5 questions ciblées par le lot (q059, q060, q080, q086, q089, toutes à `recall@10=0.0` avant **et** après).
+
+**Cause racine** (contrôle direct sur `Searcher._bm25`, `limit=50` par défaut dans le pipeline `hybrid`) : pour q060, le token `subvent` (issu de « aides »→« subventions ») est bien présent dans la requête normalisée (vérifié), mais le record gold `pcg-1222-74` ne se classe qu'au **rang 244 sur 1511 candidats bm25** — beaucoup trop bas pour entrer dans la fenêtre de 50 candidats transmise à la fusion RRF, quel que soit l'apport du token ajouté. `subvent`/`entit` sont des tokens à très faible pouvoir discriminant dans ce corpus (« entité » apparaît dans la quasi-totalité des 1660 records ; « subvention » dans plusieurs dizaines de records liés à des comptes différents) — le score bm25 (IDF × TF) qu'ils apportent est trop faible pour compenser l'écart de rang initial. C'est un problème structurel de discriminance lexicale, pas un problème de couverture de vocabulaire : ajouter le bon token gold ne suffit pas s'il est déjà quasi-omniprésent dans le corpus.
+
+Dicts `par_question` bruts persistés (identiques avant/après — ruling J25-6, recalculables sans re-runner) :
+
+```json
+{
+ "q001": 1.0, "q002": 1.0, "q003": 1.0, "q004": 1.0, "q006": 1.0, "q007": 1.0,
+ "q008": 0.5, "q009": 1.0, "q010": 1.0, "q011": 1.0, "q012": 1.0, "q013": 1.0,
+ "q014": 1.0, "q015": 1.0, "q021": 0.0, "q022": 0.5, "q023": 0.0, "q024": 1.0,
+ "q025": 1.0, "q026": 0.0, "q027": 1.0, "q031": 1.0, "q032": 1.0, "q034": 1.0,
+ "q036": 1.0, "q038": 1.0, "q040": 1.0, "q041": 1.0, "q043": 1.0, "q044": 1.0,
+ "q046": 1.0, "q047": 1.0, "q049": 1.0, "q050": 1.0, "q052": 1.0, "q053": 1.0,
+ "q054": 0.0, "q056": 0.0, "q057": 0.0, "q059": 0.0, "q060": 0.0, "q061": 1.0,
+ "q063": 0.0, "q064": 1.0, "q065": 0.0, "q067": 1.0, "q068": 0.0, "q070": 0.0,
+ "q071": 0.0, "q072": 1.0, "q074": 0.0, "q075": 1.0, "q077": 1.0, "q079": 0.0,
+ "q080": 0.0, "q082": 1.0, "q083": 1.0, "q085": 0.0, "q086": 0.0, "q088": 1.0,
+ "q089": 0.0
+}
+```
+
+### Décision
+
+**REJETÉ globalement.** `p_amelioration=0,000`, très loin du seuil de 0,95 — le lot de 3 entrées n'a d'effet mesurable sur **aucune** des 61 questions du split dev. Conformément à la règle du contrôleur pour ce cas (rejet global, pas de régression par catégorie mais pas de gain non plus), les 3 entrées ont été **intégralement retirées** de `SYNONYMES` (retour exact aux 9 entrées héritées du jalon 2/T1-T4), les tests dédiés retirés de `tests/test_normalize.py`, et **l'index a été re-rebuilti** une seconde fois pour restaurer l'état antérieur (`records=1660`, `renvois=981`, `chunks=2160` — vérifiés inchangés après les deux rebuilds). `data/corpus.db` est donc, à l'issue de cette tâche, fonctionnellement identique à son état d'avant T5.
+
+Motivation détaillée : contrairement aux ablations A et B (T3/T4), où le rejet reflétait un compromis (gain insuffisant, coût trop élevé, régression), ici le rejet est **inertie totale** — le mécanisme de synonymes fonctionne correctement au niveau lexical (les tokens `subvent`/`entit` apparaissent bien dans les requêtes normalisées, vérifié), mais n'a aucune prise sur le classement bm25 à `limit=50` pour ce corpus : les tokens ajoutés sont soit trop génériques (`entit`, quasi-omniprésent) soit insuffisants à eux seuls pour remonter un rang de plusieurs centaines. Ce résultat négatif est en soi une information utile pour le jalon 3 : **le canal lexical (bm25 + synonymes) a atteint ses limites structurelles sur ce sous-ensemble de `vocabulaire_courant`** ; améliorer le rang de ces documents demandera soit une expansion de requête plus agressive (hors périmètre "dictionnaire de synonymes"), soit un mécanisme qui n'opère pas uniquement par ajout de tokens bm25 (reranking sémantique — déjà mesuré et adopté en T4 avec un gain réel sur `vocabulaire_courant`, 0,403→0,484 avec `bge-reranker-v2-m3` ; ou une révision du score bm25/IDF).
+
+### Échecs restants (matériau jalon 3)
+
+Les 21 échecs dev identifiés en début de section restent **entièrement non résolus** (le lot rejeté n'a rien changé). Catégorisation pour le jalon 3 :
+
+- **Nécessitent une compréhension de requête au-delà du lexique** (10) : q021, q023, q026, q056, q057, q063, q065, q068, q070/071/074 (regroupées, même record gold sous-jacent sur la conversion de devises), q079/080/089 (regroupées, famille boni/mali de fusion) — la question décrit un scénario métier sans jamais nommer le terme PCG correspondant ; aucun dictionnaire de synonymes phrase-à-phrase ne peut combler cet écart sans dégénérer en paraphrase générale (hors périmètre, risque de sur-ajustement démontré par le rejet ci-dessus).
+- **Nécessitent une distinction comptable fine dans la même question** (2) : q022 (créance douteuse vs irrécouvrable), q085 (immobilisation en cours vs production immobilisée) — un rapprochement lexical générique risquerait ici une erreur de conflation (ruling J2-5) ; ces cas demandent un raisonnement contextuel, pas un lexique.
+- **Ne sont pas un fossé lexical mais un problème de rang dans la fusion** (3) : q008, q054 (et partiellement q085) — le vocabulaire est déjà quasi identique entre la question et le record gold ; le reranker cross-encoder (T4, adopté) est le mécanisme déjà mesuré qui adresse ce type de problème (il opère après la fusion RRF, sur le contenu sémantique complet, pas sur des tokens bm25).
+- **q059, q060, q080, q086, q089** : le lot rejeté ciblait ces questions ; elles restent à `recall@10` inchangé (0,0 pour toutes sauf partiellement couvertes par `q086` à 2 citations). La cause racine (tokens ajoutés trop peu discriminants pour ce corpus à `limit=50`) suggère qu'une future tentative devrait soit augmenter `limit` dans `_bm25()` (hors périmètre SYNONYMES de cette tâche), soit s'appuyer sur le reranker plutôt que sur bm25 seul pour ce sous-ensemble.
+
+### Réserves
+
+1. Le rejet porte sur le split `dev` (61 questions) — `test` (29 questions) n'a pas été et ne doit pas être utilisé pendant le développement (règle constante du jalon 2.5).
+2. Les deux mesures (avant/après) ont été exécutées dans des processus python séparés (avant : `normalize.py` remis temporairement à l'état HEAD via `git checkout`, corpus non reconstruit ; après : `normalize.py` édité + corpus reconstruit) — l'alignement des ids `par_question` est garanti par construction (mêmes questions du même fichier benchmark), pas par un partage d'objet en mémoire comme en T3/T4 ; le résultat (`avant == après` bit à bit) constitue en lui-même une preuve solide qu'aucune dérive d'alignement ne s'est produite (un décalage aurait presque certainement produit des différences).
+3. `_bm25()` utilise `limit=50` par défaut (`Searcher._bm25(self, query, limit=50)`) — ce paramètre n'a pas été modifié (hors périmètre de cette tâche, restreint à `SYNONYMES`) ; c'est pourtant la cause racine identifiée de l'inertie du lot. Une tâche future pourrait mesurer l'effet d'un `limit` plus large, indépendamment de tout ajout de synonyme.
+4. Le lot de candidats a été volontairement restreint à 3 entrées sur un maximum de 10 autorisé par le brief — la plupart des 21 échecs analysés ne présentaient aucune paire terme-à-terme légitime (ruling J2-5), et forcer le compte à 10 aurait signifié accepter des rapprochements plus risqués (paraphrases de clauses, catégories de devises) explicitement écartés par prudence ci-dessus.
+5. `docs/echecs-dev-jalon25.md` documente l'état des échecs **avant** le lot (matériau de la proposition) — comme le lot a été intégralement rejeté et retiré, cet état est aussi l'état **final** du split dev à l'issue de T5 ; aucune mise à jour de ce fichier n'était nécessaire après la mesure.
