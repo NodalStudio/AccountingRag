@@ -1,4 +1,4 @@
-from accounting_rag.evalrag import match, evaluate
+from accounting_rag.evalrag import match, evaluate, paired_bootstrap
 
 
 def test_match_prefixe():
@@ -40,3 +40,24 @@ def test_evaluate_recall10_independent_of_k():
     m_k5 = evaluate(FakeSearcher(), qs, mode="bm25", k=5)
     m_k10 = evaluate(FakeSearcher(), qs, mode="bm25", k=10)
     assert m_k5["recall@10"] == m_k10["recall@10"]
+
+
+def test_evaluate_expose_par_question():
+    qs = [
+        {"id": "q1", "question": "x", "categorie": "regle", "citations": ["pcg-214-1"]},
+        {"id": "q2", "question": "y", "categorie": "regle", "citations": ["pcg-999-9"]},
+    ]
+    m = evaluate(FakeSearcher(), qs, mode="bm25", k=10)
+    assert m["par_question"] == {"q1": 1.0, "q2": 0.0}
+
+
+def test_paired_bootstrap_deterministe():
+    a = {f"q{i}": 0.0 for i in range(20)}
+    b = {f"q{i}": 1.0 for i in range(20)}
+    r = paired_bootstrap(a, b)
+    assert r["delta"] == 1.0
+    assert r["p_amelioration"] == 1.0
+    assert r["ic95"] == (1.0, 1.0)
+    r2 = paired_bootstrap(a, a)
+    assert r2["delta"] == 0.0
+    assert r2["p_amelioration"] < 0.95

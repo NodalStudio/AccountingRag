@@ -1,5 +1,6 @@
 """Harnais d'évaluation retrieval : recall@k / MRR sur citations gold."""
 import json
+import random
 from collections import defaultdict
 from pathlib import Path
 
@@ -20,6 +21,7 @@ def match(record_id: str, citation: str) -> bool:
 def evaluate(searcher, questions: list[dict], mode: str, k: int = 10) -> dict:
     recalls5, recalls10, mrrs = [], [], []
     par_cat: dict[str, list[float]] = defaultdict(list)
+    par_question: dict[str, float] = {}
     for q in questions:
         hits = searcher.search(q["question"], k=max(k, 10), mode=mode)
         ids = [h["record_id"] for h in hits]
@@ -31,11 +33,35 @@ def evaluate(searcher, questions: list[dict], mode: str, k: int = 10) -> dict:
                      if any(match(i, c) for c in q["citations"])), None)
         mrrs.append(1.0 / rank if rank else 0.0)
         par_cat[q["categorie"]].append(covered10 / len(q["citations"]))
+        par_question[q["id"]] = covered10 / len(q["citations"])
     return {
         "recall@5": round(sum(recalls5) / len(recalls5), 3),
         "recall@10": round(sum(recalls10) / len(recalls10), 3),
         "mrr": round(sum(mrrs) / len(mrrs), 3),
         "par_categorie": {c: {"recall@10": round(sum(v) / len(v), 3), "n": len(v)}
                           for c, v in sorted(par_cat.items())},
+        "par_question": par_question,
         "n": len(questions),
     }
+
+
+def paired_bootstrap(a: dict[str, float], b: dict[str, float],
+                     n_boot: int = 10000, seed: int = 42) -> dict:
+    """Bootstrap apparié sur les scores par question (b - a). Ids alignés obligatoires."""
+    ids = sorted(a)
+    assert sorted(b) == ids, "les deux runs doivent porter sur les mêmes questions"
+    deltas = [b[i] - a[i] for i in ids]
+    n = len(deltas)
+    mean_delta = sum(deltas) / n
+    rng = random.Random(seed)
+    boots = []
+    wins = 0
+    for _ in range(n_boot):
+        m = sum(deltas[rng.randrange(n)] for _ in range(n)) / n
+        boots.append(m)
+        if m > 0:
+            wins += 1
+    boots.sort()
+    return {"delta": round(mean_delta, 4),
+            "ic95": (round(boots[int(0.025 * n_boot)], 4), round(boots[int(0.975 * n_boot)], 4)),
+            "p_amelioration": wins / n_boot}

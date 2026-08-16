@@ -76,3 +76,9 @@ def test_stock_options_couverture_droits_francais():
     # Les tokens de stock-options doivent avoir une intersection non vide avec chacun
     assert stock_opts & souscription, "stock-options doit couvrir options de souscription"
     assert stock_opts & achat, "stock-options doit couvrir options d'achat"
+
+# T5 (jalon 2.5) : lot de synonymes piloté par les échecs mesurés
+# (docs/echecs-dev-jalon25.md) — "aides"->"subventions" et "la/une boite"->"l'/une entite"
+# ont été mesurés par bootstrap apparié et REJETÉS globalement (p_amelioration=0.000,
+# aucun effet sur le classement bm25). Aucune entrée n'a été conservée dans SYNONYMES ;
+# voir docs/eval-jalon25.md, section « Ablation C », pour le détail de la mesure.

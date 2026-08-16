@@ -25,6 +25,12 @@ SYNONYMES: dict[str, str] = {
     "stock-options": "options de souscription ou d'achat d'actions",
     "goodwill": "fonds commercial",
 }
+# T5 (jalon 2.5) — lot piloté par l'analyse des échecs dev (docs/echecs-dev-jalon25.md) :
+# "aides"->"subventions" et "la/une boite"->"l'/une entite" ont été mesurés par bootstrap
+# apparié (paired_bootstrap) sur benchmark/dev.jsonl, mode hybrid, et REJETÉS globalement
+# (p_amelioration=0.000, delta=0.0 — les nouveaux tokens n'entrent jamais dans la fenêtre
+# top-50 de _bm25() pour les questions ciblées). Voir docs/eval-jalon25.md, section
+# « Ablation C », pour le détail (lot proposé, entrées écartées par prudence, mesure).
 
 
 def _fold(s: str) -> str:
