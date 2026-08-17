@@ -296,3 +296,93 @@ Deux voies restent, et elles sont d'une autre nature : agir sur la REQUÊTE pour
 - Les latences sont des latences GPU fp32 sur cette machine (cf. § Conditions exactes). Sur CPU, le facteur ~70 rend `bge`+200 inutilisable en interactif (~12 min/question) : la conclusion « le modèle fort tient 200 candidats » est conditionnée à la présence d'une carte.
 - Le témoin re-mesuré reproduit la référence question par question, ce qui valide la réutilisation du JSON du jalon 2.5 comme base de bootstrap. Il ne valide pas les autres chiffres de ce jalon-là.
 - La combinaison `n_rerank` élargi + `dedup_termes` ou `df_max` n'est pas mesurée : mêmes règles qu'en T2, aucun de ces leviers n'étant adopté séparément.
+
+## Ablation G — réécriture de la question par un LLM (`rewriter`)
+
+Nouveaux paramètres `Searcher(..., rewriter=None, mode_reecriture="remplace")`. Le module `src/accounting_rag/rewrite.py` traduit une question posée en langage courant vers le vocabulaire technique du Plan comptable général via l'API Claude, puis la requête réécrite alimente les canaux lexical et dense. `_route(query)` continue de lire la question **originale** : une référence d'article explicite ne doit jamais dépendre d'une reformulation par LLM.
+
+C'est le seul levier de ce jalon capable de **créer** un lien de vocabulaire qui n'existe pas. Les trois précédents (`df_max`, `pool`, `n_rerank`) ne savent que réordonner ce que le vocabulaire commun a déjà trouvé — et les § ci-dessus montrent qu'ils échouent tous les trois.
+
+### Méthode
+
+Référence = `hybrid` neutre (recall@10 = 0,672), **pas** `hybrid+rerank` : la réécriture agit sur les canaux, et la mesurer sous un reranker mélangerait deux effets. Deux modes mesurés :
+
+- **`remplace`** : les canaux ne reçoivent que la réécriture ;
+- **`etend`** : les canaux reçoivent `question + " " + réécriture`, conservant les tokens originaux.
+
+Modèle : `claude-sonnet-5`, `thinking` explicitement désactivé, un appel par question distincte, cache JSON committé (`docs/mesures/jalon3/reecritures.json`), garde-fou dur à 200 appels par exécution. Coût total de la campagne : 61 appels, quelques centimes ; toutes les re-mesures sont ensuite gratuites et rejouent les mêmes réécritures à l'identique.
+
+### Résultats
+
+| config | recall@5 | recall@10 | MRR | `reference_directe` | `regle` | `vocabulaire_courant` | latence/question |
+|---|---|---|---|---|---|---|---|
+| `hybrid` neutre, sans réécriture (référence) | 0,639 | 0,672 | 0,565 | 1,000 | 0,935 | 0,403 | 0,14 s |
+| réécriture, mode `remplace` | 0,697 | 0,803 | 0,601 | 1,000 | **1,000** | 0,613 | 0,91 s |
+| réécriture, mode `etend` | **0,779** | **0,852** | **0,695** | 1,000 | **1,000** | **0,710** | 0,23 s |
+
+Bootstrap apparié (10 000 tirages, seed 42) sur le recall@10 par question :
+
+| config | delta | IC95 | p_amelioration | pire perte catégorie | adopté ? |
+|---|---|---|---|---|---|
+| réécriture, `remplace` | +0,1311 | (0,0164 ; 0,2541) | **0,9835** | 0,0 (aucune) | **oui** |
+| réécriture, `etend` | +0,1803 | (0,0738 ; 0,2951) | **0,9996** | 0,0 (aucune) | **oui** |
+
+Bootstrap par catégorie pour `etend` : `vocabulaire_courant` +0,3065 (p = 0,9979), `regle` +0,0652 (p = 0,8758), `reference_directe` inchangé (déjà à 1,0 — le routeur regex). Le gain est donc concentré exactement là où le jalon 2 avait chiffré le fossé, et il est significatif **dans cette catégorie prise seule**.
+
+### Décision
+
+**`etend` ADOPTÉ.** Les deux modes franchissent le critère (`p_amelioration ≥ 0,95`, aucune catégorie ne perd plus de 0,05) ; `etend` domine `remplace` sur les trois métriques et sur les trois catégories. Mécanisme : conserver les tokens de la question évite de perdre un terme discriminant que la réécriture omettrait, tout en ajoutant le vocabulaire PCG manquant. `remplace` est aussi ~4× plus lent, la réécriture seule produisant un `MATCH` plus large.
+
+### Combiné au reranking : les deux leviers ne se recouvrent pas
+
+| config | recall@5 | recall@10 | MRR | `vocabulaire_courant` | latence/question |
+|---|---|---|---|---|---|
+| `bge-reranker-v2-m3`, `n_rerank=25` (config adoptée au jalon 2.5) | 0,680 | 0,738 | 0,642 | 0,484 | 1,84 s |
+| réécriture `etend` + `bge-reranker-v2-m3`, `n_rerank=25` | 0,762 | **0,877** | 0,714 | **0,774** | 1,75 s |
+
+Bootstrap contre la config du jalon 2.5 : delta **+0,1393**, IC95 (0,0328 ; 0,2459), **p_amelioration = 0,9945**, pire perte catégorie −0,0217 (`regle`, sous la garde de −0,05) → **ADOPTÉ**. Les deux leviers s'additionnent presque intégralement (+0,180 seul, +0,139 par-dessus le reranking) : l'un répare le **vocabulaire de la requête**, l'autre le **classement des candidats**. Ce sont bien deux problèmes distincts, ce que le § Ablation F avait établi par la négative.
+
+### Le sort des questions données hors d'atteinte
+
+Le § Diagnostic fondateur avait classé quatre questions en quatre profils. Recall@10 par question, avant et après :
+
+| question | profil au diagnostic | référence | `remplace` | `etend` |
+|---|---|---|---|---|
+| q021 | à portée d'un pool élargi (rang lexical 154/1585) | 0,0 | **1,0** | **1,0** |
+| q026 | hors fenêtre de peu (46/1659) | 0,0 | **1,0** | **1,0** |
+| q060 | **seule muette côté lexical** (1453/1659, 88 %) | 0,0 | **1,0** | **1,0** |
+| q023 | quasi-immédiat (rang lexical **2**/1653) | 0,0 | 0,0 | 0,0 |
+
+Le résultat le plus contre-intuitif du jalon est dans ce tableau : **la question que le diagnostic donnait comme la plus désespérée est réparée, et celle qu'il donnait comme la plus facile résiste.** q060, dont le gold était au 88ᵉ percentile de son classement lexical, est retrouvée dès que la question parle le vocabulaire du corpus. Le « fossé lexical » n'était pas un plafond du système : c'était un plafond du vocabulaire de la question.
+
+### Anatomie de q023 : la fusion RRF évince le meilleur candidat du corpus
+
+q023 mérite son autopsie, parce qu'elle isole un défaut que ce jalon n'a pas traité. Son gold (`pcg-214-22`) est le **2ᵉ meilleur candidat lexical sur 1 653** — présent dans le pool bm25, absent du canal dense. Contributions RRF mesurées (`k=60`) :
+
+| candidat | rang bm25 | rang dense | contribution RRF | sort |
+|---|---|---|---|---|
+| `pcg-214-22` (**gold**) | **2** | absent | 0,01613 + 0 = **0,01613** | rang 11 après fusion — sort du top-10 |
+| `pcg-na-236` | 5 | 6 | 0,01538 + 0,01515 = **0,03054** | 1ᵉʳ |
+| `pcg-214-25` | 11 | 17 | 0,01408 + 0,01299 = **0,02707** | 2ᵉ |
+| `pcg-1121-1` | 23 | 19 | 0,01205 + 0,01266 = **0,02471** | 3ᵉ |
+
+Le meilleur candidat lexical du corpus entier perd contre un candidat 5ᵉ et 6ᵉ, parce que **la somme RRF récompense le consensus, pas l'excellence**. Sur ce pool de 81 candidats, 73 ne sont présents que dans un seul canal et 8 dans les deux : ces 8 monopolisent le haut du classement. Le gold manque le top-10 d'**une place**.
+
+C'est la mécanique exacte du découplage couverture/classement décrit au § Ablation E, désormais mesurée sur un cas nommé et non plus en agrégat. Et c'est un défaut de la **règle de fusion**, orthogonal à tout ce que ce jalon a réparé : la réécriture ne l'atteint pas (elle déplace le vocabulaire vers les stocks, ce qui est comptablement correct mais éloigne encore `pcg-214-22`), l'élargissement du pool ne l'atteint pas (le gold y est déjà, au rang 2), le reranking ne l'atteint pas non plus tant que la fusion décide qui entre dans les 25 candidats soumis. Levier désigné pour le jalon 4 : une fusion qui ne soit pas purement additive sur les rangs — maximum au lieu de somme, normalisation des scores, ou bonus explicite au rang 1 d'un canal.
+
+### Contrôle d'intégrité du benchmark
+
+La réécriture crée un risque qu'aucune ablation précédente ne portait : si le modèle citait de lui-même le numéro d'article attendu, le routeur de référence exacte retrouverait le gold et le gain mesuré ne mesurerait plus le retrieval mais la mémoire du modèle. Deux verrous :
+
+1. **Structurel** : le rewriter ne reçoit que le texte de la question — jamais les citations, jamais le corpus, jamais les résultats (test dédié, `tests/test_rewrite.py`).
+2. **Empirique et scripté** : `scripts/audit_reecritures.py` audite les 61 réécritures du cache committé et classe chaque numéro d'article trouvé en *recopié depuis la question* / *inventé hors gold* / *fuite*. Résultat : **un seul** numéro sur 61 réécritures (`123-16`, le code de commerce, recopié depuis la question de q003), **zéro inventé, zéro fuite**.
+
+Ce contrôle est **falsifiable** : `tests/test_audit_reecritures.py` injecte une réécriture qui cite le gold sans qu'il figure dans la question et vérifie que l'audit la signale. Sans ce test, le « contrôle OK » serait une affirmation invérifiable — précisément le travers documenté en T2, où un contrôle de reproduction avait validé le bug qu'il devait attraper.
+
+### Réserves
+
+- **Dépendance externe et non déterministe.** Le retrieval dépend désormais d'une API payante. Le cache JSON committé rend les mesures publiées reproductibles à l'identique, mais une **question nouvelle** appelle le modèle, et rien ne garantit qu'un appel futur produira la même réécriture (pas de température fixable sur la série 5 : les paramètres d'échantillonnage sont refusés). Les chiffres de ce rapport sont reproductibles ; le comportement sur une question inédite est stochastique.
+- **`n=61`**, et le gain repose largement sur `vocabulaire_courant` (31 questions). Le split de test gelé est le seul juge (§ Clôture).
+- **Le mode `remplace` n'est pas retenu mais reste mesuré** : sur un corpus où la réécriture serait moins fiable, conserver la question (`etend`) est le choix robuste.
+- **Le reranker reçoit la question ORIGINALE, pas la réécriture** (lecture littérale du brief T5). La combinaison mesurée ci-dessus vaut donc pour cette convention ; soumettre la réécriture au cross-encoder est une variante non mesurée.
+- **Coût par question en production** : un appel LLM s'ajoute à chaque requête non cachée. Ce jalon ne mesure pas la latence bout-en-bout d'un déploiement, seulement celle du retrieval.
