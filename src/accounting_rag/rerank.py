@@ -10,8 +10,10 @@ utilisable via ACCRAG_RERANKER pour les contextes sensibles à la latence.
 
 ATTENTION aux latences citées dans docs/eval-jalon25.md : ce sont des latences CPU
 (~10 s/question pour mmarco, ~117 s/question pour bge à 25 candidats). Re-mesurées au
-jalon 3 sur GPU : ~0,4 s et ~1,8 s respectivement, facteur ~70 à code identique — cf.
-docs/eval-jalon3.md, section « Le reranking du jalon 2.5 était mesuré sur CPU »."""
+jalon 3 sur GPU : ~0,4 s et ~1,7 s respectivement, soit deux ordres de grandeur d'écart
+à code identique — cf. docs/eval-jalon3.md, section « Le reranking du jalon 2.5 était
+mesuré sur CPU », qui explique pourquoi ce facteur ne doit pas être cité avec des
+décimales (quatre exécutions : ×66 à ×106)."""
 import os
 import sys
 
@@ -25,11 +27,12 @@ class Reranker:
 
         self.model_name = model_name or os.environ.get("ACCRAG_RERANKER", _DEFAULT)
         print(f"[Reranker] chargement de {self.model_name} (~2,2 Go au premier "
-              f"téléchargement pour le défaut). Latence indicative pour 25 candidats, "
-              f"mesurée au jalon 3 : ~2 s/question sur GPU, ~150 s/question sur CPU "
-              f"(facteur ~70 — cf. docs/eval-jalon3.md, § « Le reranking du jalon 2.5 "
-              f"était mesuré sur CPU »). Sans GPU, une campagne de 61 questions coûte "
-              f"~2 h 30.", file=sys.stderr)
+              f"téléchargement pour le défaut). Ordre de grandeur pour 25 candidats, "
+              f"mesuré au jalon 3 : ~1,5 s/question sur GPU contre ~150 s/question sur "
+              f"CPU — deux ordres de grandeur (cf. docs/eval-jalon3.md, § « Le reranking "
+              f"du jalon 2.5 était mesuré sur CPU » ; le facteur exact varie de ×66 à "
+              f"×106 selon la charge, ne pas le citer avec des décimales). Sans GPU, "
+              f"une campagne de 61 questions coûte deux à trois heures.", file=sys.stderr)
         self.model = CrossEncoder(self.model_name)
 
     def rerank(self, query: str, results: list[dict], top_k: int) -> list[dict]:

@@ -3,9 +3,9 @@
 La loi du projet est que tout chiffre publié soit recalculable depuis un JSON versionné.
 Deux mesures y échappaient (relevé par la revue finale de branche) :
 
-  1. le tableau CPU vs GPU qui justifie la correction d'un facteur ~70 sur les latences de
-     reranking publiées au jalon 2.5 — c'est le chiffre le plus lourd de conséquences du
-     jalon, il ne peut pas rester un contrôle jetable ;
+  1. le tableau CPU vs GPU qui justifie la correction de DEUX ORDRES DE GRANDEUR sur les
+     latences de reranking publiées au jalon 2.5 — c'est le chiffre le plus lourd de
+     conséquences du jalon, il ne peut pas rester un contrôle jetable ;
   2. l'anatomie de q023 (contributions RRF du gold contre les trois premiers du top-10,
      composition mono-canal / bi-canal du pool), qui fonde la piste retenue pour la suite ;
   3. la largeur du `MATCH` et la latence cache-chaud des deux modes de réécriture, qui
@@ -13,9 +13,11 @@ Deux mesures y échappaient (relevé par la revue finale de branche) :
      avait publiées sans artefact, remplaçant un chiffre faux mais versionné par un
      chiffre juste mais non recalculable (relevé en re-revue).
 
-La sonde device mesure PLUSIEURS questions avec un tour de chauffe et publie une
-fourchette : un tirage unique s'est révélé instable (×65,7 à ×77,8 selon l'exécution).
-C'est le ratio en ordre de grandeur qui est le résultat, pas ses décimales.
+La sonde device mesure PLUSIEURS questions avec un tour de chauffe, mais ATTENTION à la
+lecture de sa fourchette : min/median/max décrivent la dispersion ENTRE LES QUESTIONS
+d'une même exécution, PAS l'incertitude de la mesure. Quatre exécutions successives ont
+donné des facteurs de ×66, ×78, ×90 et ×106, et une ré-exécution est tombée entièrement
+hors de la fourchette publiée par la précédente. Ne publier que l'ordre de grandeur.
 
 Écrit `docs/mesures/jalon3/sondes.json`.
 
@@ -41,10 +43,11 @@ RRF_K = 60  # constante de la fusion, cf. Searcher._rrf
 def sonde_device(embedder, questions: list[str]) -> dict:
     """Latence par question rerankée (bge, 25 candidats), GPU puis CPU forcé.
 
-    Plusieurs questions et un tour de chauffe par device : une mesure à une seule
-    question varie de ~25 % d'une exécution à l'autre sur une machine partagée, ce qui
-    rendait le ratio publié (×71, ×77,8, ×65,7 selon le tirage) plus précis qu'il ne
-    l'est réellement. On publie donc min/median/max et une fourchette de ratio.
+    Plusieurs questions et un tour de chauffe par device. La dispersion reste forte :
+    jusqu'à 33 % ENTRE les questions d'une même exécution, et jusqu'à 30 % sur la médiane
+    d'une exécution à l'autre (quatre tirages : ×66, ×78, ×90, ×106). min/median/max
+    décrivent donc la dispersion intra-exécution, pas l'incertitude de la mesure — le
+    seul résultat publiable est l'ordre de grandeur.
     """
     out = {}
     for device in ("cuda", "cpu"):
@@ -76,7 +79,11 @@ def sonde_modes_reecriture(embedder, questions: list[dict]) -> dict:
     absorbe les appels API non encore cachés.
     """
     from accounting_rag.rewrite import Rewriter
-    rw = Rewriter(cache_path=ROOT / "docs/mesures/jalon3/reecritures.json")
+    # LECTURE SEULE : ce script est invité trois fois par le rapport, et il pointe le
+    # cache DE MESURE. `ecrire_cache=False` rend l'écrasement impossible plutôt
+    # qu'improbable (finding F2 de la vérification finale).
+    rw = Rewriter(cache_path=ROOT / "docs/mesures/jalon3/reecritures.json",
+                  ecrire_cache=False)
     appels_avant = rw.appels
     out = {}
     for mode in ("remplace", "etend"):

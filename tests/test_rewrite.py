@@ -88,3 +88,24 @@ def test_le_rewriter_ne_recoit_que_la_question(tmp_path):
     assert "ma question" in envoye
     for interdit in ("pcg-", "citations", "gold", "record_id"):
         assert interdit not in envoye
+
+
+def test_lecture_seule_leve_et_nappelle_pas_lapi(tmp_path):
+    """`ecrire_cache=False` : une question absente lève, sans appel API ni écriture.
+
+    Garde-fou pour tout contexte de mesure pointant un cache versionné — sans lui, un
+    script de mesure réécrit l'ancrage de reproductibilité des chiffres publiés dès
+    qu'une question est ajoutée au benchmark.
+    """
+    import pytest
+    cache = tmp_path / "cache.json"
+    cache.write_text(json.dumps({"connue": "amortissement"}), encoding="utf-8")
+    md5_avant = cache.read_bytes()
+    client = FauxClient()
+    r = Rewriter(cache_path=cache, client=client, ecrire_cache=False)
+
+    assert r.reecrire("connue") == "amortissement"          # le cache reste lisible
+    with pytest.raises(RuntimeError, match="lecture seule"):
+        r.reecrire("inconnue")
+    assert client.appels == []                              # aucun appel API
+    assert cache.read_bytes() == md5_avant                  # fichier intact

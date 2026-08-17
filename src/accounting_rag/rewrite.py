@@ -23,8 +23,17 @@ _SYSTEME = (
 
 
 class Rewriter:
-    def __init__(self, cache_path: str | Path, modele: str | None = None, client=None):
+    def __init__(self, cache_path: str | Path, modele: str | None = None, client=None,
+                 ecrire_cache: bool = True):
         self.cache_path = Path(cache_path)
+        # ecrire_cache=False : mode LECTURE SEULE, pour tout contexte de mesure qui pointe
+        # un cache versionné. `reecrire()` lève alors sur une question absente au lieu
+        # d'appeler l'API et de réécrire le fichier. Sans ce garde-fou, un script de
+        # mesure pointant docs/mesures/jalon3/reecritures.json réécrirait l'ancrage de
+        # reproductibilité des chiffres publiés dès qu'une question serait ajoutée au
+        # benchmark — inoffensif par ÉTAT (tout est en cache) mais pas par GARANTIE, ce
+        # que trois revues successives ont relevé sous des formes différentes.
+        self.ecrire_cache = ecrire_cache
         if modele is None:
             # `charge_env()` AVANT de lire ACCRAG_REWRITE_MODEL : sinon une variable
             # placée dans .env (le seul endroit où ce projet met sa configuration
@@ -54,6 +63,11 @@ class Rewriter:
     def reecrire(self, question: str) -> str:
         if question in self._cache:
             return self._cache[question]
+        if not self.ecrire_cache:
+            raise RuntimeError(
+                f"Rewriter en lecture seule (ecrire_cache=False) et question absente du "
+                f"cache {self.cache_path} : {question!r}. Aucun appel API ni écriture ne "
+                f"sera fait. Utilisez un cache d'exécution accessible en écriture.")
         if self.appels >= 200:
             raise RuntimeError("garde-fou : plus de 200 appels API dans une exécution")
         reponse = self.client.messages.create(
