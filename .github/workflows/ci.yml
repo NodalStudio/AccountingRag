@@ -1,0 +1,82 @@
+# Test suite and benchmark-integrity gates.
+#
+# Two things this repo cannot verify by reading code, and therefore verifies here:
+#   - the test suite still passes on a clean checkout;
+#   - no rewrite in the committed cache leaks a gold article number into a
+#     benchmark question (scripts/audit_reecritures.py).
+#
+# The source PDF (~100 MB, anc.gouv.fr) is cached: the parser tests need it, and
+# they are the ones that protect the corpus. The built index (data/corpus.db,
+# ~14 min) is NOT built here: only six tests need it and they skip themselves,
+# which the suite reports explicitly with -rs.
+#
+# Job names stay short and stable: GitHub matches required status checks by the
+# reported check-run name (the job's `name:`).
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    name: tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      # The download script verifies a sha256, so the cache key can be the
+      # script itself: it changes whenever the expected document changes.
+      - name: Cache the source PDF
+        uses: actions/cache@v4
+        with:
+          path: data/raw
+          key: recueil-pdf-${{ hashFiles('scripts/download_data.py') }}
+
+      - name: Download the source PDF if not cached
+        run: uv run python scripts/download_data.py
+
+      - name: Run the test suite
+        run: |
+          set -o pipefail
+          uv run pytest -q --no-header -rs | tee pytest.out
+
+      # A green check that verified nothing is worse than a red one. The parser
+      # tests need the PDF and the retrieval smoke tests need the built index;
+      # if a change makes the suite silently collapse to a handful of tests, this
+      # fails rather than reporting success.
+      - name: Refuse a green check that verified nothing
+        run: |
+          passed=$(grep -oE '[0-9]+ passed' pytest.out | tail -1 | grep -oE '[0-9]+' || echo 0)
+          echo "Tests passed: $passed"
+          if [ "$passed" -lt 140 ]; then
+            echo "::error::Only $passed tests passed (floor is 140). Either the suite"
+            echo "::error::regressed or something is skipping tests silently."
+            exit 1
+          fi
+
+  integrity:
+    name: integrity
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      # Needs neither the PDF nor the index: it reads the committed benchmark
+      # splits and the committed rewrite cache. Seconds, and it guards the
+      # validity of every figure the ablation-G report publishes.
+      - name: Audit the rewrite cache for gold leaks
+        run: uv run python scripts/audit_reecritures.py
