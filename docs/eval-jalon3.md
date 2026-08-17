@@ -201,6 +201,8 @@ Mécanisme, vérifié par deux contrôles :
 - Le contrôle du § « découplage couverture/recall » (0/610 entrées du top-10 au-delà du rang 100) est produit par un script ad hoc, non versionné (exécuté pour ce rapport, reproductible à partir de `Searcher._bm25`/`_dense`/`_rrf`, mais pas committé) — contrairement aux chiffres agrégés, qui sont tous dans `docs/mesures/jalon3/E_dev.json`.
 - `n=61` (dev) : le delta pool=50→100 (-0,0328) tient sur seulement 4 questions qui basculent (3 régressions, 1 amélioration) — un split dev plus grand pourrait déplacer ce chiffre sensiblement.
 - Deux défauts trouvés et corrigés dans le test fourni par le brief T2 (§ ci-dessus) — signalés en toute transparence, dans la continuité de la pratique établie en T1.
+- **La couverture est un plafond d'ATTEIGNABILITÉ, pas un recall promis.** `0,839` sur `vocabulaire_courant` à `pool=200` signifie : dans 83,9 % de ces questions, au moins une citation attendue se trouve quelque part dans l'union `bm25 ∪ dense` AVANT fusion. Aucun mécanisme connu ne garantit qu'un reranker saura la remonter dans le top-10 ; le chiffre borne ce qui est possible sans reconstruire l'index, il ne prédit pas ce qui sera obtenu. Toute communication de ce chiffre doit porter cette distinction.
+- **Le coût du reranking sur un pool élargi n'est pas mesuré dans cette tâche.** Un pool de 200 par canal expose jusqu'à 2×200 candidats à la fusion ; soumettre cet ordre de grandeur à un cross-encoder change complètement le budget latence par question (le reranker adopté au jalon 2.5 coûte ~4,7 s/candidat). C'est précisément l'arbitrage que l'ablation F mesure — tant qu'il ne l'est pas, le plafond de 0,839 est un plafond sans prix affiché.
 
 ## Reproduction exacte
 
