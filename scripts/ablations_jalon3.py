@@ -28,14 +28,35 @@ Ablations supportées par ce jalon (`--ablation D|E|F|cumul`) :
     ou modèle fort (`bge-reranker-v2-m3`) sur pool étroit ? Référence = config finale
     du jalon 2.5 (`bge-reranker-v2-m3`, `n_rerank=25`, `pool=50`, recall@10 attendu =
     0,738 sur dev) : RÉUTILISÉE depuis `docs/mesures/jalon25/cloture_dev.json` (champ
-    `b`), pas re-mesurée (~2h CPU déjà mesurées une fois au jalon 2.5 — règle du
-    projet : tout chiffre publié doit être recalculable depuis un JSON persisté, pas
-    nécessairement depuis une nouvelle exécution de CE script). Configurations
-    mesurées : `mmarco+n_rerank=200+pool=200` (~80s/question), `mmarco+n_rerank=25`
-    (contrôle isolant l'effet du modèle de celui de la largeur, ~10s/question) ; une
-    quatrième config (`bge+n_rerank=100`, ~8min/question, ~8h/61 questions) est
-    seulement mesurée sur `--mesurer-bge100` explicite — sinon documentée « non
-    mesurée, coût » (brief T3, step 5.4).
+    `b`) pour le bootstrap, ET re-mesurée à l'identique comme témoin de reproduction
+    (voir ci-dessous).
+
+    CORRECTION DES COÛTS ANNONCÉS (mesuré le 16 août 2026, cette campagne) : le plan
+    T3 et les latences publiées au jalon 2.5 surestiment le coût du reranking d'un
+    facteur ~50. Mesures réelles sur cette machine, 61 questions dev : mmarco à 25
+    candidats 0,4 s/question (annoncé ~10 s), mmarco à 200 candidats 1,5 s/question
+    (annoncé ~80 s), bge à 100 candidats 5,9 s/question (annoncé ~8 min, soit ~8 h
+    pour le split — d'où le garde-fou `--mesurer-bge100` du premier jet de cette tâche,
+    devenu sans objet et retiré). Conséquence de méthode : la config décisive du jalon (modèle
+    FORT sur pool LARGE) était présumée hors de portée sur la base d'une estimation,
+    jamais d'une mesure ; elle est mesurée ici. Les latences du jalon 2.5 restent
+    telles quelles dans son propre rapport (elles ont été mesurées) mais ne sont pas
+    comparables aux latences de ce rapport-ci : d'où le témoin bge+25 re-mesuré dans
+    les mêmes conditions que les autres configs.
+
+    Configurations mesurées (toutes, sans option) : `bge+n_rerank=25+pool=50` (témoin
+    de reproduction de la référence + latence comparable), `mmarco+n_rerank=25+pool=50`
+    (isole l'effet du MODÈLE à largeur constante), `mmarco+n_rerank=200+pool=200` et
+    `bge+n_rerank=100+pool=100`, `bge+n_rerank=200+pool=200` (isolent l'effet de la
+    LARGEUR à modèle constant, pour les deux modèles).
+  - G (T5) : réécriture de la question par un LLM (Claude) vers le vocabulaire du PCG,
+    avant les canaux lexical et dense. Référence = `hybrid` neutre (0,672), PAS
+    `hybrid+rerank` : la réécriture agit sur les canaux, et la mesurer sous un reranker
+    mélangerait deux effets. Deux configs (`remplace`, `etend`) ; la combinaison avec le
+    reranking n'est mesurée que si l'une des deux est adoptée seule. Le seul levier de
+    ce jalon capable de créer un lien de vocabulaire qui n'existe pas dans le corpus —
+    les trois autres ne savent que réordonner ce que le vocabulaire commun a déjà
+    trouvé. Coût borné par un cache JSON committé (`docs/mesures/jalon3/reecritures.json`).
   - cumul : introduite par la tâche suivante du jalon 3 (T4) — non implémentée ici,
     choix reconnu par l'argparse mais qui lève `NotImplementedError` avec un renvoi
     explicite vers la tâche qui l'introduit.
@@ -44,7 +65,7 @@ Usage :
     uv run python scripts/ablations_jalon3.py --ablation D --split dev
     uv run python scripts/ablations_jalon3.py --ablation E --split dev
     uv run python scripts/ablations_jalon3.py --ablation F --split dev
-    uv run python scripts/ablations_jalon3.py --ablation F --split dev --mesurer-bge100
+    uv run python scripts/ablations_jalon3.py --ablation G --split dev   # appels API (cachés)
 """
 import argparse
 import json
@@ -449,15 +470,16 @@ def _mesurer_config_F(label: str, embedder, model_name: str, n_rerank: int, pool
     return r
 
 
-def run_ablation_F(split: str, mesurer_bge100: bool = False) -> dict:
+def run_ablation_F(split: str) -> dict:
     """Ablation F (T3) : reranking sur pool élargi (`n_rerank`). Question du jalon :
     modèle faible (`mmarco`) sur pool large, ou modèle fort (`bge`) sur pool étroit ?
 
-    ATTENTION COÛT : `mmarco+n_rerank=200+pool=200` coûte ~80s/question (~80 min sur
-    61 questions dev) ; `mmarco+n_rerank=25` coûte ~10s/question (~10 min). Avec
-    `mesurer_bge100=True`, `bge+n_rerank=100+pool=100` coûte ~8 min/question (~8h sur
-    61 questions) — désactivé par défaut (brief T3, step 5.4 : seulement si le temps
-    le permet), documenté comme non mesuré sinon (réserve honnête, pas un oubli).
+    Coût réel mesuré (61 questions dev, cette machine) : ~15 min pour les cinq
+    configurations, embedder et modèles compris. Les estimations du brief T3 (~80
+    s/question pour mmarco à 200 candidats, ~8 min/question pour bge à 100) étaient
+    fausses d'un facteur ~50 ; voir l'en-tête du module. La grille est donc COMPLÈTE
+    (les deux modèles × largeur étroite/large), ce que le premier jet ne permettait
+    pas : la config décisive (modèle fort sur pool large) y était écartée sur estimation.
     """
     nom, mode = "F", "hybrid+rerank"
     questions = load_benchmark(ROOT / f"benchmark/{split}.jsonl")
@@ -485,15 +507,22 @@ def run_ablation_F(split: str, mesurer_bge100: bool = False) -> dict:
     ]
 
     configs_a_mesurer = [
-        ("mmarco-mMiniLMv2-L12-H384-v1, n_rerank=200, pool=200",
-         {"model_name": MMARCO_MODEL, "n_rerank": 200, "pool": 200}),
+        # Témoin de reproduction : même config que la référence, re-mesurée dans les
+        # conditions de CETTE campagne. Deux rôles — (a) vérifier que la référence du
+        # jalon 2.5 se reproduit bit à bit (recall@10 = 0,738), (b) fournir une latence
+        # comparable aux autres lignes du tableau, celle du jalon 2.5 étant ~50x trop
+        # haute (cf. en-tête du module).
+        ("bge-reranker-v2-m3, n_rerank=25, pool=50 (témoin re-mesuré)",
+         {"model_name": BGE_MODEL, "n_rerank": 25, "pool": 50}),
         ("mmarco-mMiniLMv2-L12-H384-v1, n_rerank=25, pool=50 (contrôle modèle)",
          {"model_name": MMARCO_MODEL, "n_rerank": 25, "pool": 50}),
+        ("mmarco-mMiniLMv2-L12-H384-v1, n_rerank=200, pool=200",
+         {"model_name": MMARCO_MODEL, "n_rerank": 200, "pool": 200}),
+        ("bge-reranker-v2-m3, n_rerank=100, pool=100",
+         {"model_name": BGE_MODEL, "n_rerank": 100, "pool": 100}),
+        ("bge-reranker-v2-m3, n_rerank=200, pool=200",
+         {"model_name": BGE_MODEL, "n_rerank": 200, "pool": 200}),
     ]
-    if mesurer_bge100:
-        configs_a_mesurer.append(
-            ("bge-reranker-v2-m3, n_rerank=100, pool=100",
-             {"model_name": BGE_MODEL, "n_rerank": 100, "pool": 100}))
 
     for label, params in configs_a_mesurer:
         r = _mesurer_config_F(label, embedder, params["model_name"], params["n_rerank"],
@@ -512,15 +541,36 @@ def run_ablation_F(split: str, mesurer_bge100: bool = False) -> dict:
             "adopte": adopte,
         })
 
-    non_mesures = []
-    if not mesurer_bge100:
-        non_mesures.append({
-            "label": "bge-reranker-v2-m3, n_rerank=100, pool=100",
-            "raison": "coût estimé ~8 min/question × 61 ≈ 8h — non mesuré dans cette "
-                      "campagne (brief T3, step 5.4 : seulement si le temps le permet "
-                      "après les configs 1-3) ; réserve honnête, pas un oubli.",
-            "cout_estime_s_par_question": 8 * 60,
-        })
+    # Témoin de reproduction : le run frais de la config de référence doit redonner les
+    # mêmes scores PAR QUESTION que le JSON du jalon 2.5 — pas seulement le même
+    # agrégat. Un agrégat identique masquerait des compensations entre questions.
+    temoin = next(r for label, _, r in runs[1:] if "témoin re-mesuré" in label)
+    q_ecart = sorted(
+        qid for qid, v in temoin["par_question"].items()
+        if abs(v - ref["par_question"][qid]) > 1e-9
+    )
+    temoin_reproduction = {
+        "recall@10_reference_jalon25": ref["recall@10"],
+        "recall@10_temoin_re_mesure": temoin["recall@10"],
+        "identique": not q_ecart,
+        "questions_en_ecart": q_ecart,
+        "latence_s_par_question_jalon25": ref["latence_s_par_question"],
+        "latence_s_par_question_temoin": temoin["latence_s_par_question"],
+        "facteur_surestimation_latence_jalon25": round(
+            ref["latence_s_par_question"] / temoin["latence_s_par_question"], 1),
+    }
+    if q_ecart:
+        print(f"[ablations_jalon3] ATTENTION : le témoin re-mesuré s'écarte de la référence "
+              f"jalon 2.5 sur {len(q_ecart)} question(s) : {', '.join(q_ecart)}. Le pipeline "
+              f"n'est plus déterministe par rapport au jalon 2.5 — à expliquer avant toute "
+              f"conclusion de l'ablation F.", flush=True)
+    else:
+        print(f"[ablations_jalon3] témoin de reproduction OK : la référence jalon 2.5 est "
+              f"reproduite question par question ({len(ref['par_question'])} questions). "
+              f"Latence annoncée au jalon 2.5 : {ref['latence_s_par_question']:.1f} s/question ; "
+              f"re-mesurée ici : {temoin['latence_s_par_question']:.1f} s/question "
+              f"(surestimation ×{temoin_reproduction['facteur_surestimation_latence_jalon25']}).",
+              flush=True)
 
     print(f"\n| config | recall@5 | recall@10 | MRR | latence/question |")
     print("|---|---|---|---|---|")
@@ -538,12 +588,6 @@ def run_ablation_F(split: str, mesurer_bge100: bool = False) -> dict:
               f"{c['pire_perte_categorie']['delta']} ({c['pire_perte_categorie']['categorie']}) | "
               f"{'oui' if c['adopte'] else 'non'} |")
 
-    if non_mesures:
-        print(f"\n| non mesuré | raison |")
-        print("|---|---|")
-        for nm in non_mesures:
-            print(f"| {nm['label']} | {nm['raison']} |")
-
     out = {
         "ablation": nom, "split": split, "mode": mode, "n": len(questions),
         "configs": [
@@ -560,7 +604,190 @@ def run_ablation_F(split: str, mesurer_bge100: bool = False) -> dict:
                                                   questions)
             for c in comparaisons
         },
-        "non_mesures": non_mesures,
+        "temoin_reproduction": temoin_reproduction,
+    }
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    out_path = OUT_DIR / f"{nom}_{split}.json"
+    out_path.write_text(json.dumps(out, indent=2, ensure_ascii=False), encoding="utf-8")
+    print(f"\n[ablations_jalon3] écrit {out_path}")
+    return out
+
+
+CACHE_REECRITURES = OUT_DIR / "reecritures.json"
+# Questions dont le diagnostic fondateur a établi le profil d'échec (§ Diagnostic
+# fondateur de docs/eval-jalon3.md) : leur sort individuel est le vrai test de
+# l'ablation G, au-delà de l'agrégat.
+QUESTIONS_DIAGNOSTIQUEES = ("q021", "q023", "q026", "q060")
+
+
+def run_ablation_G(split: str) -> dict:
+    """Ablation G (T5) : réécriture de la question par un LLM avant les canaux lexical
+    et dense. Cible : les questions à recouvrement lexical NUL, que ni le filtrage
+    (D), ni l'élargissement du pool (E), ni le reranking (F) ne peuvent atteindre —
+    aucun de ces leviers ne crée un lien qui n'existe pas dans le vocabulaire.
+
+    Référence = `hybrid` neutre (recall@10 = 0,672 sur dev), pas `hybrid+rerank` : la
+    réécriture agit sur les CANAUX, et la mesurer sous un reranker mélangerait deux
+    effets. La combinaison avec le reranking n'est mesurée QUE si l'un des deux modes
+    de réécriture est adopté seul (même règle qu'en T2 pour la config combinée).
+
+    Coût monétaire : un appel API par question distincte, mis en cache dans
+    docs/mesures/jalon3/reecritures.json (committé) — la première exécution coûte
+    quelques centimes, toutes les suivantes sont gratuites et rejouent exactement les
+    mêmes réécritures. Le rewriter est PARTAGÉ entre les configurations : `remplace` et
+    `etend` consomment le même cache.
+    """
+    from accounting_rag.rewrite import Rewriter
+
+    nom, mode = "G", "hybrid"
+    questions = load_benchmark(ROOT / f"benchmark/{split}.jsonl")
+    print(f"[ablations_jalon3] ablation G, split {split} ({len(questions)} questions), "
+          f"mode {mode} — chargement de l'embedder partagé (~50 s)...", flush=True)
+    embedder = Embedder()
+    rewriter = Rewriter(cache_path=CACHE_REECRITURES)
+    en_cache_au_depart = len(rewriter._cache)
+    print(f"[ablations_jalon3] cache de réécritures : {en_cache_au_depart} entrée(s) "
+          f"déjà présente(s) dans {CACHE_REECRITURES.relative_to(ROOT)} — "
+          f"{len(questions) - en_cache_au_depart} appel(s) API au plus.", flush=True)
+
+    configs = [
+        ("hybrid neutre, sans réécriture (référence)", {}),
+        ("réécriture, mode remplace", {"rewriter": rewriter, "mode_reecriture": "remplace"}),
+        ("réécriture, mode etend", {"rewriter": rewriter, "mode_reecriture": "etend"}),
+    ]
+
+    runs = []
+    for label, params in configs:
+        s = Searcher(DB, embedder=embedder, **params)
+        t0 = time.perf_counter()
+        r = evaluate(s, questions, mode=mode, k=10)
+        dt = time.perf_counter() - t0
+        r["latence_s_par_question"] = dt / len(questions)
+        print(f"[ablations_jalon3] {label} : recall@5={r['recall@5']} "
+              f"recall@10={r['recall@10']} mrr={r['mrr']} ({dt:.1f}s, "
+              f"{r['latence_s_par_question']:.2f} s/question)", flush=True)
+        runs.append((label, {k_: v for k_, v in params.items() if k_ != "rewriter"}, r))
+
+    ref_label, _, ref = runs[0]
+    if split == "dev" and ref["recall@10"] != REF_RECALL10_DEV_HYBRID_NEUTRE:
+        raise SystemExit(
+            f"STATUS: BLOCKED — recall@10 neutre = {ref['recall@10']}, attendu "
+            f"{REF_RECALL10_DEV_HYBRID_NEUTRE} (référence jalon 2.5)"
+        )
+    print(f"[ablations_jalon3] contrôle de non-régression OK : recall@10 neutre = "
+          f"{ref['recall@10']} == {REF_RECALL10_DEV_HYBRID_NEUTRE}.", flush=True)
+
+    comparaisons = []
+    for label, params, r in runs[1:]:
+        boot = paired_bootstrap(ref["par_question"], r["par_question"])
+        pire_cat, pire_delta = _pire_perte_categorie(ref["par_question"], r["par_question"], questions)
+        comparaisons.append({
+            "label": label, "params": params, **boot,
+            "pire_perte_categorie": {"categorie": pire_cat, "delta": round(pire_delta, 4)},
+            "adopte": boot["p_amelioration"] >= 0.95 and pire_delta >= -0.05,
+        })
+
+    # Sort individuel des questions dont le diagnostic fondateur a établi le profil.
+    # C'est le contrôle qualitatif de l'ablation : l'agrégat peut bouger pour d'autres
+    # raisons, ces quatre questions sont celles que la réécriture VISE.
+    sort_diagnostiquees = {
+        qid: {label: r["par_question"].get(qid) for label, _, r in runs}
+        for qid in QUESTIONS_DIAGNOSTIQUEES
+        if qid in ref["par_question"]
+    }
+
+    # Combinaison avec le reranking : mesurée UNIQUEMENT si un mode de réécriture est
+    # adopté seul (même règle qu'en T2 — ne pas empiler des leviers rejetés).
+    combo = None
+    adoptes = [c for c in comparaisons if c["adopte"]]
+    if adoptes:
+        meilleur = max(adoptes, key=lambda c: c["delta"])
+        mode_retenu = meilleur["params"]["mode_reecriture"]
+        from accounting_rag.rerank import Reranker
+        s = Searcher(DB, embedder=embedder, reranker=Reranker(model_name=BGE_MODEL),
+                     rewriter=rewriter, mode_reecriture=mode_retenu, n_rerank=25, pool=50)
+        t0 = time.perf_counter()
+        r = evaluate(s, questions, mode="hybrid+rerank", k=10)
+        dt = time.perf_counter() - t0
+        r["latence_s_par_question"] = dt / len(questions)
+        ref_rerank = _reference_F(split)
+        boot = paired_bootstrap(ref_rerank["par_question"], r["par_question"])
+        pire_cat, pire_delta = _pire_perte_categorie(ref_rerank["par_question"],
+                                                      r["par_question"], questions)
+        combo = {
+            "label": f"réécriture ({mode_retenu}) + bge-reranker-v2-m3, n_rerank=25, pool=50",
+            "reference": "bge-reranker-v2-m3, n_rerank=25, pool=50 (jalon 2.5)",
+            "recall@5": r["recall@5"], "recall@10": r["recall@10"], "mrr": r["mrr"],
+            "par_categorie": r["par_categorie"], "par_question": r["par_question"],
+            "latence_s_par_question": r["latence_s_par_question"],
+            **boot,
+            "pire_perte_categorie": {"categorie": pire_cat, "delta": round(pire_delta, 4)},
+            "adopte": boot["p_amelioration"] >= 0.95 and pire_delta >= -0.05,
+        }
+        print(f"[ablations_jalon3] combinaison {combo['label']} : "
+              f"recall@10={r['recall@10']} (vs {ref_rerank['recall@10']} sans réécriture), "
+              f"p_amelioration={boot['p_amelioration']}", flush=True)
+    else:
+        print("[ablations_jalon3] combinaison réécriture+reranking NON MESURÉE : aucun mode "
+              "de réécriture n'est adopté seul (même règle qu'en T2).", flush=True)
+
+    cout = {
+        "appels_api": rewriter.appels,
+        "tokens_entree": rewriter.tokens_entree,
+        "tokens_sortie": rewriter.tokens_sortie,
+        "modele": rewriter.modele,
+        "entrees_cache_au_depart": en_cache_au_depart,
+        "entrees_cache_a_la_fin": len(rewriter._cache),
+    }
+    print(f"[ablations_jalon3] coût : {cout['appels_api']} appel(s) API à {cout['modele']}, "
+          f"{cout['tokens_entree']} tokens d'entrée, {cout['tokens_sortie']} de sortie.", flush=True)
+
+    print(f"\n| config | recall@5 | recall@10 | MRR | latence/question |")
+    print("|---|---|---|---|---|")
+    for label, _, r in runs:
+        print(f"| {label} | {r['recall@5']} | {r['recall@10']} | {r['mrr']} | "
+              f"{r['latence_s_par_question']:.3f} s |")
+        for cat, v in r["par_categorie"].items():
+            print(f"|   ↳ {cat} | | {v['recall@10']} | | (n={v['n']}) |")
+
+    print(f"\n| comparaison (vs {ref_label}) | delta | IC95 | p_amelioration | "
+          f"pire perte catégorie | adopté ? |")
+    print("|---|---|---|---|---|---|")
+    for c in comparaisons:
+        print(f"| {c['label']} | {c['delta']} | {c['ic95']} | {c['p_amelioration']} | "
+              f"{c['pire_perte_categorie']['delta']} ({c['pire_perte_categorie']['categorie']}) | "
+              f"{'oui' if c['adopte'] else 'non'} |")
+
+    print(f"\n| question diagnostiquée | " + " | ".join(l for l, _, _ in runs) + " |")
+    print("|---" * (len(runs) + 1) + "|")
+    for qid, v in sorted(sort_diagnostiquees.items()):
+        print(f"| {qid} | " + " | ".join(str(v[l]) for l, _, _ in runs) + " |")
+
+    print(f"\n| question | réécriture (5 premières, inspection manuelle) |")
+    print("|---|---|")
+    for q in questions[:5]:
+        print(f"| {q['question']} | {rewriter._cache.get(q['question'], '(absente)')} |")
+
+    out = {
+        "ablation": nom, "split": split, "mode": mode, "n": len(questions),
+        "configs": [
+            {"label": label, "params": params,
+             "recall@5": r["recall@5"], "recall@10": r["recall@10"], "mrr": r["mrr"],
+             "par_categorie": r["par_categorie"], "par_question": r["par_question"],
+             "latence_s_par_question": r["latence_s_par_question"]}
+            for label, params, r in runs
+        ],
+        "comparaisons_vs_reference": comparaisons,
+        "bootstrap_par_categorie_vs_reference": {
+            c["label"]: _par_categorie_bootstrap(
+                ref["par_question"],
+                next(r for l, p, r in runs if l == c["label"])["par_question"], questions)
+            for c in comparaisons
+        },
+        "sort_questions_diagnostiquees": sort_diagnostiquees,
+        "combinaison_avec_reranking": combo,
+        "cout": cout,
+        "cache_reecritures": str(CACHE_REECRITURES.relative_to(ROOT)),
     }
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     out_path = OUT_DIR / f"{nom}_{split}.json"
@@ -572,16 +799,15 @@ def run_ablation_F(split: str, mesurer_bge100: bool = False) -> dict:
 def main() -> None:
     p = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--ablation", required=True, choices=["D", "E", "F", "cumul"])
+    p.add_argument("--ablation", required=True, choices=["D", "E", "F", "G", "cumul"])
     p.add_argument("--split", default="dev", choices=["dev", "test"])
-    p.add_argument("--mesurer-bge100", action="store_true",
-                   help="Mesure en plus bge+n_rerank=100+pool=100 (~8h/61 questions dev, "
-                        "ablation F uniquement) — désactivé par défaut (brief T3, step 5.4).")
     args = p.parse_args()
     if args.ablation == "E":
         run_ablation_E(args.split)
     elif args.ablation == "F":
-        run_ablation_F(args.split, mesurer_bge100=args.mesurer_bge100)
+        run_ablation_F(args.split)
+    elif args.ablation == "G":
+        run_ablation_G(args.split)
     else:
         run_ablation(args.ablation, args.split)
 

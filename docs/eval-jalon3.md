@@ -1,4 +1,4 @@
-# Jalon 3 — Recouvrement lexical nul : diagnostic fondateur, ablation D (T1) et ablation E (T2)
+# Jalon 3 — Recouvrement lexical nul : diagnostic fondateur, ablations D (T1), E (T2) et F (T3)
 
 Campagne exécutée le **16 août 2026** sur la branche `jalon-3-recouvrement-nul`, à l'issue de la tâche T1 (filtrage des tokens peu discriminants de la requête lexicale, `df_max`, plus les deux outils de mesure versionnés du jalon : `scripts/diagnostic_rangs.py`, `scripts/ablations_jalon3.py`) puis de la tâche T2 (largeur du pool de candidats avant fusion, `pool`, et déduplication des termes du `MATCH`, `dedup_termes`). Objectif T1 : reproduire par un outil versionné le diagnostic fondateur du jalon (deux sondes jetables du contrôleur, exécutées avant la rédaction du plan) puis mesurer par bootstrap apparié si le filtrage par fréquence documentaire (`df_max`) répare, seul, une partie du recouvrement lexical nul observé sur `vocabulaire_courant`. Objectif T2 : mesurer si élargir le pool de candidats avant fusion RRF (ou dédupliquer les termes du `MATCH`) répare une partie de ce recouvrement nul, et — livrable central de T2 — établir la **couverture du pool** (part des questions dont au moins une citation gold est présente dans le pool avant fusion) à chaque largeur, la métrique qui conditionne l'ablation F (reranking).
 
@@ -11,8 +11,30 @@ Campagne exécutée le **16 août 2026** sur la branche `jalon-3-recouvrement-nu
 | Modèle d'embeddings | `intfloat/multilingual-e5-small` (défaut de `Embedder`, 384 dimensions) |
 | Fusion hybride | RRF (`k=60`) sur BM25 + dense, paramètres neutres (`poids_chemin=1.0`, `boost_commentaire=1.0` — rejetés au jalon 2.5, conservés neutres) |
 | Benchmark | `benchmark/dev.jsonl` v2 — 61 questions (7 `reference_directe`, 23 `regle`, 31 `vocabulaire_courant`) |
-| Machine | Linux 6.19.8-arch1-3-surface, x86_64, CPU uniquement (pas de GPU exploité) |
-| Environnement | Python 3.13.14, `sentence-transformers` 5.7.0, `torch` 2.13.0+cu130 (CPU), `sqlite-vec` 0.1.9 |
+| Machine | Linux 6.19.8-arch1-3-surface, x86_64, 8 cœurs (`torch.get_num_threads() == 4`), **GPU Quadro RTX 3000 Max-Q, 6 Go de VRAM** |
+| Device des modèles | `cuda:0` pour `Embedder` ET `Reranker` (auto-détection de `sentence-transformers` ; ce projet ne passe jamais `device` explicitement), dtype fp32 — vérifié en T3, et déterminant pour toute latence de ce rapport (cf. § ci-dessous) |
+| Environnement | Python 3.13.14, `sentence-transformers` 5.7.0, `torch` 2.13.0+cu130 (build CUDA, GPU effectivement utilisé — cf. ligne « Device des modèles »), `sqlite-vec` 0.1.9 |
+
+### Le reranking du jalon 2.5 était mesuré sur CPU : correction d'un facteur ~70
+
+La configuration adoptée au jalon 2.5 (`hybrid+rerank`, `bge-reranker-v2-m3`, 25 candidats) y était publiée à **129,5 s/question** (7 899 s pour 61 questions). Re-mesurée à l'identique en T3, elle coûte **1,8 s/question** — facteur ~70. Le code n'a pas changé d'une ligne (`src/accounting_rag/rerank.py`, commit d'origine `7bce96a` ; `_MAX_CHARS=1000` y figure dès l'origine) et le témoin re-mesuré reproduit les scores **question par question**, pas seulement l'agrégat (`temoin_reproduction` dans `docs/mesures/jalon3/F_dev.json`).
+
+Cause établie par contrôle direct — la même configuration, sur une question, le modèle déplacé explicitement d'un device à l'autre :
+
+| device du cross-encoder | latence (bge, 25 candidats, 1 question) |
+|---|---|
+| `cuda:0` (Quadro RTX 3000 Max-Q, 6 Go) | **2,1 s** |
+| `cpu` (8 cœurs, `torch.get_num_threads() == 4`) | **149,5 s** |
+
+Ratio ×71, et 149,5 s encadre le chiffre publié au jalon 2.5 : **la campagne du jalon 2.5 exécutait le cross-encoder sur CPU**, alors que la machine disposait déjà du GPU (même `uv.lock`, même `torch` 2.13.0 avec les wheels CUDA — vérifié par `git show`). En régime nominal, `Embedder` comme `Reranker` s'initialisent sur `cuda:0` (auto-détection de `sentence-transformers`, aucun `device` passé explicitement dans ce projet, vérifié en T3). **Ce qui a privé la campagne du jalon 2.5 du GPU n'est pas établi** — hypothèse la plus probable : plusieurs sous-agents travaillaient en parallèle et se disputaient les 6 Go de VRAM. Faute de preuve, c'est une hypothèse et pas une conclusion.
+
+Trois conséquences assumées :
+
+1. **Aucune latence absolue de ce projet n'est une caractéristique du système mesuré** — c'est une caractéristique du couple (machine, device, charge). Seuls les RAPPORTS entre configurations mesurées dans la MÊME campagne sont interprétables. Le device et le dtype rejoignent donc le tableau « Conditions exactes » de tout rapport à venir.
+2. Les latences du rapport du jalon 2.5 restent telles quelles dans leur propre document — elles ont bien été mesurées, dans leurs conditions — mais ne sont **pas comparables** à celles de ce rapport-ci.
+3. La décision de conception prise au jalon 2.5 de garder `hybrid+rerank` hors de la campagne par défaut (« 2 h de calcul surprise pour un nouveau contributeur ») reposait sur ce chiffre. Elle reste **juste pour un contributeur sans GPU** (149,5 s/question × 61 ≈ 2 h 30, le scénario du jalon 2.5) et devient discutable dès qu'une carte est disponible (~2 min). Réexaminée à la clôture de ce jalon : c'est la disponibilité d'un GPU, pas le mode lui-même, qui doit conditionner le défaut.
+
+Reproduction : `docs/mesures/jalon3/F_dev.json`, champ `temoin_reproduction` (facteur de surestimation calculé automatiquement à chaque exécution de `--ablation F`).
 
 ## Diagnostic fondateur
 
@@ -214,3 +236,63 @@ uv run python scripts/ablations_jalon3.py --ablation E --split dev          # §
 ```
 
 `docs/mesures/jalon3/diagnostic_rangs.json`, `docs/mesures/jalon3/D_dev.json` et `docs/mesures/jalon3/E_dev.json` sont versionnés — tout chiffre publié ci-dessus est recalculable sans re-runner ces commandes (les `par_question` bruts de chaque configuration sont dans `configs[i].par_question` de chaque JSON ; la couverture du pool par largeur est dans `E_dev.json`, champ `couverture_pool`).
+
+## Ablation F — largeur du pool soumis au reranker (`n_rerank`)
+
+Nouveau paramètre `Searcher(..., n_rerank: int = 25)` : le nombre de candidats issus de la fusion soumis au cross-encoder en mode `hybrid+rerank`, jusqu'ici codé en dur à 25 dans `search()`. `n_rerank` est indépendant de `pool` (largeur récupérée par canal AVANT fusion) : on peut donc élargir le vivier et ce qu'on en soumet séparément. Les résultats routés (référence d'article exacte) restent épinglés hors reranking à toute largeur (test dédié, `tests/test_rerank.py`). Un `n_rerank` supérieur au nombre de candidats disponibles ne casse rien : la troncature par slice renvoie ce qui existe.
+
+**Question posée par le jalon** : le § Ablation E a établi que le pool contient la bonne réponse bien plus souvent que la fusion ne la restitue (couverture 0,918 global / 0,839 sur `vocabulaire_courant` à `pool=200`, contre 0,672 / 0,403 de recall@10). Un cross-encoder sait-il aller chercher cet écart ? Et si oui, faut-il un modèle **faible sur beaucoup** de candidats ou un modèle **fort sur peu** ?
+
+### Méthode
+
+Référence = la configuration ADOPTÉE au jalon 2.5 (`bge-reranker-v2-m3`, `n_rerank=25`, `pool=50`), réutilisée depuis `docs/mesures/jalon25/cloture_dev.json` (champ `b`) pour le bootstrap — avec contrôle de non-régression sur `recall@10 = 0,738` avant toute comparaison — ET re-mesurée à l'identique comme **témoin**, pour deux raisons : vérifier que la référence se reproduit question par question (elle le fait : 61/61, `temoin_reproduction.identique = true`), et disposer d'une latence comparable aux autres lignes du tableau (celle du jalon 2.5 étant une latence CPU, cf. § ci-dessus).
+
+Grille complète : les deux modèles × largeur étroite / large. Le premier jet de cette tâche plaçait `bge` sur pool large derrière une option désactivée par défaut, sur une estimation de coût (~8 min/question, ~8 h pour le split) qui s'est révélée fausse d'un facteur ~50 — la configuration décisive du jalon était donc écartée sans avoir été mesurée. Corrigé : les cinq configurations ci-dessous tournent sans option, en ~15 min au total.
+
+### Résultats
+
+| config | recall@5 | recall@10 | MRR | `vocabulaire_courant` recall@10 | latence/question (GPU) |
+|---|---|---|---|---|---|
+| bge, `n_rerank=25`, `pool=50` (référence jalon 2.5) | 0,680 | **0,738** | 0,642 | 0,484 | 1,84 s |
+| bge, `n_rerank=25`, `pool=50` (témoin re-mesuré) | 0,680 | **0,738** | 0,642 | 0,484 | 1,84 s |
+| mmarco, `n_rerank=25`, `pool=50` (contrôle modèle) | 0,672 | 0,713 | 0,610 | 0,435 | 0,40 s |
+| mmarco, `n_rerank=200`, `pool=200` | 0,656 | 0,713 | 0,581 | 0,435 | 1,40 s |
+| bge, `n_rerank=100`, `pool=100` | 0,697 | 0,705 | 0,646 | 0,419 | 5,65 s |
+| bge, `n_rerank=200`, `pool=200` | **0,730** | **0,738** | **0,675** | 0,484 | 10,63 s |
+
+Bootstrap apparié (10 000 tirages, seed 42) sur le recall@10 par question, contre la référence :
+
+| config | delta | IC95 | p_amelioration | pire perte catégorie | adopté ? |
+|---|---|---|---|---|---|
+| témoin re-mesuré | 0,0000 | (0,000 ; 0,000) | — (identique) | 0,0 | — (contrôle) |
+| mmarco, 25 | −0,0246 | (−0,0656 ; 0,0000) | 0,000 | −0,048 (`vocabulaire_courant`) | non |
+| mmarco, 200 | −0,0246 | (−0,1066 ; 0,0574) | 0,249 | −0,048 (`vocabulaire_courant`) | non |
+| bge, 100 | −0,0328 | (−0,0984 ; 0,0328) | 0,098 | −0,065 (`vocabulaire_courant`) | non |
+| bge, 200 | 0,0000 | (−0,0820 ; 0,0820) | 0,423 | 0,0 | non |
+
+### Lecture : la largeur n'achète RIEN en recall@10, pour aucun des deux modèles
+
+Le résultat est net et il est répété deux fois, une fois par modèle : **mmarco donne 0,713 sur 25 candidats et 0,713 sur 200 ; bge donne 0,738 sur 25 et 0,738 sur 200.** Non seulement les agrégats coïncident, mais la ventilation par catégorie aussi (`vocabulaire_courant` 0,435 pour mmarco aux deux largeurs, 0,484 pour bge aux deux largeurs). Multiplier par 8 le nombre de candidats soumis au cross-encoder — donc par 5,8 la latence pour bge — ne fait entrer aucune citation gold supplémentaire dans le top-10.
+
+**Ce que la largeur change quand même : le haut du classement, et seulement avec le modèle fort.** `bge` sur 200 candidats gagne +0,050 de recall@5 (0,680 → 0,730) et +0,033 de MRR (0,642 → 0,675) à recall@10 constant : le pool large permet au modèle fort de promouvoir dans le top-5 des golds qui étaient déjà entre les rangs 6 et 10. C'est un vrai gain de précision de tête, le premier que ce jalon obtient — mais il ne franchit pas le critère d'adoption, qui porte sur le recall@10 (fixé avant les mesures, et non révisé après coup pour accommoder un résultat). Il est noté ici pour le jalon 4, parce qu'un générateur RAG est alimenté par ~5 passages, pas 10 : c'est le recall@5 et le MRR qui gouverneront la qualité des réponses.
+
+**Non-monotonie à ne pas surinterpréter** : `bge` sur 100 candidats (0,705) fait moins bien que `bge` sur 25 (0,738) ET que `bge` sur 200 (0,738). Une largeur intermédiaire pire que ses deux voisines n'a aucun mécanisme plausible : sur n=61, un écart de 0,033 vaut deux questions. La conclusion honnête est que **tous les écarts de recall@10 entre configurations `bge` sont dans le bruit** ; le seul signal qui survit au bootstrap est le choix du MODÈLE (mmarco perd 0,0246 avec p_amelioration = 0,000, donc une dégradation robuste, cohérente avec le rejet de mmarco au jalon 2.5).
+
+### Décision
+
+**`n_rerank` : REJETÉ — reste à sa valeur neutre par défaut (`25`).** Aucune configuration ne franchit le critère d'adoption ; la meilleure (`bge`, 200) est strictement neutre en recall@10 (p_amelioration = 0,423) pour 5,8× la latence. Le paramètre reste exposé, avec son défaut neutre, parce que le gain de recall@5 mérite d'être re-mesuré sur un split plus large au jalon 4.
+
+**L'arbitrage modèle/largeur est tranché dans le sens inverse de l'hypothèse.** Le jalon était parti de : « le reranker lourd coûte 4,7 s/candidat, donc inutilisable sur 200 ; le modèle léger rejeté au jalon 2.5 redevient le seul candidat crédible dès qu'on élargit ». Les deux moitiés de ce raisonnement sont fausses. Le coût était une estimation CPU jamais vérifiée (le modèle lourd tient 200 candidats en 10,6 s/question sur GPU), et surtout **la largeur n'apporte rien**, ce qui retire au modèle léger sa seule raison d'être ici. Modèle fort sur pool étroit gagne, et c'était déjà la configuration du jalon 2.5.
+
+### Le déficit couverture/classement n'est PAS un déficit de candidats
+
+C'est le résultat de fond, et il ferme une hypothèse : sur `vocabulaire_courant`, le pool à `pool=200` contient une citation gold dans **83,9 %** des cas, et le meilleur reranking mesuré sur ce même pool en restitue **48,4 %** dans le top-10. Trente-cinq points d'écart subsistent alors que le cross-encoder a vu *tous* les candidats du pool. Le goulot n'est donc ni la fenêtre de récupération (ablation E), ni la capacité du reranker à traiter du volume (ablation F) : c'est la capacité d'un modèle à **reconnaître** qu'un article du PCG répond à une question posée en langage courant. Aucun réordonnancement de candidats ne crée cette reconnaissance.
+
+Deux voies restent, et elles sont d'une autre nature : agir sur la REQUÊTE pour qu'elle parle le vocabulaire du corpus (ablation G, réécriture par LLM), ou agir sur la REPRÉSENTATION pour que la proximité sémantique cesse de dépendre du vocabulaire (jalon 4 : embeddings plus forts, ou adaptés au domaine comptable français).
+
+### Réserves
+
+- `n=61`, et les écarts discutés ici valent 2 à 4 questions. Le gain de recall@5 de `bge`+200 (+0,050, soit ~3 questions) n'a PAS été soumis au bootstrap : le protocole du jalon fixe le critère sur le recall@10, et je ne substitue pas après coup la métrique qui arrange le résultat. À re-mesurer proprement, sur un split plus large, avant toute adoption.
+- Les latences sont des latences GPU fp32 sur cette machine (cf. § Conditions exactes). Sur CPU, le facteur ~70 rend `bge`+200 inutilisable en interactif (~12 min/question) : la conclusion « le modèle fort tient 200 candidats » est conditionnée à la présence d'une carte.
+- Le témoin re-mesuré reproduit la référence question par question, ce qui valide la réutilisation du JSON du jalon 2.5 comme base de bootstrap. Il ne valide pas les autres chiffres de ce jalon-là.
+- La combinaison `n_rerank` élargi + `dedup_termes` ou `df_max` n'est pas mesurée : mêmes règles qu'en T2, aucun de ces leviers n'étant adopté séparément.

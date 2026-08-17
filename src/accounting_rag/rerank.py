@@ -22,9 +22,11 @@ class Reranker:
 
         self.model_name = model_name or os.environ.get("ACCRAG_RERANKER", _DEFAULT)
         print(f"[Reranker] chargement de {self.model_name} (~2,2 Go au premier "
-              f"téléchargement pour le défaut, latence CPU indicative ~117s/question "
-              f"pour 25 candidats — cf. docs/eval-jalon25.md, section « Ablation B »)",
-              file=sys.stderr)
+              f"téléchargement pour le défaut). Latence indicative pour 25 candidats, "
+              f"mesurée au jalon 3 : ~2 s/question sur GPU, ~150 s/question sur CPU "
+              f"(facteur ~70 — cf. docs/eval-jalon3.md, § « Le reranking du jalon 2.5 "
+              f"était mesuré sur CPU »). Sans GPU, une campagne de 61 questions coûte "
+              f"~2 h 30.", file=sys.stderr)
         self.model = CrossEncoder(self.model_name)
 
     def rerank(self, query: str, results: list[dict], top_k: int) -> list[dict]:
