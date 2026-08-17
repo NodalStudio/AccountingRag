@@ -1,0 +1,260 @@
+{
+  "split": "test",
+  "n": 29,
+  "configs": {
+    "A_hybrid_neutre": {
+      "recall@5": 0.621,
+      "recall@10": 0.69,
+      "mrr": 0.47,
+      "par_categorie": {
+        "reference_directe": {
+          "recall@10": 1.0,
+          "n": 3
+        },
+        "regle": {
+          "recall@10": 1.0,
+          "n": 12
+        },
+        "vocabulaire_courant": {
+          "recall@10": 0.357,
+          "n": 14
+        }
+      },
+      "par_question": {
+        "q005": 1.0,
+        "q016": 1.0,
+        "q017": 1.0,
+        "q018": 1.0,
+        "q019": 1.0,
+        "q020": 1.0,
+        "q028": 0.0,
+        "q029": 1.0,
+        "q030": 1.0,
+        "q033": 1.0,
+        "q035": 1.0,
+        "q037": 1.0,
+        "q039": 1.0,
+        "q042": 1.0,
+        "q045": 1.0,
+        "q048": 1.0,
+        "q051": 1.0,
+        "q055": 1.0,
+        "q058": 0.0,
+        "q062": 1.0,
+        "q066": 0.0,
+        "q069": 0.0,
+        "q073": 0.0,
+        "q076": 1.0,
+        "q078": 0.0,
+        "q081": 0.0,
+        "q084": 0.0,
+        "q087": 0.0,
+        "q090": 1.0
+      },
+      "latence_s_par_question": 0.1480697875861959
+    },
+    "B_rerank_jalon25": {
+      "recall@5": 0.707,
+      "recall@10": 0.759,
+      "mrr": 0.626,
+      "par_categorie": {
+        "reference_directe": {
+          "recall@10": 1.0,
+          "n": 3
+        },
+        "regle": {
+          "recall@10": 1.0,
+          "n": 12
+        },
+        "vocabulaire_courant": {
+          "recall@10": 0.5,
+          "n": 14
+        }
+      },
+      "par_question": {
+        "q005": 1.0,
+        "q016": 1.0,
+        "q017": 1.0,
+        "q018": 1.0,
+        "q019": 1.0,
+        "q020": 1.0,
+        "q028": 0.0,
+        "q029": 1.0,
+        "q030": 1.0,
+        "q033": 1.0,
+        "q035": 1.0,
+        "q037": 1.0,
+        "q039": 1.0,
+        "q042": 1.0,
+        "q045": 1.0,
+        "q048": 1.0,
+        "q051": 1.0,
+        "q055": 1.0,
+        "q058": 0.0,
+        "q062": 1.0,
+        "q066": 0.0,
+        "q069": 0.0,
+        "q073": 0.0,
+        "q076": 1.0,
+        "q078": 1.0,
+        "q081": 1.0,
+        "q084": 0.0,
+        "q087": 0.0,
+        "q090": 1.0
+      },
+      "latence_s_par_question": 1.5965679711034368
+    },
+    "C_reecriture_rerank_jalon3": {
+      "recall@5": 0.879,
+      "recall@10": 0.966,
+      "mrr": 0.753,
+      "par_categorie": {
+        "reference_directe": {
+          "recall@10": 1.0,
+          "n": 3
+        },
+        "regle": {
+          "recall@10": 1.0,
+          "n": 12
+        },
+        "vocabulaire_courant": {
+          "recall@10": 0.929,
+          "n": 14
+        }
+      },
+      "par_question": {
+        "q005": 1.0,
+        "q016": 1.0,
+        "q017": 1.0,
+        "q018": 1.0,
+        "q019": 1.0,
+        "q020": 1.0,
+        "q028": 0.0,
+        "q029": 1.0,
+        "q030": 1.0,
+        "q033": 1.0,
+        "q035": 1.0,
+        "q037": 1.0,
+        "q039": 1.0,
+        "q042": 1.0,
+        "q045": 1.0,
+        "q048": 1.0,
+        "q051": 1.0,
+        "q055": 1.0,
+        "q058": 1.0,
+        "q062": 1.0,
+        "q066": 1.0,
+        "q069": 1.0,
+        "q073": 1.0,
+        "q076": 1.0,
+        "q078": 1.0,
+        "q081": 1.0,
+        "q084": 1.0,
+        "q087": 1.0,
+        "q090": 1.0
+      },
+      "latence_s_par_question": 5.374972464999983
+    }
+  },
+  "bootstrap_C_vs_A": {
+    "delta": 0.2759,
+    "ic95": [
+      0.1379,
+      0.4483
+    ],
+    "p_amelioration": 1.0,
+    "pire_perte_categorie": {
+      "categorie": "",
+      "delta": 0.0
+    },
+    "adopte": true,
+    "par_categorie": {
+      "reference_directe": {
+        "n": 3,
+        "delta": 0.0,
+        "ic95": [
+          0.0,
+          0.0
+        ],
+        "p_amelioration": 0.0
+      },
+      "regle": {
+        "n": 12,
+        "delta": 0.0,
+        "ic95": [
+          0.0,
+          0.0
+        ],
+        "p_amelioration": 0.0
+      },
+      "vocabulaire_courant": {
+        "n": 14,
+        "delta": 0.5714,
+        "ic95": [
+          0.2857,
+          0.8571
+        ],
+        "p_amelioration": 1.0
+      }
+    }
+  },
+  "bootstrap_C_vs_B": {
+    "delta": 0.2069,
+    "ic95": [
+      0.069,
+      0.3793
+    ],
+    "p_amelioration": 0.9984,
+    "pire_perte_categorie": {
+      "categorie": "",
+      "delta": 0.0
+    },
+    "adopte": true,
+    "par_categorie": {
+      "reference_directe": {
+        "n": 3,
+        "delta": 0.0,
+        "ic95": [
+          0.0,
+          0.0
+        ],
+        "p_amelioration": 0.0
+      },
+      "regle": {
+        "n": 12,
+        "delta": 0.0,
+        "ic95": [
+          0.0,
+          0.0
+        ],
+        "p_amelioration": 0.0
+      },
+      "vocabulaire_courant": {
+        "n": 14,
+        "delta": 0.4286,
+        "ic95": [
+          0.1429,
+          0.7143
+        ],
+        "p_amelioration": 0.9994
+      }
+    }
+  },
+  "questions_hors_atteinte_sans_reecriture": {
+    "reparees_par_la_reecriture": [
+      "q058",
+      "q066",
+      "q069",
+      "q073",
+      "q084",
+      "q087"
+    ],
+    "n_reparees": 6,
+    "degradees_par_la_reecriture": [],
+    "n_degradees": 0,
+    "resistantes_aux_deux_configs": [
+      "q028"
+    ],
+    "n_resistantes": 1
+  }
+}

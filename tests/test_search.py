@@ -3,6 +3,7 @@ from pathlib import Path
 from accounting_rag.db import write_db
 from accounting_rag.index import build_index
 from accounting_rag.model import Record, Renvoi
+from accounting_rag.normalize import normalize
 from accounting_rag.search import Searcher
 from conftest import _rec
 
@@ -46,6 +47,19 @@ class VectorEmbedder:
                     break
             out.append(list(vec))
         return out
+
+
+class FakeRewriter:
+    """Faux rewriter (méthode `reecrire`) : renvoie une réécriture fixée, sans jamais
+    appeler l'API Anthropic. Utilisé pour brancher `Searcher(rewriter=...)` en test."""
+
+    def __init__(self, reecriture: str):
+        self._reecriture = reecriture
+        self.questions_recues: list[str] = []
+
+    def reecrire(self, question: str) -> str:
+        self.questions_recues.append(question)
+        return self._reecriture
 
 
 class TestSearcherCorpusReel:
@@ -243,6 +257,19 @@ def db_synthetique(tmp_path):
       par deux). Vérifié empiriquement (scores bruts) : neutre {600: 1.52e-6, 500:
       1.07e-6} -> commentaire en tête ; boost=0.5 {600: 0.76e-6, 500: 1.07e-6} ->
       réglementaire en tête.
+    - pcg-700-1 (ajout jalon 3, T1, `df_max`) : enregistrement isolé, terme
+      "amortissement" (df=1, un seul chunk sur les 7). Chemin composé uniquement de
+      tokens déjà communs à tous les autres chunks (livr/deuxiem/titr/un) : n'introduit
+      aucun nouveau token de chemin, ne recherche ni "wombat" ni "zabulon" — vérifié
+      sans effet sur les deux comparaisons ci-dessus (`test_poids_chemin_favorise_le_chemin`,
+      `test_boost_commentaire_penalise` passent toujours après cet ajout). Le brief
+      suppose "'le' dans tous les chunks" pour tester `df_max` ; en réalité, sur les 6
+      chunks d'origine, seuls "livr"/"titr"/"deuxiem"/"un" sont à 100 % — "le" n'est
+      que dans 4 chunks sur 6 (300, 400, 500, 600). Après ajout de pcg-700-1 (7 chunks
+      au total, "le" absent de ce nouveau chunk), "le" reste à 4/7 ≈ 57 %, toujours
+      strictement supérieur au seuil `df_max=0.5` exercé par
+      `test_df_max_ecarte_les_tokens_trop_frequents` — suffisant pour ce test sans
+      qu'aucun chunk n'ait besoin de contenir "le" à 100 %.
     """
     db = tmp_path / "ablation.db"
     write_db([
@@ -263,6 +290,9 @@ def db_synthetique(tmp_path):
         _rec_type("pcg-600-1@2026-01-01", "600-1", "commentaire_ANC",
                   chemin="Livre Deuxieme Titre Un",
                   texte="Le traitement de zabulon zabulon est precise ici et zabulon encore."),
+        _rec("pcg-700-1@2026-01-01", "700-1",
+             chemin="Livre Deuxieme Titre Un",
+             texte="Un amortissement neutre est mentionne dans ce chunk supplementaire."),
     ], db)
     build_index(db, embedder=FakeEmbedder())
     return db
@@ -306,3 +336,224 @@ def test_boost_commentaire_penalise(db_synthetique):
     hits_penalise = s_penalise.search("zabulon", mode="bm25", k=2)
     assert hits_neutre[0]["record_id"] == "pcg-600-1@2026-01-01"
     assert hits_penalise[0]["record_id"] == "pcg-500-1@2026-01-01"
+
+
+# --- Ablation D (T1, jalon 3) : filtrage des tokens peu discriminants de la requête
+# lexicale (df_max), par fréquence documentaire.
+
+
+def test_df_compte_les_chunks_contenant_le_token(db_synthetique):
+    s = Searcher(db_synthetique, embedder=FakeEmbedder())
+    # le corpus synthétique contient le terme dans un seul chunk
+    assert s.df("amortissement") == 1
+    assert s.df("motabsent") == 0
+
+
+def test_df_est_mis_en_cache(db_synthetique):
+    s = Searcher(db_synthetique, embedder=FakeEmbedder())
+    s.df("amortissement")
+    assert "amortissement" in s._df_cache
+    # deuxième appel : servi par le cache (pas de requête), valeur identique
+    assert s.df("amortissement") == s._df_cache["amortissement"]
+
+
+def test_df_max_neutre_par_defaut(db_synthetique):
+    """df_max=None doit reproduire exactement le comportement jalon 2.5."""
+    a = Searcher(db_synthetique, embedder=FakeEmbedder())
+    b = Searcher(db_synthetique, embedder=FakeEmbedder(), df_max=None)
+    for requete in ("amortissement", "immobilisation corporelle", "que dit l'article 111-1 ?"):
+        assert [r["record_id"] for r in a.search(requete, mode="bm25")] == \
+               [r["record_id"] for r in b.search(requete, mode="bm25")]
+
+
+def test_df_max_ecarte_les_tokens_trop_frequents(db_synthetique):
+    """Un token présent dans plus de 50 % des chunks est écarté ; le token rare décide seul.
+
+    Défaut du brief constaté à l'exécution (distinct de la ruling J3-1) : `_termes_match`
+    retourne des tokens déjà NORMALISÉS (stemmés) — "amortissement" y apparaît sous sa
+    forme stem "amort" (snowball FR), jamais littéralement "amortissement". La version
+    verbatim du brief (`assert "amortissement" in termes`) échoue donc systématiquement,
+    quelle que soit l'implémentation de `_termes_match`, puisque ce token normalisé
+    n'existe nulle part dans sa sortie. Assertion corrigée sur la forme normalisée
+    (vérifiée : `normalize("amortissement") == "amort"`) — signalé au rapport de tâche.
+    """
+    s = Searcher(db_synthetique, embedder=FakeEmbedder(), df_max=0.5)
+    termes = s._termes_match("le amortissement")  # 'le' dépasse 50 % des chunks de la fixture
+    assert "amort" in termes
+    assert "le" not in termes
+
+
+def test_df_max_repli_si_tous_les_tokens_sont_ecartes(db_synthetique):
+    """Si le filtrage vide la requête, on retombe sur tous les tokens (jamais zéro résultat gratuit)."""
+    s = Searcher(db_synthetique, embedder=FakeEmbedder(), df_max=0.0)
+    termes = s._termes_match("le amortissement")
+    assert set(termes) == set(normalize("le amortissement").split())
+
+
+# --- Ablation E (T2, jalon 3) : largeur du pool de candidats avant fusion (pool),
+# plus la déduplication des termes du MATCH (dedup_termes) comme configuration mesurée.
+
+
+def test_pool_neutre_par_defaut(db_synthetique):
+    a = Searcher(db_synthetique, embedder=FakeEmbedder())
+    b = Searcher(db_synthetique, embedder=FakeEmbedder(), pool=50)
+    for requete in ("amortissement", "immobilisation corporelle"):
+        assert [r["record_id"] for r in a.search(requete)] == \
+               [r["record_id"] for r in b.search(requete)]
+
+
+def test_pool_est_transmis_aux_deux_canaux(db_synthetique):
+    """Le pool doit piloter la limite lexicale ET le k dense, pas seulement l'un des deux.
+
+    Défaut du brief constaté à l'exécution : la mécanique d'espionnage verbatim
+    (`vus.setdefault("bm25", limit) or vrai_bm25(q, limit)`) casse dès que `limit` est
+    une valeur entière vraie (tout `pool` non nul) — `setdefault` renvoie alors cette
+    valeur, l'opérateur `or` court-circuite, et `vrai_bm25` n'est JAMAIS appelé : la
+    valeur renvoyée à `search()` (censée être un dict de scores) devient l'entier
+    `limit` lui-même, ce qui casse `_rrf()` (`AttributeError: 'int' object has no
+    attribute 'get'`). Le brief anticipait ce risque (« adapter la mécanique
+    d'espionnage... si un patron plus simple y est déjà en usage ») : ici, la capture
+    de `limit` est séparée du calcul de la vraie valeur de retour, pour ne jamais
+    dépendre de la véracité de `limit`.
+    """
+    s = Searcher(db_synthetique, embedder=FakeEmbedder(), pool=7)
+    vus = {}
+    vrai_bm25, vrai_dense = s._bm25, s._dense
+
+    def espion_bm25(q, limit=None):
+        vus["bm25"] = limit
+        return vrai_bm25(q, limit)
+
+    def espion_dense(q, limit=None):
+        vus["dense"] = limit
+        return vrai_dense(q, limit)
+
+    s._bm25 = espion_bm25
+    s._dense = espion_dense
+    s.search("amortissement", mode="hybrid")
+    assert vus["bm25"] == 7 and vus["dense"] == 7
+
+
+def test_dedup_termes_neutre_par_defaut(db_synthetique):
+    """dedup_termes=False doit reproduire exactement le comportement actuel (non dédupliqué)."""
+    a = Searcher(db_synthetique, embedder=FakeEmbedder())
+    b = Searcher(db_synthetique, embedder=FakeEmbedder(), dedup_termes=False)
+    for requete in ("amortissement", "le amortissement le", "immobilisation corporelle"):
+        assert a._termes_match(requete) == b._termes_match(requete)
+        assert [r["record_id"] for r in a.search(requete)] == \
+               [r["record_id"] for r in b.search(requete)]
+
+
+def test_dedup_termes_deduplique_le_match(db_synthetique):
+    """dedup_termes=True déduplique les tokens du MATCH, sans changer leur ensemble ni l'ordre."""
+    s_brut = Searcher(db_synthetique, embedder=FakeEmbedder(), dedup_termes=False)
+    s_dedup = Searcher(db_synthetique, embedder=FakeEmbedder(), dedup_termes=True)
+    requete = "le amortissement le amortissement"
+    termes_bruts = s_brut._termes_match(requete)
+    termes_dedup = s_dedup._termes_match(requete)
+    assert termes_bruts == ["le", "amort", "le", "amort"]
+    assert termes_dedup == ["le", "amort"]
+
+
+# --- Ablation G (T5, jalon 3) : réécriture de requête par LLM (rewriter). Le rewriter
+# ne reçoit que le texte de la question ; il agit sur les canaux lexical et dense
+# uniquement, jamais sur le routeur de référence d'article (`_route` lit toujours la
+# question originale).
+
+
+def test_rewriter_none_reproduit_le_comportement_actuel(db_synthetique):
+    """rewriter=None (défaut) : search() ne doit jamais tenter d'appeler .reecrire()
+    sur None (planterait avec AttributeError) ni changer le résultat existant."""
+    s = Searcher(db_synthetique, embedder=FakeEmbedder())
+    assert s.rewriter is None
+    hits = s.search("amortissement", mode="bm25")
+    assert hits and hits[0]["record_id"] == "pcg-700-1@2026-01-01"
+
+
+def test_rewriter_retrouve_le_document_designe_par_la_reecriture(tmp_path):
+    """Question sans AUCUN token commun (après normalize) avec le corpus : le canal
+    lexical est muet sans réécriture, et retrouve le bon document une fois réécrit
+    vers le vocabulaire du document cible."""
+    db = tmp_path / "reecriture.db"
+    write_db([
+        _rec("pcg-800-1@2026-01-01", "800-1",
+             texte="Amortissement immobilisation corporelle plan amortissement "
+                    "durée utilisation base amortissable."),
+        _rec("pcg-900-1@2026-01-01", "900-1",
+             texte="Valorisation stocks prix achat ristournes diverses gestion "
+                    "approvisionnement."),
+    ], db)
+    build_index(db, embedder=FakeEmbedder())
+    question = "comment je répartis le coût d'une machine sur plusieurs années ?"
+    corpus = (
+        "Amortissement immobilisation corporelle plan amortissement durée "
+        "utilisation base amortissable. Valorisation stocks prix achat "
+        "ristournes diverses gestion approvisionnement."
+    )
+    # Précondition du test : sans réécriture, aucun token de la question ne peut
+    # retrouver quoi que ce soit dans ce corpus (sinon le test ne serait pas
+    # discriminant — le canal lexical répondrait déjà tout seul).
+    assert not (set(normalize(question).split()) & set(normalize(corpus).split()))
+
+    rewriter = FakeRewriter("amortissement immobilisation corporelle")
+    s_sans = Searcher(db, embedder=FakeEmbedder())
+    s_avec = Searcher(db, embedder=FakeEmbedder(), rewriter=rewriter)
+
+    hits_sans = s_sans.search(question, mode="bm25")
+    hits_avec = s_avec.search(question, mode="bm25")
+
+    assert hits_sans == []  # canal lexical muet sans réécriture
+    assert hits_avec and hits_avec[0]["record_id"] == "pcg-800-1@2026-01-01"
+    assert rewriter.questions_recues == [question]  # le rewriter a bien reçu la question originale
+
+
+def test_route_reste_epingle_meme_avec_reecriture_absurde(tmp_path):
+    """Une référence d'article explicite reste routée en position 0, même si la
+    réécriture est absurde et sans rapport : `_route` lit toujours la question
+    ORIGINALE, jamais la réécriture."""
+    db = tmp_path / "route_reecriture.db"
+    write_db([
+        _rec("pcg-111-1@2026-01-01", "111-1",
+             texte="Un immeuble s'amortit sur sa duree d'utilisation."),
+        _rec("pcg-300-1@2026-01-01", "300-1",
+             texte="Les stocks sont valorises au cout d'achat."),
+    ], db)
+    build_index(db, embedder=FakeEmbedder())
+    rewriter = FakeRewriter("xyzzy plugh grault qwerty")  # absurde, sans rapport avec le corpus
+    s = Searcher(db, embedder=FakeEmbedder(), rewriter=rewriter)
+    hits = s.search("que dit l'article 111-1 ?", mode="bm25")
+    assert hits[0]["source"] == "route"
+    assert hits[0]["article"] == "111-1"
+
+
+def test_mode_reecriture_etend_concatene_question_et_reecriture(tmp_path):
+    """mode_reecriture="etend" (défaut="remplace") : la requête envoyée aux canaux est
+    `question + " " + réécriture`, pas seulement la réécriture — un token discriminant
+    de la question originale, absent de la réécriture, reste donc exploitable."""
+    db = tmp_path / "etend.db"
+    write_db([
+        _rec("pcg-800-1@2026-01-01", "800-1", texte="Valorisation stocks prix achat."),
+    ], db)
+    build_index(db, embedder=FakeEmbedder())
+    rewriter = FakeRewriter("xyzzy")  # réécriture sans rapport avec le corpus
+    s_remplace = Searcher(db, embedder=FakeEmbedder(), rewriter=rewriter, mode_reecriture="remplace")
+    s_etend = Searcher(db, embedder=FakeEmbedder(), rewriter=rewriter, mode_reecriture="etend")
+    hits_remplace = s_remplace.search("stocks", mode="bm25")
+    hits_etend = s_etend.search("stocks", mode="bm25")
+    assert hits_remplace == []  # "xyzzy" seul ne matche rien : le token "stocks" est perdu
+    assert hits_etend and hits_etend[0]["record_id"] == "pcg-800-1@2026-01-01"
+
+
+def test_mode_reecriture_inconnu_leve(db_synthetique):
+    """`mode_reecriture` est validé à la construction : un mode inconnu ne doit pas
+    dégrader silencieusement en `remplace` (défaut relevé à la revue finale du jalon 3)."""
+    import pytest
+    with pytest.raises(ValueError, match="mode_reecriture inconnu"):
+        Searcher(db_synthetique, embedder=FakeEmbedder(),
+                 rewriter=FakeRewriter("x"), mode_reecriture="etendu")
+
+
+def test_mode_reecriture_par_defaut_est_le_mode_adopte(db_synthetique):
+    """Le défaut doit être `etend` (mode ADOPTÉ par l'ablation G), jamais le mode rejeté."""
+    s = Searcher(db_synthetique, embedder=FakeEmbedder(), rewriter=FakeRewriter("x"))
+    assert s.mode_reecriture == "etend"

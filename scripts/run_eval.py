@@ -16,16 +16,47 @@ p.add_argument("--k", type=int, default=10)
 # sur le bootstrap apparié, cf. docs/eval-jalon25.md, section « Ablation A »).
 p.add_argument("--poids-chemin", type=float, default=1.0)
 p.add_argument("--boost-commentaire", type=float, default=1.0)
+# df_max, pool (T1/T2, jalon 3) : REJETÉS par bootstrap (cf. docs/eval-jalon3.md,
+# ablations D et E) — défauts = valeurs neutres (comportement jalon 2.5 inchangé).
+# Exposés ici pour permettre une mesure ad hoc sans modifier le code.
+p.add_argument("--df-max", type=float, default=None)
+p.add_argument("--pool", type=int, default=50)
+# n_rerank (T3, jalon 3, ablation F) : nombre de candidats soumis au reranker en mode
+# hybrid+rerank. Défaut = valeur adoptée après mesure, cf. docs/eval-jalon3.md, § Ablation F.
+p.add_argument("--n-rerank", type=int, default=25)
+# Réécriture de requête par LLM (T5, jalon 3, ablation G) : ADOPTÉE en mode `etend`.
+# `aucune` (défaut) reproduit exactement le comportement du jalon 2.5 et n'appelle aucune
+# API — un contributeur sans clé peut lancer toute la campagne. Les autres valeurs
+# appellent l'API Claude (cache disque : gratuit et reproductible après le premier run).
+p.add_argument("--reecriture", choices=["aucune", "remplace", "etend"], default="aucune",
+               help="Réécriture de la question par LLM avant les canaux lexical et dense. "
+                    "`etend` = configuration adoptée au jalon 3 (recall@10 dev 0,877 en "
+                    "hybrid+rerank). Nécessite ANTHROPIC_API_KEY dans .env.")
+p.add_argument("--cache-reecritures", default="data/reecritures-cache.json",
+               help="Cache disque des réécritures. NE PAS pointer sur "
+                    "docs/mesures/jalon3/reecritures.json : ce fichier est l'ancrage de "
+                    "reproductibilité des chiffres publiés, pas un cache d'exécution.")
 args = p.parse_args()
 
 questions = load_benchmark(Path(f"benchmark/{args.split}.jsonl"))
+rewriter = None
+if args.reecriture != "aucune":
+    from accounting_rag.rewrite import Rewriter
+    rewriter = Rewriter(cache_path=Path(args.cache_reecritures))
+
 searcher = Searcher(Path("data/corpus.db"),
                      poids_chemin=args.poids_chemin,
-                     boost_commentaire=args.boost_commentaire)
+                     boost_commentaire=args.boost_commentaire,
+                     df_max=args.df_max,
+                     pool=args.pool,
+                     n_rerank=args.n_rerank,
+                     rewriter=rewriter,
+                     mode_reecriture=(args.reecriture if args.reecriture != "aucune"
+                                      else "etend"))
 # Ablation B (T4, jalon 2.5) : hybrid+rerank ADOPTÉ (bootstrap sur le meilleur des deux
 # rerankers mesurés, BAAI/bge-reranker-v2-m3 : p_amelioration=0,952, aucune catégorie
 # perdant du recall@10 — cf. docs/eval-jalon25.md, section « Ablation B »). MAIS ce mode
-# coûte ~117s/question sur cette machine (reranker lourd, CPU) : il est volontairement
+# coûtait ~117 s/question au jalon 2.5, mais c'était une latence CPU (~1,7 s/question sur GPU, cf. docs/eval-jalon3.md) : il est volontairement
 # EXCLU de --mode all (qui doit rester une campagne rapide, ~1 min) — révision suite
 # revue T4 (fix round 1). Invoquer --mode hybrid+rerank explicitement pour l'exercer ;
 # aucun chargement du reranker n'a lieu tant que ce mode n'est pas sélectionné (propriété

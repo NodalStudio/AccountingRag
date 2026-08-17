@@ -1,0 +1,106 @@
+{
+  "latence_par_device": {
+    "config": "hybrid+rerank, BAAI/bge-reranker-v2-m3, n_rerank=25, pool=50",
+    "questions": [
+      "q002",
+      "q003",
+      "q004"
+    ],
+    "secondes_par_question": {
+      "cuda": {
+        "n": 3,
+        "mesures": [
+          1.39,
+          1.4,
+          1.47
+        ],
+        "min": 1.39,
+        "median": 1.4,
+        "max": 1.47
+      },
+      "cpu": {
+        "n": 3,
+        "mesures": [
+          124.75,
+          126.58,
+          130.8
+        ],
+        "min": 124.75,
+        "median": 126.58,
+        "max": 130.8
+      },
+      "facteur_median": 90.4,
+      "facteur_fourchette": [
+        84.9,
+        94.1
+      ]
+    },
+    "note": "Justifie la correction des latences publiées au jalon 2.5 (129,5 s/question y était une latence CPU)."
+  },
+  "anatomie_q023": {
+    "question": "q023",
+    "citations_attendues": [
+      "pcg-214-22"
+    ],
+    "convention_rangs": "1-indexée (comme scripts/diagnostic_rangs.py)",
+    "rrf_k": 60,
+    "gold": {
+      "record": "pcg-214-22",
+      "rang_bm25": 2,
+      "rang_dense": null,
+      "contribution_bm25": 0.01613,
+      "contribution_dense": 0.0,
+      "score_rrf": 0.01613,
+      "rang_apres_fusion": 11
+    },
+    "trois_premiers_apres_fusion": [
+      {
+        "record": "pcg-na-236",
+        "rang_bm25": 5,
+        "rang_dense": 6,
+        "contribution_bm25": 0.01538,
+        "contribution_dense": 0.01515,
+        "score_rrf": 0.03054,
+        "rang_apres_fusion": 1
+      },
+      {
+        "record": "pcg-214-25",
+        "rang_bm25": 11,
+        "rang_dense": 17,
+        "contribution_bm25": 0.01408,
+        "contribution_dense": 0.01299,
+        "score_rrf": 0.02707,
+        "rang_apres_fusion": 2
+      },
+      {
+        "record": "pcg-1121-1",
+        "rang_bm25": 23,
+        "rang_dense": 19,
+        "contribution_bm25": 0.01205,
+        "contribution_dense": 0.01266,
+        "score_rrf": 0.02471,
+        "rang_apres_fusion": 3
+      }
+    ],
+    "pool_fusionne": {
+      "total": 81,
+      "un_seul_canal": 73,
+      "les_deux_canaux": 8
+    },
+    "n_rerank_de_la_config_livree": 25,
+    "gold_a_portee_du_reranker": true
+  },
+  "modes_de_reecriture": {
+    "remplace": {
+      "termes_match_total": 2109,
+      "secondes_par_question": 0.135
+    },
+    "etend": {
+      "termes_match_total": 3534,
+      "secondes_par_question": 0.206
+    },
+    "rapport_largeur_etend_sur_remplace": 1.68,
+    "appels_api_pendant_la_sonde": 0,
+    "note": "Cache chaud : appels_api_pendant_la_sonde doit valoir 0, sinon les latences sont contaminées comme celles de G_dev.json."
+  }
+}
