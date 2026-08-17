@@ -259,3 +259,36 @@ Le système trouve davantage et restitue moins. Vérification mécanique du para
 Conséquence pour la suite du jalon : **le déficit n'est plus un problème de rappel, c'est un problème de classement.** Le pool contient déjà la réponse dans 84 % des cas de vocabulaire courant contre 40 % de recall@10 restitué. Cet écart — couverture atteignable moins recall effectif — est exactement la marge qu'un reranker peut aller chercher, et il est maintenant chiffré au lieu d'être espéré. Avec trois réserves que je m'interdis d'oublier en communiquant le chiffre : n=61 (le delta entre pool 50 et 100 tient sur 4 questions), le coût du reranking sur jusqu'à 2×pool candidats n'est pas encore mesuré, et un plafond d'**atteignabilité** n'est pas un recall promis.
 
 **Note sur la valeur des rejets.** Trois leviers mesurés dans ce jalon, trois rejets — et le jalon n'est pas perdu pour autant : c'est le troisième rejet qui a produit la métrique qui oriente la suite. Un protocole d'adoption strict (bootstrap apparié, p ≥ 0,95, aucune catégorie perdant plus de 0,05) transforme les échecs en information. Sans lui, j'aurais adopté deux des trois leviers sur leur point estimé — dont l'un (la déduplication des termes de la requête FTS5, +0,017 de recall@10) que le bootstrap donne à p=0,63, soit un pur bruit d'échantillonnage.
+
+### 2,1 secondes sur GPU, 149,5 sur CPU : le chiffre qui a orienté tout un jalon était une latence CPU
+
+Le jalon 3 était bâti sur un arbitrage que je croyais imposé par le matériel : « le reranker lourd coûte 4,7 s par candidat, donc 15 minutes par question sur 200 candidats — inutilisable. Le modèle léger *rejeté* au jalon 2.5 redevient donc le seul candidat crédible dès qu'on élargit le pool. » J'avais même trouvé ça élégant : le perdant d'hier réhabilité par un changement de variable.
+
+Les deux moitiés du raisonnement étaient fausses.
+
+**La première mesure a démenti l'estimation d'un facteur 50.** Le modèle léger sur 200 candidats : 1,5 s/question, pas 80. J'ai alors calibré le modèle lourd sur 100 candidats — 5,9 s/question, soit 6 minutes pour tout le split de développement, là où j'annonçais 8 heures. La configuration décisive du jalon, modèle fort sur pool large, avait donc été écartée du plan **sur une estimation que personne n'avait mesurée**. Coût de la vérification : trois minutes.
+
+**Puis la cause de l'écart.** Ma première explication tenait debout : machine partagée, charge moyenne 16 sur 8 cœurs, 1,28 million de pages envoyées en swap. J'ai écrit cette explication dans le rapport. Ensuite j'ai fait le contrôle qui la départageait — même configuration, une question, le modèle déplacé explicitement d'un device à l'autre :
+
+| device | latence (25 candidats, 1 question) |
+|---|---|
+| `cuda:0` | **2,1 s** |
+| `cpu` | **149,5 s** |
+
+Facteur 71. Et les 129,5 s/question publiées au jalon 2.5 tombent en plein dans le voisinage du CPU. Ce n'était pas le swap : **la campagne du jalon 2.5 exécutait le cross-encoder sur CPU**, sur une machine qui avait déjà une carte — même lockfile, même torch CUDA, vérifié. Ce qui l'en a privée reste inconnu, et je l'annonce comme hypothèse plutôt que de conclure : plusieurs sous-agents se disputant 6 Go de VRAM, probablement.
+
+Trois leçons, et la troisième est la plus désagréable.
+
+La première est technique : **une latence n'est pas une propriété du système mesuré**, c'est une propriété du triplet (machine, device, charge). Un chiffre en secondes publié sans son device ne vaut rien, et ce projet a mis un jalon et demi à l'apprendre. Le device et le dtype sont désormais dans le tableau des conditions de chaque rapport.
+
+La deuxième est de conception : la décision du jalon 2.5 de garder le reranking hors de la campagne par défaut — « 2 h de calcul surprise pour un nouveau contributeur » — reste **juste pour qui n'a pas de GPU** (2 h 30 sur 61 questions, exactement le scénario mesuré), et devient absurde dès qu'une carte est là (2 minutes). Le défaut ne doit pas dépendre du mode, il doit dépendre du matériel. Une bonne décision peut reposer sur un chiffre faux, et le découvrir ne l'invalide pas automatiquement — ça déplace juste la condition qui la justifie.
+
+La troisième est celle que je préférerais ne pas écrire : **j'ai publié mon hypothèse avant de faire le contrôle qui la testait**, alors que ce jalon tout entier documente ce travers depuis sa sonde fondatrice. Le swap était plausible, mesurable, et faux. Trois minutes de contrôle séparaient l'explication crédible de l'explication vraie. Écrire « hypothèse retenue » dans un rapport ne protège de rien quand le test tenait dans une boucle sur deux devices.
+
+### L'ablation F, ou pourquoi plus de candidats ne sert à rien
+
+Résultat propre, et il se répète une fois par modèle : le modèle léger donne 0,713 de recall@10 sur 25 candidats et 0,713 sur 200 ; le modèle lourd donne 0,738 sur 25 et 0,738 sur 200. Pas seulement les agrégats — la ventilation par catégorie est identique aux deux largeurs. Multiplier par huit le nombre de candidats soumis au cross-encoder ne fait entrer **aucune** citation attendue de plus dans le top-10.
+
+Ça ferme l'hypothèse qui portait le jalon depuis l'ablation E. Le pool contenait la bonne réponse dans 83,9 % des cas de vocabulaire courant contre 40 % restitués, et je lisais cet écart comme une marge à récupérer par un meilleur classement. Un cross-encoder à qui l'on donne *tout* le pool en restitue 48,4 %. Trente-cinq points d'écart subsistent alors que le modèle a vu tous les candidats : le goulot n'est ni la fenêtre de récupération, ni le volume traité, c'est la capacité à **reconnaître** qu'un article du Plan comptable répond à une question posée en langage courant. Aucun réordonnancement ne crée cette reconnaissance.
+
+Une nuance que je garde pour la suite, parce qu'elle contredit ma propre conclusion sur un point précis : le modèle lourd sur 200 candidats gagne +0,050 de recall@5 et +0,033 de MRR, à recall@10 rigoureusement constant. Le pool large lui permet de faire remonter dans le top-5 des documents qui étaient déjà entre les rangs 6 et 10. C'est un vrai gain de précision de tête — et il n'est pas adoptable, parce que le critère du jalon porte sur le recall@10, fixé avant les mesures. J'ai été tenté de basculer la métrique d'adoption vers le recall@5, où mon résultat devenait positif. C'est exactement ce que le protocole existe pour empêcher. Le gain est noté, avec sa réserve, et sera re-mesuré proprement au jalon 4 — d'autant qu'un générateur RAG est alimenté par cinq passages, pas dix : c'est le recall@5 qui gouvernera la qualité des réponses, pas la métrique sur laquelle j'ai bâti mon protocole.
