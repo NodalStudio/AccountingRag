@@ -15,7 +15,8 @@ class Searcher:
     def __init__(self, db_path: Path, embedder=None,
                  poids_chemin: float = 1.0, boost_commentaire: float = 1.0,
                  reranker=None, df_max: float | None = None,
-                 pool: int = 50, dedup_termes: bool = False, n_rerank: int = 25):
+                 pool: int = 50, dedup_termes: bool = False, n_rerank: int = 25,
+                 rewriter=None, mode_reecriture: str = "remplace"):
         if not Path(db_path).exists():
             raise FileNotFoundError(
                 f"corpus introuvable : {db_path} — lancez scripts/download_data.py, "
@@ -64,6 +65,18 @@ class Searcher:
         # rien : la troncature par slice (`[:self.n_rerank]`) renvoie simplement tout ce
         # qui existe (ruling J3-3, brief T3).
         self.n_rerank = n_rerank
+        # rewriter : réécrit la question en vocabulaire PCG avant les canaux lexical et
+        # dense (ablation G, jalon 3). None = comportement actuel (aucune réécriture) :
+        # `search()` transmet alors `query` tel quel à `_bm25`/`_dense`, exactement comme
+        # avant l'introduction de ce paramètre. `_route(query)` lit TOUJOURS la question
+        # ORIGINALE, jamais la réécriture (une référence d'article explicite ne doit
+        # jamais dépendre d'une reformulation par LLM) — cf. `search()`.
+        self.rewriter = rewriter
+        # mode_reecriture : "remplace" envoie uniquement la réécriture aux canaux ;
+        # "etend" envoie `question + " " + réécriture` (conserve les tokens originaux,
+        # utile si la réécriture perd un terme discriminant). N'a d'effet que si
+        # `rewriter` est fourni.
+        self.mode_reecriture = mode_reecriture
 
     @property
     def n_chunks(self) -> int:
@@ -242,14 +255,25 @@ class Searcher:
     def search(self, query: str, k: int = 10, mode: str = "hybrid") -> list[dict]:
         if mode not in _MODES:
             raise ValueError(f"mode inconnu : {mode}")
+        # Le routeur de référence d'article lit TOUJOURS la question ORIGINALE (jamais
+        # la réécriture) : une référence explicite ("article 111-1") ne doit jamais
+        # dépendre d'une reformulation par LLM, cf. Global Constraints jalon 3.
         routed = self._route(query)
         routed_ids = {r["record_id"] for r in routed}
-        if mode == "bm25":
-            scores = self._bm25(query, self.pool)
-        elif mode == "dense":
-            scores = self._dense(query, self.pool)
+        if self.rewriter is None:
+            requete_canaux = query
         else:
-            scores = self._rrf([self._bm25(query, self.pool), self._dense(query, self.pool)])
+            reecriture = self.rewriter.reecrire(query)
+            requete_canaux = (
+                reecriture if self.mode_reecriture == "remplace"
+                else f"{query} {reecriture}"
+            )
+        if mode == "bm25":
+            scores = self._bm25(requete_canaux, self.pool)
+        elif mode == "dense":
+            scores = self._dense(requete_canaux, self.pool)
+        else:
+            scores = self._rrf([self._bm25(requete_canaux, self.pool), self._dense(requete_canaux, self.pool)])
         ranked = sorted(scores, key=scores.get, reverse=True)
         source = "fusion" if mode.startswith("hybrid") else mode
         n_restants = max(k - len(routed), 0)
