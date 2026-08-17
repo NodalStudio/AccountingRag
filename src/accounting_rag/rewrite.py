@@ -58,7 +58,18 @@ class Rewriter:
             raise RuntimeError("garde-fou : plus de 200 appels API dans une exécution")
         reponse = self.client.messages.create(
             model=self.modele,
-            max_tokens=200,
+            # `thinking` DÉSACTIVÉ explicitement. Sur les modèles de la série 5, le
+            # thinking adaptatif est actif PAR DÉFAUT quand le paramètre est omis
+            # (changement silencieux par rapport à la série 4.6, qui ne pensait pas sans
+            # configuration explicite), et `max_tokens` plafonne thinking + texte de
+            # réponse ENSEMBLE. Constaté à la première campagne de l'ablation G : le
+            # budget de 200 tokens était intégralement consommé par le raisonnement et
+            # la réponse ne contenait qu'un bloc `thinking`, aucun bloc `text` — d'où
+            # l'échec bruyant ci-dessous. Traduire du vocabulaire courant vers le
+            # vocabulaire du PCG ne demande aucun raisonnement multi-étapes : le
+            # désactiver supprime la cause à la racine plutôt que d'élargir le budget.
+            thinking={"type": "disabled"},
+            max_tokens=400,
             system=_SYSTEME,
             messages=[{"role": "user", "content": question}],
         )
@@ -78,7 +89,10 @@ class Rewriter:
         if not texte:
             raise RuntimeError(
                 f"réécriture vide renvoyée par {self.modele} pour la question : {question!r} "
-                f"(blocs reçus : {[getattr(b, 'type', None) for b in reponse.content]})"
+                f"(blocs reçus : {[getattr(b, 'type', None) for b in reponse.content]}, "
+                f"stop_reason : {getattr(reponse, 'stop_reason', None)!r}). Si les blocs "
+                f"reçus contiennent 'thinking' et que stop_reason vaut 'max_tokens', le "
+                f"budget a été consommé par le raisonnement avant tout texte."
             )
         self._cache[question] = texte
         self.cache_path.parent.mkdir(parents=True, exist_ok=True)

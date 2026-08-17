@@ -1,0 +1,490 @@
+{
+  "ablation": "G",
+  "split": "dev",
+  "mode": "hybrid",
+  "n": 61,
+  "configs": [
+    {
+      "label": "hybrid neutre, sans réécriture (référence)",
+      "params": {},
+      "recall@5": 0.639,
+      "recall@10": 0.672,
+      "mrr": 0.565,
+      "par_categorie": {
+        "reference_directe": {
+          "recall@10": 1.0,
+          "n": 7
+        },
+        "regle": {
+          "recall@10": 0.935,
+          "n": 23
+        },
+        "vocabulaire_courant": {
+          "recall@10": 0.403,
+          "n": 31
+        }
+      },
+      "par_question": {
+        "q001": 1.0,
+        "q002": 1.0,
+        "q003": 1.0,
+        "q004": 1.0,
+        "q006": 1.0,
+        "q007": 1.0,
+        "q008": 0.5,
+        "q009": 1.0,
+        "q010": 1.0,
+        "q011": 1.0,
+        "q012": 1.0,
+        "q013": 1.0,
+        "q014": 1.0,
+        "q015": 1.0,
+        "q021": 0.0,
+        "q022": 0.5,
+        "q023": 0.0,
+        "q024": 1.0,
+        "q025": 1.0,
+        "q026": 0.0,
+        "q027": 1.0,
+        "q031": 1.0,
+        "q032": 1.0,
+        "q034": 1.0,
+        "q036": 1.0,
+        "q038": 1.0,
+        "q040": 1.0,
+        "q041": 1.0,
+        "q043": 1.0,
+        "q044": 1.0,
+        "q046": 1.0,
+        "q047": 1.0,
+        "q049": 1.0,
+        "q050": 1.0,
+        "q052": 1.0,
+        "q053": 1.0,
+        "q054": 0.0,
+        "q056": 0.0,
+        "q057": 0.0,
+        "q059": 0.0,
+        "q060": 0.0,
+        "q061": 1.0,
+        "q063": 0.0,
+        "q064": 1.0,
+        "q065": 0.0,
+        "q067": 1.0,
+        "q068": 0.0,
+        "q070": 0.0,
+        "q071": 0.0,
+        "q072": 1.0,
+        "q074": 0.0,
+        "q075": 1.0,
+        "q077": 1.0,
+        "q079": 0.0,
+        "q080": 0.0,
+        "q082": 1.0,
+        "q083": 1.0,
+        "q085": 0.0,
+        "q086": 0.0,
+        "q088": 1.0,
+        "q089": 0.0
+      },
+      "latence_s_par_question": 0.14438557409836203
+    },
+    {
+      "label": "réécriture, mode remplace",
+      "params": {
+        "mode_reecriture": "remplace"
+      },
+      "recall@5": 0.697,
+      "recall@10": 0.803,
+      "mrr": 0.601,
+      "par_categorie": {
+        "reference_directe": {
+          "recall@10": 1.0,
+          "n": 7
+        },
+        "regle": {
+          "recall@10": 1.0,
+          "n": 23
+        },
+        "vocabulaire_courant": {
+          "recall@10": 0.613,
+          "n": 31
+        }
+      },
+      "par_question": {
+        "q001": 1.0,
+        "q002": 1.0,
+        "q003": 1.0,
+        "q004": 1.0,
+        "q006": 1.0,
+        "q007": 1.0,
+        "q008": 1.0,
+        "q009": 1.0,
+        "q010": 1.0,
+        "q011": 1.0,
+        "q012": 1.0,
+        "q013": 1.0,
+        "q014": 1.0,
+        "q015": 1.0,
+        "q021": 1.0,
+        "q022": 1.0,
+        "q023": 0.0,
+        "q024": 0.0,
+        "q025": 0.0,
+        "q026": 1.0,
+        "q027": 0.0,
+        "q031": 1.0,
+        "q032": 1.0,
+        "q034": 1.0,
+        "q036": 1.0,
+        "q038": 1.0,
+        "q040": 1.0,
+        "q041": 1.0,
+        "q043": 1.0,
+        "q044": 1.0,
+        "q046": 1.0,
+        "q047": 1.0,
+        "q049": 1.0,
+        "q050": 1.0,
+        "q052": 1.0,
+        "q053": 1.0,
+        "q054": 1.0,
+        "q056": 0.0,
+        "q057": 0.0,
+        "q059": 1.0,
+        "q060": 1.0,
+        "q061": 0.0,
+        "q063": 0.0,
+        "q064": 1.0,
+        "q065": 0.0,
+        "q067": 1.0,
+        "q068": 1.0,
+        "q070": 1.0,
+        "q071": 1.0,
+        "q072": 1.0,
+        "q074": 1.0,
+        "q075": 1.0,
+        "q077": 1.0,
+        "q079": 1.0,
+        "q080": 0.0,
+        "q082": 1.0,
+        "q083": 1.0,
+        "q085": 0.5,
+        "q086": 0.5,
+        "q088": 1.0,
+        "q089": 0.0
+      },
+      "latence_s_par_question": 0.9050464424590171
+    },
+    {
+      "label": "réécriture, mode etend",
+      "params": {
+        "mode_reecriture": "etend"
+      },
+      "recall@5": 0.779,
+      "recall@10": 0.852,
+      "mrr": 0.695,
+      "par_categorie": {
+        "reference_directe": {
+          "recall@10": 1.0,
+          "n": 7
+        },
+        "regle": {
+          "recall@10": 1.0,
+          "n": 23
+        },
+        "vocabulaire_courant": {
+          "recall@10": 0.71,
+          "n": 31
+        }
+      },
+      "par_question": {
+        "q001": 1.0,
+        "q002": 1.0,
+        "q003": 1.0,
+        "q004": 1.0,
+        "q006": 1.0,
+        "q007": 1.0,
+        "q008": 1.0,
+        "q009": 1.0,
+        "q010": 1.0,
+        "q011": 1.0,
+        "q012": 1.0,
+        "q013": 1.0,
+        "q014": 1.0,
+        "q015": 1.0,
+        "q021": 1.0,
+        "q022": 1.0,
+        "q023": 0.0,
+        "q024": 1.0,
+        "q025": 0.0,
+        "q026": 1.0,
+        "q027": 0.0,
+        "q031": 1.0,
+        "q032": 1.0,
+        "q034": 1.0,
+        "q036": 1.0,
+        "q038": 1.0,
+        "q040": 1.0,
+        "q041": 1.0,
+        "q043": 1.0,
+        "q044": 1.0,
+        "q046": 1.0,
+        "q047": 1.0,
+        "q049": 1.0,
+        "q050": 1.0,
+        "q052": 1.0,
+        "q053": 1.0,
+        "q054": 1.0,
+        "q056": 0.0,
+        "q057": 0.0,
+        "q059": 1.0,
+        "q060": 1.0,
+        "q061": 1.0,
+        "q063": 0.0,
+        "q064": 1.0,
+        "q065": 1.0,
+        "q067": 1.0,
+        "q068": 1.0,
+        "q070": 1.0,
+        "q071": 1.0,
+        "q072": 1.0,
+        "q074": 1.0,
+        "q075": 1.0,
+        "q077": 1.0,
+        "q079": 1.0,
+        "q080": 0.0,
+        "q082": 1.0,
+        "q083": 1.0,
+        "q085": 0.5,
+        "q086": 0.5,
+        "q088": 1.0,
+        "q089": 0.0
+      },
+      "latence_s_par_question": 0.23101668747541063
+    }
+  ],
+  "comparaisons_vs_reference": [
+    {
+      "label": "réécriture, mode remplace",
+      "params": {
+        "mode_reecriture": "remplace"
+      },
+      "delta": 0.1311,
+      "ic95": [
+        0.0164,
+        0.2541
+      ],
+      "p_amelioration": 0.9835,
+      "pire_perte_categorie": {
+        "categorie": "",
+        "delta": 0.0
+      },
+      "adopte": true
+    },
+    {
+      "label": "réécriture, mode etend",
+      "params": {
+        "mode_reecriture": "etend"
+      },
+      "delta": 0.1803,
+      "ic95": [
+        0.0738,
+        0.2951
+      ],
+      "p_amelioration": 0.9996,
+      "pire_perte_categorie": {
+        "categorie": "",
+        "delta": 0.0
+      },
+      "adopte": true
+    }
+  ],
+  "bootstrap_par_categorie_vs_reference": {
+    "réécriture, mode remplace": {
+      "reference_directe": {
+        "n": 7,
+        "delta": 0.0,
+        "ic95": [
+          0.0,
+          0.0
+        ],
+        "p_amelioration": 0.0
+      },
+      "regle": {
+        "n": 23,
+        "delta": 0.0652,
+        "ic95": [
+          0.0,
+          0.1739
+        ],
+        "p_amelioration": 0.8758
+      },
+      "vocabulaire_courant": {
+        "n": 31,
+        "delta": 0.2097,
+        "ic95": [
+          -0.0161,
+          0.4194
+        ],
+        "p_amelioration": 0.9601
+      }
+    },
+    "réécriture, mode etend": {
+      "reference_directe": {
+        "n": 7,
+        "delta": 0.0,
+        "ic95": [
+          0.0,
+          0.0
+        ],
+        "p_amelioration": 0.0
+      },
+      "regle": {
+        "n": 23,
+        "delta": 0.0652,
+        "ic95": [
+          0.0,
+          0.1739
+        ],
+        "p_amelioration": 0.8758
+      },
+      "vocabulaire_courant": {
+        "n": 31,
+        "delta": 0.3065,
+        "ic95": [
+          0.0968,
+          0.5
+        ],
+        "p_amelioration": 0.9979
+      }
+    }
+  },
+  "sort_questions_diagnostiquees": {
+    "q021": {
+      "hybrid neutre, sans réécriture (référence)": 0.0,
+      "réécriture, mode remplace": 1.0,
+      "réécriture, mode etend": 1.0
+    },
+    "q023": {
+      "hybrid neutre, sans réécriture (référence)": 0.0,
+      "réécriture, mode remplace": 0.0,
+      "réécriture, mode etend": 0.0
+    },
+    "q026": {
+      "hybrid neutre, sans réécriture (référence)": 0.0,
+      "réécriture, mode remplace": 1.0,
+      "réécriture, mode etend": 1.0
+    },
+    "q060": {
+      "hybrid neutre, sans réécriture (référence)": 0.0,
+      "réécriture, mode remplace": 1.0,
+      "réécriture, mode etend": 1.0
+    }
+  },
+  "combinaison_avec_reranking": {
+    "label": "réécriture (etend) + bge-reranker-v2-m3, n_rerank=25, pool=50",
+    "reference": "bge-reranker-v2-m3, n_rerank=25, pool=50 (jalon 2.5)",
+    "recall@5": 0.762,
+    "recall@10": 0.877,
+    "mrr": 0.714,
+    "par_categorie": {
+      "reference_directe": {
+        "recall@10": 1.0,
+        "n": 7
+      },
+      "regle": {
+        "recall@10": 0.978,
+        "n": 23
+      },
+      "vocabulaire_courant": {
+        "recall@10": 0.774,
+        "n": 31
+      }
+    },
+    "par_question": {
+      "q001": 1.0,
+      "q002": 1.0,
+      "q003": 1.0,
+      "q004": 1.0,
+      "q006": 1.0,
+      "q007": 1.0,
+      "q008": 0.5,
+      "q009": 1.0,
+      "q010": 1.0,
+      "q011": 1.0,
+      "q012": 1.0,
+      "q013": 1.0,
+      "q014": 1.0,
+      "q015": 1.0,
+      "q021": 1.0,
+      "q022": 1.0,
+      "q023": 1.0,
+      "q024": 1.0,
+      "q025": 0.0,
+      "q026": 1.0,
+      "q027": 1.0,
+      "q031": 1.0,
+      "q032": 1.0,
+      "q034": 1.0,
+      "q036": 1.0,
+      "q038": 1.0,
+      "q040": 1.0,
+      "q041": 1.0,
+      "q043": 1.0,
+      "q044": 1.0,
+      "q046": 1.0,
+      "q047": 1.0,
+      "q049": 1.0,
+      "q050": 1.0,
+      "q052": 1.0,
+      "q053": 1.0,
+      "q054": 1.0,
+      "q056": 1.0,
+      "q057": 0.0,
+      "q059": 1.0,
+      "q060": 1.0,
+      "q061": 1.0,
+      "q063": 0.0,
+      "q064": 1.0,
+      "q065": 1.0,
+      "q067": 1.0,
+      "q068": 1.0,
+      "q070": 1.0,
+      "q071": 1.0,
+      "q072": 1.0,
+      "q074": 1.0,
+      "q075": 1.0,
+      "q077": 1.0,
+      "q079": 1.0,
+      "q080": 0.0,
+      "q082": 0.0,
+      "q083": 1.0,
+      "q085": 0.5,
+      "q086": 0.5,
+      "q088": 1.0,
+      "q089": 0.0
+    },
+    "latence_s_par_question": 1.7491460034426218,
+    "delta": 0.1393,
+    "ic95": [
+      0.0328,
+      0.2459
+    ],
+    "p_amelioration": 0.9945,
+    "pire_perte_categorie": {
+      "categorie": "regle",
+      "delta": -0.0217
+    },
+    "adopte": true
+  },
+  "cout": {
+    "appels_api": 12,
+    "tokens_entree": 3265,
+    "tokens_sortie": 1244,
+    "modele": "claude-sonnet-5",
+    "entrees_cache_au_depart": 49,
+    "entrees_cache_a_la_fin": 61
+  },
+  "cache_reecritures": "docs/mesures/jalon3/reecritures.json"
+}
