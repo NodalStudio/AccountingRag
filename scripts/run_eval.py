@@ -16,12 +16,23 @@ p.add_argument("--k", type=int, default=10)
 # sur le bootstrap apparié, cf. docs/eval-jalon25.md, section « Ablation A »).
 p.add_argument("--poids-chemin", type=float, default=1.0)
 p.add_argument("--boost-commentaire", type=float, default=1.0)
+# df_max, pool (T1/T2, jalon 3) : REJETÉS par bootstrap (cf. docs/eval-jalon3.md,
+# ablations D et E) — défauts = valeurs neutres (comportement jalon 2.5 inchangé).
+# Exposés ici pour permettre une mesure ad hoc sans modifier le code.
+p.add_argument("--df-max", type=float, default=None)
+p.add_argument("--pool", type=int, default=50)
+# n_rerank (T3, jalon 3, ablation F) : nombre de candidats soumis au reranker en mode
+# hybrid+rerank. Défaut = valeur adoptée après mesure, cf. docs/eval-jalon3.md, § Ablation F.
+p.add_argument("--n-rerank", type=int, default=25)
 args = p.parse_args()
 
 questions = load_benchmark(Path(f"benchmark/{args.split}.jsonl"))
 searcher = Searcher(Path("data/corpus.db"),
                      poids_chemin=args.poids_chemin,
-                     boost_commentaire=args.boost_commentaire)
+                     boost_commentaire=args.boost_commentaire,
+                     df_max=args.df_max,
+                     pool=args.pool,
+                     n_rerank=args.n_rerank)
 # Ablation B (T4, jalon 2.5) : hybrid+rerank ADOPTÉ (bootstrap sur le meilleur des deux
 # rerankers mesurés, BAAI/bge-reranker-v2-m3 : p_amelioration=0,952, aucune catégorie
 # perdant du recall@10 — cf. docs/eval-jalon25.md, section « Ablation B »). MAIS ce mode

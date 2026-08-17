@@ -15,7 +15,7 @@ class Searcher:
     def __init__(self, db_path: Path, embedder=None,
                  poids_chemin: float = 1.0, boost_commentaire: float = 1.0,
                  reranker=None, df_max: float | None = None,
-                 pool: int = 50, dedup_termes: bool = False):
+                 pool: int = 50, dedup_termes: bool = False, n_rerank: int = 25):
         if not Path(db_path).exists():
             raise FileNotFoundError(
                 f"corpus introuvable : {db_path} — lancez scripts/download_data.py, "
@@ -57,6 +57,13 @@ class Searcher:
         # (ce cas combiné n'est pas mesuré, df_max ayant été rejeté en T1, mais reste
         # ainsi défini sans incohérence : jamais moins déduplique que le filtrage lui-même).
         self.dedup_termes = dedup_termes
+        # n_rerank : nombre de candidats (issus de la fusion, hors résultats routés)
+        # soumis au reranker en mode `hybrid+rerank` (T3, jalon 3). 25 = comportement
+        # jalon 2.5 inchangé (valeur codée en dur jusqu'ici dans `search()`). Un
+        # `n_rerank` supérieur au nombre de candidats disponibles après fusion ne casse
+        # rien : la troncature par slice (`[:self.n_rerank]`) renvoie simplement tout ce
+        # qui existe (ruling J3-3, brief T3).
+        self.n_rerank = n_rerank
 
     @property
     def n_chunks(self) -> int:
@@ -248,14 +255,15 @@ class Searcher:
         n_restants = max(k - len(routed), 0)
         if mode == "hybrid+rerank":
             # Les résultats routés (référence d'article exacte) sont épinglés sans
-            # repasser par le reranker. La fusion est récupérée à 25 candidats
-            # (borne le nombre d'appels predict() du cross-encoder) puis rerankée,
-            # tronquée à n_restants.
+            # repasser par le reranker. La fusion est récupérée à self.n_rerank
+            # candidats (borne le nombre d'appels predict() du cross-encoder, T3
+            # jalon 3 — 25 = comportement jalon 2.5 inchangé) puis rerankée, tronquée
+            # à n_restants.
             candidates = [
                 self._record(rid, scores[rid], source)
                 for rid in ranked
                 if rid not in routed_ids
-            ][:25]
+            ][:self.n_rerank]
             results = self.reranker.rerank(query, candidates, top_k=n_restants)
         else:
             results = [

@@ -23,14 +23,28 @@ Ablations supportées par ce jalon (`--ablation D|E|F|cumul`) :
     configuration combinée (meilleure largeur + dedup) n'est mesurée QUE si l'une des
     deux mesures séparées est adoptée (`run_ablation_E`, pas le chemin générique
     `run_ablation` utilisé par D).
-  - F, cumul : introduits par les tâches suivantes du jalon 3 (paramètre `n_rerank` pas
-    encore sur `Searcher` à ce stade) — non implémentées ici, choix reconnus par
-    l'argparse mais qui lèvent `NotImplementedError` avec un renvoi explicite vers la
-    tâche qui les introduit.
+  - F (T3, cette tâche) : reranking sur pool élargi (`n_rerank`, `Searcher.__init__`).
+    Question du jalon : modèle faible (`mmarco-mMiniLMv2-L12-H384-v1`) sur pool large,
+    ou modèle fort (`bge-reranker-v2-m3`) sur pool étroit ? Référence = config finale
+    du jalon 2.5 (`bge-reranker-v2-m3`, `n_rerank=25`, `pool=50`, recall@10 attendu =
+    0,738 sur dev) : RÉUTILISÉE depuis `docs/mesures/jalon25/cloture_dev.json` (champ
+    `b`), pas re-mesurée (~2h CPU déjà mesurées une fois au jalon 2.5 — règle du
+    projet : tout chiffre publié doit être recalculable depuis un JSON persisté, pas
+    nécessairement depuis une nouvelle exécution de CE script). Configurations
+    mesurées : `mmarco+n_rerank=200+pool=200` (~80s/question), `mmarco+n_rerank=25`
+    (contrôle isolant l'effet du modèle de celui de la largeur, ~10s/question) ; une
+    quatrième config (`bge+n_rerank=100`, ~8min/question, ~8h/61 questions) est
+    seulement mesurée sur `--mesurer-bge100` explicite — sinon documentée « non
+    mesurée, coût » (brief T3, step 5.4).
+  - cumul : introduite par la tâche suivante du jalon 3 (T4) — non implémentée ici,
+    choix reconnu par l'argparse mais qui lève `NotImplementedError` avec un renvoi
+    explicite vers la tâche qui l'introduit.
 
 Usage :
     uv run python scripts/ablations_jalon3.py --ablation D --split dev
     uv run python scripts/ablations_jalon3.py --ablation E --split dev
+    uv run python scripts/ablations_jalon3.py --ablation F --split dev
+    uv run python scripts/ablations_jalon3.py --ablation F --split dev --mesurer-bge100
 """
 import argparse
 import json
@@ -50,6 +64,14 @@ REF_RECALL10_DEV_HYBRID_NEUTRE = 0.672  # baseline jalon 2.5, cf. docs/eval-jalo
 
 POOL_WIDTHS_E = (50, 100, 200, 400)  # ablation E : largeurs de pool mesurées
 
+REF_RECALL10_DEV_HYBRID_RERANK_BGE25 = 0.738  # config finale jalon 2.5, cf. docs/mesures/jalon25/cloture_dev.json (champ b)
+JALON25_CLOTURE = {  # fichiers de clôture jalon 2.5, réutilisés comme référence de l'ablation F
+    "dev": ROOT / "docs/mesures/jalon25/cloture_dev.json",
+    "test": ROOT / "docs/mesures/jalon25/cloture_test.json",
+}
+MMARCO_MODEL = "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1"
+BGE_MODEL = "BAAI/bge-reranker-v2-m3"
+
 
 def _configs_D() -> tuple[str, list[tuple[str, dict]]]:
     """df_max ∈ {None, 0.10, 0.05, 0.02}, mode hybrid. Référence = df_max=None (index 0)."""
@@ -64,16 +86,13 @@ def _configs_D() -> tuple[str, list[tuple[str, dict]]]:
 
 def _configs_non_implementees(nom: str) -> tuple[str, list[tuple[str, dict]]]:
     raise NotImplementedError(
-        f"--ablation {nom} n'est pas implémentée par cette tâche (T2, jalon 3) : le "
-        f"paramètre qu'elle mesure (n_rerank) n'est pas encore introduit sur Searcher. "
-        f"Voir docs/superpowers/plans/2026-08-16-jalon3-recouvrement-nul.md, "
-        f"Task 3 (ablation F, n_rerank), Task 4 (cumul)."
+        f"--ablation {nom} n'est pas implémentée par cette tâche (T3, jalon 3). "
+        f"Voir docs/superpowers/plans/2026-08-16-jalon3-recouvrement-nul.md, Task 4 (cumul)."
     )
 
 
 _CONFIGS_PAR_ABLATION = {
     "D": _configs_D,
-    "F": lambda: _configs_non_implementees("F"),
     "cumul": lambda: _configs_non_implementees("cumul"),
 }
 
@@ -394,14 +413,175 @@ def run_ablation_E(split: str) -> dict:
     return out
 
 
+def _reference_F(split: str) -> dict:
+    """Référence de l'ablation F : `hybrid+rerank`, `bge-reranker-v2-m3`, `n_rerank=25`,
+    `pool=50` — la config finale ADOPTÉE au jalon 2.5. Réutilisée depuis le fichier de
+    clôture de ce jalon (`docs/mesures/jalon25/cloture_{split}.json`, champ `b`) plutôt
+    que re-mesurée : ce calcul coûte ~2h CPU sur 61 questions (`bge-reranker-v2-m3` ≈
+    4,7s/candidat × 25 candidats ≈ 117s/question, cf. docs/eval-jalon25.md) et a déjà
+    été mesuré une fois, avec ses `par_question` bruts persistés — la règle du projet
+    (tout chiffre publié doit être recalculable depuis un JSON persisté) n'exige pas
+    que ce JSON soit produit par CE script précisément.
+    """
+    fichier = JALON25_CLOTURE[split]
+    data = json.loads(fichier.read_text(encoding="utf-8"))
+    b = data["b"]
+    return {
+        "recall@5": b["recall@5"], "recall@10": b["recall@10"], "mrr": b["mrr"],
+        "par_categorie": b["par_categorie"], "par_question": b["par_question"],
+        "n": data["n"],
+        "latence_s_par_question": data["latence_b_ms_par_q"] / 1000,
+        "_source": str(fichier.relative_to(ROOT)),
+    }
+
+
+def _mesurer_config_F(label: str, embedder, model_name: str, n_rerank: int, pool: int,
+                       questions: list[dict]) -> dict:
+    from accounting_rag.rerank import Reranker
+    reranker = Reranker(model_name=model_name)
+    s = Searcher(DB, embedder=embedder, reranker=reranker, pool=pool, n_rerank=n_rerank)
+    t0 = time.perf_counter()
+    r = evaluate(s, questions, mode="hybrid+rerank", k=10)
+    dt = time.perf_counter() - t0
+    r["latence_s_par_question"] = dt / len(questions)
+    print(f"[ablations_jalon3] {label} : recall@5={r['recall@5']} recall@10={r['recall@10']} "
+          f"mrr={r['mrr']} ({dt:.1f}s, {r['latence_s_par_question']:.1f} s/question)", flush=True)
+    return r
+
+
+def run_ablation_F(split: str, mesurer_bge100: bool = False) -> dict:
+    """Ablation F (T3) : reranking sur pool élargi (`n_rerank`). Question du jalon :
+    modèle faible (`mmarco`) sur pool large, ou modèle fort (`bge`) sur pool étroit ?
+
+    ATTENTION COÛT : `mmarco+n_rerank=200+pool=200` coûte ~80s/question (~80 min sur
+    61 questions dev) ; `mmarco+n_rerank=25` coûte ~10s/question (~10 min). Avec
+    `mesurer_bge100=True`, `bge+n_rerank=100+pool=100` coûte ~8 min/question (~8h sur
+    61 questions) — désactivé par défaut (brief T3, step 5.4 : seulement si le temps
+    le permet), documenté comme non mesuré sinon (réserve honnête, pas un oubli).
+    """
+    nom, mode = "F", "hybrid+rerank"
+    questions = load_benchmark(ROOT / f"benchmark/{split}.jsonl")
+    ref = _reference_F(split)
+    ref_label = "bge-reranker-v2-m3, n_rerank=25, pool=50 (référence jalon 2.5, réutilisée)"
+    print(f"[ablations_jalon3] ablation F, split {split} ({len(questions)} questions), "
+          f"mode {mode} — référence réutilisée depuis {ref['_source']} : "
+          f"recall@10={ref['recall@10']}", flush=True)
+    if split == "dev" and ref["recall@10"] != REF_RECALL10_DEV_HYBRID_RERANK_BGE25:
+        print(f"[ablations_jalon3] CONTRÔLE DE NON-RÉGRESSION ÉCHOUÉ : la référence relue "
+              f"({ref_label}) donne recall@10={ref['recall@10']} != "
+              f"{REF_RECALL10_DEV_HYBRID_RERANK_BGE25} (jalon 2.5). ARRÊT.", flush=True)
+        raise SystemExit(
+            f"STATUS: BLOCKED — recall@10 référence relue = {ref['recall@10']}, attendu "
+            f"{REF_RECALL10_DEV_HYBRID_RERANK_BGE25}"
+        )
+    print(f"[ablations_jalon3] contrôle de non-régression OK : recall@10 référence relue = "
+          f"{ref['recall@10']} == {REF_RECALL10_DEV_HYBRID_RERANK_BGE25}.", flush=True)
+
+    print(f"[ablations_jalon3] chargement de l'embedder partagé (~50 s)...", flush=True)
+    embedder = Embedder()
+
+    runs: list[tuple[str, dict, dict]] = [
+        (ref_label, {"model": "bge", "n_rerank": 25, "pool": 50}, ref)
+    ]
+
+    configs_a_mesurer = [
+        ("mmarco-mMiniLMv2-L12-H384-v1, n_rerank=200, pool=200",
+         {"model_name": MMARCO_MODEL, "n_rerank": 200, "pool": 200}),
+        ("mmarco-mMiniLMv2-L12-H384-v1, n_rerank=25, pool=50 (contrôle modèle)",
+         {"model_name": MMARCO_MODEL, "n_rerank": 25, "pool": 50}),
+    ]
+    if mesurer_bge100:
+        configs_a_mesurer.append(
+            ("bge-reranker-v2-m3, n_rerank=100, pool=100",
+             {"model_name": BGE_MODEL, "n_rerank": 100, "pool": 100}))
+
+    for label, params in configs_a_mesurer:
+        r = _mesurer_config_F(label, embedder, params["model_name"], params["n_rerank"],
+                               params["pool"], questions)
+        runs.append((label, params, r))
+
+    ref_label_, ref_params, ref = runs[0]
+    comparaisons = []
+    for label, params, r in runs[1:]:
+        boot = paired_bootstrap(ref["par_question"], r["par_question"])
+        pire_cat, pire_delta = _pire_perte_categorie(ref["par_question"], r["par_question"], questions)
+        adopte = boot["p_amelioration"] >= 0.95 and pire_delta >= -0.05
+        comparaisons.append({
+            "label": label, "params": params, **boot,
+            "pire_perte_categorie": {"categorie": pire_cat, "delta": round(pire_delta, 4)},
+            "adopte": adopte,
+        })
+
+    non_mesures = []
+    if not mesurer_bge100:
+        non_mesures.append({
+            "label": "bge-reranker-v2-m3, n_rerank=100, pool=100",
+            "raison": "coût estimé ~8 min/question × 61 ≈ 8h — non mesuré dans cette "
+                      "campagne (brief T3, step 5.4 : seulement si le temps le permet "
+                      "après les configs 1-3) ; réserve honnête, pas un oubli.",
+            "cout_estime_s_par_question": 8 * 60,
+        })
+
+    print(f"\n| config | recall@5 | recall@10 | MRR | latence/question |")
+    print("|---|---|---|---|---|")
+    for label, _, r in runs:
+        print(f"| {label} | {r['recall@5']} | {r['recall@10']} | {r['mrr']} | "
+              f"{r['latence_s_par_question']:.3f} s |")
+        for cat, v in r["par_categorie"].items():
+            print(f"|   ↳ {cat} | | {v['recall@10']} | | (n={v['n']}) |")
+
+    print(f"\n| comparaison (vs {ref_label_}) | delta | IC95 | p_amelioration | "
+          f"pire perte catégorie | adopté ? |")
+    print("|---|---|---|---|---|---|")
+    for c in comparaisons:
+        print(f"| {c['label']} | {c['delta']} | {c['ic95']} | {c['p_amelioration']} | "
+              f"{c['pire_perte_categorie']['delta']} ({c['pire_perte_categorie']['categorie']}) | "
+              f"{'oui' if c['adopte'] else 'non'} |")
+
+    if non_mesures:
+        print(f"\n| non mesuré | raison |")
+        print("|---|---|")
+        for nm in non_mesures:
+            print(f"| {nm['label']} | {nm['raison']} |")
+
+    out = {
+        "ablation": nom, "split": split, "mode": mode, "n": len(questions),
+        "configs": [
+            {"label": label, "params": params,
+             "recall@5": r["recall@5"], "recall@10": r["recall@10"], "mrr": r["mrr"],
+             "par_categorie": r["par_categorie"], "par_question": r["par_question"],
+             "latence_s_par_question": r["latence_s_par_question"]}
+            for label, params, r in runs
+        ],
+        "comparaisons_vs_reference": comparaisons,
+        "bootstrap_par_categorie_vs_reference": {
+            c["label"]: _par_categorie_bootstrap(ref["par_question"],
+                                                  next(r for l, p, r in runs if l == c["label"])["par_question"],
+                                                  questions)
+            for c in comparaisons
+        },
+        "non_mesures": non_mesures,
+    }
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    out_path = OUT_DIR / f"{nom}_{split}.json"
+    out_path.write_text(json.dumps(out, indent=2, ensure_ascii=False), encoding="utf-8")
+    print(f"\n[ablations_jalon3] écrit {out_path}")
+    return out
+
+
 def main() -> None:
     p = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--ablation", required=True, choices=["D", "E", "F", "cumul"])
     p.add_argument("--split", default="dev", choices=["dev", "test"])
+    p.add_argument("--mesurer-bge100", action="store_true",
+                   help="Mesure en plus bge+n_rerank=100+pool=100 (~8h/61 questions dev, "
+                        "ablation F uniquement) — désactivé par défaut (brief T3, step 5.4).")
     args = p.parse_args()
     if args.ablation == "E":
         run_ablation_E(args.split)
+    elif args.ablation == "F":
+        run_ablation_F(args.split, mesurer_bge100=args.mesurer_bge100)
     else:
         run_ablation(args.ablation, args.split)
 
