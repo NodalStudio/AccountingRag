@@ -56,7 +56,7 @@ searcher = Searcher(Path("data/corpus.db"),
 # Ablation B (T4, jalon 2.5) : hybrid+rerank ADOPTÉ (bootstrap sur le meilleur des deux
 # rerankers mesurés, BAAI/bge-reranker-v2-m3 : p_amelioration=0,952, aucune catégorie
 # perdant du recall@10 — cf. docs/eval-jalon25.md, section « Ablation B »). MAIS ce mode
-# coûte ~117 s/question au jalon 2.5, mais c'était une latence CPU : ~1,8 s/question sur GPU, cf. docs/eval-jalon3.md (reranker lourd, CPU) : il est volontairement
+# coûtait ~117 s/question au jalon 2.5, mais c'était une latence CPU (~1,7 s/question sur GPU, cf. docs/eval-jalon3.md) : il est volontairement
 # EXCLU de --mode all (qui doit rester une campagne rapide, ~1 min) — révision suite
 # revue T4 (fix round 1). Invoquer --mode hybrid+rerank explicitement pour l'exercer ;
 # aucun chargement du reranker n'a lieu tant que ce mode n'est pas sélectionné (propriété

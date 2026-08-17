@@ -4,9 +4,15 @@ introduire un numéro d'article qui n'était pas déjà dans la question.
 Motivation (ruling J3-8, jalon 3) : le rewriter ne reçoit que le texte de la question,
 jamais les citations attendues — c'est verrouillé par un test structurel. Mais un modèle
 qui CONNAÎT le Plan comptable général pourrait citer de lui-même le bon numéro d'article,
-ce qui ferait entrer la réponse dans la requête par une autre porte et invaliderait la
-mesure : le routeur regex retrouverait alors le gold par référence exacte, et le gain
+ce qui ferait entrer la réponse dans la requête et invaliderait la mesure : le gain
 mesuré ne mesurerait plus le retrieval mais la mémoire du modèle.
+
+Le canal de fuite est la CORRESPONDANCE LEXICALE ET DENSE sur le token numérique lui-même
+(« 214-13 » dans la requête matche le texte de l'article 214-13 dans `chunks_norm`), PAS
+le routeur de référence exacte : `Searcher.search()` appelle `_route()` sur la question
+ORIGINALE, jamais sur la réécriture, donc un numéro inventé ne peut pas déclencher le
+routage. Formulation corrigée après la revue finale de branche, qui a relevé que le modèle
+de menace tel qu'énoncé était impossible par construction.
 
 Ce script audite TOUTES les réécritures du cache committé — les deux splits, dev ET le
 split gelé — et classe chaque numéro d'article trouvé en trois catégories :
@@ -120,7 +126,8 @@ def main() -> int:
               f"pour : {', '.join(f'{qid} ({num})' for qid, num in fuites)}")
         return 1
     print("\nCONTRÔLE D'INTÉGRITÉ OK : aucune réécriture n'introduit le numéro d'article "
-          "attendu. Le gain mesuré ne peut pas venir du routeur de référence exacte.")
+          "attendu. Le gain mesuré ne peut donc pas venir d'une correspondance lexicale "
+          "sur le numéro de l'article gold.")
     return 0
 
 

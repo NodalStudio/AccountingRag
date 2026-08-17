@@ -1,12 +1,39 @@
 {
   "latence_par_device": {
     "config": "hybrid+rerank, BAAI/bge-reranker-v2-m3, n_rerank=25, pool=50",
-    "question": "q002",
-    "n_questions": 1,
+    "questions": [
+      "q002",
+      "q003",
+      "q004"
+    ],
     "secondes_par_question": {
-      "cuda": 2.29,
-      "cpu": 178.08,
-      "facteur": 77.8
+      "cuda": {
+        "n": 3,
+        "mesures": [
+          1.39,
+          1.4,
+          1.47
+        ],
+        "min": 1.39,
+        "median": 1.4,
+        "max": 1.47
+      },
+      "cpu": {
+        "n": 3,
+        "mesures": [
+          124.75,
+          126.58,
+          130.8
+        ],
+        "min": 124.75,
+        "median": 126.58,
+        "max": 130.8
+      },
+      "facteur_median": 90.4,
+      "facteur_fourchette": [
+        84.9,
+        94.1
+      ]
     },
     "note": "Justifie la correction des latences publiées au jalon 2.5 (129,5 s/question y était une latence CPU)."
   },
@@ -62,5 +89,18 @@
     },
     "n_rerank_de_la_config_livree": 25,
     "gold_a_portee_du_reranker": true
+  },
+  "modes_de_reecriture": {
+    "remplace": {
+      "termes_match_total": 2109,
+      "secondes_par_question": 0.135
+    },
+    "etend": {
+      "termes_match_total": 3534,
+      "secondes_par_question": 0.206
+    },
+    "rapport_largeur_etend_sur_remplace": 1.68,
+    "appels_api_pendant_la_sonde": 0,
+    "note": "Cache chaud : appels_api_pendant_la_sonde doit valoir 0, sinon les latences sont contaminées comme celles de G_dev.json."
   }
 }

@@ -90,7 +90,7 @@ resultats = searcher.search("comment amortir un logiciel acheté ?", k=5, mode="
 
 `mode` accepte désormais `bm25`, `dense`, `hybrid`, `hybrid+graph` ou `hybrid+rerank`.
 
-**Le coût de `hybrid+rerank` dépend entièrement du device** — et le chiffre publié ici au jalon 2.5 était une latence **CPU**, corrigée au jalon 3 : ≈2 s/question sur GPU contre ≈150 s/question sur CPU, facteur ~70, à code identique (contrôle direct dans [`docs/eval-jalon3.md`](docs/eval-jalon3.md), section « Le reranking du jalon 2.5 était mesuré sur CPU »). Conséquence pratique : `hybrid+rerank` est **utilisable en interactif dès qu'une carte est disponible**, et reste réservé au batch sans GPU (≈2 h 30 pour une campagne de 61 questions). Il n'est **pas** inclus dans `scripts/run_eval.py --mode all` — précisément pour ne pas imposer ces 2 h 30 à un contributeur sans GPU qui découvre le dépôt — et s'invoque explicitement avec `--mode hybrid+rerank`.
+**Le coût de `hybrid+rerank` dépend entièrement du device** — et le chiffre publié ici au jalon 2.5 était une latence **CPU**, corrigée au jalon 3 : ≈1,4 s/question sur GPU contre ≈127 s/question sur CPU — deux ordres de grandeur, à code identique (contrôle direct dans [`docs/eval-jalon3.md`](docs/eval-jalon3.md), section « Le reranking du jalon 2.5 était mesuré sur CPU »). Conséquence pratique : `hybrid+rerank` est **utilisable en interactif dès qu'une carte est disponible**, et reste réservé au batch sans GPU (≈2 h 30 pour une campagne de 61 questions). Il n'est **pas** inclus dans `scripts/run_eval.py --mode all` — précisément pour ne pas imposer ces 2 h 30 à un contributeur sans GPU qui découvre le dépôt — et s'invoque explicitement avec `--mode hybrid+rerank`.
 
 ### Résultats — benchmark v2 (61 questions dev / 29 questions test gelé)
 
@@ -128,7 +128,7 @@ Le jalon 3 attaque le fossé lexical chiffré au jalon 2 : les questions posées
 | test (n=29, **gelé**) | `hybrid+rerank` (config jalon 2.5) | 0,707 | 0,759 | 0,626 | 0,500 |
 | test (n=29, **gelé**) | **réécriture `etend` + `hybrid+rerank`** | 0,879 | **0,966** | 0,753 | **0,929** |
 
-Bootstrap apparié contre la configuration du jalon 2.5 : dev +0,1393 (`p = 0,9945`), test gelé +0,2069 (`p = 0,9984`). **Le chiffre à retenir est celui du dev (0,877)** : le split gelé (29 questions) confirme la direction avec un intervalle de confiance presque deux fois plus large, il ne raffine pas l'estimation. Sur dev, la réécriture répare 12 questions, en dégrade 3, et 4 résistent aux deux configurations.
+Bootstrap apparié contre la configuration du jalon 2.5 : dev +0,1393 (`p = 0,9945`), test gelé +0,2069 (`p = 0,9984`). **Le chiffre à retenir est celui du dev (0,877)** : le split gelé (29 questions) confirme la direction avec un intervalle de confiance presque deux fois plus large, il ne raffine pas l'estimation. Sur dev, la réécriture améliore 12 questions (dont dix réparations complètes et deux demi-réparations), en dégrade 3, et 4 résistent aux deux configurations — soit +9 questions en compte, +8,5 points de recall.
 
 Trois des quatre questions que le diagnostic fondateur donnait hors d'atteinte passent de 0 à 1 — dont celle dont le gold était au 88ᵉ percentile de son classement lexical. La quatrième (`q023`) résiste **en mode `hybrid` sans reranking**, et son autopsie livre une piste pour la suite : son gold est le **2ᵉ meilleur candidat lexical sur 1 653** mais absent du canal dense, et la somme RRF le fait perdre contre un candidat 5ᵉ et 6ᵉ — la fusion récompense le consensus, pas l'excellence. Le gold ressort au rang 11, donc à portée des 25 candidats soumis au cross-encoder, qui le rattrape : q023 réussit dans la configuration livrée. Le défaut de fusion est réel mais aujourd'hui compensé par la fenêtre du reranker — une compensation qui n'est pas garantie sur un corpus plus grand.
 
@@ -159,8 +159,10 @@ La réécriture appelle l'API Claude : copier `.env.example` vers `.env` et y re
 Reproduire la configuration livrée (les réécritures de `dev` sont déjà en cache, donc gratuites) :
 
 ```sh
-uv run python scripts/run_eval.py --mode hybrid+rerank --reecriture etend --split dev \
-    --cache-reecritures docs/mesures/jalon3/reecritures.json   # lecture seule en pratique : dev est complet
+# Copier le cache DE MESURE vers un cache d'exécution : la commande ne peut alors plus
+# réécrire l'artefact versionné, quelles que soient les questions ajoutées au benchmark.
+cp docs/mesures/jalon3/reecritures.json data/reecritures-cache.json
+uv run python scripts/run_eval.py --mode hybrid+rerank --reecriture etend --split dev
 uv run python scripts/cloture_jalon3.py    # campagne complète, ATTENTION : exécute le split gelé
 ```
 
