@@ -386,3 +386,86 @@ Ce contrôle est **falsifiable** : `tests/test_audit_reecritures.py` injecte une
 - **Le mode `remplace` n'est pas retenu mais reste mesuré** : sur un corpus où la réécriture serait moins fiable, conserver la question (`etend`) est le choix robuste.
 - **Le reranker reçoit la question ORIGINALE, pas la réécriture** (lecture littérale du brief T5). La combinaison mesurée ci-dessus vaut donc pour cette convention ; soumettre la réécriture au cross-encoder est une variante non mesurée.
 - **Coût par question en production** : un appel LLM s'ajoute à chaque requête non cachée. Ce jalon ne mesure pas la latence bout-en-bout d'un déploiement, seulement celle du retrieval.
+
+## Clôture du jalon 3 — dev final et référence gelée
+
+Campagne exécutée par `scripts/cloture_jalon3.py`, dans un seul processus (embedder, reranker et rewriter partagés, ids `par_question` alignés par construction), après **deux contrôles de fraîcheur** passés avant tout engagement sur le split gelé : `hybrid` neutre sur dev redonne exactement `0,672` et la config adoptée au jalon 2.5 redonne exactement `0,738`. Un écart aurait signifié que l'index ou le code avait bougé depuis les mesures publiées, et le script s'arrête dans ce cas.
+
+Trois configurations, qui résument l'histoire du projet :
+
+- **A** — `hybrid` neutre : la baseline du jalon 2.5 ;
+- **B** — `hybrid+rerank`, `bge-reranker-v2-m3`, `n_rerank=25` : la config **adoptée au jalon 2.5** ;
+- **C** — réécriture `etend` + B : la config **adoptée au jalon 3**.
+
+| split | n | A `hybrid` | B (jalon 2.5) | **C (jalon 3)** | delta C−B | IC95 | p(C>B) | delta C−A | p(C>A) |
+|---|---|---|---|---|---|---|---|---|---|
+| dev | 61 | 0,672 | 0,738 | **0,877** | +0,1393 | (0,0328 ; 0,2459) | 0,9945 | +0,2049 | 0,9997 |
+| **test (gelé)** | 29 | 0,690 | 0,759 | **0,966** | +0,2069 | (0,0690 ; 0,3793) | 0,9984 | +0,2759 | 1,0000 |
+
+Ventilation par catégorie, B → C :
+
+| split | `reference_directe` | `regle` | `vocabulaire_courant` |
+|---|---|---|---|
+| dev | 1,000 → 1,000 | 1,000 → 0,978 | 0,484 → **0,774** (p = 0,9976) |
+| test | 1,000 → 1,000 | 1,000 → 1,000 | 0,500 → **0,929** (p = 0,9994) |
+
+Sur le split gelé, une seule question sur 29 reste imparfaite (`q028`), et **aucune catégorie ne régresse**.
+
+### Lecture honnête : le test est meilleur que le dev, et ce n'est pas une bonne nouvelle en soi
+
+`0,966` sur test contre `0,877` sur dev. Deux choses à en dire, dans cet ordre :
+
+1. **L'effet réplique, franchement.** Le split `test` n'a servi à choisir aucun paramètre — ni seuil, ni mode de réécriture, ni modèle, ni largeur de pool. Il a été gelé le 16 août 2026 et exécuté deux fois en tout : une fois à la clôture du jalon 2.5, une fois ici. Le gain n'est donc pas un sur-ajustement au dev : `p(C>B) = 0,9984` sur des données jamais vues, avec un delta plus grand que sur dev.
+2. **Mais `n=29`, et un split de 29 questions se trompe largement.** L'IC95 sur test est (0,069 ; 0,379) — presque deux fois plus large que celui du dev. `0,966` signifie « 28 questions sur 29 » : une seule question de plus en échec ramènerait le chiffre à 0,93. **Le chiffre à citer est celui du dev (0,877)**, pas celui du test : le test confirme la direction, il ne raffine pas l'estimation. La composition des deux splits est comparable (dev 11 / 38 / 51 %, test 10 / 41 / 48 % par catégorie), donc l'écart s'explique par la taille d'échantillon, pas par un split plus facile.
+
+### Comptabilité exacte de la réécriture sur dev
+
+| effet | n | questions |
+|---|---|---|
+| **réparées** par la réécriture | **12** | q021, q022, q026, q056, q059, q060, q065, q068, q070, q071, q079, q086 |
+| **dégradées** par la réécriture | **3** | q008, q025, q080 |
+| résistantes aux deux configs | 4 | q057, q063, q082, q089 |
+
+Net : +9 questions sur 61. **La réécriture n'est pas gratuite** : elle casse 3 questions qui fonctionnaient, et la catégorie `regle` perd 0,0217 sur dev (une question à deux citations qui n'en garde qu'une). C'est sous la garde de −0,05 du protocole, donc l'adoption tient, mais le mécanisme est réel : réécrire une question qui parlait déjà le bon vocabulaire peut diluer un terme discriminant. Un déploiement soucieux du pire cas pourrait conditionner la réécriture à un signal de recouvrement faible plutôt que l'appliquer systématiquement — piste non mesurée.
+
+### Ce que le jalon 3 laisse en l'état
+
+- **`df_max` REJETÉ** (§ Ablation D) — dégradation monotone.
+- **`pool` et `dedup_termes` REJETÉS** (§ Ablation E) — mais le rejet a produit le résultat central du jalon : le découplage couverture/classement.
+- **`n_rerank` REJETÉ** (§ Ablation F) — la largeur du pool soumis au cross-encoder n'achète rien en recall@10, pour aucun des deux modèles testés.
+- **Réécriture par LLM ADOPTÉE** (§ Ablation G), mode `etend`, `claude-sonnet-5`, `thinking` désactivé.
+
+Les quatre paramètres rejetés restent exposés sur `Searcher` à leur valeur neutre : ils sont mesurés, documentés et re-mesurables, pas supprimés.
+
+### Configuration livrée
+
+```python
+from accounting_rag.rewrite import Rewriter
+from accounting_rag.search import Searcher
+
+searcher = Searcher(
+    "data/corpus.db",
+    reranker=Reranker(),                                  # bge-reranker-v2-m3 (jalon 2.5)
+    rewriter=Rewriter(cache_path="docs/mesures/jalon3/reecritures.json"),
+    mode_reecriture="etend",                              # jalon 3
+)
+resultats = searcher.search("j'ai payé un logiciel, je fais quoi ?", k=10, mode="hybrid+rerank")
+```
+
+Reproduction complète de cette section :
+
+```sh
+uv run python scripts/cloture_jalon3.py        # ATTENTION : exécute le split gelé
+uv run python scripts/audit_reecritures.py     # contrôle d'intégrité du benchmark
+```
+
+`docs/mesures/jalon3/cloture_dev.json` et `cloture_test.json` sont versionnés : tout chiffre de cette section est recalculable sans relancer la campagne.
+
+### Réserves de clôture — à lire avant de citer 0,877 ou 0,966
+
+1. **Le benchmark ne peut pas voir le manque de corpus, et c'est la réserve la plus importante du jalon.** Les 90 questions ont toutes été écrites depuis le PCG : leurs citations attendues existent dans le corpus **par construction**. Une question fiscale (« est-ce déductible ? ») n'a pas de gold, n'est donc pas dans le benchmark, et ne pèse pas dans le score. Le `0,877` mesure la capacité à retrouver ce qui est présent — sur une distribution de questions qui exclut exactement ce qui est absent. Le corpus se limite aux **Livres I à V du règlement ANC 2014-03** : ni consolidation (règlement ANC 2020-01), ni fusions, ni NEP d'audit, ni BOFiP. C'est le périmètre du jalon 4 (BOFiP BIC/IS) puis du jalon 5 (consolidation, fusions, NEP).
+2. **Le retrieval dépend désormais d'une API externe et non déterministe.** Le cache committé rend ces chiffres reproductibles à l'identique, mais une question inédite déclenche un appel, et les paramètres d'échantillonnage ne sont pas réglables sur la série 5 : rien ne garantit qu'un appel futur produise la même réécriture. Reproductibilité des mesures publiées ≠ déterminisme en production.
+3. **Toutes les latences sont des latences GPU fp32 sur une machine chargée.** Sur CPU, le facteur ~70 documenté ci-dessus rend la config livrée inutilisable en interactif. Le device fait partie des conditions de mesure, pas des détails.
+4. **`n=61` sur dev, `n=29` sur test.** Les écarts discutés dans ce rapport valent souvent 2 à 4 questions. Le benchmark doit grandir (150–300 questions, prévu au design) avant que des deltas inférieurs à ~0,05 soient interprétables.
+5. **Aucune mesure de génération.** Ce jalon, comme les précédents, mesure exclusivement le **retrieval**. La justesse des réponses, le taux de citations hallucinées et le taux de confusion fiscal/comptable — la métrique signature annoncée au design — ne sont pas encore mesurés.
+6. **Le split gelé a été exécuté deux fois en tout** (clôture du jalon 2.5, clôture du jalon 3). Il reste gelé : aucun réglage n'en est dérivé. À la troisième ou quatrième clôture, cette garantie s'usera statistiquement — prévoir un second split de validation avant le jalon 5.

@@ -90,7 +90,7 @@ resultats = searcher.search("comment amortir un logiciel acheté ?", k=5, mode="
 
 `mode` accepte désormais `bm25`, `dense`, `hybrid`, `hybrid+graph` ou `hybrid+rerank`.
 
-**`hybrid+rerank` a un coût de latence majeur** (≈120-130 s/question mesurés sur cette machine, CPU 8 threads, aucun GPU — ≈600× la latence du hybrid baseline) et n'est **pas** inclus dans `scripts/run_eval.py --mode all` (qui reste rapide, ~1 min sur dev) : il s'invoque explicitement avec `--mode hybrid+rerank`. **Pour l'usage interactif, préférer `mode="hybrid"`** (~0,2 s/question, la baseline du tableau ci-dessous) ; `hybrid+rerank` convient aux campagnes d'évaluation batch ou à un re-classement asynchrone hors ligne.
+**Le coût de `hybrid+rerank` dépend entièrement du device** — et le chiffre publié ici au jalon 2.5 était une latence **CPU**, corrigée au jalon 3 : ≈2 s/question sur GPU contre ≈150 s/question sur CPU, facteur ~70, à code identique (contrôle direct dans [`docs/eval-jalon3.md`](docs/eval-jalon3.md), section « Le reranking du jalon 2.5 était mesuré sur CPU »). Conséquence pratique : `hybrid+rerank` est **utilisable en interactif dès qu'une carte est disponible**, et reste réservé au batch sans GPU (≈2 h 30 pour une campagne de 61 questions). Il n'est **pas** inclus dans `scripts/run_eval.py --mode all` — précisément pour ne pas imposer ces 2 h 30 à un contributeur sans GPU qui découvre le dépôt — et s'invoque explicitement avec `--mode hybrid+rerank`.
 
 ### Résultats — benchmark v2 (61 questions dev / 29 questions test gelé)
 
@@ -102,6 +102,57 @@ resultats = searcher.search("comment amortir un logiciel acheté ?", k=5, mode="
 | test (n=29, **référence gelée**) | hybrid+rerank (config finale) | 0,707 | 0,759 | 0,626 | 120,6 s |
 
 Le split `test` a été gelé le 16 août 2026 et exécuté **une seule fois**, à la clôture du jalon 2.5, sans avoir servi à aucun réglage — voir `benchmark/README.md`. Le gain de recall@10 du reranker réplique sur test (delta=0,069, comparable au delta=0,0656 mesuré sur dev), mais le test statistique global (bootstrap apparié) y est moins net (`p_amelioration`=0,877 contre 0,952 sur dev) : lecture privilégiée, un effet de taille d'échantillon (n=29 vs n=61, puissance statistique réduite) plutôt qu'un sur-ajustement du reranker au dev (il n'a reçu aucun réglage de seuil ou d'hyperparamètre dérivé du dev) — détail complet et réserves dans [`docs/eval-jalon25.md`](docs/eval-jalon25.md), section « Clôture ».
+
+## Jalon 3 — réécriture de requête par LLM
+
+Le jalon 3 attaque le fossé lexical chiffré au jalon 2 : les questions posées en langage courant dont **aucun mot** n'apparaît dans l'article qui y répond. Quatre ablations mesurées par bootstrap apparié, une variable à la fois, critère d'adoption fixé avant les mesures (`p_amelioration ≥ 0,95` et aucune catégorie perdant plus de 0,05 de recall@10) :
+
+| ablation | levier | décision |
+|---|---|---|
+| D | `df_max` — écarter les tokens peu discriminants de la requête | **rejetée** (dégradation monotone) |
+| E | `pool` — élargir la fenêtre de candidats avant fusion | **rejetée** (mais livre le résultat central, ci-dessous) |
+| F | `n_rerank` — élargir le pool soumis au cross-encoder | **rejetée** (la largeur n'achète rien) |
+| G | **réécriture de la question par un LLM** vers le vocabulaire du PCG | **ADOPTÉE** |
+
+**Résultat central des rejets** : la couverture du pool de candidats monte à 0,918 (0,839 sur `vocabulaire_courant`) quand le recall@10 après fusion RRF plafonne à 0,672. Le système *trouvait* la bonne réponse bien plus souvent qu'il ne la *restituait* — et ni un pool plus large, ni un cross-encoder voyant tous les candidats ne comblent cet écart. Le déficit n'était pas de rappel mais de reconnaissance sémantique.
+
+**Ce qui marche** : traduire la question. `Rewriter` (Claude, `claude-sonnet-5`) réécrit « j'ai des marchandises en stock qui ont perdu de la valeur, je fais quoi ? » en vocabulaire PCG, et les deux canaux reçoivent `question + réécriture` (mode `etend`, qui domine le mode `remplace`). Les réécritures sont mises en cache dans un JSON versionné : les mesures publiées sont reproductibles à l'identique et gratuitement.
+
+### Résultats — benchmark v2, configuration finale du jalon 3
+
+| split | config | recall@5 | recall@10 | MRR | `vocabulaire_courant` |
+|---|---|---|---|---|---|
+| dev (n=61) | `hybrid` (baseline jalon 2.5) | 0,639 | 0,672 | 0,565 | 0,403 |
+| dev (n=61) | `hybrid+rerank` (config jalon 2.5) | 0,680 | 0,738 | 0,642 | 0,484 |
+| dev (n=61) | **réécriture `etend` + `hybrid+rerank`** | 0,762 | **0,877** | 0,714 | **0,774** |
+| test (n=29, **gelé**) | `hybrid+rerank` (config jalon 2.5) | 0,707 | 0,759 | 0,626 | 0,500 |
+| test (n=29, **gelé**) | **réécriture `etend` + `hybrid+rerank`** | 0,879 | **0,966** | 0,753 | **0,929** |
+
+Bootstrap apparié contre la configuration du jalon 2.5 : dev +0,1393 (`p = 0,9945`), test gelé +0,2069 (`p = 0,9984`). **Le chiffre à retenir est celui du dev (0,877)** : le split gelé (29 questions) confirme la direction avec un intervalle de confiance presque deux fois plus large, il ne raffine pas l'estimation. Sur dev, la réécriture répare 12 questions, en dégrade 3, et 4 résistent aux deux configurations.
+
+Trois des quatre questions que le diagnostic fondateur donnait hors d'atteinte passent de 0 à 1 — dont celle dont le gold était au 88ᵉ percentile de son classement lexical. La quatrième (`q023`) résiste et livre le levier du jalon suivant : son gold est le **2ᵉ meilleur candidat lexical sur 1 653** mais absent du canal dense, et la somme RRF le fait perdre contre un candidat 5ᵉ et 6ᵉ — la fusion récompense le consensus, pas l'excellence.
+
+Méthode, chiffres complets, autopsies et réserves : [`docs/eval-jalon3.md`](docs/eval-jalon3.md).
+
+**Réserve à lire avant de citer ces chiffres** : les 90 questions du benchmark ont toutes été écrites depuis le PCG, donc leurs citations attendues existent dans le corpus par construction. Le corpus se limite aux Livres I à V du règlement ANC 2014-03 — ni consolidation, ni fusions, ni NEP d'audit, ni BOFiP. Ces scores mesurent la capacité à retrouver ce qui est présent, sur une distribution de questions qui exclut ce qui est absent.
+
+### Configuration livrée par le jalon 3
+
+```python
+from accounting_rag.rerank import Reranker
+from accounting_rag.rewrite import Rewriter
+from accounting_rag.search import Searcher
+
+searcher = Searcher(
+    "data/corpus.db",
+    reranker=Reranker(),                                   # bge-reranker-v2-m3 (jalon 2.5)
+    rewriter=Rewriter(cache_path="docs/mesures/jalon3/reecritures.json"),
+    mode_reecriture="etend",                               # jalon 3
+)
+resultats = searcher.search("j'ai payé un logiciel, je fais quoi ?", k=10, mode="hybrid+rerank")
+```
+
+La réécriture appelle l'API Claude : copier `.env.example` vers `.env` et y renseigner `ANTHROPIC_API_KEY` (`.env` est ignoré par git). Sans clé, `Searcher(rewriter=None)` reproduit exactement le comportement du jalon 2.5.
 
 Reproduire (dev, campagne rapide sans le reranker) :
 
