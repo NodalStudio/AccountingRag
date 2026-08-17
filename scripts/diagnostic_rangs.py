@@ -26,7 +26,7 @@ un artefact, pas une donnée). Corrigé : le total est désormais la taille RÉE
 classement complet, indépendante du rang trouvé (cf. `_rang_gold_lexical`).
 
 Coût : le canal dense charge le modèle d'embeddings (`Embedder`, e5-small) au premier
-appel, ~50 s sur cette machine (CPU). Le canal lexical est quasi instantané (SQLite
+appel, ~50 s de chargement (device auto-détecté par sentence-transformers : `cuda:0` sur cette machine). Le canal lexical est quasi instantané (SQLite
 FTS5). Le chargement n'a lieu qu'une fois pour toutes les questions demandées (`Embedder`
 partagé). Chaque canal exécute une requête SQL SANS LIMIT sur toute la base (`ORDER BY`
 sans troncature) : coût proportionnel au nombre de chunks du corpus, pas au nombre de

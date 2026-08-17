@@ -542,3 +542,18 @@ def test_mode_reecriture_etend_concatene_question_et_reecriture(tmp_path):
     hits_etend = s_etend.search("stocks", mode="bm25")
     assert hits_remplace == []  # "xyzzy" seul ne matche rien : le token "stocks" est perdu
     assert hits_etend and hits_etend[0]["record_id"] == "pcg-800-1@2026-01-01"
+
+
+def test_mode_reecriture_inconnu_leve(db_synthetique):
+    """`mode_reecriture` est validé à la construction : un mode inconnu ne doit pas
+    dégrader silencieusement en `remplace` (défaut relevé à la revue finale du jalon 3)."""
+    import pytest
+    with pytest.raises(ValueError, match="mode_reecriture inconnu"):
+        Searcher(db_synthetique, embedder=FakeEmbedder(),
+                 rewriter=FakeRewriter("x"), mode_reecriture="etendu")
+
+
+def test_mode_reecriture_par_defaut_est_le_mode_adopte(db_synthetique):
+    """Le défaut doit être `etend` (mode ADOPTÉ par l'ablation G), jamais le mode rejeté."""
+    s = Searcher(db_synthetique, embedder=FakeEmbedder(), rewriter=FakeRewriter("x"))
+    assert s.mode_reecriture == "etend"

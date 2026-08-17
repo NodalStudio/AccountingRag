@@ -15,7 +15,7 @@ Le jalon 1 livre un **parseur typographique déterministe** du Recueil des norme
 Chiffres du corpus produit (mesurés sur le build courant) :
 
 - **1 660 enregistrements** : 739 réglementaires, 921 commentaires infra-réglementaires ANC
-- **602 articles** distincts
+- **604 articles** distincts
 - **981 renvois** en graphe : 711 internes (PCG), 173 externes légaux (autres codes), 97 historiques (CRC/Avis)
 - Index de recherche plein texte **FTS5**
 - **203 anomalies** cataloguées en 5 catégories, documentées dans [`docs/rapport-build.md`](docs/rapport-build.md)
@@ -130,7 +130,7 @@ Le jalon 3 attaque le fossé lexical chiffré au jalon 2 : les questions posées
 
 Bootstrap apparié contre la configuration du jalon 2.5 : dev +0,1393 (`p = 0,9945`), test gelé +0,2069 (`p = 0,9984`). **Le chiffre à retenir est celui du dev (0,877)** : le split gelé (29 questions) confirme la direction avec un intervalle de confiance presque deux fois plus large, il ne raffine pas l'estimation. Sur dev, la réécriture répare 12 questions, en dégrade 3, et 4 résistent aux deux configurations.
 
-Trois des quatre questions que le diagnostic fondateur donnait hors d'atteinte passent de 0 à 1 — dont celle dont le gold était au 88ᵉ percentile de son classement lexical. La quatrième (`q023`) résiste et livre le levier du jalon suivant : son gold est le **2ᵉ meilleur candidat lexical sur 1 653** mais absent du canal dense, et la somme RRF le fait perdre contre un candidat 5ᵉ et 6ᵉ — la fusion récompense le consensus, pas l'excellence.
+Trois des quatre questions que le diagnostic fondateur donnait hors d'atteinte passent de 0 à 1 — dont celle dont le gold était au 88ᵉ percentile de son classement lexical. La quatrième (`q023`) résiste **en mode `hybrid` sans reranking**, et son autopsie livre une piste pour la suite : son gold est le **2ᵉ meilleur candidat lexical sur 1 653** mais absent du canal dense, et la somme RRF le fait perdre contre un candidat 5ᵉ et 6ᵉ — la fusion récompense le consensus, pas l'excellence. Le gold ressort au rang 11, donc à portée des 25 candidats soumis au cross-encoder, qui le rattrape : q023 réussit dans la configuration livrée. Le défaut de fusion est réel mais aujourd'hui compensé par la fenêtre du reranker — une compensation qui n'est pas garantie sur un corpus plus grand.
 
 Méthode, chiffres complets, autopsies et réserves : [`docs/eval-jalon3.md`](docs/eval-jalon3.md).
 
@@ -146,7 +146,7 @@ from accounting_rag.search import Searcher
 searcher = Searcher(
     "data/corpus.db",
     reranker=Reranker(),                                   # bge-reranker-v2-m3 (jalon 2.5)
-    rewriter=Rewriter(cache_path="docs/mesures/jalon3/reecritures.json"),
+    rewriter=Rewriter(cache_path="data/reecritures-cache.json"),   # cache d'EXÉCUTION
     mode_reecriture="etend",                               # jalon 3
 )
 resultats = searcher.search("j'ai payé un logiciel, je fais quoi ?", k=10, mode="hybrid+rerank")
@@ -154,13 +154,23 @@ resultats = searcher.search("j'ai payé un logiciel, je fais quoi ?", k=10, mode
 
 La réécriture appelle l'API Claude : copier `.env.example` vers `.env` et y renseigner `ANTHROPIC_API_KEY` (`.env` est ignoré par git). Sans clé, `Searcher(rewriter=None)` reproduit exactement le comportement du jalon 2.5.
 
+⚠️ **Le cache passé à `Rewriter` est un cache d'écriture** : `reecrire()` réécrit tout le fichier à chaque question absente. Utilisez un cache d'exécution (`data/reecritures-cache.json`, ignoré par git) et **jamais** `docs/mesures/jalon3/reecritures.json` — ce dernier est le cache **de mesure**, versionné, qui garantit la reproductibilité à l'identique des 0,877 et 0,966 publiés ci-dessus.
+
+Reproduire la configuration livrée (les réécritures de `dev` sont déjà en cache, donc gratuites) :
+
+```sh
+uv run python scripts/run_eval.py --mode hybrid+rerank --reecriture etend --split dev \
+    --cache-reecritures docs/mesures/jalon3/reecritures.json   # lecture seule en pratique : dev est complet
+uv run python scripts/cloture_jalon3.py    # campagne complète, ATTENTION : exécute le split gelé
+```
+
 Reproduire (dev, campagne rapide sans le reranker) :
 
 ```sh
 uv run python scripts/run_eval.py --mode all --split dev
 ```
 
-Reproduire la config finale (lent, ≈130 s/question CPU sur cette machine) :
+Reproduire la configuration du jalon 2.5 (≈2 s/question sur GPU, ≈150 s/question sur CPU — cf. ci-dessus ; cette commande ne reproduit PAS la configuration du jalon 3, qui ajoute la réécriture) :
 
 ```sh
 uv run python scripts/run_eval.py --mode hybrid+rerank --split dev
@@ -200,7 +210,7 @@ Graphe des références croisées extraites du texte.
 - Certains identifiants sont suffixés `#n` (54 cas) : le plus souvent des fragments réglementaires multiples pour un même article déjà ouvert (alinéas non contigus), ou une numérotation réutilisée par une annexe sectorielle qui reprend partiellement celle du PCG (ex. secteur du logement social).
 - **45 renvois pendants résiduels** (cibles non trouvées dans le corpus, essentiellement vers le plan de comptes en tableau, hors périmètre du parseur v1).
 - Seule l'édition 2026 du Recueil est couverte : pas d'historique des versions antérieures en v1 (le schéma prévoit les champs temporels pour une extension future).
-- **Jalon 2.5 (retrieval)** : reranker cross-encoder adopté (`hybrid+rerank`, ≈120-130 s/question CPU — batch/hors ligne uniquement, cf. ci-dessus) ; la pondération par champ (`chemin`/`type`) reste implémentée (`poids_chemin`, `boost_commentaire` sur `Searcher`) mais **non activée** (mesurée par bootstrap et rejetée, paramètres neutres par défaut) ; un lot de synonymes piloté par les échecs mesurés dev a également été rejeté (aucun effet mesurable, `p_amelioration=0`). Cause racine identifiée pour ce dernier rejet : la fenêtre `limit=50` de `_bm25()` (50 chunks, soit au plus 50 records après agrégation — nombre de candidats bm25 retenus avant la fusion RRF) est trop étroite pour que les gains de rang mesurés (jusqu'à ~1200 rangs sur le cas contrôlé) atteignent le top-50 effectivement exploité — goulot identifié, non résolu ici (hors périmètre "dictionnaire de synonymes"), matière du **jalon 3**. Restent également hors périmètre du jalon 2.5, matière du jalon 3 : la **réécriture de requête** (vocabulaire courant → vocabulaire PCG, prévue par la spec §4) et des **embeddings métier** spécialisés (conditionnés à un plafonnement démontré du dense généraliste — spec §8, Phase 3). Détail des trois ablations (méthode, chiffres, décisions) : [`docs/eval-jalon25.md`](docs/eval-jalon25.md).
+- **Jalon 2.5 (retrieval)** : reranker cross-encoder adopté (`hybrid+rerank`, ≈2 s/question sur GPU et ≈150 s/question sur CPU — batch/hors ligne **sans GPU** seulement, cf. la correction du jalon 3 ci-dessus) ; la pondération par champ (`chemin`/`type`) reste implémentée (`poids_chemin`, `boost_commentaire` sur `Searcher`) mais **non activée** (mesurée par bootstrap et rejetée, paramètres neutres par défaut) ; un lot de synonymes piloté par les échecs mesurés dev a également été rejeté (aucun effet mesurable, `p_amelioration=0`). Cause racine identifiée pour ce dernier rejet : la fenêtre `limit=50` de `_bm25()` (50 chunks, soit au plus 50 records après agrégation — nombre de candidats bm25 retenus avant la fusion RRF) est trop étroite pour que les gains de rang mesurés (jusqu'à ~1200 rangs sur le cas contrôlé) atteignent le top-50 effectivement exploité — goulot identifié, non résolu ici (hors périmètre "dictionnaire de synonymes"), matière du **jalon 3**. Restent également hors périmètre du jalon 2.5, matière du jalon 3 : la **réécriture de requête** (vocabulaire courant → vocabulaire PCG, prévue par la spec §4) et des **embeddings métier** spécialisés (conditionnés à un plafonnement démontré du dense généraliste — spec §8, Phase 3). Détail des trois ablations (méthode, chiffres, décisions) : [`docs/eval-jalon25.md`](docs/eval-jalon25.md).
 
 ## Feuille de route
 

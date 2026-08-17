@@ -6,9 +6,12 @@ modèles testés à franchir le critère d'adoption (p_amelioration>=0,95, aucun
 catégorie perdant plus de 0,05 de recall@10) contre le baseline hybrid. Le
 modèle initialement pressenti (cross-encoder/mmarco-mMiniLMv2-L12-H384-v1,
 plus léger) a été mesuré et REJETÉ (p_amelioration=0,858) ; il reste
-utilisable via ACCRAG_RERANKER pour les contextes sensibles à la latence
-(~10s/question contre ~117s/question pour bge-reranker-v2-m3 sur cette
-machine, cf. docs/eval-jalon25.md, section « Ablation B »)."""
+utilisable via ACCRAG_RERANKER pour les contextes sensibles à la latence.
+
+ATTENTION aux latences citées dans docs/eval-jalon25.md : ce sont des latences CPU
+(~10 s/question pour mmarco, ~117 s/question pour bge à 25 candidats). Re-mesurées au
+jalon 3 sur GPU : ~0,4 s et ~1,8 s respectivement, facteur ~70 à code identique — cf.
+docs/eval-jalon3.md, section « Le reranking du jalon 2.5 était mesuré sur CPU »."""
 import os
 import sys
 

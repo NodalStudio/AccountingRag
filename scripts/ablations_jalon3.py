@@ -518,6 +518,16 @@ def run_ablation_F(split: str) -> dict:
          {"model_name": MMARCO_MODEL, "n_rerank": 25, "pool": 50}),
         ("mmarco-mMiniLMv2-L12-H384-v1, n_rerank=200, pool=200",
          {"model_name": MMARCO_MODEL, "n_rerank": 200, "pool": 200}),
+        # Config ISOLANTE (ajoutée après la revue finale de branche) : n_rerank seul
+        # bouge, `pool` reste à sa valeur neutre. Indispensable, car toutes les autres
+        # configs « larges » déplacent n_rerank ET pool ensemble alors que l'ablation E
+        # a mesuré pool=100/200/400 à −0,033 de recall@10 : sans cette ligne, un effet
+        # nul de n_rerank+pool pourrait masquer un +0,033 de n_rerank compensé par un
+        # −0,033 de pool. À pool=50 la fusion expose jusqu'à ~100 candidats distincts
+        # (50 lignes bm25 + 50 lignes dense), donc n_rerank=100 y soumet strictement
+        # plus que 25 sans toucher au vivier.
+        ("bge-reranker-v2-m3, n_rerank=100, pool=50 (ISOLE n_rerank à pool neutre)",
+         {"model_name": BGE_MODEL, "n_rerank": 100, "pool": 50}),
         ("bge-reranker-v2-m3, n_rerank=100, pool=100",
          {"model_name": BGE_MODEL, "n_rerank": 100, "pool": 100}),
         ("bge-reranker-v2-m3, n_rerank=200, pool=200",

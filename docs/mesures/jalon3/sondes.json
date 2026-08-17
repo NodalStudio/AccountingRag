@@ -1,0 +1,66 @@
+{
+  "latence_par_device": {
+    "config": "hybrid+rerank, BAAI/bge-reranker-v2-m3, n_rerank=25, pool=50",
+    "question": "q002",
+    "n_questions": 1,
+    "secondes_par_question": {
+      "cuda": 2.29,
+      "cpu": 178.08,
+      "facteur": 77.8
+    },
+    "note": "Justifie la correction des latences publiées au jalon 2.5 (129,5 s/question y était une latence CPU)."
+  },
+  "anatomie_q023": {
+    "question": "q023",
+    "citations_attendues": [
+      "pcg-214-22"
+    ],
+    "convention_rangs": "1-indexée (comme scripts/diagnostic_rangs.py)",
+    "rrf_k": 60,
+    "gold": {
+      "record": "pcg-214-22",
+      "rang_bm25": 2,
+      "rang_dense": null,
+      "contribution_bm25": 0.01613,
+      "contribution_dense": 0.0,
+      "score_rrf": 0.01613,
+      "rang_apres_fusion": 11
+    },
+    "trois_premiers_apres_fusion": [
+      {
+        "record": "pcg-na-236",
+        "rang_bm25": 5,
+        "rang_dense": 6,
+        "contribution_bm25": 0.01538,
+        "contribution_dense": 0.01515,
+        "score_rrf": 0.03054,
+        "rang_apres_fusion": 1
+      },
+      {
+        "record": "pcg-214-25",
+        "rang_bm25": 11,
+        "rang_dense": 17,
+        "contribution_bm25": 0.01408,
+        "contribution_dense": 0.01299,
+        "score_rrf": 0.02707,
+        "rang_apres_fusion": 2
+      },
+      {
+        "record": "pcg-1121-1",
+        "rang_bm25": 23,
+        "rang_dense": 19,
+        "contribution_bm25": 0.01205,
+        "contribution_dense": 0.01266,
+        "score_rrf": 0.02471,
+        "rang_apres_fusion": 3
+      }
+    ],
+    "pool_fusionne": {
+      "total": 81,
+      "un_seul_canal": 73,
+      "les_deux_canaux": 8
+    },
+    "n_rerank_de_la_config_livree": 25,
+    "gold_a_portee_du_reranker": true
+  }
+}

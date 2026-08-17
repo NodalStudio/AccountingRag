@@ -1,6 +1,6 @@
-# Jalon 3 — Recouvrement lexical nul : diagnostic fondateur, ablations D (T1), E (T2) et F (T3)
+# Jalon 3 — Recouvrement lexical nul : diagnostic fondateur, ablations D, E, F, G et clôture
 
-Campagne exécutée le **16 août 2026** sur la branche `jalon-3-recouvrement-nul`, à l'issue de la tâche T1 (filtrage des tokens peu discriminants de la requête lexicale, `df_max`, plus les deux outils de mesure versionnés du jalon : `scripts/diagnostic_rangs.py`, `scripts/ablations_jalon3.py`) puis de la tâche T2 (largeur du pool de candidats avant fusion, `pool`, et déduplication des termes du `MATCH`, `dedup_termes`). Objectif T1 : reproduire par un outil versionné le diagnostic fondateur du jalon (deux sondes jetables du contrôleur, exécutées avant la rédaction du plan) puis mesurer par bootstrap apparié si le filtrage par fréquence documentaire (`df_max`) répare, seul, une partie du recouvrement lexical nul observé sur `vocabulaire_courant`. Objectif T2 : mesurer si élargir le pool de candidats avant fusion RRF (ou dédupliquer les termes du `MATCH`) répare une partie de ce recouvrement nul, et — livrable central de T2 — établir la **couverture du pool** (part des questions dont au moins une citation gold est présente dans le pool avant fusion) à chaque largeur, la métrique qui conditionne l'ablation F (reranking).
+Campagne exécutée le **16 août 2026** sur la branche `jalon-3-recouvrement-nul`, à l'issue de la tâche T1 (filtrage des tokens peu discriminants de la requête lexicale, `df_max`, plus les deux outils de mesure versionnés du jalon : `scripts/diagnostic_rangs.py`, `scripts/ablations_jalon3.py`) puis de la tâche T2 (largeur du pool de candidats avant fusion, `pool`, et déduplication des termes du `MATCH`, `dedup_termes`). Objectif T1 : reproduire par un outil versionné le diagnostic fondateur du jalon (deux sondes jetables du contrôleur, exécutées avant la rédaction du plan) puis mesurer par bootstrap apparié si le filtrage par fréquence documentaire (`df_max`) répare, seul, une partie du recouvrement lexical nul observé sur `vocabulaire_courant`. Objectif T2 : mesurer si élargir le pool de candidats avant fusion RRF (ou dédupliquer les termes du `MATCH`) répare une partie de ce recouvrement nul, et — livrable central de T2 — établir la **couverture du pool** (part des questions dont au moins une citation gold est présente dans le pool avant fusion) à chaque largeur, la métrique qui conditionne l'ablation F (reranking). Objectif T3 : mesurer si un cross-encoder sait exploiter cette couverture (`n_rerank`). Objectif T5 : mesurer la réécriture de la question par un LLM (ablation G) — le seul levier du jalon capable de créer un lien de vocabulaire qui n'existe pas. Objectif T4 : la clôture, dont l'unique exécution du split de test gelé.
 
 ## Conditions exactes
 
@@ -10,6 +10,7 @@ Campagne exécutée le **16 août 2026** sur la branche `jalon-3-recouvrement-nu
 | Index de recherche | 2 160 chunks, table FTS5 `chunks_norm` (texte normalisé), table vectorielle `chunks_vec` (sqlite-vec 0.1.9) — **aucun rebuild** dans ce jalon (le filtrage `df_max` agit à la requête, pas à l'ingestion) |
 | Modèle d'embeddings | `intfloat/multilingual-e5-small` (défaut de `Embedder`, 384 dimensions) |
 | Fusion hybride | RRF (`k=60`) sur BM25 + dense, paramètres neutres (`poids_chemin=1.0`, `boost_commentaire=1.0` — rejetés au jalon 2.5, conservés neutres) |
+| Convention de rang | **1-indexée** partout dans ce rapport (le meilleur candidat d'un canal est au rang 1), comme `scripts/diagnostic_rangs.py` ; les scores RRF cités valent donc `1/(60 + rang)` |
 | Benchmark | `benchmark/dev.jsonl` v2 — 61 questions (7 `reference_directe`, 23 `regle`, 31 `vocabulaire_courant`) |
 | Machine | Linux 6.19.8-arch1-3-surface, x86_64, 8 cœurs (`torch.get_num_threads() == 4`), **GPU Quadro RTX 3000 Max-Q, 6 Go de VRAM** |
 | Device des modèles | `cuda:0` pour `Embedder` ET `Reranker` (auto-détection de `sentence-transformers` ; ce projet ne passe jamais `device` explicitement), dtype fp32 — vérifié en T3, et déterminant pour toute latence de ce rapport (cf. § ci-dessous) |
@@ -23,10 +24,12 @@ Cause établie par contrôle direct — la même configuration, sur une question
 
 | device du cross-encoder | latence (bge, 25 candidats, 1 question) |
 |---|---|
-| `cuda:0` (Quadro RTX 3000 Max-Q, 6 Go) | **2,1 s** |
-| `cpu` (8 cœurs, `torch.get_num_threads() == 4`) | **149,5 s** |
+| `cuda:0` (Quadro RTX 3000 Max-Q, 6 Go) | **2,29 s** |
+| `cpu` (8 cœurs, `torch.get_num_threads() == 4`) | **178,1 s** |
 
-Ratio ×71, et 149,5 s encadre le chiffre publié au jalon 2.5 : **la campagne du jalon 2.5 exécutait le cross-encoder sur CPU**, alors que la machine disposait déjà du GPU (même `uv.lock`, même `torch` 2.13.0 avec les wheels CUDA — vérifié par `git show`). En régime nominal, `Embedder` comme `Reranker` s'initialisent sur `cuda:0` (auto-détection de `sentence-transformers`, aucun `device` passé explicitement dans ce projet, vérifié en T3). **Ce qui a privé la campagne du jalon 2.5 du GPU n'est pas établi** — hypothèse la plus probable : plusieurs sous-agents travaillaient en parallèle et se disputaient les 6 Go de VRAM. Faute de preuve, c'est une hypothèse et pas une conclusion.
+Ratio **×77,8** (`docs/mesures/jalon3/sondes.json`, produit par `scripts/sondes_jalon3.py`). Une version antérieure de cette section publiait 2,1 s / 149,5 s / ×71 : c'était la même sonde, exécutée sous une charge machine différente, avant d'être versionnée. L'écart entre les deux exécutions (×71 contre ×77,8, soit ~10 % sur le ratio et ~19 % sur la valeur CPU) illustre le point même de cette section — une latence à une seule question sur une machine partagée n'est pas un chiffre stable. **C'est l'ordre de grandeur du ratio qui est le résultat, pas ses décimales** : le reranking coûte deux ordres de grandeur de plus sur CPU que sur GPU.
+
+178 s encadre le chiffre publié au jalon 2.5 : **la campagne du jalon 2.5 exécutait le cross-encoder sur CPU**, alors que la machine disposait déjà du GPU (même `uv.lock`, même `torch` 2.13.0 avec les wheels CUDA — vérifié par `git show`). En régime nominal, `Embedder` comme `Reranker` s'initialisent sur `cuda:0` (auto-détection de `sentence-transformers`, aucun `device` passé explicitement dans ce projet, vérifié en T3). **Ce qui a privé la campagne du jalon 2.5 du GPU n'est pas établi** — hypothèse la plus probable : plusieurs sous-agents travaillaient en parallèle et se disputaient les 6 Go de VRAM. Faute de preuve, c'est une hypothèse et pas une conclusion.
 
 Trois conséquences assumées :
 
@@ -34,7 +37,7 @@ Trois conséquences assumées :
 2. Les latences du rapport du jalon 2.5 restent telles quelles dans leur propre document — elles ont bien été mesurées, dans leurs conditions — mais ne sont **pas comparables** à celles de ce rapport-ci.
 3. La décision de conception prise au jalon 2.5 de garder `hybrid+rerank` hors de la campagne par défaut (« 2 h de calcul surprise pour un nouveau contributeur ») reposait sur ce chiffre. Elle reste **juste pour un contributeur sans GPU** (149,5 s/question × 61 ≈ 2 h 30, le scénario du jalon 2.5) et devient discutable dès qu'une carte est disponible (~2 min). Réexaminée à la clôture de ce jalon : c'est la disponibilité d'un GPU, pas le mode lui-même, qui doit conditionner le défaut.
 
-Reproduction : `docs/mesures/jalon3/F_dev.json`, champ `temoin_reproduction` (facteur de surestimation calculé automatiquement à chaque exécution de `--ablation F`).
+Reproduction : `docs/mesures/jalon3/sondes.json` (champ `latence_par_device`, produit par `scripts/sondes_jalon3.py`) et `docs/mesures/jalon3/F_dev.json`, champ `temoin_reproduction` (facteur de surestimation calculé automatiquement à chaque exécution de `--ablation F`).
 
 ## Diagnostic fondateur
 
@@ -56,7 +59,7 @@ Reproduction (`uv run python scripts/diagnostic_rangs.py --questions q021,q026,q
 **Lecture — quatre profils distincts, pas un seul cas** : le diagnostic initial groupait ces quatre questions sous un même verdict (« le gold se classe mal en lexical ») ; les rangs corrigés montrent qu'il s'agit en réalité de quatre profils différents :
 - **q023** : rang lexical **2**/1653 — quasi immédiat, largement dans toute fenêtre réaliste (`limit=50` suffit déjà en production).
 - **q026** : rang lexical **46**/1659 — juste EN-DESSOUS de la fenêtre par défaut (`limit=50`) : son gold entre donc déjà dans le pool bm25 au réglage neutre du jalon 2.5, sans qu'aucun levier de ce jalon soit nécessaire pour cette question précise (confirmé à la mesure T2, § Ablation E : couvert dès `pool=50`). Le filtrage `df_max` l'améliore encore (46→14) en écartant les mots fonctionnels qui diluaient son score.
-- **q021** : rang lexical **154**/1585 — hors de la fenêtre par défaut, mais à portée d'un pool élargi (`pool≥154`, donc `pool=200` suffit) : confirmé à la mesure T2 (couvert dès `pool=200`, absent à 50 et 100).
+- **q021** : rang lexical **154**/1585 — hors de la fenêtre par défaut, mais à portée d'un pool élargi (`pool≥154`, donc `pool=200` suffit) : confirmé à la mesure T2 (couvert dès `pool=200`, absent à 50 et 100). *Ces comparaisons rang↔`pool` sont approximatives* : le rang est calculé au niveau **record** (après agrégation) tandis que `pool` borne les lignes de `chunks_norm` au niveau **chunk** (2 160 chunks pour 1 660 records, ~1,3 chunk par record). C'est la couverture mesurée du § Ablation E, pas cette arithmétique, qui tranche.
 - **q060** : rang lexical **1453**/1659 (88 % du classement) — le seul véritablement muet côté lexical, hors d'atteinte de tout pool réaliste testé dans ce jalon (`pool=400` encore insuffisant, § Ablation E) et du filtrage `df_max` (disparaît du pool filtré, `ABSENT`).
 
 Le filtrage lexical (`df_max`) ne repêche donc le gold que lorsqu'il partage déjà au moins un token RARE avec la question (cas q026, rang 46→14) ; quand aucun token de contenu n'est commun (q021, q060), le gold disparaît purement et simplement du pool filtré (`ABSENT`) — le filtrage ne peut pas inventer un signal qui n'existe pas. Le canal dense reste, dans tous les cas mesurés ici, le seul à placer TOUS ces golds dans une fenêtre non triviale (178-528 sur 1660), y compris q060.
@@ -202,8 +205,8 @@ Mécanisme, vérifié par deux contrôles :
 1. **Pourquoi pool=100, 200 et 400 donnent des métriques strictement identiques** (recall@5/10/MRR, delta, IC95 et p_amelioration bit à bit égaux dans le tableau ci-dessus). Contrôle ad hoc sur les 61 questions dev, config `pool=200` : sur les 610 entrées du top-10 fusionné (61 questions × 10), **aucune** (0/610, 0,0 %) n'a son meilleur rang par canal (bm25 ou dense) au-delà de 100. Le score RRF d'un candidat au rang r dans un canal est `1/(60+r+1)` (`_RRF_K=60`) : au rang 100, ce plafond vaut `1/161 ≈ 0,0062`, systématiquement dominé par les candidats déjà présents dans le pool à 100 (rang < 100 dans au moins un canal). Élargir le pool de 100 à 200 ou 400 n'ajoute donc, empiriquement sur ce split, JAMAIS de candidat capable d'entrer dans le top-10 fusionné — la fusion RRF s'est déjà « saturée » à 100.
 
 2. **Pourquoi le recall BAISSE en passant de 50 à 100** (contre-intuitif : plus de candidats devrait, au minimum, ne pas nuire). Diff question par question (`docs/mesures/jalon3/E_dev.json`, champs `configs[i].par_question`) : 3 questions régressent (q061, q072, q082 : 1,0 → 0,0) et 1 s'améliore (q054 : 0,0 → 1,0), net -2/61 = -0,0328 — exactement le delta mesuré. Exemple mécanistique concret, q061 (« Si je décide de compter mes marchandises d'une autre façon... », gold `pcg-122-3`) :
-   - À pool=50 : le record réglementaire `pcg-122-3` (le gold) est retrouvé UNIQUEMENT par bm25 (rang 0, absent du top-50 dense) → score RRF = `1/61 ≈ 0,01639`, 3e position du top-10 fusionné. Un chunk de commentaire du même article (`pcg-122-3-c1`, qui matche aussi la citation gold) est présent côté dense (rang 21, hors bm25) mais son score RRF solo (`1/82 ≈ 0,01220`) est trop faible pour entrer dans le top-10 — sans effet sur le résultat.
-   - À pool=100 : le score RRF de `pcg-122-3` reste `0,01639` (aucun changement de ses rangs individuels) et celui de `pcg-122-3-c1` reste `0,01220` (toujours sous le seuil, vérifié) — mais deux nouveaux candidats, absents à pool=50, entrent maintenant dans LES DEUX canaux à des rangs médiocres (ex. `pcg-na-18` : bm25 rang 70, dense rang 2 → RRF = `1/131 + 1/63 ≈ 0,02351` ; `pcg-na-24` : bm25 rang 48, dense rang 9 → RRF ≈ `0,02346`) — supérieurs à la fois à `pcg-122-3` et à `pcg-122-3-c1`. Le 10e score du top-10 à pool=100 vaut `0,01740` : `pcg-122-3` (0,01639) en sort, `pcg-122-3-c1` (0,01220) n'y était déjà pas. Leur somme de deux contributions MÉDIOCRES (un canal moyen + un canal moyen) dépasse la contribution UNIQUE mais meilleure du gold (un canal excellent, l'autre absent), qui sort du top-10.
+   - À pool=50 : le record réglementaire `pcg-122-3` (le gold) est retrouvé UNIQUEMENT par bm25 (rang 1, absent du top-50 dense) → score RRF = `1/61 ≈ 0,01639`, 3e position du top-10 fusionné. Un chunk de commentaire du même article (`pcg-122-3-c1`, qui matche aussi la citation gold) est présent côté dense (rang 22, hors bm25) mais son score RRF solo (`1/82 ≈ 0,01220`) est trop faible pour entrer dans le top-10 — sans effet sur le résultat.
+   - À pool=100 : le score RRF de `pcg-122-3` reste `0,01639` (aucun changement de ses rangs individuels) et celui de `pcg-122-3-c1` reste `0,01220` (toujours sous le seuil, vérifié) — mais deux nouveaux candidats, absents à pool=50, entrent maintenant dans LES DEUX canaux à des rangs médiocres (ex. `pcg-na-18` : bm25 rang 71, dense rang 3 → RRF = `1/131 + 1/63 ≈ 0,02351` ; `pcg-na-24` : bm25 rang 49, dense rang 10 → RRF = `1/109 + 1/70 ≈ 0,02346`) — supérieurs à la fois à `pcg-122-3` et à `pcg-122-3-c1`. Le 10e score du top-10 à pool=100 vaut `0,01740` : `pcg-122-3` (0,01639) en sort, `pcg-122-3-c1` (0,01220) n'y était déjà pas. Leur somme de deux contributions MÉDIOCRES (un canal moyen + un canal moyen) dépasse la contribution UNIQUE mais meilleure du gold (un canal excellent, l'autre absent), qui sort du top-10.
 
    C'est le mécanisme générique de la fusion RRF par sommation : un document moyen dans les DEUX canaux peut accumuler plus de « masse de rang » qu'un document excellent dans un seul — élargir le pool expose davantage de candidats à ce risque de double comptage, sans qu'aucun mécanisme ne privilégie la pertinence absolue plutôt que la présence conjointe.
 
@@ -251,14 +254,17 @@ Grille complète : les deux modèles × largeur étroite / large. Le premier jet
 
 ### Résultats
 
-| config | recall@5 | recall@10 | MRR | `vocabulaire_courant` recall@10 | latence/question (GPU) |
+| config | recall@5 | recall@10 | MRR | `vocabulaire_courant` recall@10 | latence/question |
 |---|---|---|---|---|---|
-| bge, `n_rerank=25`, `pool=50` (référence jalon 2.5) | 0,680 | **0,738** | 0,642 | 0,484 | 1,84 s |
-| bge, `n_rerank=25`, `pool=50` (témoin re-mesuré) | 0,680 | **0,738** | 0,642 | 0,484 | 1,84 s |
+| bge, `n_rerank=25`, `pool=50` (référence jalon 2.5, réutilisée) | 0,680 | **0,738** | 0,642 | 0,484 | 129,5 s (**CPU**, jalon 2.5) |
+| bge, `n_rerank=25`, `pool=50` (témoin re-mesuré ici) | 0,680 | **0,738** | 0,642 | 0,484 | 1,71 s (GPU) |
 | mmarco, `n_rerank=25`, `pool=50` (contrôle modèle) | 0,672 | 0,713 | 0,610 | 0,435 | 0,40 s |
-| mmarco, `n_rerank=200`, `pool=200` | 0,656 | 0,713 | 0,581 | 0,435 | 1,40 s |
-| bge, `n_rerank=100`, `pool=100` | 0,697 | 0,705 | 0,646 | 0,419 | 5,65 s |
-| bge, `n_rerank=200`, `pool=200` | **0,730** | **0,738** | **0,675** | 0,484 | 10,63 s |
+| mmarco, `n_rerank=200`, `pool=200` | 0,656 | 0,713 | 0,581 | 0,435 | 1,24 s |
+| **bge, `n_rerank=100`, `pool=50`** (isole `n_rerank`) | 0,697 | 0,705 | 0,646 | 0,419 | 4,44 s |
+| bge, `n_rerank=100`, `pool=100` | 0,697 | 0,705 | 0,646 | 0,419 | 5,46 s |
+| bge, `n_rerank=200`, `pool=200` | **0,730** | **0,738** | **0,675** | 0,484 | 10,16 s |
+
+Les deux premières lignes sont la même configuration : la référence relue depuis le JSON du jalon 2.5 et son témoin re-mesuré ici. Elles sont identiques sur toutes les métriques — c'est le contrôle de reproduction — et diffèrent **uniquement** par la latence, qui est l'objet du § « Le reranking du jalon 2.5 était mesuré sur CPU ».
 
 Bootstrap apparié (10 000 tirages, seed 42) sur le recall@10 par question, contre la référence :
 
@@ -267,7 +273,8 @@ Bootstrap apparié (10 000 tirages, seed 42) sur le recall@10 par question, cont
 | témoin re-mesuré | 0,0000 | (0,000 ; 0,000) | — (identique) | 0,0 | — (contrôle) |
 | mmarco, 25 | −0,0246 | (−0,0656 ; 0,0000) | 0,000 | −0,048 (`vocabulaire_courant`) | non |
 | mmarco, 200 | −0,0246 | (−0,1066 ; 0,0574) | 0,249 | −0,048 (`vocabulaire_courant`) | non |
-| bge, 100 | −0,0328 | (−0,0984 ; 0,0328) | 0,098 | −0,065 (`vocabulaire_courant`) | non |
+| **bge, 100, `pool=50`** (isolante) | −0,0328 | (−0,0984 ; 0,0328) | 0,098 | −0,065 (`vocabulaire_courant`) | non |
+| bge, 100, `pool=100` | −0,0328 | (−0,0984 ; 0,0328) | 0,098 | −0,065 (`vocabulaire_courant`) | non |
 | bge, 200 | 0,0000 | (−0,0820 ; 0,0820) | 0,423 | 0,0 | non |
 
 ### Lecture : la largeur n'achète RIEN en recall@10, pour aucun des deux modèles
@@ -275,6 +282,8 @@ Bootstrap apparié (10 000 tirages, seed 42) sur le recall@10 par question, cont
 Le résultat est net et il est répété deux fois, une fois par modèle : **mmarco donne 0,713 sur 25 candidats et 0,713 sur 200 ; bge donne 0,738 sur 25 et 0,738 sur 200.** Non seulement les agrégats coïncident, mais la ventilation par catégorie aussi (`vocabulaire_courant` 0,435 pour mmarco aux deux largeurs, 0,484 pour bge aux deux largeurs). Multiplier par 8 le nombre de candidats soumis au cross-encoder — donc par 5,8 la latence pour bge — ne fait entrer aucune citation gold supplémentaire dans le top-10.
 
 **Ce que la largeur change quand même : le haut du classement, et seulement avec le modèle fort.** `bge` sur 200 candidats gagne +0,050 de recall@5 (0,680 → 0,730) et +0,033 de MRR (0,642 → 0,675) à recall@10 constant : le pool large permet au modèle fort de promouvoir dans le top-5 des golds qui étaient déjà entre les rangs 6 et 10. C'est un vrai gain de précision de tête, le premier que ce jalon obtient — mais il ne franchit pas le critère d'adoption, qui porte sur le recall@10 (fixé avant les mesures, et non révisé après coup pour accommoder un résultat). Il est noté ici pour le jalon 4, parce qu'un générateur RAG est alimenté par ~5 passages, pas 10 : c'est le recall@5 et le MRR qui gouverneront la qualité des réponses.
+
+**`n_rerank` est bien le paramètre responsable, et non `pool` — mesuré, après avoir été soulevé en revue.** La première version de cette grille ne contenait aucune configuration isolante : toutes les configs « larges » déplaçaient `n_rerank` **et** `pool` ensemble, alors que le § Ablation E a mesuré `pool=100/200/400` à −0,033 de recall@10. Un effet nul du couple pouvait donc masquer un `n_rerank` positif compensé par un `pool` négatif. La configuration ajoutée (`bge`, `n_rerank=100`, `pool=50` — le vivier reste à sa valeur neutre, et à `pool=50` la fusion expose déjà jusqu'à ~100 candidats distincts, donc `n_rerank=100` y soumet strictement plus que 25) tranche : elle donne **exactement les mêmes chiffres** que `pool=100` — recall@5, recall@10, MRR, ventilation par catégorie et bootstrap complet, à la quatrième décimale. `pool` ne contribue rien à ce niveau ; les −0,033 sont entièrement imputables à `n_rerank`. Le rejet est donc établi **pour `n_rerank` lui-même**, pas pour un couple confondu.
 
 **Non-monotonie à ne pas surinterpréter** : `bge` sur 100 candidats (0,705) fait moins bien que `bge` sur 25 (0,738) ET que `bge` sur 200 (0,738). Une largeur intermédiaire pire que ses deux voisines n'a aucun mécanisme plausible : sur n=61, un écart de 0,033 vaut deux questions. La conclusion honnête est que **tous les écarts de recall@10 entre configurations `bge` sont dans le bruit** ; le seul signal qui survit au bootstrap est le choix du MODÈLE (mmarco perd 0,0246 avec p_amelioration = 0,000, donc une dégradation robuste, cohérente avec le rejet de mmarco au jalon 2.5).
 
@@ -310,15 +319,17 @@ Référence = `hybrid` neutre (recall@10 = 0,672), **pas** `hybrid+rerank` : la 
 - **`remplace`** : les canaux ne reçoivent que la réécriture ;
 - **`etend`** : les canaux reçoivent `question + " " + réécriture`, conservant les tokens originaux.
 
-Modèle : `claude-sonnet-5`, `thinking` explicitement désactivé, un appel par question distincte, cache JSON committé (`docs/mesures/jalon3/reecritures.json`), garde-fou dur à 200 appels par exécution. Coût total de la campagne : 61 appels, quelques centimes ; toutes les re-mesures sont ensuite gratuites et rejouent les mêmes réécritures à l'identique.
+Modèle : `claude-sonnet-5`, `thinking` explicitement désactivé, un appel par question distincte, cache JSON committé (`docs/mesures/jalon3/reecritures.json`), garde-fou dur à 200 appels par exécution. Coût, tel qu'enregistré dans les JSON : **12 appels** lors de cette campagne (`G_dev.json`, champ `cout` — 49 réécritures étaient déjà en cache après la première tentative interrompue), **61 réécritures dev** au total, **90** en comptant le split gelé appelé à la clôture. Quelques centimes en tout, et toutes les re-mesures sont ensuite gratuites et rejouent les mêmes réécritures à l'identique.
 
 ### Résultats
 
 | config | recall@5 | recall@10 | MRR | `reference_directe` | `regle` | `vocabulaire_courant` | latence/question |
 |---|---|---|---|---|---|---|---|
 | `hybrid` neutre, sans réécriture (référence) | 0,639 | 0,672 | 0,565 | 1,000 | 0,935 | 0,403 | 0,14 s |
-| réécriture, mode `remplace` | 0,697 | 0,803 | 0,601 | 1,000 | **1,000** | 0,613 | 0,91 s |
-| réécriture, mode `etend` | **0,779** | **0,852** | **0,695** | 1,000 | **1,000** | **0,710** | 0,23 s |
+| réécriture, mode `remplace` | 0,697 | 0,803 | 0,601 | 1,000 | **1,000** | 0,613 | 0,25 s |
+| réécriture, mode `etend` | **0,779** | **0,852** | **0,695** | 1,000 | **1,000** | **0,710** | 0,35 s |
+
+**Correction des latences de ce tableau (revue finale de branche).** La campagne avait publié 0,91 s pour `remplace` et 0,23 s pour `etend`, ce qui suggérait que `remplace` était ~4× plus lent. C'était un artefact d'imputation : `remplace` s'exécute en premier dans la grille et a absorbé les 12 appels API non encore cachés, soit ≈41 s répartis sur 61 questions — exactement l'écart observé. Re-mesurées cache chaud, zéro appel API, les deux modes donnent 0,25 s et 0,35 s : **c'est `etend` qui est le plus lent**, et c'est cohérent avec sa construction (voir ci-dessous). Les recall et MRR du tableau ne sont pas affectés : ils ne dépendent pas du temps.
 
 Bootstrap apparié (10 000 tirages, seed 42) sur le recall@10 par question :
 
@@ -331,7 +342,9 @@ Bootstrap par catégorie pour `etend` : `vocabulaire_courant` +0,3065 (p = 0,997
 
 ### Décision
 
-**`etend` ADOPTÉ.** Les deux modes franchissent le critère (`p_amelioration ≥ 0,95`, aucune catégorie ne perd plus de 0,05) ; `etend` domine `remplace` sur les trois métriques et sur les trois catégories. Mécanisme : conserver les tokens de la question évite de perdre un terme discriminant que la réécriture omettrait, tout en ajoutant le vocabulaire PCG manquant. `remplace` est aussi ~4× plus lent, la réécriture seule produisant un `MATCH` plus large.
+**`etend` ADOPTÉ.** Les deux modes franchissent le critère (`p_amelioration ≥ 0,95`, aucune catégorie ne perd plus de 0,05) ; `etend` domine `remplace` sur les trois métriques et sur les trois catégories. Mécanisme : conserver les tokens de la question évite de perdre un terme discriminant que la réécriture omettrait, tout en ajoutant le vocabulaire PCG manquant.
+
+**`etend` gagne en payant, pas en économisant** — et l'affirmation inverse publiée dans une version antérieure de cette section (« `remplace` est ~4× plus lent, la réécriture seule produisant un `MATCH` plus large ») était fausse dans les deux moitiés. Mesuré sur les 61 questions dev, cache chaud : `etend` soumet **3 534 termes** de `MATCH` au total contre **2 109** pour `remplace` (facteur 1,68 — inévitable, `etend` est la concaténation des deux), et coûte **0,35 s/question contre 0,25 s**. Le mode adopté est donc le plus large et le plus lent des deux ; son avantage est de rappel, pas de coût. Cette erreur est le troisième cas, dans ce seul jalon, d'un mécanisme plausible publié avant le contrôle qui le départageait.
 
 ### Combiné au reranking : les deux leviers ne se recouvrent pas
 
@@ -353,6 +366,8 @@ Le § Diagnostic fondateur avait classé quatre questions en quatre profils. Rec
 | q060 | **seule muette côté lexical** (1453/1659, 88 %) | 0,0 | **1,0** | **1,0** |
 | q023 | quasi-immédiat (rang lexical **2**/1653) | 0,0 | 0,0 | 0,0 |
 
+⚠️ Ces quatre colonnes sont mesurées en mode `hybrid` **sans reranking**, puisque l'ablation G se mesure contre la référence `hybrid` neutre. **q023 réussit (1,0) dans toutes les configurations rerankées** — les six de l'ablation F, et la configuration livrée du jalon 3 (`cloture_dev.json`, champ `C_reecriture_rerank_jalon3`). Une version antérieure de cette section affirmait qu'elle « échoue dans toutes les configurations » : c'était faux, et contredit par le § Clôture du même document, qui nomme les quatre questions réellement résistantes (q057, q063, q082, q089).
+
 Le résultat le plus contre-intuitif du jalon est dans ce tableau : **la question que le diagnostic donnait comme la plus désespérée est réparée, et celle qu'il donnait comme la plus facile résiste.** q060, dont le gold était au 88ᵉ percentile de son classement lexical, est retrouvée dès que la question parle le vocabulaire du corpus. Le « fossé lexical » n'était pas un plafond du système : c'était un plafond du vocabulaire de la question.
 
 ### Anatomie de q023 : la fusion RRF évince le meilleur candidat du corpus
@@ -366,13 +381,19 @@ q023 mérite son autopsie, parce qu'elle isole un défaut que ce jalon n'a pas t
 | `pcg-214-25` | 11 | 17 | 0,01408 + 0,01299 = **0,02707** | 2ᵉ |
 | `pcg-1121-1` | 23 | 19 | 0,01205 + 0,01266 = **0,02471** | 3ᵉ |
 
+Ces chiffres sont persistés dans `docs/mesures/jalon3/sondes.json` (champ `anatomie_q023`, produit par `scripts/sondes_jalon3.py`) — comme tout chiffre publié de ce rapport.
+
 Le meilleur candidat lexical du corpus entier perd contre un candidat 5ᵉ et 6ᵉ, parce que **la somme RRF récompense le consensus, pas l'excellence**. Sur ce pool de 81 candidats, 73 ne sont présents que dans un seul canal et 8 dans les deux : ces 8 monopolisent le haut du classement. Le gold manque le top-10 d'**une place**.
 
-C'est la mécanique exacte du découplage couverture/classement décrit au § Ablation E, désormais mesurée sur un cas nommé et non plus en agrégat. Et c'est un défaut de la **règle de fusion**, orthogonal à tout ce que ce jalon a réparé : la réécriture ne l'atteint pas (elle déplace le vocabulaire vers les stocks, ce qui est comptablement correct mais éloigne encore `pcg-214-22`), l'élargissement du pool ne l'atteint pas (le gold y est déjà, au rang 2), le reranking ne l'atteint pas non plus tant que la fusion décide qui entre dans les 25 candidats soumis. Levier désigné pour le jalon 4 : une fusion qui ne soit pas purement additive sur les rangs — maximum au lieu de somme, normalisation des scores, ou bonus explicite au rang 1 d'un canal.
+C'est la mécanique exacte du découplage couverture/classement décrit au § Ablation E, désormais mesurée sur un cas nommé et non plus en agrégat.
+
+**Mais le reranking rattrape ce cas, et c'est ce qui borne la portée du défaut.** Le gold sort au rang 11 de la fusion — donc à l'intérieur des `n_rerank=25` candidats soumis au cross-encoder, qui le remonte dans le top-10 : q023 vaut 1,0 dans toutes les configurations rerankées, y compris celle livrée. Le défaut de la règle de fusion est donc réel et mesuré, mais **compensé aujourd'hui par la fenêtre du reranker**. Ce qui en fait quand même un levier pour la suite, et pour une raison précise : la compensation ne tient que tant que le gold évincé reste dans les 25 premiers de la fusion. Sur un corpus d'un ordre de grandeur plus grand — le jalon 4 ajoute le BOFiP — le nombre de candidats consensuels croît, l'éviction pousse les golds mono-canal plus loin dans le classement fusionné, et rien ne garantit qu'ils resteront à portée du reranker. Pistes pour ce moment-là : fusion non purement additive sur les rangs (maximum au lieu de somme, normalisation des scores, bonus explicite au rang 1 d'un canal).
 
 ### Contrôle d'intégrité du benchmark
 
-La réécriture crée un risque qu'aucune ablation précédente ne portait : si le modèle citait de lui-même le numéro d'article attendu, le routeur de référence exacte retrouverait le gold et le gain mesuré ne mesurerait plus le retrieval mais la mémoire du modèle. Deux verrous :
+La réécriture crée un risque qu'aucune ablation précédente ne portait : le modèle **connaît** le Plan comptable général, et s'il citait de lui-même le numéro de l'article attendu, ce numéro entrerait dans la requête envoyée aux canaux. Le gain mesuré ne mesurerait alors plus le retrieval mais la mémoire du modèle.
+
+Précision sur le canal de fuite, car une version antérieure de cette section le décrivait mal : le routeur de référence exacte **n'est pas** ce canal — `search()` appelle `_route()` sur la question ORIGINALE, jamais sur la réécriture, donc un numéro inventé ne peut pas déclencher le routage. Le canal réel est la **correspondance lexicale et dense sur le token numérique lui-même** : « 214-13 » dans la requête matche le texte de l'article 214-13 dans `chunks_norm`. C'est ce que l'audit ci-dessous couvre. Deux verrous :
 
 1. **Structurel** : le rewriter ne reçoit que le texte de la question — jamais les citations, jamais le corpus, jamais les résultats (test dédié, `tests/test_rewrite.py`).
 2. **Empirique et scripté** : `scripts/audit_reecritures.py` audite les 61 réécritures du cache committé et classe chaque numéro d'article trouvé en *recopié depuis la question* / *inventé hors gold* / *fuite*. Résultat : **un seul** numéro sur 61 réécritures (`123-16`, le code de commerce, recopié depuis la question de q003), **zéro inventé, zéro fuite**.
@@ -422,11 +443,11 @@ Sur le split gelé, une seule question sur 29 reste imparfaite (`q028`), et **au
 
 | effet | n | questions |
 |---|---|---|
-| **réparées** par la réécriture | **12** | q021, q022, q026, q056, q059, q060, q065, q068, q070, q071, q079, q086 |
+| **améliorées** par la réécriture | **12** | q021, q022, q026, q056, q059, q060, q065, q068, q070, q071, q079, q086 |
 | **dégradées** par la réécriture | **3** | q008, q025, q080 |
 | résistantes aux deux configs | 4 | q057, q063, q082, q089 |
 
-Net : +9 questions sur 61. **La réécriture n'est pas gratuite** : elle casse 3 questions qui fonctionnaient, et la catégorie `regle` perd 0,0217 sur dev (une question à deux citations qui n'en garde qu'une). C'est sous la garde de −0,05 du protocole, donc l'adoption tient, mais le mécanisme est réel : réécrire une question qui parlait déjà le bon vocabulaire peut diluer un terme discriminant. Un déploiement soucieux du pire cas pourrait conditionner la réécriture à un signal de recouvrement faible plutôt que l'appliquer systématiquement — piste non mesurée.
+Net : **+9 questions en compte, +8,5 points de recall** (soit le delta de 0,1393 = 8,5/61). Le mot « améliorées » est délibéré : le compte inclut deux cas partiels — q022 passe de 0,5 à 1,0 et q086 de 0,0 à **0,5** (une question à deux citations dont une seule est retrouvée). Sur les 12, dix sont des réparations complètes. **La réécriture n'est pas gratuite** : elle casse 3 questions qui fonctionnaient, et la catégorie `regle` perd 0,0217 sur dev (une question à deux citations qui n'en garde qu'une). C'est sous la garde de −0,05 du protocole, donc l'adoption tient, mais le mécanisme est réel : réécrire une question qui parlait déjà le bon vocabulaire peut diluer un terme discriminant. Un déploiement soucieux du pire cas pourrait conditionner la réécriture à un signal de recouvrement faible plutôt que l'appliquer systématiquement — piste non mesurée.
 
 ### Ce que le jalon 3 laisse en l'état
 
@@ -440,14 +461,15 @@ Les quatre paramètres rejetés restent exposés sur `Searcher` à leur valeur n
 ### Configuration livrée
 
 ```python
+from accounting_rag.rerank import Reranker
 from accounting_rag.rewrite import Rewriter
 from accounting_rag.search import Searcher
 
 searcher = Searcher(
     "data/corpus.db",
-    reranker=Reranker(),                                  # bge-reranker-v2-m3 (jalon 2.5)
-    rewriter=Rewriter(cache_path="docs/mesures/jalon3/reecritures.json"),
-    mode_reecriture="etend",                              # jalon 3
+    reranker=Reranker(),                              # bge-reranker-v2-m3 (jalon 2.5)
+    rewriter=Rewriter(cache_path="data/reecritures-cache.json"),   # cache d'EXÉCUTION
+    mode_reecriture="etend",                          # jalon 3 (défaut du code)
 )
 resultats = searcher.search("j'ai payé un logiciel, je fais quoi ?", k=10, mode="hybrid+rerank")
 ```

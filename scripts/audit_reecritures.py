@@ -8,16 +8,24 @@ ce qui ferait entrer la réponse dans la requête par une autre porte et invalid
 mesure : le routeur regex retrouverait alors le gold par référence exacte, et le gain
 mesuré ne mesurerait plus le retrieval mais la mémoire du modèle.
 
-Ce script audite les 61 réécritures du cache committé et classe chaque numéro d'article
-trouvé en trois catégories :
+Ce script audite TOUTES les réécritures du cache committé — les deux splits, dev ET le
+split gelé — et classe chaque numéro d'article trouvé en trois catégories :
   - DÉJÀ DANS LA QUESTION : simple recopie, sans effet (le routeur lit de toute façon la
     question ORIGINALE, cf. `Searcher.search`) ;
   - INVENTÉ, HORS GOLD : le modèle cite un article de sa mémoire, mais pas celui attendu —
     bruit, pas fuite ;
   - INVENTÉ ET ÉGAL AU GOLD : FUITE. La mesure de l'ablation G serait invalidée.
 
+Le script ÉCHOUE aussi (code 1) si une entrée du cache ne correspond à aucune question des
+deux splits : une réécriture non traçable est une anomalie, pas une ligne à sauter en
+silence. Défaut corrigé après la revue finale de branche du jalon 3 : la première version
+ne chargeait que `dev.jsonl` et sautait les 29 réécritures du split gelé — précisément
+celles qui produisent le chiffre mis en avant — tout en affichant `len(cache)` comme
+nombre de réécritures auditées.
+
 Usage : uv run python scripts/audit_reecritures.py
-Sortie : tableau Markdown + code de retour 1 si au moins une fuite est détectée.
+Sortie : tableau Markdown + code de retour 1 si une fuite ou une entrée orpheline est
+détectée.
 """
 import json
 import re
@@ -71,15 +79,19 @@ def classer(question: str, reecriture: str, citations: list[str]) -> list[tuple[
 
 
 def main() -> int:
-    questions = {q["id"]: q for q in load_benchmark(ROOT / "benchmark/dev.jsonl")}
+    # Les DEUX splits : une fuite dans le split gelé invaliderait le chiffre de clôture
+    # aussi sûrement qu'une fuite dans dev.
+    par_texte = {q["question"]: q
+                 for split in ("dev", "test")
+                 for q in load_benchmark(ROOT / f"benchmark/{split}.jsonl")}
     cache = json.loads(CACHE.read_text(encoding="utf-8"))
-    par_texte = {q["question"]: q for q in questions.values()}
 
-    lignes, fuites, recopies, inventes = [], [], 0, 0
+    lignes, fuites, recopies, inventes, orphelines = [], [], 0, 0, []
     for texte, reecriture in sorted(cache.items()):
         q = par_texte.get(texte)
         if q is None:
-            continue  # réécriture d'un autre split : hors périmètre de cet audit
+            orphelines.append(texte[:60])
+            continue
         for num, verdict in classer(texte, reecriture, q["citations"]):
             if verdict == RECOPIE:
                 recopies += 1
@@ -93,9 +105,16 @@ def main() -> int:
     print("|---|---|---|")
     for l in lignes:
         print(l)
-    print(f"\n{len(cache)} réécritures auditées ; {len(lignes)} numéro(s) d'article "
-          f"trouvé(s) : {recopies} recopié(s) depuis la question, {inventes} inventé(s) "
-          f"hors gold, {len(fuites)} fuite(s).")
+    auditees = len(cache) - len(orphelines)
+    print(f"\n{auditees} réécriture(s) auditée(s) sur {len(cache)} entrée(s) de cache "
+          f"({len(par_texte)} questions dans les deux splits) ; {len(lignes)} numéro(s) "
+          f"d'article trouvé(s) : {recopies} recopié(s) depuis la question, {inventes} "
+          f"inventé(s) hors gold, {len(fuites)} fuite(s).")
+    if orphelines:
+        print(f"\nÉCHEC : {len(orphelines)} entrée(s) de cache ne correspondent à aucune "
+              f"question des splits — réécriture non traçable : "
+              f"{', '.join(repr(o) for o in orphelines)}")
+        return 1
     if fuites:
         print("\nCONTRÔLE D'INTÉGRITÉ ÉCHOUÉ — la mesure de l'ablation G est invalidée "
               f"pour : {', '.join(f'{qid} ({num})' for qid, num in fuites)}")

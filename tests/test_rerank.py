@@ -197,3 +197,31 @@ def test_routes_restent_epingles_avec_pool_elargi(db_synthetique_pool_large):
     hits = s.search("que dit l'article 111-1 ?", mode="hybrid+rerank", k=10)
     assert hits[0]["source"] == "route"
     assert hits[0]["article"] == "111-1"
+
+
+def test_le_route_nest_pas_soumis_au_reranker(db_synthetique_pool_large):
+    """Le record routé ne doit PAS être soumis au cross-encoder — propriété publiée
+    (docs/eval-jalon3.md, § Ablation F) qui n'était gardée par aucun test.
+
+    Les tests existants n'assertaient que la position 0 du résultat, or `out = routed +
+    results` la garantit inconditionnellement : supprimer le filtre `if rid not in
+    routed_ids` laissait toute la suite verte (mutation vérifiée à la revue finale de
+    branche du jalon 3). Ce test compte les paires réellement passées à `predict()`.
+    """
+    fake = RecordingFakeCrossEncoder()
+    reranker = Reranker.__new__(Reranker)
+    reranker.model = fake
+    s = Searcher(db_synthetique_pool_large, embedder=FakeEmbedder(), reranker=reranker,
+                 pool=200, n_rerank=200)
+    hits = s.search("que dit l'article 111-1 ?", mode="hybrid+rerank", k=10)
+
+    assert hits[0]["source"] == "route" and hits[0]["article"] == "111-1"
+    # Le texte du record routé ne doit figurer dans AUCUNE paire soumise au reranker.
+    texte_route = "Un immeuble s'amortit sur sa duree d'utilisation prevue."
+    soumis = [p[1] for p in fake.pairs_recus]
+    assert texte_route not in soumis, (
+        f"le record routé a été soumis au reranker ({len(soumis)} paires) — le filtre "
+        f"`if rid not in routed_ids` de la branche hybrid+rerank a disparu")
+    # Autre symptôme de la même régression : le routé apparaîtrait deux fois en sortie.
+    ids = [h["record_id"] for h in hits]
+    assert len(ids) == len(set(ids)), f"doublons dans la sortie hybrid+rerank : {ids}"

@@ -8,6 +8,7 @@ from .normalize import normalize
 _REF_QUERY = re.compile(r"\bart(?:icle)?s?\.?\s*(\d{2,4}-\d+(?:-\d+)*)", re.I)
 # Routage des références lettrées (L./R./D., code de commerce) différé à l'ingestion LEGI — aucun article lettré dans le corpus PCG actuel.
 _RRF_K = 60
+_MODES_REECRITURE = {"remplace", "etend"}
 _MODES = {"bm25", "dense", "hybrid", "hybrid+graph", "hybrid+rerank"}
 
 
@@ -16,7 +17,7 @@ class Searcher:
                  poids_chemin: float = 1.0, boost_commentaire: float = 1.0,
                  reranker=None, df_max: float | None = None,
                  pool: int = 50, dedup_termes: bool = False, n_rerank: int = 25,
-                 rewriter=None, mode_reecriture: str = "remplace"):
+                 rewriter=None, mode_reecriture: str = "etend"):
         if not Path(db_path).exists():
             raise FileNotFoundError(
                 f"corpus introuvable : {db_path} — lancez scripts/download_data.py, "
@@ -72,10 +73,16 @@ class Searcher:
         # ORIGINALE, jamais la réécriture (une référence d'article explicite ne doit
         # jamais dépendre d'une reformulation par LLM) — cf. `search()`.
         self.rewriter = rewriter
-        # mode_reecriture : "remplace" envoie uniquement la réécriture aux canaux ;
-        # "etend" envoie `question + " " + réécriture` (conserve les tokens originaux,
-        # utile si la réécriture perd un terme discriminant). N'a d'effet que si
-        # `rewriter` est fourni.
+        # mode_reecriture : "etend" envoie `question + " " + réécriture` aux canaux
+        # (conserve les tokens originaux, donc aucun terme discriminant de la question
+        # n'est perdu) ; "remplace" n'envoie que la réécriture. Défaut = "etend", le mode
+        # ADOPTÉ après mesure (ablation G, jalon 3 : 0,852 contre 0,803 pour "remplace",
+        # et meilleur sur les trois catégories) — le défaut ne doit pas être le mode
+        # rejeté. N'a d'effet que si `rewriter` est fourni.
+        if mode_reecriture not in _MODES_REECRITURE:
+            raise ValueError(
+                f"mode_reecriture inconnu : {mode_reecriture!r} "
+                f"(attendu l'un de {sorted(_MODES_REECRITURE)})")
         self.mode_reecriture = mode_reecriture
 
     @property

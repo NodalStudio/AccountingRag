@@ -14,3 +14,7 @@ __pycache__/
 dist/
 build/
 .DS_Store
+
+# Cache d'exécution des réécritures (le cache DE MESURE, docs/mesures/jalon3/
+# reecritures.json, est versionné : c'est l'ancrage de reproductibilité des chiffres publiés).
+data/reecritures-cache.json

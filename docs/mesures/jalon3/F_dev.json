@@ -180,7 +180,7 @@
         "q088": 1.0,
         "q089": 0.0
       },
-      "latence_s_par_question": 1.8402954304917971
+      "latence_s_par_question": 1.705995703557373
     },
     {
       "label": "mmarco-mMiniLMv2-L12-H384-v1, n_rerank=25, pool=50 (contrôle modèle)",
@@ -269,7 +269,7 @@
         "q088": 1.0,
         "q089": 0.0
       },
-      "latence_s_par_question": 0.3966739947868891
+      "latence_s_par_question": 0.3979937365573755
     },
     {
       "label": "mmarco-mMiniLMv2-L12-H384-v1, n_rerank=200, pool=200",
@@ -358,7 +358,96 @@
         "q088": 1.0,
         "q089": 0.0
       },
-      "latence_s_par_question": 1.4037011848688619
+      "latence_s_par_question": 1.2411319002950802
+    },
+    {
+      "label": "bge-reranker-v2-m3, n_rerank=100, pool=50 (ISOLE n_rerank à pool neutre)",
+      "params": {
+        "model_name": "BAAI/bge-reranker-v2-m3",
+        "n_rerank": 100,
+        "pool": 50
+      },
+      "recall@5": 0.697,
+      "recall@10": 0.705,
+      "mrr": 0.646,
+      "par_categorie": {
+        "reference_directe": {
+          "recall@10": 1.0,
+          "n": 7
+        },
+        "regle": {
+          "recall@10": 1.0,
+          "n": 23
+        },
+        "vocabulaire_courant": {
+          "recall@10": 0.419,
+          "n": 31
+        }
+      },
+      "par_question": {
+        "q001": 1.0,
+        "q002": 1.0,
+        "q003": 1.0,
+        "q004": 1.0,
+        "q006": 1.0,
+        "q007": 1.0,
+        "q008": 1.0,
+        "q009": 1.0,
+        "q010": 1.0,
+        "q011": 1.0,
+        "q012": 1.0,
+        "q013": 1.0,
+        "q014": 1.0,
+        "q015": 1.0,
+        "q021": 0.0,
+        "q022": 0.5,
+        "q023": 1.0,
+        "q024": 1.0,
+        "q025": 1.0,
+        "q026": 0.0,
+        "q027": 0.0,
+        "q031": 1.0,
+        "q032": 1.0,
+        "q034": 1.0,
+        "q036": 1.0,
+        "q038": 1.0,
+        "q040": 1.0,
+        "q041": 1.0,
+        "q043": 1.0,
+        "q044": 1.0,
+        "q046": 1.0,
+        "q047": 1.0,
+        "q049": 1.0,
+        "q050": 1.0,
+        "q052": 1.0,
+        "q053": 1.0,
+        "q054": 1.0,
+        "q056": 0.0,
+        "q057": 0.0,
+        "q059": 0.0,
+        "q060": 0.0,
+        "q061": 1.0,
+        "q063": 0.0,
+        "q064": 1.0,
+        "q065": 0.0,
+        "q067": 0.0,
+        "q068": 0.0,
+        "q070": 0.0,
+        "q071": 0.0,
+        "q072": 1.0,
+        "q074": 1.0,
+        "q075": 1.0,
+        "q077": 1.0,
+        "q079": 1.0,
+        "q080": 0.0,
+        "q082": 0.0,
+        "q083": 1.0,
+        "q085": 0.5,
+        "q086": 0.0,
+        "q088": 1.0,
+        "q089": 0.0
+      },
+      "latence_s_par_question": 4.441316607213102
     },
     {
       "label": "bge-reranker-v2-m3, n_rerank=100, pool=100",
@@ -447,7 +536,7 @@
         "q088": 1.0,
         "q089": 0.0
       },
-      "latence_s_par_question": 5.654045185098364
+      "latence_s_par_question": 5.455025122622947
     },
     {
       "label": "bge-reranker-v2-m3, n_rerank=200, pool=200",
@@ -536,7 +625,7 @@
         "q088": 1.0,
         "q089": 0.0
       },
-      "latence_s_par_question": 10.629516526229516
+      "latence_s_par_question": 10.163987422721325
     }
   ],
   "comparaisons_vs_reference": [
@@ -594,6 +683,25 @@
       "pire_perte_categorie": {
         "categorie": "vocabulaire_courant",
         "delta": -0.0484
+      },
+      "adopte": false
+    },
+    {
+      "label": "bge-reranker-v2-m3, n_rerank=100, pool=50 (ISOLE n_rerank à pool neutre)",
+      "params": {
+        "model_name": "BAAI/bge-reranker-v2-m3",
+        "n_rerank": 100,
+        "pool": 50
+      },
+      "delta": -0.0328,
+      "ic95": [
+        -0.0984,
+        0.0328
+      ],
+      "p_amelioration": 0.0979,
+      "pire_perte_categorie": {
+        "categorie": "vocabulaire_courant",
+        "delta": -0.0645
       },
       "adopte": false
     },
@@ -724,6 +832,35 @@
         "p_amelioration": 0.2471
       }
     },
+    "bge-reranker-v2-m3, n_rerank=100, pool=50 (ISOLE n_rerank à pool neutre)": {
+      "reference_directe": {
+        "n": 7,
+        "delta": 0.0,
+        "ic95": [
+          0.0,
+          0.0
+        ],
+        "p_amelioration": 0.0
+      },
+      "regle": {
+        "n": 23,
+        "delta": 0.0,
+        "ic95": [
+          0.0,
+          0.0
+        ],
+        "p_amelioration": 0.0
+      },
+      "vocabulaire_courant": {
+        "n": 31,
+        "delta": -0.0645,
+        "ic95": [
+          -0.1935,
+          0.0645
+        ],
+        "p_amelioration": 0.0954
+      }
+    },
     "bge-reranker-v2-m3, n_rerank=100, pool=100": {
       "reference_directe": {
         "n": 7,
@@ -789,7 +926,7 @@
     "identique": true,
     "questions_en_ecart": [],
     "latence_s_par_question_jalon25": 129.4911491143771,
-    "latence_s_par_question_temoin": 1.8402954304917971,
-    "facteur_surestimation_latence_jalon25": 70.4
+    "latence_s_par_question_temoin": 1.705995703557373,
+    "facteur_surestimation_latence_jalon25": 75.9
   }
 }
