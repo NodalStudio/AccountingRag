@@ -73,7 +73,8 @@ def controle_fraicheur(embedder) -> float:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--split", default="dev", choices=("dev", "test"))
+    ap.add_argument("--split", default="dev",
+                    choices=("dev", "test", "abstention"))
     ap.add_argument("--controle-seul", action="store_true",
                     help="n'exécute que le contrôle de fraîcheur, gratuit")
     args = ap.parse_args()
@@ -85,9 +86,16 @@ def main() -> None:
 
     questions = load_benchmark(ROOT / f"benchmark/{args.split}.jsonl")
     cache_reponses = OUT_DIR / f"reponses_{args.split}.json"
+    # Les questions d'abstention ne figurent pas dans l'ancrage de réécriture du jalon 3,
+    # qui reste en lecture seule : elles ont le leur, versionné de la même façon et écrit
+    # par ce script seul. Ouvrir l'ancrage du jalon 3 en écriture le ferait grossir hors
+    # de la campagne qui l'a produit.
+    if args.split == "abstention":
+        rewriter = Rewriter(cache_path=OUT_DIR / "reecritures_abstention.json")
+    else:
+        rewriter = Rewriter(cache_path=CACHE_REECRITURES, ecrire_cache=False)
     searcher = Searcher(DB, embedder=embedder, reranker=Reranker(),
-                        rewriter=Rewriter(cache_path=CACHE_REECRITURES,
-                                          ecrire_cache=False),
+                        rewriter=rewriter,
                         mode_reecriture=CONFIG["mode_reecriture"])
     generateur = Generator(cache_path=cache_reponses)
 
@@ -103,6 +111,34 @@ def main() -> None:
               f"citations={len(reponses[q['id']]['citations'])}", flush=True)
 
     m = metriques(reponses, DB)
+    if args.split == "abstention":
+        # Sur ce split, toute question DOIT recevoir une abstention : `taux_abstention`
+        # est donc le taux d'abstention CORRECTE. Les non-abstentions sont nommées, pour
+        # que le rapport ne puisse pas les résumer en un taux.
+        #
+        # Elles ne sont PAS appelées « réponses inventées », et c'est une correction
+        # apportée après lecture de la première campagne. L'unique non-abstention de dev
+        # (qa014) n'inventait rien : elle ouvrait sur « les passages fournis ne détaillent
+        # pas les écritures de retraitement, qui relèvent du règlement ANC n° 2020-01 »,
+        # citait six extraits tous verbatim et existants, et concluait sur ce qui manquait.
+        # Seul le drapeau `abstention` était faux — ce qui reste un défaut réel, puisqu'un
+        # appelant qui s'y fie présenterait une réponse à une question sans réponse — mais
+        # l'appeler « inventée » serait une accusation que la mesure ne soutient pas.
+        non_abst = sorted(q for q, r in reponses.items() if not r["abstention"])
+        propres = sorted(q for q in non_abst
+                         if m["par_question"].get(q) in ("ok", "version_omise"))
+        m["taux_abstention_correcte"] = m["taux_abstention"]
+        m["non_abstentions"] = non_abst
+        m["n_non_abstentions"] = len(non_abst)
+        # Une non-abstention dont toutes les citations sont propres n'a rien fabriqué :
+        # elle a répondu hors périmètre en restant sourcée. Le distinguer d'une invention
+        # est la différence entre un défaut de drapeau et une hallucination.
+        m["non_abstentions_sans_faute_de_citation"] = propres
+        m["n_fabrications"] = len(non_abst) - len(propres)
+        par_raison = {q["id"]: q["raison"] for q in questions}
+        m["non_abstentions_par_raison"] = {
+            r: sorted(q for q in non_abst if par_raison[q] == r)
+            for r in sorted({q["raison"] for q in questions})}
     resultat = {
         "split": args.split,
         "n": len(questions),

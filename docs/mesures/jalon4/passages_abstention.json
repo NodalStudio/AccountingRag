@@ -1,0 +1,2016 @@
+{
+  "n_questions": 30,
+  "n_passages": 10,
+  "questions": [
+    {
+      "id": "qa001",
+      "raison": "fiscal_pas_comptable",
+      "question": "Quelles conditions l'article 39-1-5° du code général des impôts impose-t-il pour qu'une provision pour grosses réparations soit déductible ?",
+      "passages": [
+        {
+          "record_id": "pcg-na-22@2026-01-01",
+          "article": null,
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre II – Actifs financiers > Section 3 – Opérations sur titres > Sous-section 2 – Opération de désendettement de fait",
+          "extrait": "4.1 - Provisions pour grosses réparations concernant les dépenses qui ont pour objet de remplacer tout ou partie des actifs [1ère catégorie]. Le Comité d’urgence rappelle que, pour les comptes consolidés et individuels : - si les entreprise"
+        },
+        {
+          "record_id": "pcg-122-4-c1@2026-01-01#2",
+          "article": "122-4",
+          "chemin": "Livre V : adaptations du règlement ANC n° 2014- 03 > Titre I du logement social (Règlement ANC n° 2015-04) > Chapitre 2 – Les opérations affectant le bilan des organismes de logement social > Section 2 - Le passif",
+          "extrait": "IR 1 - Les provisions pour gros entretien ou grandes révisions Conformément à l’article 214-9 du plan comptable général, les dépenses d’entretien faisant l’objet de programmes pluriannuels de gros entretien ou grandes révisions qui ont pour"
+        },
+        {
+          "record_id": "pcg-na-23@2026-01-01",
+          "article": null,
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre II – Actifs financiers > Section 3 – Opérations sur titres > Sous-section 2 – Opération de désendettement de fait",
+          "extrait": "4.2 - Provisions pour grosses réparations concernant les dépenses faisant l’objet de programmes pluriannuels de grosses réparations ou de grandes révisions, ayant pour seul objet de vérifier le bon état de fonctionnement des installations e"
+        },
+        {
+          "record_id": "pcg-na-14@2026-01-01",
+          "article": null,
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre II – Actifs financiers > Section 3 – Opérations sur titres > Sous-section 2 – Opération de désendettement de fait",
+          "extrait": "Article 311-2 : ….. « [1ère catégorie] Les éléments principaux d’immobilisations corporelles devant faire l’objet de remplacement à intervalles réguliers, ayant des utilisations différentes ou procurant des avantages économiques à l’entrepr"
+        },
+        {
+          "record_id": "pcg-na-13@2026-01-01",
+          "article": null,
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre II – Actifs financiers > Section 3 – Opérations sur titres > Sous-section 2 – Opération de désendettement de fait",
+          "extrait": "Avis n° 2003-E du 9 juillet 2003 concernant les modalités de première application de la comptabilisation par composants et des dispositions transitoires prévues à l’article 15 du règlement n°02-10 du CRC relatif à l’amortissement et la dépr"
+        },
+        {
+          "record_id": "pcg-121-2-c6@2026-01-01",
+          "article": "121-2",
+          "chemin": "Livre V : adaptations du règlement ANC n° 2014- 03 > Titre I du logement social (Règlement ANC n° 2015-04) > Chapitre 2 – Les opérations affectant le bilan des organismes de logement social > Section 1 - L’actif",
+          "extrait": "3/ Travaux de gros entretien effectués à l’occasion de programmes de réhabilitation Les dépenses de gros entretien qui interviennent à l’occasion de programmes de réhabilitation ont par définition pour seul objet de vérifier le bon état de "
+        },
+        {
+          "record_id": "pcg-na-21@2026-01-01",
+          "article": null,
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre II – Actifs financiers > Section 3 – Opérations sur titres > Sous-section 2 – Opération de désendettement de fait",
+          "extrait": "4 - Le Comité d’urgence émet l’avis suivant (cf. tableau annexe 1) : Le Comité, compte tenu des éléments évoqués ci avant confirme les dispositions transitoires pour les provisions pour grosses réparations relevant des 1ère et 2ème catégori"
+        },
+        {
+          "record_id": "pcg-122-4-c2@2026-01-01",
+          "article": "122-4",
+          "chemin": "Livre V : adaptations du règlement ANC n° 2014- 03 > Titre I du logement social (Règlement ANC n° 2015-04) > Chapitre 2 – Les opérations affectant le bilan des organismes de logement social > Section 2 - Le passif",
+          "extrait": "IR 3 - Les provisions pour gros entretien ou grandes révisions En application des règles de droit commun et compte tenu de la pratique en vigueur dans les organismes de logement social, les conditions suivantes doivent être réunies pour jus"
+        },
+        {
+          "record_id": "pcg-na-15@2026-01-01",
+          "article": null,
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre II – Actifs financiers > Section 3 – Opérations sur titres > Sous-section 2 – Opération de désendettement de fait",
+          "extrait": "Règlement n°02-10 du CRC. - article 15.2 - Mesures transitoires « Mesures transitoires relatives à la comptabilisation des actifs par composants pour les grosses réparations prévues par le règlement n°2000-06 du CRC sur les passifs, applica"
+        },
+        {
+          "record_id": "pcg-na-28@2026-01-01",
+          "article": null,
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre II – Actifs financiers > Section 3 – Opérations sur titres > Sous-section 2 – Opération de désendettement de fait",
+          "extrait": "1.2 - Composants correspondant aux dépenses qui font l’objet de programmes pluriannuels de grosses réparations ou de grandes révisions (2ème catégorie). Les entreprises qui optent pour la méthode de comptabilisation par composants, pour les"
+        }
+      ]
+    },
+    {
+      "id": "qa002",
+      "raison": "fiscal_pas_comptable",
+      "question": "Quelles sociétés peuvent entrer dans le périmètre d'un groupe d'intégration fiscale au sens de l'article 223-A du CGI ?",
+      "passages": [
+        {
+          "record_id": "pcg-515-2-c1@2026-01-01",
+          "article": "515-2",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre V – Charges et produits > Chapitre I – Définitions > Section 5 – Impôts sur les résultats",
+          "extrait": "Comptabilisation de l’économie d’impôt réalisée dans le cadre d’une intégration fiscale – Avis CU n°2005-G du 12 octobre 2005 relatif aux conditions de constatation d’une provision chez la société mère bénéficiant du régime de l’intégration"
+        },
+        {
+          "record_id": "pcg-515-2@2026-01-01",
+          "article": "515-2",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre V – Charges et produits > Chapitre I – Définitions > Section 5 – Impôts sur les résultats",
+          "extrait": "Dans le cadre du régime de l’intégration fiscale, la société mère comptabilise la dette globale d’impôt du groupe quelles que soient les modalités d’intégration retenues, ainsi que les créances sur les filiales intégrées générées simultaném"
+        },
+        {
+          "record_id": "pcg-833-4@2026-01-01",
+          "article": "833-4",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre III – Contenu de l’annexe des comptes annuels > Section 3 – Informations relatives à la fiscalité",
+          "extrait": "Informations complémentaires relatives au régime fiscal L’annexe comporte les informations suivantes: 1. l’indication de la nature, du montant et du traitement comptable des créances résultant du report en arrière des déficits ; 2. la répar"
+        },
+        {
+          "record_id": "pcg-812-1-c3@2026-01-01",
+          "article": "812-1",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre I – Comptes annuels > Section 2 – Cas particuliers de dépôt des comptes annuels",
+          "extrait": "IR3 - Confidentialité du compte de résultat des petites entreprises En application de l’article L. 232-25 du code de commerce, lors du dépôt prévu au I des articles L. 232-21 à L. 232-23, les sociétés répondant à la définition des petites e"
+        },
+        {
+          "record_id": "pcg-131-3-c1@2026-01-01",
+          "article": "131-3",
+          "chemin": "Livre V : adaptations du règlement ANC n° 2014- 03 > Titre I du logement social (Règlement ANC n° 2015-04) > Chapitre 3 – Les opérations affectant le compte de résultat des organismes de logement social",
+          "extrait": "IR 1 - Contexte L’article 244 quater X du code général des impôts (CGI) prévoit, sur option, un crédit d’impôt en faveur des investissements réalisé par des organismes de logement social dans des immeubles de logement social situés dans un "
+        },
+        {
+          "record_id": "pcg-836-1-c7@2026-01-01",
+          "article": "836-1",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre III – Contenu de l’annexe des comptes annuels > Section 6 – Informations relatives aux opérations et engagements hors bilan",
+          "extrait": "Conséquences sur le périmètre de consolidation Considérant qu'il y a toujours lieu de s'interroger sur la nécessité de comprendre dans le périmètre de consolidation la société dont les titres font l'objet de l'engagement et, éventuellement,"
+        },
+        {
+          "record_id": "pcg-621-5@2026-01-01",
+          "article": "621-5",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VI – Dispositions et opérations de nature spécifique > Chapitre II – Opérations de nature spécifique > Section 1 – Opérations faites en commun et pour le compte de tiers > Sous-section 2 – GIE",
+          "extrait": "À défaut de dispositions spéciales, la comptabilité des communautés d'intérêt autres que les sociétés en participation et les GIE peut être établie par référence aux règles énoncées aux articles 621-1 et 621-2 pour les sociétés en participa"
+        },
+        {
+          "record_id": "pcg-315-1-c8@2026-01-01",
+          "article": "315-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre Ibis – Autres fonds propres > Section 2 – Fonds non remboursables",
+          "extrait": "IR4 – Exemples d’appréciation dans le cadre d’un groupe consolidé autre que d’assurance ou du secteur bancaire 1. Instruments émis par une entité mère et remboursables en titres de capital d’une filiale contrôlée et intégrée S’agissant des "
+        },
+        {
+          "record_id": "pcg-710-1-c2@2026-01-01",
+          "article": "710-1",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VII – Comptabilisation et évaluation des opérations de fusions et opérations assimilées > Chapitre I – Champ d’application",
+          "extrait": "IR 2 : Opération impliquant des sociétés civiles et des sociétés commerciales Le présent titre s’applique, à toutes les entités visées à l’article 710-1, quels que soient la forme juridique de l’entité absorbée et les principes comptables a"
+        },
+        {
+          "record_id": "pcg-812-1-c2@2026-01-01",
+          "article": "812-1",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre I – Comptes annuels > Section 2 – Cas particuliers de dépôt des comptes annuels",
+          "extrait": "IR3 - Confidentialité des comptes annuels des micro-entreprises En application de l’article L. 232-25 du code de commerce, lors du dépôt prévu au I des articles L. 232-21 à L. 232-23, les sociétés répondant à la définition des micro-entrepr"
+        }
+      ]
+    },
+    {
+      "id": "qa003",
+      "raison": "fiscal_pas_comptable",
+      "question": "À quelles conditions la dépréciation d'une immobilisation corporelle est-elle déductible du résultat imposable ?",
+      "passages": [
+        {
+          "record_id": "pcg-512-1-c7@2026-01-01",
+          "article": "512-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre V – Charges et produits > Chapitre I – Définitions > Section 2 – Produits",
+          "extrait": "2.3 - Interprétation SIC - 14 - Immobilisations corporelles – Indemnisation liée à la dépréciation ou la perte de biens Le consensus indique que les indemnisations reçues de tiers doivent être incluses dans le compte de résultat. Cette posi"
+        },
+        {
+          "record_id": "pcg-214-25@2026-01-01",
+          "article": "214-25",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre I – Actifs non financiers > Section 4 – Evaluation des actifs postérieurement à leur date d’entrée > Sous-section 5 – Modalités d'évaluation applicables aux actifs autres que les",
+          "extrait": "A la clôture, la valeur nette comptable des éléments d’actif, autres que les immobilisations corporelles, incorporelles et les stocks, est comparée à la valeur actuelle à la même date, sous réserve des dispositions de l’article 214-23 relat"
+        },
+        {
+          "record_id": "pcg-na-171@2026-01-01",
+          "article": null,
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VI – Dispositions et opérations de nature spécifique > Chapitre III – Autres avis non repris dans un règlement > Section 1 - REACH",
+          "extrait": "3.2.2 – Dépréciation Selon l’article 214-5/1, la dépréciation d’une immobilisation est la constatation que sa valeur actuelle est devenue inférieure à sa valeur nette comptable. Les règles de constitution et d’évaluation des dépréciations s"
+        },
+        {
+          "record_id": "pcg-na-200@2026-01-01",
+          "article": null,
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VI – Dispositions et opérations de nature spécifique > Chapitre III – Autres avis non repris dans un règlement > Section 3 - Actifs acquis et reçus par les musées",
+          "extrait": "(i) Travaux de reconstruction Ces travaux de reconstruction sont comptabilisés en immobilisation corporelle en sus du coût initial (qui a dû faire l’objet d’un test de dépréciation compte tenu de sa détérioration physique conformément aux d"
+        },
+        {
+          "record_id": "pcg-214-18-c1@2026-01-01",
+          "article": "214-18",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre I – Actifs non financiers > Section 4 – Evaluation des actifs postérieurement à leur date d’entrée > Sous-section 3 – Modalités d’évaluation des amortissements des immobilisations",
+          "extrait": "Suivi des dépréciations – Avis CNC n° 2006-12 du 24 octobre 2006 relatif aux modalités de reprise des dépréciations comptables et de neutralisation des incidences fiscales dans les comptes individuels modifiant l’avis CNC n° 2002-07 du 27 j"
+        },
+        {
+          "record_id": "pcg-613-5@2026-01-01",
+          "article": "613-5",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VI – Dispositions et opérations de nature spécifique > Chapitre I – Dispositions de nature spécifique > Section 3 – Indemnités de mutations versées par les sociétés à objet sportif > Sous-section 4 – Modalités de dépréciation",
+          "extrait": "En application des dispositions de l’article 214-15, la société doit apprécier à chaque clôture des comptes, s’il existe un indice quelconque montrant que l’immobilisation a pu perdre notablement de sa valeur. Pour la détermination de la va"
+        },
+        {
+          "record_id": "pcg-613-6@2026-01-01",
+          "article": "613-6",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VI – Dispositions et opérations de nature spécifique > Chapitre I – Dispositions de nature spécifique > Section 3 – Indemnités de mutations versées par les sociétés à objet sportif > Sous-section 4 – Modalités de dépréciation",
+          "extrait": "En l’absence d’un marché des transferts produisant une valeur vénale pouvant servir de base objective à une valeur actuelle, les sociétés doivent utiliser le concept de valeur d’usage qui doit être déterminé avec la prudence qui convient, p"
+        },
+        {
+          "record_id": "pcg-821-2@2026-01-01",
+          "article": "821-2",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre II – Modèles de bilan et compte de résultat > Section 1 – Système de base > Sous-section 2 – Modèle de compte de résultat (produits et charges hors taxes)",
+          "extrait": "Exercice N Exercice N-1 Produits d'exploitation : Ventes de marchandises Production vendue Montant net du chiffre d'affaires Production stockée Production immobilisée Subventions Reprises sur amortissements, dépréciations et provisions Prod"
+        },
+        {
+          "record_id": "pcg-214-14-c2@2026-01-01",
+          "article": "214-14",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre I – Actifs non financiers > Section 4 – Evaluation des actifs postérieurement à leur date d’entrée > Sous-section 3 – Modalités d’évaluation des amortissements des immobilisations",
+          "extrait": "Reprise de dépréciation – Avis CNC n° 2006-12 du 24 octobre 2006 relatif aux modalités de reprise des dépréciations comptables et de neutralisation des incidences fiscales dans les comptes individuels modifiant l’avis CNC n°2002-07 du 27 ju"
+        },
+        {
+          "record_id": "pcg-214-17@2026-01-01",
+          "article": "214-17",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre I – Actifs non financiers > Section 4 – Evaluation des actifs postérieurement à leur date d’entrée > Sous-section 3 – Modalités d’évaluation des amortissements des immobilisations",
+          "extrait": "Si la valeur actuelle d'un actif immobilisé devient inférieure à sa valeur nette comptable, cette dernière est ramenée à la valeur actuelle par le biais d'une dépréciation. Si l’actif considéré est amortissable, la comptabilisation d'une dé"
+        }
+      ]
+    },
+    {
+      "id": "qa004",
+      "raison": "fiscal_pas_comptable",
+      "question": "Quel est le taux réduit d'impôt sur les sociétés applicable aux PME en 2026, et jusqu'à quel montant de bénéfice ?",
+      "passages": [
+        {
+          "record_id": "pcg-na-320@2026-01-01",
+          "article": null,
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre IV – Comptes intermédiaires",
+          "extrait": "Le taux effectif moyen estimé pour l'exercice s'établit à 32,5 % (2 600/8000). Ce taux effectif est appliqué au résultat avant impôt de la période. 2. A titre d'exemple, une entreprise publiant des comptes trimestriels, qui réalise un bénéf"
+        },
+        {
+          "record_id": "pcg-515-1-1@2026-01-01",
+          "article": "515-1-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre V – Charges et produits > Chapitre I – Définitions > Section 5 – Impôts sur les résultats",
+          "extrait": "La comptabilisation de la contribution exceptionnelle sur les bénéfices des grandes entreprises, instaurée par l’article 48 de la loi n° 2025-127 du 14 février 2025 de finances pour 2025, suit celle de l’impôt sur les bénéfices relatif au p"
+        },
+        {
+          "record_id": "pcg-833-4@2026-01-01",
+          "article": "833-4",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre III – Contenu de l’annexe des comptes annuels > Section 3 – Informations relatives à la fiscalité",
+          "extrait": "Informations complémentaires relatives au régime fiscal L’annexe comporte les informations suivantes: 1. l’indication de la nature, du montant et du traitement comptable des créances résultant du report en arrière des déficits ; 2. la répar"
+        },
+        {
+          "record_id": "pcg-na-3@2026-01-01",
+          "article": null,
+          "chemin": "",
+          "extrait": "Ce recueil est mis à jour au regard des modifications apportées au règlement ANC n°2014-03 et le cas échéant, des évolutions des éléments de doctrine. La version du recueil au 1er janvier 2026 reprend l’ensemble des dispositions applicables"
+        },
+        {
+          "record_id": "pcg-833-4-c2@2026-01-01",
+          "article": "833-4",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre III – Contenu de l’annexe des comptes annuels > Section 3 – Informations relatives à la fiscalité",
+          "extrait": "Répartition du montant global des impôts sur les bénéfices Taux d’imposition : % Montant brut Impôt (économie) Montant net Résultat courant - Produits non imposables + Charges non déductibles + Produits non comptabilisés au cours de l’exerc"
+        },
+        {
+          "record_id": "pcg-na-39@2026-01-01",
+          "article": null,
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre II – Actifs financiers > Section 3 – Opérations sur titres > Sous-section 2 – Opération de désendettement de fait",
+          "extrait": "Estimation de l’effet d’impôt compte tenu de l’étalement sur 5 ans de l’impact fiscal résultant de la première approche par composants Le nouvel article 237 septies du CGI prévoit que : « I - La majoration ou la minoration du bénéfice impos"
+        },
+        {
+          "record_id": "pcg-na-44@2026-01-01",
+          "article": null,
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre II – Actifs financiers > Section 3 – Opérations sur titres > Sous-section 2 – Opération de désendettement de fait",
+          "extrait": "- Schémas comptables pour l’imputation des coûts d’émission d’instruments de capitaux propres sur les primes afférentes Soit une émission d'instruments de capitaux propres de 1.000 (nominal 100 + prime 900) entraînant des coûts d'émission d"
+        },
+        {
+          "record_id": "pcg-515-1@2026-01-01",
+          "article": "515-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre V – Charges et produits > Chapitre I – Définitions > Section 5 – Impôts sur les résultats",
+          "extrait": "Le taux d’impôt à appliquer est celui en vigueur à la date de clôture. Lorsque le vote de l’impôt modifiant le taux existant survient après la clôture de l’exercice, les effets de cette modification affectent l’exercice au cours duquel ce v"
+        },
+        {
+          "record_id": "pcg-515-1-c2@2026-01-01",
+          "article": "515-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre V – Charges et produits > Chapitre I – Définitions > Section 5 – Impôts sur les résultats",
+          "extrait": "CIR – Note d’information ANC du 11 janvier 2011 relatif à l’avancement des travaux du groupe « Impôts, taxes et versements assimilés » pour l’établissement des comptes individuels et consolidés selon les règles françaises Le Collège de l’AN"
+        },
+        {
+          "record_id": "pcg-1221-63@2026-01-01",
+          "article": "1221-63",
+          "chemin": "Livre IV : tenue, structure et fonctionnement des comptes > Titre XII – Fonctionnement des comptes > Chapitre II – Comptes de gestion > Section 1 – Comptes de charges (Classe 6)",
+          "extrait": "63 : Impôts, taxes et versements assimilés Les impôts sur les bénéfices ne sont pas comptabilisés sous ce compte. Ils sont inscrits au compte 695 « Impôts sur les bénéfices ». Les versements au Trésor à effectuer au titre des taxes et parti"
+        }
+      ]
+    },
+    {
+      "id": "qa005",
+      "raison": "fiscal_pas_comptable",
+      "question": "Sur combien d'exercices un déficit fiscal est-il reportable en avant, et sous quel plafond ?",
+      "passages": [
+        {
+          "record_id": "pcg-122-3-c2@2026-01-01",
+          "article": "122-3",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre I – Objet et principes de la comptabilité > Chapitre II – Principes de la comptabilité > Section 2 – Méthodes comptables, changements de méthodes comptables, estimations comptables, changements d’estimation et corrections d’erreurs > Sous-section 1 – Méthodes comptables et changements de méthodes comptables",
+          "extrait": "IR 3 - Précisions sur le calcul de l’effet d’impôt du changement de méthode Lorsque l’entité ne comptabilise pas d’impôts différés dans ses comptes individuels, l’impôt à considérer est égal à la différence entre l’impôt exigible calculé su"
+        },
+        {
+          "record_id": "pcg-na-39@2026-01-01",
+          "article": null,
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre II – Actifs financiers > Section 3 – Opérations sur titres > Sous-section 2 – Opération de désendettement de fait",
+          "extrait": "Estimation de l’effet d’impôt compte tenu de l’étalement sur 5 ans de l’impact fiscal résultant de la première approche par composants Le nouvel article 237 septies du CGI prévoit que : « I - La majoration ou la minoration du bénéfice impos"
+        },
+        {
+          "record_id": "pcg-833-4-c3@2026-01-01",
+          "article": "833-4",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre III – Contenu de l’annexe des comptes annuels > Section 3 – Informations relatives à la fiscalité",
+          "extrait": "Éléments susceptibles d’être à l’origine d’allègements et d’accroissements de la dette future d’impôts sur les bénéfices Exercice N Exercice N-1 Base Impôt correspondant Base Impôt correspondant Décalage dans le temps entre le régime fiscal"
+        },
+        {
+          "record_id": "pcg-122-3-c3@2026-01-01",
+          "article": "122-3",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre I – Objet et principes de la comptabilité > Chapitre II – Principes de la comptabilité > Section 2 – Méthodes comptables, changements de méthodes comptables, estimations comptables, changements d’estimation et corrections d’erreurs > Sous-section 1 – Méthodes comptables et changements de méthodes comptables",
+          "extrait": "IR 4 - Exemple de calcul de l’effet d’impôt du changement de méthode Une entité A, dont l'exercice coïncide avec l'année civile, réalise au titre de l’année N un bénéfice fiscal de 400 K€ avant prise en compte du changement de méthode et de"
+        },
+        {
+          "record_id": "pcg-na-309@2026-01-01",
+          "article": null,
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VII – Comptabilisation et évaluation des opérations de fusions et opérations assimilées > Chapitre VI – Cas particulier de l’opération de confusion de patrimoine",
+          "extrait": "3) Suivi du mali technique Suite de l’exemple 1 : Soit l’entité B détenue par l’entité A. L’entité A absorbe l’entité B au 1er janvier N. Les apports sont évalués à la valeur comptable. Le mali technique dégagé lors de cette opération est d"
+        },
+        {
+          "record_id": "pcg-822-1-c2@2026-01-01",
+          "article": "822-1",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre II – Modèles de bilan et compte de résultat > Section 2 – Système abrégé > Sous-section 1 – Modèle de bilan",
+          "extrait": "IR3 – Modalités de mise en œuvre Il est rappelé que l’entité a la faculté d’établir un document plus détaillé, sous réserve de respecter l’ordonnancement général des rubriques et postes du modèle. Peut ne pas être mentionné un poste du bila"
+        },
+        {
+          "record_id": "pcg-833-4@2026-01-01",
+          "article": "833-4",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre III – Contenu de l’annexe des comptes annuels > Section 3 – Informations relatives à la fiscalité",
+          "extrait": "Informations complémentaires relatives au régime fiscal L’annexe comporte les informations suivantes: 1. l’indication de la nature, du montant et du traitement comptable des créances résultant du report en arrière des déficits ; 2. la répar"
+        },
+        {
+          "record_id": "pcg-1211-12@2026-01-01",
+          "article": "1211-12",
+          "chemin": "Livre IV : tenue, structure et fonctionnement des comptes > Titre XII – Fonctionnement des comptes > Chapitre I – Comptes de bilan > Section 1 – Comptes de capitaux : capitaux propres, autres fonds propres, emprunts et dettes assimilées (Classe 1)",
+          "extrait": "12 : Résultat de l’exercice Le compte 12 « Résultat de l'exercice » enregistre pour solde les comptes de charges et les comptes de produits de l'exercice. Le solde créditeur du compte 12 représente un bénéfice, les produits étant supérieurs"
+        },
+        {
+          "record_id": "pcg-na-320@2026-01-01",
+          "article": null,
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre IV – Comptes intermédiaires",
+          "extrait": "Le taux effectif moyen estimé pour l'exercice s'établit à 32,5 % (2 600/8000). Ce taux effectif est appliqué au résultat avant impôt de la période. 2. A titre d'exemple, une entreprise publiant des comptes trimestriels, qui réalise un bénéf"
+        },
+        {
+          "record_id": "pcg-122-3@2026-01-01",
+          "article": "122-3",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre I – Objet et principes de la comptabilité > Chapitre II – Principes de la comptabilité > Section 2 – Méthodes comptables, changements de méthodes comptables, estimations comptables, changements d’estimation et corrections d’erreurs > Sous-section 1 – Méthodes comptables et changements de méthodes comptables",
+          "extrait": "Lors de changements de méthodes comptables, l'effet, après impôt sur le résultat, de la nouvelle méthode est calculé de façon rétrospective, comme si celle-ci avait toujours été appliquée. Si l'effet à l'ouverture ne peut être calculé de fa"
+        }
+      ]
+    },
+    {
+      "id": "qa006",
+      "raison": "fiscal_pas_comptable",
+      "question": "Quel est le plafond de déductibilité fiscale de l'amortissement d'un véhicule de tourisme selon son taux d'émission de CO2 ?",
+      "passages": [
+        {
+          "record_id": "pcg-na-268@2026-01-01",
+          "article": null,
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VI – Dispositions et opérations de nature spécifique > Chapitre III – Autres avis non repris dans un règlement > Section 7 - Certificats de valeur garantie, bons de cession de valeur garantie et instruments assimilés Dette de préfinancement Cession escompte",
+          "extrait": "Soit les émissions de CO2, les achats et les ventes de quotas suivants pour les quatre trimestres de l’année N et pour le 1er trimestre de l’année N+1 Année N Période Emissions Achats au comptant Achats à terme Ventes Cours à fin de période"
+        },
+        {
+          "record_id": "pcg-214-18-c1@2026-01-01",
+          "article": "214-18",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre I – Actifs non financiers > Section 4 – Evaluation des actifs postérieurement à leur date d’entrée > Sous-section 3 – Modalités d’évaluation des amortissements des immobilisations",
+          "extrait": "Suivi des dépréciations – Avis CNC n° 2006-12 du 24 octobre 2006 relatif aux modalités de reprise des dépréciations comptables et de neutralisation des incidences fiscales dans les comptes individuels modifiant l’avis CNC n° 2002-07 du 27 j"
+        },
+        {
+          "record_id": "pcg-na-270@2026-01-01",
+          "article": null,
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VI – Dispositions et opérations de nature spécifique > Chapitre III – Autres avis non repris dans un règlement > Section 7 - Certificats de valeur garantie, bons de cession de valeur garantie et instruments assimilés Dette de préfinancement Cession escompte",
+          "extrait": "Année N+1 Période Emissions Achats au comptant (crédits carbone ou CER) Achats à terme Ventes Cours à fin de période Quantité PU Quantité PU Livraison Quantité PU T1 500 600 8 - 12 30/04/N+1 : Restitution pour destruction sur le registre : "
+        },
+        {
+          "record_id": "pcg-214-8-c1@2026-01-01",
+          "article": "214-8",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre I – Actifs non financiers > Section 4 – Evaluation des actifs postérieurement à leur date d’entrée > Sous-section 1 – Définitions et principes",
+          "extrait": "Amortissement et dépréciation des actifs – Note de présentation du règlement ANC n° 2015-06 du 23 novembre 2015 modifiant le plan comptable général Les amortissements déduits de la valeur brute traduisent le plan d’amortissement propre à l’"
+        },
+        {
+          "record_id": "pcg-214-14-c2@2026-01-01",
+          "article": "214-14",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre I – Actifs non financiers > Section 4 – Evaluation des actifs postérieurement à leur date d’entrée > Sous-section 3 – Modalités d’évaluation des amortissements des immobilisations",
+          "extrait": "Reprise de dépréciation – Avis CNC n° 2006-12 du 24 octobre 2006 relatif aux modalités de reprise des dépréciations comptables et de neutralisation des incidences fiscales dans les comptes individuels modifiant l’avis CNC n°2002-07 du 27 ju"
+        },
+        {
+          "record_id": "pcg-838-6-c2@2026-01-01",
+          "article": "838-6",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre III – Contenu de l’annexe des comptes annuels > Section 8 – Autres informations",
+          "extrait": "Informations en annexe Les quotas d’émission de gaz à effet de serre étant comptabilisés en stocks, les entreprises mentionnent en annexe les informations générales relatives aux stocks : - valeur comptable des stocks de quotas ; - méthode "
+        },
+        {
+          "record_id": "pcg-832-2@2026-01-01",
+          "article": "832-2",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre III – Contenu de l’annexe des comptes annuels > Section 2 – Informations relatives aux postes du bilan et du compte de résultat > Sous-section 1 – Informations relatives à l’actif",
+          "extrait": "Précisions sur les postes d’immobilisations, amortissements et dépréciations État de l’actif immobilisé L’annexe comporte pour chaque catégorie d’immobilisations, les informations suivantes dès qu’elles sont significatives : 1. le rapproche"
+        },
+        {
+          "record_id": "pcg-214-9@2026-01-01",
+          "article": "214-9",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre I – Actifs non financiers > Section 4 – Evaluation des actifs postérieurement à leur date d’entrée > Sous-section 2 – Comptabilisation des immobilisations décomposables",
+          "extrait": "Lorsque des éléments constitutifs d’un actif sont exploités de façon indissociable, un plan d’amortissement unique est retenu pour l’ensemble de ces éléments. Cependant, si dès l’origine, un ou plusieurs de ces éléments ont chacun des utili"
+        },
+        {
+          "record_id": "pcg-na-37@2026-01-01",
+          "article": null,
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre II – Actifs financiers > Section 3 – Opérations sur titres > Sous-section 2 – Opération de désendettement de fait",
+          "extrait": "Annexe 4 : Exemple de réallocation des valeurs nettes comptables Soit une immobilisation acquise depuis 10 ans et amortissable sur 20 ans. Valeur brute : 100 Amortissements : 50 Valeur nette comptable : 50 En fonction de données actuelles r"
+        },
+        {
+          "record_id": "pcg-na-33@2026-01-01",
+          "article": null,
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre II – Actifs financiers > Section 3 – Opérations sur titres > Sous-section 2 – Opération de désendettement de fait",
+          "extrait": "3.1 - Reconstitution à partir des factures d’origine 3.1.1 - Aucun composant n’a été renouvelé entre l’acquisition et la date de première application au 1er janvier 2003 Soit une immobilisation acquise le 01/01/1999 avec une durée d’amortis"
+        }
+      ]
+    },
+    {
+      "id": "qa007",
+      "raison": "fiscal_pas_comptable",
+      "question": "La provision constituée au titre des indemnités de fin de carrière est-elle déductible du résultat imposable de l'exercice ?",
+      "passages": [
+        {
+          "record_id": "pcg-323-4-c1@2026-01-01",
+          "article": "323-4",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 3 – Evaluation des passifs > Sous-section 1 – Evaluation des passifs à la date d’entrée",
+          "extrait": "Evaluation avant effet d’impôt – Avis CNC n° 00-01 du 20 avril 2000 relatif aux passifs Une provision qui ne serait pas déductible du résultat imposable de l'exercice de sa comptabilisation n'est pas minorée du montant de l'impôt qui sera é"
+        },
+        {
+          "record_id": "pcg-324-1@2026-01-01",
+          "article": "324-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 4 – Pensions, retraites et versements similaires",
+          "extrait": "Les passifs relatifs aux engagements de l’entité en matière de pensions, de compléments de retraite, d’indemnités et d’allocations en raison du départ à la retraite ou avantages similaires des membres de son personnel et de ses associés et "
+        },
+        {
+          "record_id": "pcg-1211-15@2026-01-01",
+          "article": "1211-15",
+          "chemin": "Livre IV : tenue, structure et fonctionnement des comptes > Titre XII – Fonctionnement des comptes > Chapitre I – Comptes de bilan > Section 1 – Comptes de capitaux : capitaux propres, autres fonds propres, emprunts et dettes assimilées (Classe 1)",
+          "extrait": "15 : Provisions Lors de la constitution d'une provision, le compte de provisions est crédité par le débit : - du compte 681 « Dotations aux amortissements, aux dépréciations et aux provisions » lorsqu'elle concerne l'exploitation normale et"
+        },
+        {
+          "record_id": "pcg-833-4-c2@2026-01-01",
+          "article": "833-4",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre III – Contenu de l’annexe des comptes annuels > Section 3 – Informations relatives à la fiscalité",
+          "extrait": "Répartition du montant global des impôts sur les bénéfices Taux d’imposition : % Montant brut Impôt (économie) Montant net Résultat courant - Produits non imposables + Charges non déductibles + Produits non comptabilisés au cours de l’exerc"
+        },
+        {
+          "record_id": "pcg-324-1-c3@2026-01-01",
+          "article": "324-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 4 – Pensions, retraites et versements similaires",
+          "extrait": "IR 3 - Modalités de mise-en-œuvre : méthodes d’évaluation et de comptabilisation des engagements de retraite Recommandation ANC n° 2013-02 modifiée le 5 novembre 2021 relative aux règles d’évaluation et de comptabilisation des engagements d"
+        },
+        {
+          "record_id": "pcg-821-2@2026-01-01",
+          "article": "821-2",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre II – Modèles de bilan et compte de résultat > Section 1 – Système de base > Sous-section 2 – Modèle de compte de résultat (produits et charges hors taxes)",
+          "extrait": "Exercice N Exercice N-1 Produits d'exploitation : Ventes de marchandises Production vendue Montant net du chiffre d'affaires Production stockée Production immobilisée Subventions Reprises sur amortissements, dépréciations et provisions Prod"
+        },
+        {
+          "record_id": "pcg-1221-68@2026-01-01",
+          "article": "1221-68",
+          "chemin": "Livre IV : tenue, structure et fonctionnement des comptes > Titre XII – Fonctionnement des comptes > Chapitre II – Comptes de gestion > Section 1 – Comptes de charges (Classe 6)",
+          "extrait": "68 : Dotations aux amortissements, aux dépréciations et aux provisions Les comptes 681 « Dotations aux amortissements, aux dépréciations et aux provisions (à inscrire dans les charges d’exploitation) », 686 « Dotations aux amortissements, a"
+        },
+        {
+          "record_id": "pcg-515-2-c1@2026-01-01",
+          "article": "515-2",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre V – Charges et produits > Chapitre I – Définitions > Section 5 – Impôts sur les résultats",
+          "extrait": "Comptabilisation de l’économie d’impôt réalisée dans le cadre d’une intégration fiscale – Avis CU n°2005-G du 12 octobre 2005 relatif aux conditions de constatation d’une provision chez la société mère bénéficiant du régime de l’intégration"
+        },
+        {
+          "record_id": "pcg-821-2-c7@2026-01-01",
+          "article": "821-2",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre II – Modèles de bilan et compte de résultat > Section 1 – Système de base > Sous-section 2 – Modèle de compte de résultat (produits et charges hors taxes)",
+          "extrait": "Charges financières : Dotations aux amortissements, aux dépréciations et aux provisions 686 Intérêts et charges assimilées 661, 664, 665 Différences négatives de change 666 Valeurs comptables des immobilisations financières cédées Charges n"
+        },
+        {
+          "record_id": "pcg-324-1-c56@2026-01-01",
+          "article": "324-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 4 – Pensions, retraites et versements similaires",
+          "extrait": "6240 6040 5530 5472 Les principales hypothèses actuarielles à la date de clôture (exprimées en moyennes pondérées) sont les suivantes : 20X2 20X1 Taux d’actualisation au 31 décembre 10,0% 9,1% Rendement attendu des actifs du régime au 31 dé"
+        }
+      ]
+    },
+    {
+      "id": "qa008",
+      "raison": "fiscal_pas_comptable",
+      "question": "Quelles opérations obligent une entreprise à pratiquer une livraison à soi-même au sens du code général des impôts ?",
+      "passages": [
+        {
+          "record_id": "pcg-191-1-c7@2026-01-01",
+          "article": "191-1",
+          "chemin": "Livre V : adaptations du règlement ANC n° 2014- 03 > Titre I du logement social (Règlement ANC n° 2015-04) > Chapitre 9 – Opérations d’aménagement réalisées dans le cadre d’une concession d’aménagement",
+          "extrait": "6. La levée d’option et la vente du logement en fin d’année N + 4 La livraison à soi-même (LASM) au 31/12 de la 2ième année après l’achèvement Le reversement de la TVA : 1/20ième de la TVA n’est plus récupérable Sortie de l’immeuble livré e"
+        },
+        {
+          "record_id": "pcg-214-13-c3@2026-01-01",
+          "article": "214-13",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre I – Actifs non financiers > Section 4 – Evaluation des actifs postérieurement à leur date d’entrée > Sous-section 3 – Modalités d’évaluation des amortissements des immobilisations",
+          "extrait": "Règles d’amortissement – Avis CU n° 2006-C du 4 octobre 2006 afférant à l’interprétation des dispositions de l’avis CNC n° 2004-15 du 23 juin 2004 relatif à la définition, la comptabilisation et l’évaluation des actifs, excluant dans les co"
+        },
+        {
+          "record_id": "pcg-512-1@2026-01-01#2",
+          "article": "512-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre V – Charges et produits > Chapitre I – Définitions > Section 2 – Produits",
+          "extrait": "- la production stockée ou déstockée au cours de l'exercice ; - la production immobilisée ; - les reprises sur amortissements et provisions ; - le prix de cession des éléments d'actifs cédés, sous réserve des dispositions particulières fixé"
+        },
+        {
+          "record_id": "pcg-1214-44@2026-01-01",
+          "article": "1214-44",
+          "chemin": "Livre IV : tenue, structure et fonctionnement des comptes > Titre XII – Fonctionnement des comptes > Chapitre I – Comptes de bilan > Section 4 – Comptes de tiers (Classe 4)",
+          "extrait": "44 : État et autres collectivités publiques Les opérations à inscrire au compte 44 « État et autres collectivités publiques » sont celles qui sont faites avec l'État, les collectivités publiques et les organismes internationaux à caractère "
+        },
+        {
+          "record_id": "pcg-202-1-c1@2026-01-01",
+          "article": "202-1",
+          "chemin": "Livre V : adaptations du règlement ANC n° 2014- 03 > Titre 6 – Coopératives agricoles (règlement ANC N° 2021-01) > Chapitre 2 – Traitement comptable de certaines opérations > Section 2 – Opérations avec les tiers non associés",
+          "extrait": "IR1 - Elément de contexte - Raisons d’une comptabilité spéciale Une coopérative agricole ou une union de coopératives agricoles est régie par principe par la règle de l’exclusivisme selon laquelle elle ne peut réaliser d’opérations qu’avec "
+        },
+        {
+          "record_id": "pcg-na-256@2026-01-01",
+          "article": null,
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VI – Dispositions et opérations de nature spécifique > Chapitre III – Autres avis non repris dans un règlement > Section 7 - Certificats de valeur garantie, bons de cession de valeur garantie et instruments assimilés Dette de préfinancement Cession escompte",
+          "extrait": "Modalités pratiques de comptabilisation – Avis CNC n° 2003-06 relatif au traitement comptable des activités d’échanges dans le cadre des transactions internet Une entreprise vend un service publicitaire pour une valeur toutes taxes comprise"
+        },
+        {
+          "record_id": "pcg-131-3-c1@2026-01-01",
+          "article": "131-3",
+          "chemin": "Livre V : adaptations du règlement ANC n° 2014- 03 > Titre I du logement social (Règlement ANC n° 2015-04) > Chapitre 3 – Les opérations affectant le compte de résultat des organismes de logement social",
+          "extrait": "IR 1 - Contexte L’article 244 quater X du code général des impôts (CGI) prévoit, sur option, un crédit d’impôt en faveur des investissements réalisé par des organismes de logement social dans des immeubles de logement social situés dans un "
+        },
+        {
+          "record_id": "pcg-na-326@2026-01-01",
+          "article": null,
+          "chemin": "Livre IV : tenue, structure et fonctionnement des comptes > Titre XII – Fonctionnement des comptes > Chapitre II – Comptes de gestion > Section 2 – Comptes de produits (Classe 7)",
+          "extrait": "Les produits d'exploitation normale et courante sont enregistrés dans les comptes 70 « Ventes de produits fabriqués, prestations de services, marchandises », 71 « Production stockée (ou déstockage) », 72 « Production immobilisée », 74 « Sub"
+        },
+        {
+          "record_id": "pcg-614-2-c1@2026-01-01",
+          "article": "614-2",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VI – Dispositions et opérations de nature spécifique > Chapitre I – Dispositions de nature spécifique > Section 4 – Formation professionnelle et apprentissage > Sous-section 2 – Solde de la taxe d’apprentissage reçu par les organismes ou établissements de",
+          "extrait": "IR1 – Contexte Pour se libérer du solde de taxe d’apprentissage, les entreprises peuvent verser aux centres de formation d’apprentis des subventions sous forme d’équipements ou de matériels conformes aux besoins des formations dispensées. D"
+        },
+        {
+          "record_id": "pcg-821-2@2026-01-01",
+          "article": "821-2",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre II – Modèles de bilan et compte de résultat > Section 1 – Système de base > Sous-section 2 – Modèle de compte de résultat (produits et charges hors taxes)",
+          "extrait": "Exercice N Exercice N-1 Produits d'exploitation : Ventes de marchandises Production vendue Montant net du chiffre d'affaires Production stockée Production immobilisée Subventions Reprises sur amortissements, dépréciations et provisions Prod"
+        }
+      ]
+    },
+    {
+      "id": "qa009",
+      "raison": "fiscal_pas_comptable",
+      "question": "Le mali technique constaté lors d'une fusion est-il amortissable ou déductible fiscalement ?",
+      "passages": [
+        {
+          "record_id": "pcg-745-4@2026-01-01",
+          "article": "745-4",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VII – Comptabilisation et évaluation des opérations de fusions et opérations assimilées > Chapitre IV - Méthodologie d’évaluation des apports > Section 5 - Traitement du boni et du mali de fusion > Sous-section 2 - Traitement du mali pour les opérations évaluées à la valeur comptable",
+          "extrait": "Le mali de fusion peut, le cas échéant, être décomposé en deux éléments : - le mali technique proprement dit, qui correspond, à hauteur de la participation antérieurement détenue, aux plus-values latentes sur éléments d’actif comptabilisés "
+        },
+        {
+          "record_id": "pcg-745-7-c1@2026-01-01",
+          "article": "745-7",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VII – Comptabilisation et évaluation des opérations de fusions et opérations assimilées > Chapitre IV - Méthodologie d’évaluation des apports > Section 5 - Traitement du boni et du mali de fusion > Sous-section 2 - Traitement du mali pour les opérations évaluées à la valeur comptable",
+          "extrait": "IR 3 : Amortissement du mali technique Le mali technique suit les règles d’amortissement de l’actif sous-jacent sur lequel porte la plus-value. Ainsi, la quote-part de mali affectée à un terrain ou à des titres n’est pas amorti mais fait l’"
+        },
+        {
+          "record_id": "pcg-745-4-c1@2026-01-01",
+          "article": "745-4",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VII – Comptabilisation et évaluation des opérations de fusions et opérations assimilées > Chapitre IV - Méthodologie d’évaluation des apports > Section 5 - Traitement du boni et du mali de fusion > Sous-section 2 - Traitement du mali pour les opérations évaluées à la valeur comptable",
+          "extrait": "IR 3 : Modalités de calcul du mali technique de fusion - Règles générales Le mali technique de fusion correspond, à hauteur de la participation antérieurement détenue : - aux plus-values latentes sur éléments d’actif comptabilisés ou non da"
+        },
+        {
+          "record_id": "pcg-745-6-c1@2026-01-01",
+          "article": "745-6",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VII – Comptabilisation et évaluation des opérations de fusions et opérations assimilées > Chapitre IV - Méthodologie d’évaluation des apports > Section 5 - Traitement du boni et du mali de fusion > Sous-section 2 - Traitement du mali pour les opérations évaluées à la valeur comptable",
+          "extrait": "IR 3 : Présentation au bilan du mali technique Le mali technique est comptabilisé en fonction des différentes natures d’actifs sous-jacents afin de faciliter son suivi dans le temps compte tenu des nouvelles règles d’amortissement prévues à"
+        },
+        {
+          "record_id": "pcg-na-309@2026-01-01",
+          "article": null,
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VII – Comptabilisation et évaluation des opérations de fusions et opérations assimilées > Chapitre VI – Cas particulier de l’opération de confusion de patrimoine",
+          "extrait": "3) Suivi du mali technique Suite de l’exemple 1 : Soit l’entité B détenue par l’entité A. L’entité A absorbe l’entité B au 1er janvier N. Les apports sont évalués à la valeur comptable. Le mali technique dégagé lors de cette opération est d"
+        },
+        {
+          "record_id": "pcg-838-14-c1@2026-01-01",
+          "article": "838-14",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre III – Contenu de l’annexe des comptes annuels > Section 8 – Autres informations",
+          "extrait": "IR3 – Informations relatives au mali Outre les informations requises relatives aux modalités de calcul des plus-values latentes et à l’affectation du mali, l’annexe doit également fournir les modalités d’amortissement du mali technique. Les"
+        },
+        {
+          "record_id": "pcg-745-3@2026-01-01",
+          "article": "745-3",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VII – Comptabilisation et évaluation des opérations de fusions et opérations assimilées > Chapitre IV - Méthodologie d’évaluation des apports > Section 5 - Traitement du boni et du mali de fusion > Sous-section 2 - Traitement du mali pour les opérations évaluées à la valeur comptable",
+          "extrait": "Le mali de fusion représente l’écart négatif entre l’actif net, positif ou négatif, reçu par l’entité absorbante, après harmonisation des méthodes comptables telle que défini à l’article 744-3, à hauteur de sa participation dans l’entité ab"
+        },
+        {
+          "record_id": "pcg-na-308@2026-01-01",
+          "article": null,
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VII – Comptabilisation et évaluation des opérations de fusions et opérations assimilées > Chapitre VI – Cas particulier de l’opération de confusion de patrimoine",
+          "extrait": "2) Exemple d’affectation et de suivi du mali technique Exemple 1 : Soit l’entité B détenue par l’entité A. L’entité A absorbe l’entité B au 1er janvier N. Les apports sont évalués à la valeur comptable. La valeur des titres est de 50 000 et"
+        },
+        {
+          "record_id": "pcg-745-7@2026-01-01",
+          "article": "745-7",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VII – Comptabilisation et évaluation des opérations de fusions et opérations assimilées > Chapitre IV - Méthodologie d’évaluation des apports > Section 5 - Traitement du boni et du mali de fusion > Sous-section 2 - Traitement du mali pour les opérations évaluées à la valeur comptable",
+          "extrait": "Le mali technique est amorti ou rapporté au résultat selon les mêmes règles et dans les mêmes conditions que les actifs sous-jacents auquel il est affecté."
+        },
+        {
+          "record_id": "pcg-745-4-c2@2026-01-01",
+          "article": "745-4",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VII – Comptabilisation et évaluation des opérations de fusions et opérations assimilées > Chapitre IV - Méthodologie d’évaluation des apports > Section 5 - Traitement du boni et du mali de fusion > Sous-section 2 - Traitement du mali pour les opérations évaluées à la valeur comptable",
+          "extrait": "IR 3 : Détermination du mali technique en cas d’actif net comptable négatif En cas d’actif net négatif apporté (transmission universelle de patrimoine, fusion lorsque l’entité absorbante détient la totalité des titres de l’entité absorbée),"
+        }
+      ]
+    },
+    {
+      "id": "qa010",
+      "raison": "fiscal_pas_comptable",
+      "question": "Quelles conditions le régime de faveur des fusions de l'article 210 A du CGI impose-t-il à la société absorbante ?",
+      "passages": [
+        {
+          "record_id": "pcg-141-3-c2@2026-01-01",
+          "article": "141-3",
+          "chemin": "Livre V : adaptations du règlement ANC n° 2014- 03 > Titre I du logement social (Règlement ANC n° 2015-04) > Chapitre 4 – Les opérations de fusions et opérations assimilées",
+          "extrait": "IR 3 - Valeur des titres reçus en échange par les actionnaires de la société absorbée. Dans le cadre des opérations de fusion, la société actionnaire de la société absorbée doit annuler les titres de la société absorbée et inscrire à l’acti"
+        },
+        {
+          "record_id": "pcg-744-3@2026-01-01",
+          "article": "744-3",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VII – Comptabilisation et évaluation des opérations de fusions et opérations assimilées > Chapitre IV - Méthodologie d’évaluation des apports > Section 4 - Détermination des valeurs individuelles des apports > Sous-section 3 - Retraitement des valeurs d’apport réalisé à la valeur comptable",
+          "extrait": "En cas d’opération réalisée à la valeur comptable impliquant une entité absorbée ou apporteuse non soumise au présent règlement, l’entité absorbante ou bénéficiaire des apports procède aux retraitements nécessaires des actifs et passifs app"
+        },
+        {
+          "record_id": "pcg-745-3@2026-01-01",
+          "article": "745-3",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VII – Comptabilisation et évaluation des opérations de fusions et opérations assimilées > Chapitre IV - Méthodologie d’évaluation des apports > Section 5 - Traitement du boni et du mali de fusion > Sous-section 2 - Traitement du mali pour les opérations évaluées à la valeur comptable",
+          "extrait": "Le mali de fusion représente l’écart négatif entre l’actif net, positif ou négatif, reçu par l’entité absorbante, après harmonisation des méthodes comptables telle que défini à l’article 744-3, à hauteur de sa participation dans l’entité ab"
+        },
+        {
+          "record_id": "pcg-746-1@2026-01-01",
+          "article": "746-1",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VII – Comptabilisation et évaluation des opérations de fusions et opérations assimilées > Chapitre IV - Méthodologie d’évaluation des apports > Section 6 – Traitement de certaines fusions et de la scission sans échange de titres > Sous-Section 1 - Traitement de l’opération dans les comptes de l’entité bénéficiaire des apports",
+          "extrait": "Pour les fusions définies aux 3° et 4° du II de l’article L.236-3 du code de commerce et les scissions totales, l’entité absorbante ou les entités bénéficiaires des apports en cas de scission inscrivent la contrepartie des apports en report"
+        },
+        {
+          "record_id": "pcg-838-14@2026-01-01",
+          "article": "838-14",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre III – Contenu de l’annexe des comptes annuels > Section 8 – Autres informations",
+          "extrait": "Informations relatives aux fusions et opérations assimilées a) Pour toutes les opérations entrant dans le champ d’application du titre VII du livre II, l’entité absorbante ou bénéficiaire des apports doit mentionner l’impact de l’opération "
+        },
+        {
+          "record_id": "pcg-745-10-c2@2026-01-01",
+          "article": "745-10",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VII – Comptabilisation et évaluation des opérations de fusions et opérations assimilées > Chapitre IV - Méthodologie d’évaluation des apports > Section 5 - Traitement du boni et du mali de fusion > Sous-section 2 - Traitement du mali pour les opérations évaluées à la valeur comptable",
+          "extrait": "IR 3 : Sort du mali technique lorsque l’absorbante est elle-même absorbée par la suite Le traitement dépend des conditions de réalisation de l’opération : - si la fusion absorption est réalisée entre entités sous contrôle distinct : les app"
+        },
+        {
+          "record_id": "pcg-745-1@2026-01-01",
+          "article": "745-1",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VII – Comptabilisation et évaluation des opérations de fusions et opérations assimilées > Chapitre IV - Méthodologie d’évaluation des apports > Section 5 - Traitement du boni et du mali de fusion",
+          "extrait": "Lorsque l’entité absorbante a acquis des titres de l’entité absorbée antérieurement à la date de l’opération de fusion, un boni ou mali peut apparaître lors de l’annulation de ces titres auxquels se substituent les actifs et passifs de l’en"
+        },
+        {
+          "record_id": "pcg-751-2@2026-01-01",
+          "article": "751-2",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VII – Comptabilisation et évaluation des opérations de fusions et opérations assimilées > Chapitre V - Événements de la période intercalaire > Section 1 – Traitement de la perte de rétroactivité",
+          "extrait": "En cas d’effet rétroactif, lorsque la valeur des apports à la date d’effet risque de devenir, du fait d’une perte intercalaire, supérieure à la valeur réelle globale de l’entité à la date de réalisation de l’opération, une provision pour pe"
+        },
+        {
+          "record_id": "pcg-746-2@2026-01-01",
+          "article": "746-2",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VII – Comptabilisation et évaluation des opérations de fusions et opérations assimilées > Chapitre IV - Méthodologie d’évaluation des apports > Section 6 – Traitement de certaines fusions et de la scission sans échange de titres > Sous-Section 2 – Traitement de l’opération dans les comptes de l’entité détentrice",
+          "extrait": "En conséquence d’une fusion sans échange de titres visée à l’article 746-1, dans les comptes des entités détentrices des titres des entités absorbée et absorbante, la valeur brute et les éventuelles dépréciations des titres de l’entité qui "
+        },
+        {
+          "record_id": "pcg-141-2@2026-01-01",
+          "article": "141-2",
+          "chemin": "Livre V : adaptations du règlement ANC n° 2014- 03 > Titre I du logement social (Règlement ANC n° 2015-04) > Chapitre 4 – Les opérations de fusions et opérations assimilées",
+          "extrait": "- Fusions et opérations assimilées des sociétés anonymes d’habitation à loyer modéré et des sociétés d’économie mixte agréées : Evaluation des apports à la valeur comptable Le patrimoine apporté de la société absorbée ou scindée est inscrit"
+        }
+      ]
+    },
+    {
+      "id": "qa011",
+      "raison": "hors_corpus",
+      "question": "Comment se calcule l'écart d'acquisition dégagé lors de l'entrée d'une filiale dans le périmètre de consolidation ?",
+      "passages": [
+        {
+          "record_id": "pcg-na-237@2026-01-01",
+          "article": null,
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VI – Dispositions et opérations de nature spécifique > Chapitre III – Autres avis non repris dans un règlement > Section 7 - Certificats de valeur garantie, bons de cession de valeur garantie et instruments assimilés",
+          "extrait": "En conséquence, le Comité d’Urgence est d’avis que : §1 - Les paiements aux porteurs des titres de garantie (CVG) se comptabilisent à leur échéance comme un ajustement de la valeur d’entrée des titres reçus, dans la mesure où ils sont la co"
+        },
+        {
+          "record_id": "pcg-212-1-c1@2026-01-01",
+          "article": "212-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre I – Actifs non financiers > Section 2 – Conditions d’inscription à l’actif > Sous-section 1 – Conditions générales",
+          "extrait": "IR3 – Modalités d’application : critères de comptabilisation d’une immobilisation à l’actif Ainsi, le fonds commercial acquis, évalué par différence, est inscrit à l’actif dans les comptes individuels; il en est de même de l’écart d’acquisi"
+        },
+        {
+          "record_id": "pcg-221-4@2026-01-01",
+          "article": "221-4",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre II – Actifs financiers > Section 1 – Titres immobilisés",
+          "extrait": "Les titres des sociétés contrôlées de manière exclusive peuvent être évalués par équivalence. La valeur d’équivalence des titres d’une société contrôlée de manière exclusive est égale à la quote-part des capitaux propres correspondant aux t"
+        },
+        {
+          "record_id": "pcg-836-1-c7@2026-01-01",
+          "article": "836-1",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre III – Contenu de l’annexe des comptes annuels > Section 6 – Informations relatives aux opérations et engagements hors bilan",
+          "extrait": "Conséquences sur le périmètre de consolidation Considérant qu'il y a toujours lieu de s'interroger sur la nécessité de comprendre dans le périmètre de consolidation la société dont les titres font l'objet de l'engagement et, éventuellement,"
+        },
+        {
+          "record_id": "pcg-744-2@2026-01-01",
+          "article": "744-2",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VII – Comptabilisation et évaluation des opérations de fusions et opérations assimilées > Chapitre IV - Méthodologie d’évaluation des apports > Section 4 - Détermination des valeurs individuelles des apports > Sous-section 2 - Détermination des apports à la valeur comptable",
+          "extrait": "Lorsque les apports sont évalués à la valeur comptable, les valeurs comptables individuelles des actifs et passifs apportés correspondent aux valeurs de chaque actif et passif figurant dans les comptes de l’entité absorbée ou apporteuse à l"
+        },
+        {
+          "record_id": "pcg-221-1-c6@2026-01-01",
+          "article": "221-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre II – Actifs financiers > Section 1 – Titres immobilisés",
+          "extrait": "- Coûts directs liés à une acquisition engagés antérieurement à l’opération d’acquisition (frais d’acquisition de titres notamment) - Comptes individuels Les coûts internes, ne constituant pas des frais d’acquisition, sont comptabilisés en "
+        },
+        {
+          "record_id": "pcg-214-27-c2@2026-01-01",
+          "article": "214-27",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre I – Actifs non financiers > Section 4 – Evaluation des actifs postérieurement à leur date d’entrée > Sous-section 6 – Réévaluation",
+          "extrait": "Non prise en compte dans le calcul de l’écart de réévaluation Les amortissements dérogatoires éventuellement constatés antérieurement à l’opération de réévaluation et afférents aux immobilisations réévaluées ne sont pas pris en compte dans "
+        },
+        {
+          "record_id": "pcg-744-2-c1@2026-01-01",
+          "article": "744-2",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VII – Comptabilisation et évaluation des opérations de fusions et opérations assimilées > Chapitre IV - Méthodologie d’évaluation des apports > Section 4 - Détermination des valeurs individuelles des apports > Sous-section 2 - Détermination des apports à la valeur comptable",
+          "extrait": "IR 3 : Prise en compte d’un écart négatif entre la valeur globale de l’apport et la somme des actifs et passifs inscrits dans le traité d’apport Dans des cas exceptionnels, la valeur globale des apports est inférieure à la somme des actifs "
+        },
+        {
+          "record_id": "pcg-315-1-c8@2026-01-01",
+          "article": "315-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre Ibis – Autres fonds propres > Section 2 – Fonds non remboursables",
+          "extrait": "IR4 – Exemples d’appréciation dans le cadre d’un groupe consolidé autre que d’assurance ou du secteur bancaire 1. Instruments émis par une entité mère et remboursables en titres de capital d’une filiale contrôlée et intégrée S’agissant des "
+        },
+        {
+          "record_id": "pcg-744-1-c1@2026-01-01",
+          "article": "744-1",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VII – Comptabilisation et évaluation des opérations de fusions et opérations assimilées > Chapitre IV - Méthodologie d’évaluation des apports > Section 4 - Détermination des valeurs individuelles des apports > Sous-section 1 – Détermination des apports à la valeur réelle",
+          "extrait": "IR 3 : Prise en compte d’un écart négatif entre la valeur globale de l’apport et la somme des actifs et passifs inscrits dans le traité d’apport Lorsque les apports sont évalués à la valeur réelle, les éléments d’actif et passif comptabilis"
+        }
+      ]
+    },
+    {
+      "id": "qa012",
+      "raison": "hors_corpus",
+      "question": "Quelles sont les trois méthodes de consolidation et à quel niveau de contrôle chacune s'applique-t-elle ?",
+      "passages": [
+        {
+          "record_id": "pcg-836-1-c7@2026-01-01",
+          "article": "836-1",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre III – Contenu de l’annexe des comptes annuels > Section 6 – Informations relatives aux opérations et engagements hors bilan",
+          "extrait": "Conséquences sur le périmètre de consolidation Considérant qu'il y a toujours lieu de s'interroger sur la nécessité de comprendre dans le périmètre de consolidation la société dont les titres font l'objet de l'engagement et, éventuellement,"
+        },
+        {
+          "record_id": "pcg-623-7@2026-01-01",
+          "article": "623-7",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VI – Dispositions et opérations de nature spécifique > Chapitre II – Opérations de nature spécifique > Section 3 – Opérations de fiducie > Sous-section 1 – Constitution de la fiducie",
+          "extrait": "Le critère de contrôle défini à l’article 211-1, bien que non retenu pour définir les conditions de comptabilisation de ces éléments, en raison de l’application du principe de la propriété juridique posé par la loi, est appliqué pour évalue"
+        },
+        {
+          "record_id": "pcg-na-17@2026-01-01",
+          "article": null,
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre II – Actifs financiers > Section 3 – Opérations sur titres > Sous-section 2 – Opération de désendettement de fait",
+          "extrait": "3 - Méthodes de première comptabilisation des composants En pratique trois méthodes sont proposées, deux méthodes compatibles avec la norme IFRS 1 et une autre méthode inspirée des travaux en cours de l’AICPA."
+        },
+        {
+          "record_id": "pcg-221-4@2026-01-01",
+          "article": "221-4",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre II – Actifs financiers > Section 1 – Titres immobilisés",
+          "extrait": "Les titres des sociétés contrôlées de manière exclusive peuvent être évalués par équivalence. La valeur d’équivalence des titres d’une société contrôlée de manière exclusive est égale à la quote-part des capitaux propres correspondant aux t"
+        },
+        {
+          "record_id": "pcg-na-179@2026-01-01",
+          "article": null,
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VI – Dispositions et opérations de nature spécifique > Chapitre III – Autres avis non repris dans un règlement > Section 1 - REACH",
+          "extrait": "Remarque: les conditions de consolidation du consortium dans les comptes consolidés ne sont pas traitées dans le présent avis. 5 – Modalités de première application Le présent avis peut avoir pour effet de modifier les règles comptables app"
+        },
+        {
+          "record_id": "pcg-743-1@2026-01-01",
+          "article": "743-1",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VII – Comptabilisation et évaluation des opérations de fusions et opérations assimilées > Chapitre IV - Méthodologie d’évaluation des apports > Section 3 - Principe de détermination de la valeur d’apport",
+          "extrait": "Les apports sont évalués comme suit en fonction de la situation de l’entité absorbante ou de la bénéficiaire des apports et de l’existence ou non d’un contrôle commun entre les entités participant à l’opération : - Apports évalués à la vale"
+        },
+        {
+          "record_id": "pcg-na-289@2026-01-01",
+          "article": null,
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VII – Comptabilisation et évaluation des opérations de fusions et opérations assimilées > Chapitre VI – Cas particulier de l’opération de confusion de patrimoine",
+          "extrait": "III Opérations réalisées sous le contrôle de personnes physiques Analyse de la situation de contrôle au moment de l’opération dans le cas d’entités détenues par la ou les mêmes personnes physiques – Exemples d’application 1er cas : Monsieur"
+        },
+        {
+          "record_id": "pcg-741-2@2026-01-01",
+          "article": "741-2",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VII – Comptabilisation et évaluation des opérations de fusions et opérations assimilées > Chapitre IV - Méthodologie d’évaluation des apports > Section 1 - Analyse de la situation de contrôle, commun ou distinct, au moment de l’opération",
+          "extrait": "Le contrôle commun d’une entité correspond au contrôle exclusif, tel que défini à l’article 211-3 du règlement ANC N° 2020-01 relatif aux comptes consolidés."
+        },
+        {
+          "record_id": "pcg-741-1-c1@2026-01-01",
+          "article": "741-1",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VII – Comptabilisation et évaluation des opérations de fusions et opérations assimilées > Chapitre IV - Méthodologie d’évaluation des apports > Section 1 - Analyse de la situation de contrôle, commun ou distinct, au moment de l’opération",
+          "extrait": "IR 3 : Modalités d’analyse de la situation de contrôle au moment de l’opération dans le cas d’entités détenues par la ou les mêmes personnes physiques Pour chaque opération de fusion ou opération assimilée, telles que définies à l’article 7"
+        },
+        {
+          "record_id": "pcg-743-1@2026-01-01#2",
+          "article": "743-1",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VII – Comptabilisation et évaluation des opérations de fusions et opérations assimilées > Chapitre IV - Méthodologie d’évaluation des apports > Section 3 - Principe de détermination de la valeur d’apport",
+          "extrait": "Art 743-2 Le contrôle conjoint est défini à l’article 211-4 du règlement ANC N° 2020-01 relatif aux comptes consolidés. Les apports sous contrôle conjoint ou aboutissant au contrôle conjoint et qui n’impliquent pas des entités sous contrôle"
+        }
+      ]
+    },
+    {
+      "id": "qa013",
+      "raison": "hors_corpus",
+      "question": "Comment se calcule un impôt différé actif sur un amortissement dérogatoire retraité en consolidation ?",
+      "passages": [
+        {
+          "record_id": "pcg-na-291@2026-01-01",
+          "article": null,
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VII – Comptabilisation et évaluation des opérations de fusions et opérations assimilées > Chapitre VI – Cas particulier de l’opération de confusion de patrimoine",
+          "extrait": "V - Comptabilisation d’un apport aux valeurs réelles Ecritures comptables d’une opération d’apport partiel d’actif dans les comptes de l’entité apporteuse : VNC Valeur réelle (traité d'apport) Plus-values Fonds commercial - 50 50 Immobilisa"
+        },
+        {
+          "record_id": "pcg-214-27-c2@2026-01-01",
+          "article": "214-27",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre I – Actifs non financiers > Section 4 – Evaluation des actifs postérieurement à leur date d’entrée > Sous-section 6 – Réévaluation",
+          "extrait": "Non prise en compte dans le calcul de l’écart de réévaluation Les amortissements dérogatoires éventuellement constatés antérieurement à l’opération de réévaluation et afférents aux immobilisations réévaluées ne sont pas pris en compte dans "
+        },
+        {
+          "record_id": "pcg-214-27-c3@2026-01-01",
+          "article": "214-27",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre I – Actifs non financiers > Section 4 – Evaluation des actifs postérieurement à leur date d’entrée > Sous-section 6 – Réévaluation",
+          "extrait": "Absence d’effet de la réévaluation Les conditions de comptabilisation, de reprise et d'évaluation des amortissements dérogatoires sont définies par les textes particuliers qui les ont créées (articles 214-8 et 313-1 du PCG). Dès lors, les a"
+        },
+        {
+          "record_id": "pcg-214-8-c1@2026-01-01",
+          "article": "214-8",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre I – Actifs non financiers > Section 4 – Evaluation des actifs postérieurement à leur date d’entrée > Sous-section 1 – Définitions et principes",
+          "extrait": "Amortissement et dépréciation des actifs – Note de présentation du règlement ANC n° 2015-06 du 23 novembre 2015 modifiant le plan comptable général Les amortissements déduits de la valeur brute traduisent le plan d’amortissement propre à l’"
+        },
+        {
+          "record_id": "pcg-122-3-c2@2026-01-01",
+          "article": "122-3",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre I – Objet et principes de la comptabilité > Chapitre II – Principes de la comptabilité > Section 2 – Méthodes comptables, changements de méthodes comptables, estimations comptables, changements d’estimation et corrections d’erreurs > Sous-section 1 – Méthodes comptables et changements de méthodes comptables",
+          "extrait": "IR 3 - Précisions sur le calcul de l’effet d’impôt du changement de méthode Lorsque l’entité ne comptabilise pas d’impôts différés dans ses comptes individuels, l’impôt à considérer est égal à la différence entre l’impôt exigible calculé su"
+        },
+        {
+          "record_id": "pcg-1222-78@2026-01-01",
+          "article": "1222-78",
+          "chemin": "Livre IV : tenue, structure et fonctionnement des comptes > Titre XII – Fonctionnement des comptes > Chapitre II – Comptes de gestion > Section 2 – Comptes de produits (Classe 7)",
+          "extrait": "78 : Reprises sur amortissements, dépréciations et provisions Les comptes 781 « Reprises sur amortissements, dépréciations et provisions (à inscrire dans les produits d’exploitation) », compte 786 « Reprises sur dépréciations et provisions "
+        },
+        {
+          "record_id": "pcg-323-4-c1@2026-01-01",
+          "article": "323-4",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 3 – Evaluation des passifs > Sous-section 1 – Evaluation des passifs à la date d’entrée",
+          "extrait": "Evaluation avant effet d’impôt – Avis CNC n° 00-01 du 20 avril 2000 relatif aux passifs Une provision qui ne serait pas déductible du résultat imposable de l'exercice de sa comptabilisation n'est pas minorée du montant de l'impôt qui sera é"
+        },
+        {
+          "record_id": "pcg-833-4-c2@2026-01-01",
+          "article": "833-4",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre III – Contenu de l’annexe des comptes annuels > Section 3 – Informations relatives à la fiscalité",
+          "extrait": "Répartition du montant global des impôts sur les bénéfices Taux d’imposition : % Montant brut Impôt (économie) Montant net Résultat courant - Produits non imposables + Charges non déductibles + Produits non comptabilisés au cours de l’exerc"
+        },
+        {
+          "record_id": "pcg-214-8@2026-01-01",
+          "article": "214-8",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre I – Actifs non financiers > Section 4 – Evaluation des actifs postérieurement à leur date d’entrée > Sous-section 1 – Définitions et principes",
+          "extrait": "Lorsque des textes particuliers de niveau supérieur prescrivent ou autorisent la comptabilisation d'amortissements dérogatoires répondant à la définition de provisions réglementées, ces amortissements, bien que ne correspondant pas à l'obje"
+        },
+        {
+          "record_id": "pcg-214-13-c2@2026-01-01",
+          "article": "214-13",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre I – Actifs non financiers > Section 4 – Evaluation des actifs postérieurement à leur date d’entrée > Sous-section 3 – Modalités d’évaluation des amortissements des immobilisations",
+          "extrait": "Lien avec les comptes consolidés – Avis CU n° 2005-D du 1er juin 2005 afférent aux modalités d’application des règlements n° 2002-10 relatif à l’amortissement et la dépréciation des actifs et n° 2004-06 relatif à la définition, la comptabil"
+        }
+      ]
+    },
+    {
+      "id": "qa014",
+      "raison": "hors_corpus",
+      "question": "Comment retraiter un contrat de location-financement dans les comptes consolidés d'un groupe ?",
+      "passages": [
+        {
+          "record_id": "pcg-212-5-c1@2026-01-01",
+          "article": "212-5",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre I – Actifs non financiers > Section 2 – Conditions d’inscription à l’actif > Sous-section 1 – Conditions générales",
+          "extrait": "Exclusion des contrats définis à l’article L. 313-7 du Code monétaire et financier – Avis CU n° 2006-C du 4 octobre 2006 afférant à l’interprétation des dispositions de l’avis CNC n° 2004-15 du 23 juin 2004 relatif à la définition, la compt"
+        },
+        {
+          "record_id": "pcg-315-1-c7@2026-01-01",
+          "article": "315-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre Ibis – Autres fonds propres > Section 2 – Fonds non remboursables",
+          "extrait": "IR3 – Articulation avec le règlement ANC n° 2020-01 relatif aux comptes consolidés – Cas d’un groupe consolidé autre que d’assurance ou du secteur bancaire Le règlement ANC n° 2020-01 relatif aux comptes consolidés ne prévoit pas de disposi"
+        },
+        {
+          "record_id": "pcg-121-2-c2@2026-01-01",
+          "article": "121-2",
+          "chemin": "Livre V : adaptations du règlement ANC n° 2014- 03 > Titre I du logement social (Règlement ANC n° 2015-04) > Chapitre 2 – Les opérations affectant le bilan des organismes de logement social > Section 1 - L’actif",
+          "extrait": "IR 3 - Comptabilisation des opérations de location accession Les immeubles proposés en location-accession sont détenus pour être vendus dans la cadre de l’activité d’accession en groupé. En conséquence, leur coût de production est inscrit d"
+        },
+        {
+          "record_id": "pcg-324-1-c3@2026-01-01",
+          "article": "324-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 4 – Pensions, retraites et versements similaires",
+          "extrait": "IR 3 - Modalités de mise-en-œuvre : méthodes d’évaluation et de comptabilisation des engagements de retraite Recommandation ANC n° 2013-02 modifiée le 5 novembre 2021 relative aux règles d’évaluation et de comptabilisation des engagements d"
+        },
+        {
+          "record_id": "pcg-213-9-c2@2026-01-01",
+          "article": "213-9",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre I – Actifs non financiers > Section 3 – Evaluation des actifs à la date d’entrée dans le patrimoine > Sous-section 2 – Coût d’entrée des immobilisations corporelles",
+          "extrait": "Coûts d’emprunt – Avis CNC n° 2004-15 du 23 juin 2004 relatif à la définition, la comptabilisation et l’évaluation des actifs Les coûts d'emprunt peuvent inclure : - les intérêts sur découverts bancaires et emprunts à court-terme et à long-"
+        },
+        {
+          "record_id": "pcg-214-13-c3@2026-01-01",
+          "article": "214-13",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre I – Actifs non financiers > Section 4 – Evaluation des actifs postérieurement à leur date d’entrée > Sous-section 3 – Modalités d’évaluation des amortissements des immobilisations",
+          "extrait": "Règles d’amortissement – Avis CU n° 2006-C du 4 octobre 2006 afférant à l’interprétation des dispositions de l’avis CNC n° 2004-15 du 23 juin 2004 relatif à la définition, la comptabilisation et l’évaluation des actifs, excluant dans les co"
+        },
+        {
+          "record_id": "pcg-214-9-c1@2026-01-01",
+          "article": "214-9",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre I – Actifs non financiers > Section 4 – Evaluation des actifs postérieurement à leur date d’entrée > Sous-section 2 – Comptabilisation des immobilisations décomposables",
+          "extrait": "Détermination des composants – Avis CU n° 2006-C du 4 octobre 2006 afférant à l’interprétation des dispositions de l’avis CNC n° 2004-15 du 23 juin 2004 relatif à la définition, la comptabilisation et l’évaluation des actifs, excluant dans "
+        },
+        {
+          "record_id": "pcg-212-5@2026-01-01",
+          "article": "212-5",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre I – Actifs non financiers > Section 2 – Conditions d’inscription à l’actif > Sous-section 1 – Conditions générales",
+          "extrait": "Le titulaire d'un contrat de crédit-bail comptabilise en charges les sommes dues au titre de la période de location. À la levée de l'option d'achat, le titulaire d'un contrat de crédit-bail inscrit l'immobilisation à l'actif de son bilan po"
+        },
+        {
+          "record_id": "pcg-214-13-c2@2026-01-01",
+          "article": "214-13",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre I – Actifs non financiers > Section 4 – Evaluation des actifs postérieurement à leur date d’entrée > Sous-section 3 – Modalités d’évaluation des amortissements des immobilisations",
+          "extrait": "Lien avec les comptes consolidés – Avis CU n° 2005-D du 1er juin 2005 afférent aux modalités d’application des règlements n° 2002-10 relatif à l’amortissement et la dépréciation des actifs et n° 2004-06 relatif à la définition, la comptabil"
+        },
+        {
+          "record_id": "pcg-221-1-c6@2026-01-01",
+          "article": "221-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre II – Actifs financiers > Section 1 – Titres immobilisés",
+          "extrait": "- Coûts directs liés à une acquisition engagés antérieurement à l’opération d’acquisition (frais d’acquisition de titres notamment) - Comptes individuels Les coûts internes, ne constituant pas des frais d’acquisition, sont comptabilisés en "
+        }
+      ]
+    },
+    {
+      "id": "qa015",
+      "raison": "hors_corpus",
+      "question": "Quelle norme IFRS régit les regroupements d'entreprises, et selon quelle méthode d'évaluation ?",
+      "passages": [
+        {
+          "record_id": "pcg-324-1-c32@2026-01-01",
+          "article": "324-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 4 – Pensions, retraites et versements similaires",
+          "extrait": "6.4 - Regroupements d’entreprises 641 - Dans un regroupement d’entreprises qui est une acquisition, une entreprise comptabilise les actifs et passifs générés par les avantages postérieurs à l’emploi à la valeur actualisée de l’obligation di"
+        },
+        {
+          "record_id": "pcg-na-20@2026-01-01",
+          "article": null,
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre II – Actifs financiers > Section 3 – Opérations sur titres > Sous-section 2 – Opération de désendettement de fait",
+          "extrait": "3.3 - Option offerte par la norme IFRS 1 d’évaluer les actifs à la juste valeur, à la date de première application (structure + composants) L’entreprise peut, pour déterminer le coût d’origine des composants, utiliser la juste valeur de l’a"
+        },
+        {
+          "record_id": "pcg-743-1@2026-01-01",
+          "article": "743-1",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VII – Comptabilisation et évaluation des opérations de fusions et opérations assimilées > Chapitre IV - Méthodologie d’évaluation des apports > Section 3 - Principe de détermination de la valeur d’apport",
+          "extrait": "Les apports sont évalués comme suit en fonction de la situation de l’entité absorbante ou de la bénéficiaire des apports et de l’existence ou non d’un contrôle commun entre les entités participant à l’opération : - Apports évalués à la vale"
+        },
+        {
+          "record_id": "pcg-na-17@2026-01-01",
+          "article": null,
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre II – Actifs financiers > Section 3 – Opérations sur titres > Sous-section 2 – Opération de désendettement de fait",
+          "extrait": "3 - Méthodes de première comptabilisation des composants En pratique trois méthodes sont proposées, deux méthodes compatibles avec la norme IFRS 1 et une autre méthode inspirée des travaux en cours de l’AICPA."
+        },
+        {
+          "record_id": "pcg-na-18@2026-01-01",
+          "article": null,
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre II – Actifs financiers > Section 3 – Opérations sur titres > Sous-section 2 – Opération de désendettement de fait",
+          "extrait": "3.1 - Méthode de reconstitution du coût historique amorti Cette méthode qui consiste, non seulement à reconstituer le coût réel historique des composants, mais aussi les amortissements qui auraient dû être appliqués, s’applique quelle que s"
+        },
+        {
+          "record_id": "pcg-221-8@2026-01-01",
+          "article": "221-8",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre II – Actifs financiers > Section 1 – Titres immobilisés",
+          "extrait": "L’évaluation de la souscription ou de l’acquisition de parts d’un groupement d’intérêt économique (GIE) et des avances qui ne sont pas réalisables à court terme s’effectue dans les conditions suivantes. À la souscription ou à l’acquisition,"
+        },
+        {
+          "record_id": "pcg-323-2-c4@2026-01-01",
+          "article": "323-2",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 3 – Evaluation des passifs > Sous-section 1 – Evaluation des passifs à la date d’entrée",
+          "extrait": "- Comptabilisation Dans les règles comptables françaises, comme selon les IFRS, l’appréciation de la contrepartie ne dépend pas de la démonstration de la rentabilité de la dépense engagée. Dès lors qu’il s’agit d’une décision de gestion pri"
+        },
+        {
+          "record_id": "pcg-na-19@2026-01-01",
+          "article": null,
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre II – Actifs financiers > Section 3 – Opérations sur titres > Sous-section 2 – Opération de désendettement de fait",
+          "extrait": "3.2 - Méthode de réallocation des valeurs comptables Cette méthode consiste à réallouer les valeurs nettes comptables actuelles pour reconstituer les composants de l’actif. Cette ventilation est appliquée aux valeurs brutes et aux amortisse"
+        },
+        {
+          "record_id": "pcg-221-4@2026-01-01",
+          "article": "221-4",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre II – Actifs financiers > Section 1 – Titres immobilisés",
+          "extrait": "Les titres des sociétés contrôlées de manière exclusive peuvent être évalués par équivalence. La valeur d’équivalence des titres d’une société contrôlée de manière exclusive est égale à la quote-part des capitaux propres correspondant aux t"
+        },
+        {
+          "record_id": "pcg-324-1-c24@2026-01-01",
+          "article": "324-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 4 – Pensions, retraites et versements similaires",
+          "extrait": "6.3 - Comptabilisation et évaluation : Actifs du régime 6.3.1 - Valeur des actifs du régime 6311 - La valeur des actifs du régime est déduite pour obtenir le montant comptabilisé au bilan selon le paragraphe 6121. Lorsqu'on ne dispose pas d"
+        }
+      ]
+    },
+    {
+      "id": "qa016",
+      "raison": "hors_corpus",
+      "question": "Selon quelle méthode convertit-on les comptes d'une filiale située hors de la zone euro ?",
+      "passages": [
+        {
+          "record_id": "pcg-420-8@2026-01-01",
+          "article": "420-8",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre IV – Actifs et passifs dont la valeur dépend des fluctuations des monnaies étrangères > Chapitre II – Règles spécifiques",
+          "extrait": "Les écarts de conversion à l’actif et au passif enregistrent les différences de conversion résultant de l'actualisation, au taux de change de fin d'exercice, des comptes de créances et de dettes libellées en monnaies étrangères."
+        },
+        {
+          "record_id": "pcg-420-5@2026-01-01",
+          "article": "420-5",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre IV – Actifs et passifs dont la valeur dépend des fluctuations des monnaies étrangères > Chapitre II – Règles spécifiques",
+          "extrait": "Les créances et les dettes en monnaies étrangères sont converties et comptabilisées en monnaie nationale sur la base du dernier cours du change. Lorsque l’application du taux de conversion à la date de clôture de l’exercice a pour effet de "
+        },
+        {
+          "record_id": "pcg-na-24@2026-01-01",
+          "article": null,
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre II – Actifs financiers > Section 3 – Opérations sur titres > Sous-section 2 – Opération de désendettement de fait",
+          "extrait": "4.3 - Modalités de comptabilisation des composants Le Comité considère que lors de la première application de la méthode de comptabilisation par composants, l’entreprise peut opter pour les modalités suivantes qui peuvent en outre être choi"
+        },
+        {
+          "record_id": "pcg-na-364@2026-01-01",
+          "article": null,
+          "chemin": "Livre V : adaptations du règlement ANC n° 2014- 03 > Titre 4 – Transfert de siège social en France (règlement ANC N° 2019-08) > Chapitre 3 – Modalités d’établissement des premiers états financiers dans le cas de la transformation de la forme sociale de l’entité étrangère > Section 2 – Informations dans l’annexe",
+          "extrait": "Les entités visées à l’article 3 font figurer dans l’annexe des comptes des deux premiers exercices comptables établis conformément au règlement de l’Autorité des normes comptables qu’il leur est applicable, le bilan d’ouverture initial éta"
+        },
+        {
+          "record_id": "pcg-122-2-c1@2026-01-01",
+          "article": "122-2",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre I – Objet et principes de la comptabilité > Chapitre II – Principes de la comptabilité > Section 2 – Méthodes comptables, changements de méthodes comptables, estimations comptables, changements d’estimation et corrections d’erreurs > Sous-section 1 – Méthodes comptables et changements de méthodes comptables",
+          "extrait": "IR 2 - Changement de méthodes comptables La décision de changer de méthode comptable n'est pas discrétionnaire, elle résulte de circonstances qui justifient ce changement car l'adoption d'une autre méthode conforme au plan comptable général"
+        },
+        {
+          "record_id": "pcg-na-362@2026-01-01",
+          "article": null,
+          "chemin": "Livre V : adaptations du règlement ANC n° 2014- 03 > Titre 4 – Transfert de siège social en France (règlement ANC N° 2019-08) > Chapitre 3 – Modalités d’établissement des premiers états financiers dans le cas de la transformation de la forme sociale de l’entité étrangère > Section 1 – Modalités d’établissement des premiers états financiers",
+          "extrait": "Pour les entités dont le transfert de siège social en France se fait par transformation de la forme juridique étrangère en une forme juridique régie par le droit français, - Pour les sociétés européennes constituées en application du règlem"
+        },
+        {
+          "record_id": "pcg-420-7@2026-01-01",
+          "article": "420-7",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre IV – Actifs et passifs dont la valeur dépend des fluctuations des monnaies étrangères > Chapitre II – Règles spécifiques",
+          "extrait": "Les liquidités ou exigibilités immédiates en devises existant à la clôture de l’exercice sont converties en monnaie nationale sur la base du dernier cours de change au comptant. Les écarts de conversion constatés sont comptabilisés dans le "
+        },
+        {
+          "record_id": "pcg-322-6@2026-01-01",
+          "article": "322-6",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 2 – Comptabilisation des passifs > Sous-section 1 – Critères de première comptabilisation",
+          "extrait": "En application de l'article 420-5 et par exception aux articles 322-1 et 322-2, les gains latents de change sur la conversion des dettes et créances en devise étrangère sont comptabilisés au passif du bilan."
+        },
+        {
+          "record_id": "pcg-420-8-c1@2026-01-01",
+          "article": "420-8",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre IV – Actifs et passifs dont la valeur dépend des fluctuations des monnaies étrangères > Chapitre II – Règles spécifiques",
+          "extrait": "IR3 - Autres éléments portés à l’actif en application de textes de niveau supérieur – Avis CNC n° 2004- 15 du 23 juin 2004 relatif à la définition, la comptabilisation et l’évaluation des actifs Bien que ne répondant pas à la définition des"
+        },
+        {
+          "record_id": "pcg-625-12-c1@2026-01-01",
+          "article": "625-12",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VI – Dispositions et opérations de nature spécifique > Chapitre II – Opérations de nature spécifique > Section 5 – Contrats de garantie financière > Sous-section 5 – Comptabilisation à la date de clôture de la période en cas de remise en pleine",
+          "extrait": "Comptabilisation – Note de présentation de l’avis CNC n° 2006-10 du 30 juin 2006 relatif à la comptabilisation des actifs donnés en garantie dans le cadre de contrats de garantie financière assortis d’un droit de réutilisation Tant que l'ac"
+        }
+      ]
+    },
+    {
+      "id": "qa017",
+      "raison": "hors_corpus",
+      "question": "Quelles diligences la norme d'exercice professionnel NEP 620 impose-t-elle au commissaire aux comptes recourant aux travaux d'un expert ?",
+      "passages": [
+        {
+          "record_id": "pcg-832-20@2026-01-01",
+          "article": "832-20",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre III – Contenu de l’annexe des comptes annuels > Section 2 – Informations relatives aux postes du bilan et du compte de résultat > Sous-section 3 – Informations relatives au compte de résultat",
+          "extrait": "Honoraires des commissaires aux comptes 1. Honoraires des commissaires aux comptes certifiant les comptes Il est indiqué, pour chaque commissaire aux comptes, le montant total des honoraires des commissaires aux comptes figurant au compte d"
+        },
+        {
+          "record_id": "pcg-na-87@2026-01-01",
+          "article": null,
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 5 – Coûts de démantèlement, d’enlèvement et de remise en état de site",
+          "extrait": "- Procès ou litige L’'obligation résulte d'un dommage probable, causé à un tiers avant la clôture de l'exercice, même s'il a été découvert postérieurement. La sortie de ressources est constituée par l'indemnité ou le coût de la réparation d"
+        },
+        {
+          "record_id": "pcg-122-4-c1@2026-01-01",
+          "article": "122-4",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre I – Objet et principes de la comptabilité > Chapitre II – Principes de la comptabilité > Section 2 – Méthodes comptables, changements de méthodes comptables, estimations comptables, changements d’estimation et corrections d’erreurs > Sous-section 1 – Méthodes comptables et changements de méthodes comptables",
+          "extrait": "IR 2 - Précisions sur les estimations comptables En raison des incertitudes inhérentes à la vie des affaires, de nombreux éléments des états financiers ne peuvent être évalués avec précision. L’entité doit alors recourir à des estimations c"
+        },
+        {
+          "record_id": "pcg-213-10-c1@2026-01-01",
+          "article": "213-10",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre I – Actifs non financiers > Section 3 – Evaluation des actifs à la date d’entrée dans le patrimoine > Sous-section 2 – Coût d’entrée des immobilisations corporelles",
+          "extrait": "Avis CNC n° 2004-15 du 23 juin 2004 relatif à la définition, la comptabilisation et l’évaluation des actifs - Exemples de coûts directement attribuables - coût des rémunérations et autres avantages au personnel résultant directement de la c"
+        },
+        {
+          "record_id": "pcg-na-6@2026-01-01",
+          "article": null,
+          "chemin": "Livre II : modalités particulières d’application des principes généraux",
+          "extrait": "TITRE VI – DISPOSITIONS ET OPERATIONS DE NATURE SPECIFIQUE .................. 194 ANNEXES AU TITRE VI ..................................................................................... 359 TITRE VII – COMPTABILISATION ET EVALUATION DES O"
+        },
+        {
+          "record_id": "pcg-622-3@2026-01-01",
+          "article": "622-3",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VI – Dispositions et opérations de nature spécifique > Chapitre II – Opérations de nature spécifique > Section 2 – Contrats long terme > Sous-section 2 – Comptabilisation",
+          "extrait": "Si l'entité retient la méthode à l'avancement et est en mesure d'estimer de façon fiable le résultat à terminaison, le résultat est constaté en appliquant au résultat à terminaison le pourcentage d'avancement. Ce pourcentage d’avancement es"
+        },
+        {
+          "record_id": "pcg-836-1-c5@2026-01-01",
+          "article": "836-1",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre III – Contenu de l’annexe des comptes annuels > Section 6 – Informations relatives aux opérations et engagements hors bilan",
+          "extrait": "Au regard de l'annexe Considérant que le rôle de l'annexe est clairement établi par le fait qu'elle forme avec le bilan et le compte de résultat un tout indissociable et que c'est au regard de cet ensemble, dénommé comptes annuels, que sont"
+        },
+        {
+          "record_id": "pcg-191-1-c25@2026-01-01",
+          "article": "191-1",
+          "chemin": "Livre V : adaptations du règlement ANC n° 2014- 03 > Titre I du logement social (Règlement ANC n° 2015-04) > Chapitre 9 – Opérations d’aménagement réalisées dans le cadre d’une concession d’aménagement",
+          "extrait": "DEPENSES PRESUMEES NON PROVISIONNABLES (charges de l’exercice) Travaux d’entretien des descentes d’eaux pluviales Travaux de réparation des menuiseries (opérations isolées) (1) Les travaux de mise aux normes comptabilisés en charges font l’"
+        },
+        {
+          "record_id": "pcg-838-4@2026-01-01",
+          "article": "838-4",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre III – Contenu de l’annexe des comptes annuels > Section 8 – Autres informations",
+          "extrait": "Informations relatives aux contrats à long terme L'entité décrit les modalités d'application des principes comptables relatifs aux contrats à long terme, le cas échéant par catégorie de contrats, en précisant notamment : - l'inclusion évent"
+        },
+        {
+          "record_id": "pcg-213-22-c2@2026-01-01",
+          "article": "213-22",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre I – Actifs non financiers > Section 3 – Evaluation des actifs à la date d’entrée dans le patrimoine > Sous-section 3 – Coût d’entrée des immobilisations incorporelles",
+          "extrait": "IR4 - Exemples : coûts attribuables ou non au coût d’acquisition Avis CNC n° 2004-15 du 23 juin 2004 relatif à la définition, la comptabilisation et l’évaluation des actifs - Exemples de coûts attribuables au coût d’acquisition - le coût de"
+        }
+      ]
+    },
+    {
+      "id": "qa018",
+      "raison": "hors_corpus",
+      "question": "Quel pourcentage de droits de vote fait présumer le contrôle exclusif d'une filiale ?",
+      "passages": [
+        {
+          "record_id": "pcg-741-2@2026-01-01",
+          "article": "741-2",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VII – Comptabilisation et évaluation des opérations de fusions et opérations assimilées > Chapitre IV - Méthodologie d’évaluation des apports > Section 1 - Analyse de la situation de contrôle, commun ou distinct, au moment de l’opération",
+          "extrait": "Le contrôle commun d’une entité correspond au contrôle exclusif, tel que défini à l’article 211-3 du règlement ANC N° 2020-01 relatif aux comptes consolidés."
+        },
+        {
+          "record_id": "pcg-836-1-c7@2026-01-01",
+          "article": "836-1",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre III – Contenu de l’annexe des comptes annuels > Section 6 – Informations relatives aux opérations et engagements hors bilan",
+          "extrait": "Conséquences sur le périmètre de consolidation Considérant qu'il y a toujours lieu de s'interroger sur la nécessité de comprendre dans le périmètre de consolidation la société dont les titres font l'objet de l'engagement et, éventuellement,"
+        },
+        {
+          "record_id": "pcg-710-2-c1@2026-01-01",
+          "article": "710-2",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VII – Comptabilisation et évaluation des opérations de fusions et opérations assimilées > Chapitre I – Champ d’application",
+          "extrait": "IR 2 : Apports de titres ou d’actifs isolés : Voir articles 213-2 et 213-3 IR 2 : Apports de titres de participation conférant le contrôle de la participation à l’entité bénéficiaire. Pour chaque opération d’apport de titres de participatio"
+        },
+        {
+          "record_id": "pcg-743-1-c2@2026-01-01",
+          "article": "743-1",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VII – Comptabilisation et évaluation des opérations de fusions et opérations assimilées > Chapitre IV - Méthodologie d’évaluation des apports > Section 3 - Principe de détermination de la valeur d’apport",
+          "extrait": "IR 3 : Opérations sous contrôle conjoint ou aboutissant à un contrôle conjoint Le contrôle commun est limité au contrôle exclusif tel que précisé à l’article 741-2. Le contrôle conjoint requiert une analyse supplémentaire afin de traiter de"
+        },
+        {
+          "record_id": "pcg-na-290@2026-01-01",
+          "article": null,
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VII – Comptabilisation et évaluation des opérations de fusions et opérations assimilées > Chapitre VI – Cas particulier de l’opération de confusion de patrimoine",
+          "extrait": "IV - Opérations sous contrôle conjoint ou aboutissant au contrôle conjoint Les entités A et B sont sous contrôle distinct. Cas n°1 : Fusion des entités C et D détenues chacune de manière conjointe par les entités A et B A l’issue de la fusi"
+        },
+        {
+          "record_id": "pcg-315-1-c8@2026-01-01",
+          "article": "315-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre Ibis – Autres fonds propres > Section 2 – Fonds non remboursables",
+          "extrait": "IR4 – Exemples d’appréciation dans le cadre d’un groupe consolidé autre que d’assurance ou du secteur bancaire 1. Instruments émis par une entité mère et remboursables en titres de capital d’une filiale contrôlée et intégrée S’agissant des "
+        },
+        {
+          "record_id": "pcg-623-7@2026-01-01",
+          "article": "623-7",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VI – Dispositions et opérations de nature spécifique > Chapitre II – Opérations de nature spécifique > Section 3 – Opérations de fiducie > Sous-section 1 – Constitution de la fiducie",
+          "extrait": "Le critère de contrôle défini à l’article 211-1, bien que non retenu pour définir les conditions de comptabilisation de ces éléments, en raison de l’application du principe de la propriété juridique posé par la loi, est appliqué pour évalue"
+        },
+        {
+          "record_id": "pcg-625-3-c1@2026-01-01",
+          "article": "625-3",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VI – Dispositions et opérations de nature spécifique > Chapitre II – Opérations de nature spécifique > Section 5 – Contrats de garantie financière > Sous-section 1 – Champ d'application",
+          "extrait": "Actif donné en garantie dans le cadre d'un contrat de garantie financière avec droit de réutilisation – Note de présentation de l’avis CNC n° 2006-10 du 30 juin 2006 relatif à la comptabilisation des actifs donnés en garantie dans le cadre "
+        },
+        {
+          "record_id": "pcg-625-3@2026-01-01",
+          "article": "625-3",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VI – Dispositions et opérations de nature spécifique > Chapitre II – Opérations de nature spécifique > Section 5 – Contrats de garantie financière > Sous-section 1 – Champ d'application",
+          "extrait": "Les dispositions de la présente section s'appliquent lorsque les biens donnés en garantie dans le cadre de contrats de garantie financière avec droit de réutilisation sont des instruments financiers entrant dans l'une des catégories suivant"
+        },
+        {
+          "record_id": "pcg-832-11-c3@2026-01-01",
+          "article": "832-11",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre III – Contenu de l’annexe des comptes annuels > Section 2 – Informations relatives aux postes du bilan et du compte de résultat > Sous-section 2 – Informations relatives au passif",
+          "extrait": "Nombre et valeur des actions / parts sociales par catégorie Nombre d’actions / parts sociales Valeur nominale Commentaires / Droits conférés Actions ordinaires Actions à droit de vote double Actions à dividende prioritaire Actions de priori"
+        }
+      ]
+    },
+    {
+      "id": "qa019",
+      "raison": "hors_corpus",
+      "question": "Quelles informations le rapport du commissaire aux comptes doit-il comporter sur la continuité d'exploitation ?",
+      "passages": [
+        {
+          "record_id": "pcg-832-20@2026-01-01",
+          "article": "832-20",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre III – Contenu de l’annexe des comptes annuels > Section 2 – Informations relatives aux postes du bilan et du compte de résultat > Sous-section 3 – Informations relatives au compte de résultat",
+          "extrait": "Honoraires des commissaires aux comptes 1. Honoraires des commissaires aux comptes certifiant les comptes Il est indiqué, pour chaque commissaire aux comptes, le montant total des honoraires des commissaires aux comptes figurant au compte d"
+        },
+        {
+          "record_id": "pcg-121-2@2026-01-01",
+          "article": "121-2",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre I – Objet et principes de la comptabilité > Chapitre II – Principes de la comptabilité > Section 1 – Principes d’établissement des comptes annuels > Sous-section 2 – Comparabilité et continuité d’activité",
+          "extrait": "La comptabilité permet d'effectuer des comparaisons périodiques et d'apprécier l'évolution de l'entité dans une perspective de continuité d'activité."
+        },
+        {
+          "record_id": "pcg-121-4@2026-01-01#2",
+          "article": "121-4",
+          "chemin": "Livre V : adaptations du règlement ANC n° 2014- 03 > Titre 5 – Exploitations agricoles (règlement ANC N° 2020-04) > Chapitre 2 – Modèles de comptes annuels",
+          "extrait": "– État des biens vivants Sont mentionnées dans l’annexe, toutes les informations relatives aux biens vivants et en-cours de biens vivants d’importance significative sur la situation patrimoniale et financière et sur le résultat de l’entité."
+        },
+        {
+          "record_id": "pcg-831-1@2026-01-01",
+          "article": "831-1",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre III – Contenu de l’annexe des comptes annuels > Section 1 – Principes et méthodes comptables",
+          "extrait": "Principes généraux L'annexe comporte les informations suivantes sur les règles et méthodes comptables : 1. Mention du règlement comptable de l’Autorité des normes comptables utilisé pour l’élaboration des comptes annuels. 2. Indication et j"
+        },
+        {
+          "record_id": "pcg-172-2@2026-01-01",
+          "article": "172-2",
+          "chemin": "Livre V : adaptations du règlement ANC n° 2014- 03 > Titre I du logement social (Règlement ANC n° 2015-04) > Chapitre 7 – Les comptes annuels des sociétés d’économie mixte agréées > Section 2 : Etats de synthèse",
+          "extrait": "- Informations complémentaires dans l’annexe des comptes Les informations complémentaires suivantes sont mentionnées dans l’annexe des comptes : - Modalités de répartition des postes de résultat entre activité agréée et autres activités (af"
+        },
+        {
+          "record_id": "pcg-836-1-c5@2026-01-01",
+          "article": "836-1",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre III – Contenu de l’annexe des comptes annuels > Section 6 – Informations relatives aux opérations et engagements hors bilan",
+          "extrait": "Au regard de l'annexe Considérant que le rôle de l'annexe est clairement établi par le fait qu'elle forme avec le bilan et le compte de résultat un tout indissociable et que c'est au regard de cet ensemble, dénommé comptes annuels, que sont"
+        },
+        {
+          "record_id": "pcg-831-2@2026-01-01",
+          "article": "831-2",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre III – Contenu de l’annexe des comptes annuels > Section 1 – Principes et méthodes comptables",
+          "extrait": "Changements comptables L'annexe comporte les informations suivantes sur les règles et méthodes comptables : 1. Changement de réglementation comptable : a. Mention de l’impact du changement de réglementation déterminé à l’ouverture en précis"
+        },
+        {
+          "record_id": "pcg-838-14@2026-01-01",
+          "article": "838-14",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre III – Contenu de l’annexe des comptes annuels > Section 8 – Autres informations",
+          "extrait": "Informations relatives aux fusions et opérations assimilées a) Pour toutes les opérations entrant dans le champ d’application du titre VII du livre II, l’entité absorbante ou bénéficiaire des apports doit mentionner l’impact de l’opération "
+        },
+        {
+          "record_id": "pcg-1141-2@2026-01-01",
+          "article": "1141-2",
+          "chemin": "Livre IV : tenue, structure et fonctionnement des comptes > Titre XI – Plan de comptes > Chapitre IV – Classification des comptes",
+          "extrait": "Les opérations relatives au résultat sont réparties en deux classes de comptes qualifiés de comptes de gestion et organisées ainsi qu'il suit. a. Classe 6 : Comptes de charges La classe 6 regroupe les comptes destinés à enregistrer, dans l'"
+        },
+        {
+          "record_id": "pcg-na-77@2026-01-01",
+          "article": null,
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 5 – Coûts de démantèlement, d’enlèvement et de remise en état de site",
+          "extrait": "5.3 - Informations à donner en annexe cf. livre III chapitre III Informations requises concernant la provision pour coût de démantèlement : - Informations quantitatives: augmentation au cours de l’exercice du montant actualisé résultant de "
+        }
+      ]
+    },
+    {
+      "id": "qa020",
+      "raison": "hors_corpus",
+      "question": "Comment un groupe comptabilise-t-il l'acquisition d'intérêts minoritaires complémentaires dans une filiale déjà intégrée ?",
+      "passages": [
+        {
+          "record_id": "pcg-315-1-c8@2026-01-01",
+          "article": "315-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre Ibis – Autres fonds propres > Section 2 – Fonds non remboursables",
+          "extrait": "IR4 – Exemples d’appréciation dans le cadre d’un groupe consolidé autre que d’assurance ou du secteur bancaire 1. Instruments émis par une entité mère et remboursables en titres de capital d’une filiale contrôlée et intégrée S’agissant des "
+        },
+        {
+          "record_id": "pcg-515-2@2026-01-01",
+          "article": "515-2",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre V – Charges et produits > Chapitre I – Définitions > Section 5 – Impôts sur les résultats",
+          "extrait": "Dans le cadre du régime de l’intégration fiscale, la société mère comptabilise la dette globale d’impôt du groupe quelles que soient les modalités d’intégration retenues, ainsi que les créances sur les filiales intégrées générées simultaném"
+        },
+        {
+          "record_id": "pcg-221-8@2026-01-01",
+          "article": "221-8",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre II – Actifs financiers > Section 1 – Titres immobilisés",
+          "extrait": "L’évaluation de la souscription ou de l’acquisition de parts d’un groupement d’intérêt économique (GIE) et des avances qui ne sont pas réalisables à court terme s’effectue dans les conditions suivantes. À la souscription ou à l’acquisition,"
+        },
+        {
+          "record_id": "pcg-515-2-c1@2026-01-01",
+          "article": "515-2",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre V – Charges et produits > Chapitre I – Définitions > Section 5 – Impôts sur les résultats",
+          "extrait": "Comptabilisation de l’économie d’impôt réalisée dans le cadre d’une intégration fiscale – Avis CU n°2005-G du 12 octobre 2005 relatif aux conditions de constatation d’une provision chez la société mère bénéficiant du régime de l’intégration"
+        },
+        {
+          "record_id": "pcg-621-5@2026-01-01",
+          "article": "621-5",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VI – Dispositions et opérations de nature spécifique > Chapitre II – Opérations de nature spécifique > Section 1 – Opérations faites en commun et pour le compte de tiers > Sous-section 2 – GIE",
+          "extrait": "À défaut de dispositions spéciales, la comptabilité des communautés d'intérêt autres que les sociétés en participation et les GIE peut être établie par référence aux règles énoncées aux articles 621-1 et 621-2 pour les sociétés en participa"
+        },
+        {
+          "record_id": "pcg-221-1-c6@2026-01-01",
+          "article": "221-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre II – Actifs financiers > Section 1 – Titres immobilisés",
+          "extrait": "- Coûts directs liés à une acquisition engagés antérieurement à l’opération d’acquisition (frais d’acquisition de titres notamment) - Comptes individuels Les coûts internes, ne constituant pas des frais d’acquisition, sont comptabilisés en "
+        },
+        {
+          "record_id": "pcg-1214-45@2026-01-01",
+          "article": "1214-45",
+          "chemin": "Livre IV : tenue, structure et fonctionnement des comptes > Titre XII – Fonctionnement des comptes > Chapitre I – Comptes de bilan > Section 4 – Comptes de tiers (Classe 4)",
+          "extrait": "45 : Groupe et associés Le compte 451 « Groupe » enregistre à son débit le montant des fonds avancés directement ou indirectement de façon temporaire par l'entité aux sociétés du groupe, et à son crédit le montant des fonds mis directement "
+        },
+        {
+          "record_id": "pcg-1212-26@2026-01-01",
+          "article": "1212-26",
+          "chemin": "Livre IV : tenue, structure et fonctionnement des comptes > Titre XII – Fonctionnement des comptes > Chapitre I – Comptes de bilan > Section 2 – Comptes d'immobilisations (Classe 2)",
+          "extrait": "26 : Participations et créances rattachées à des participations Le compte 261 « Titres de participation » est débité de la valeur d'apport ou du coût d'acquisition, par le crédit, suivant le cas : - du compte 101 « Capital » ou du compte 45"
+        },
+        {
+          "record_id": "pcg-212-1-c1@2026-01-01",
+          "article": "212-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre I – Actifs non financiers > Section 2 – Conditions d’inscription à l’actif > Sous-section 1 – Conditions générales",
+          "extrait": "IR3 – Modalités d’application : critères de comptabilisation d’une immobilisation à l’actif Ainsi, le fonds commercial acquis, évalué par différence, est inscrit à l’actif dans les comptes individuels; il en est de même de l’écart d’acquisi"
+        },
+        {
+          "record_id": "pcg-833-4@2026-01-01",
+          "article": "833-4",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre III – Contenu de l’annexe des comptes annuels > Section 3 – Informations relatives à la fiscalité",
+          "extrait": "Informations complémentaires relatives au régime fiscal L’annexe comporte les informations suivantes: 1. l’indication de la nature, du montant et du traitement comptable des créances résultant du report en arrière des déficits ; 2. la répar"
+        }
+      ]
+    },
+    {
+      "id": "qa021",
+      "raison": "hors_perimetre",
+      "question": "Quel est le délai de prescription d'une action en responsabilité civile contre un dirigeant de société ?",
+      "passages": [
+        {
+          "record_id": "pcg-760-3@2026-01-01",
+          "article": "760-3",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VII – Comptabilisation et évaluation des opérations de fusions et opérations assimilées > Chapitre VI – Cas particulier de l’opération de confusion de patrimoine",
+          "extrait": "La rétroactivité des opérations de dissolution par confusion de patrimoine n'étant pas prévue par le code civil, les articles 751-1 à 752-5 ne sont pas applicables à ce type d'opérations. Les écritures comptables sont reprises chez l’entité"
+        },
+        {
+          "record_id": "pcg-616-18@2026-01-01",
+          "article": "616-18",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VI – Dispositions et opérations de nature spécifique > Chapitre I – Dispositions de nature spécifique > Section 6 – Certificats d’économies d’énergie > Sous-section 3 - Modèle économique « Economies d’énergie » (réservé aux « obligés »)",
+          "extrait": "Le versement au Trésor public prévu à l’article L. 221-4 du code de l’énergie est comptabilisé en charges. Code de l’énergie Art. L. 221-4 - Les personnes qui ne respectent pas les prescriptions de la mise en demeure dans le délai imparti s"
+        },
+        {
+          "record_id": "pcg-624-11@2026-01-01",
+          "article": "624-11",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VI – Dispositions et opérations de nature spécifique > Chapitre II – Opérations de nature spécifique > Section 4 – Plans d’options d’achat ou de souscription d’actions et plans d’attribution d’actions gratuites aux salariés > Sous-section 2 – Fait générateur de l’obligation et conditions d’existence d’un passif",
+          "extrait": "En l’absence de décision explicite, il convient de rechercher tout au long de la période d’acquisition, l’existence d’indicateurs rendant probable une sortie de ressources pour la société : communication des dirigeants susceptible d’indique"
+        },
+        {
+          "record_id": "pcg-500-2-c1@2026-01-01",
+          "article": "500-2",
+          "chemin": "Livre V : adaptations du règlement ANC n° 2014- 03 > Titre 6 – Coopératives agricoles (règlement ANC N° 2021-01) > Chapitre 5 – Plan de comptes",
+          "extrait": "IR 3 – Provisions pour responsabilités statutaires des titres de participation Conformément à l’article 55 des modèles de statut des sociétés coopératives agricoles, la responsabilité financière des associés coopérateurs est engagée lorsque"
+        },
+        {
+          "record_id": "pcg-323-2-c5@2026-01-01",
+          "article": "323-2",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 3 – Evaluation des passifs > Sous-section 1 – Evaluation des passifs à la date d’entrée",
+          "extrait": "- Evaluation L’analyse des dépenses engagées au titre du DIF conduit à distinguer deux situations bien distinctes : - En cas d’accord entre l’entreprise et le salarié Dès qu’il y a accord sur l’action de formation, l’obligation devient cert"
+        },
+        {
+          "record_id": "pcg-624-2@2026-01-01",
+          "article": "624-2",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VI – Dispositions et opérations de nature spécifique > Chapitre II – Opérations de nature spécifique > Section 4 – Plans d’options d’achat ou de souscription d’actions et plans d’attribution d’actions gratuites aux salariés > Sous-section 1 – Champ d’application",
+          "extrait": "La présente section s’applique à la comptabilisation et l’évaluation des opérations relatives aux plans d’options d’achat ou de souscription d’actions et aux plans d’attribution d’actions gratuites aux employés, qu’elles soient émises, acqu"
+        },
+        {
+          "record_id": "pcg-324-1-c67@2026-01-01",
+          "article": "324-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 4 – Pensions, retraites et versements similaires",
+          "extrait": "Section 8 - Indemnités de rupture de contrat de travail 81 La présente recommandation traite ces indemnités séparément des autres avantages du personnel car l'événement qui génère l'obligation n'est pas l’activité du membre du personnel mai"
+        },
+        {
+          "record_id": "pcg-624-10@2026-01-01",
+          "article": "624-10",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VI – Dispositions et opérations de nature spécifique > Chapitre II – Opérations de nature spécifique > Section 4 – Plans d’options d’achat ou de souscription d’actions et plans d’attribution d’actions gratuites aux salariés > Sous-section 2 – Fait générateur de l’obligation et conditions d’existence d’un passif",
+          "extrait": "Dans le cas où les actions d’une société mère sont attribuées au personnel d’une filiale, il convient de déterminer si cette dernière a une obligation entraînant une sortie de ressources sans contrepartie au moins équivalente, par exemple d"
+        },
+        {
+          "record_id": "pcg-1121-1@2026-01-01",
+          "article": "1121-1",
+          "chemin": "Livre IV : tenue, structure et fonctionnement des comptes > Titre XI – Plan de comptes > Chapitre II – Plan de comptes",
+          "extrait": "Le plan de comptes, visé à l'article 1011-5 et présenté ci-après, est commun au système de base et au système abrégé. Le plan de comptes minimal comprend l’ensemble des comptes imprimés en caractères normaux. Les comptes imprimés en caractè"
+        },
+        {
+          "record_id": "pcg-624-9@2026-01-01",
+          "article": "624-9",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VI – Dispositions et opérations de nature spécifique > Chapitre II – Opérations de nature spécifique > Section 4 – Plans d’options d’achat ou de souscription d’actions et plans d’attribution d’actions gratuites aux salariés > Sous-section 2 – Fait générateur de l’obligation et conditions d’existence d’un passif",
+          "extrait": "La sortie de ressources est probable, voire certaine, lorsque la décision de racheter ou d’affecter des actions existantes résulte des termes du plan d’attribution ou a été prise par l’assemblée générale ou l’organe exécutif. Le caractère p"
+        }
+      ]
+    },
+    {
+      "id": "qa022",
+      "raison": "hors_perimetre",
+      "question": "Comment se calcule l'indemnité légale de licenciement d'un salarié comptant huit ans d'ancienneté ?",
+      "passages": [
+        {
+          "record_id": "pcg-322-10-c5@2026-01-01",
+          "article": "322-10",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 2 – Comptabilisation des passifs > Sous-section 2 – Applications",
+          "extrait": "- Indemnités au personnel pour cessation du contrat de travail L'obligation est définie par la loi, le règlement ou le contrat qui régit les licenciements collectifs ou les autres formes d’interruption de contrats de travail. L'obligation e"
+        },
+        {
+          "record_id": "pcg-324-1-c67@2026-01-01",
+          "article": "324-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 4 – Pensions, retraites et versements similaires",
+          "extrait": "Section 8 - Indemnités de rupture de contrat de travail 81 La présente recommandation traite ces indemnités séparément des autres avantages du personnel car l'événement qui génère l'obligation n'est pas l’activité du membre du personnel mai"
+        },
+        {
+          "record_id": "pcg-324-1-c19@2026-01-01",
+          "article": "324-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 4 – Pensions, retraites et versements similaires",
+          "extrait": "Exemples illustrant le paragraphe 6224 1. Un régime prévoit le paiement d’une indemnité forfaitaire de 1 000 qui est acquise après dix années de service. Le régime ne prévoit aucun autre droit à prestations pour les années de service supplé"
+        },
+        {
+          "record_id": "pcg-324-1-c66@2026-01-01",
+          "article": "324-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 4 – Pensions, retraites et versements similaires",
+          "extrait": "Recommandation n° 2003-R.01 du 1er avril 2003 (Sections 7 et 8) Section 7 - Autres avantages à long terme 71 - Les autres avantages à long terme sont, par exemple : a) les absences rémunérées de longue durée, telles que les congés liés à l'"
+        },
+        {
+          "record_id": "pcg-324-1-c21@2026-01-01",
+          "article": "324-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 4 – Pensions, retraites et versements similaires",
+          "extrait": "6.2.3 - Hypothèses actuarielles 6231 - Les hypothèses actuarielles doivent être objectives et mutuellement compatibles. 6232 - Les hypothèses actuarielles sont les meilleures estimations faites par l'entreprise des variables qui déterminero"
+        },
+        {
+          "record_id": "pcg-324-1-c13@2026-01-01",
+          "article": "324-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 4 – Pensions, retraites et versements similaires",
+          "extrait": "Section 3 - Définitions complémentaires Les avantages du personnel désignent toutes formes de contrepartie donnée par une entreprise au titre des services rendus par son personnel. Les avantages à court terme désignent les avantages du pers"
+        },
+        {
+          "record_id": "pcg-324-1-c20@2026-01-01",
+          "article": "324-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 4 – Pensions, retraites et versements similaires",
+          "extrait": "Exemple illustrant le paragraphe 6225 Les membres du personnel ont droit à une prestation de 3% du salaire de fin de carrière pour chaque année de service avant l'âge de 55 ans. Une prestation de 3% du salaire de fin de carrière estimé est "
+        },
+        {
+          "record_id": "pcg-323-2-c5@2026-01-01",
+          "article": "323-2",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 3 – Evaluation des passifs > Sous-section 1 – Evaluation des passifs à la date d’entrée",
+          "extrait": "- Evaluation L’analyse des dépenses engagées au titre du DIF conduit à distinguer deux situations bien distinctes : - En cas d’accord entre l’entreprise et le salarié Dès qu’il y a accord sur l’action de formation, l’obligation devient cert"
+        },
+        {
+          "record_id": "pcg-324-1@2026-01-01",
+          "article": "324-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 4 – Pensions, retraites et versements similaires",
+          "extrait": "Les passifs relatifs aux engagements de l’entité en matière de pensions, de compléments de retraite, d’indemnités et d’allocations en raison du départ à la retraite ou avantages similaires des membres de son personnel et de ses associés et "
+        },
+        {
+          "record_id": "pcg-324-1-c16@2026-01-01",
+          "article": "324-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 4 – Pensions, retraites et versements similaires",
+          "extrait": "Section 6 - Avantages postérieurs à l'emploi : régimes à prestations définies 61 - La comptabilisation des régimes à prestations définies est complexe parce que des hypothèses actuarielles sont nécessaires pour évaluer l’obligation et la ch"
+        }
+      ]
+    },
+    {
+      "id": "qa023",
+      "raison": "hors_perimetre",
+      "question": "À quelles conditions un contrat de cautionnement souscrit par une personne physique est-il valable ?",
+      "passages": [
+        {
+          "record_id": "pcg-na-86@2026-01-01",
+          "article": null,
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 5 – Coûts de démantèlement, d’enlèvement et de remise en état de site",
+          "extrait": "- Caution donnée La sortie de ressources sans contrepartie est rendue probable lorsque les deux conditions suivantes sont simultanément réunies : - la situation financière du cautionné à la clôture de l'exercice risque d'entraîner sa défail"
+        },
+        {
+          "record_id": "pcg-182-2-c2@2026-01-01",
+          "article": "182-2",
+          "chemin": "Livre V : adaptations du règlement ANC n° 2014- 03 > Titre I du logement social (Règlement ANC n° 2015-04) > Chapitre 8 – Les opérations réalisées au moyen d’un bail réel solidaire par les organismes de logement social agréés organismes de foncier solidaire > Section 2 – Règles de comptabilisation",
+          "extrait": "IR3 - Modalités de mise en œuvre - Le preneur au sens de l’article 182-2 s’entend soit d’une personne physique sous conditions de ressources soit d’un opérateur qui s’engage à construire ou réhabiliter des constructions existantes et à vend"
+        },
+        {
+          "record_id": "pcg-836-1@2026-01-01",
+          "article": "836-1",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre III – Contenu de l’annexe des comptes annuels > Section 6 – Informations relatives aux opérations et engagements hors bilan",
+          "extrait": "Engagements hors bilan donnés et reçus L’entité mentionne dans l’annexe une information relative à tout engagement financier, toute garantie ou éventualité qui ne figure pas au bilan et dont la connaissance est nécessaire à l’appréciation d"
+        },
+        {
+          "record_id": "pcg-na-289@2026-01-01",
+          "article": null,
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VII – Comptabilisation et évaluation des opérations de fusions et opérations assimilées > Chapitre VI – Cas particulier de l’opération de confusion de patrimoine",
+          "extrait": "III Opérations réalisées sous le contrôle de personnes physiques Analyse de la situation de contrôle au moment de l’opération dans le cas d’entités détenues par la ou les mêmes personnes physiques – Exemples d’application 1er cas : Monsieur"
+        },
+        {
+          "record_id": "pcg-836-1-c4@2026-01-01",
+          "article": "836-1",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre III – Contenu de l’annexe des comptes annuels > Section 6 – Informations relatives aux opérations et engagements hors bilan",
+          "extrait": "Comptabilisation En ce qui concerne le bilan : Considérant : - que l'article L. 123-12 du code de commerce prévoit que « toute personne physique ou morale ayant la qualité de commerçant doit procéder à l'enregistrement comptable des mouveme"
+        },
+        {
+          "record_id": "pcg-811-11@2026-01-01",
+          "article": "811-11",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre I – Comptes annuels > Section 1 – Établissement et présentation des comptes annuels",
+          "extrait": "Annexe des personnes physiques Les personnes physiques ne répondant pas aux critères de la petite entreprise prévus à l’article L. 123-16 du code de commerce indiquent dans l’annexe de leurs comptes annuels les informations prévues aux arti"
+        },
+        {
+          "record_id": "pcg-811-10@2026-01-01",
+          "article": "811-10",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre I – Comptes annuels > Section 1 – Établissement et présentation des comptes annuels",
+          "extrait": "Annexe des petites entreprises personnes physiques Les personnes physiques répondant aux critères de la petite entreprise prévus à l’article L. 123-16 du code de commerce indiquent dans l’annexe de leurs comptes annuels les informations pré"
+        },
+        {
+          "record_id": "pcg-625-4@2026-01-01",
+          "article": "625-4",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VI – Dispositions et opérations de nature spécifique > Chapitre II – Opérations de nature spécifique > Section 5 – Contrats de garantie financière > Sous-section 2 – Principe général",
+          "extrait": "Le constituant conserve l'essentiel des risques et avantages attaché à l'actif donné en garantie dans le cadre d'un contrat de garantie financière avec droit de réutilisation, le bénéficiaire de ce contrat ayant l'obligation de restituer au"
+        },
+        {
+          "record_id": "pcg-836-1-c2@2026-01-01",
+          "article": "836-1",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre III – Contenu de l’annexe des comptes annuels > Section 6 – Informations relatives aux opérations et engagements hors bilan",
+          "extrait": "Engagements hors bilan Lignes à développer par catégorie d’engagements Une subdivision peut être faite afin de distinguer les engagements reçus et les engagements donnés. Montant à la clôture de l’exercice Avals, cautionnements et garanties"
+        },
+        {
+          "record_id": "pcg-625-18@2026-01-01",
+          "article": "625-18",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VI – Dispositions et opérations de nature spécifique > Chapitre II – Opérations de nature spécifique > Section 5 – Contrats de garantie financière > Sous-section 6 – Comptabilisation lors de la restitution par le bénéficiaire au constituant de l'actif",
+          "extrait": "Des écritures d'engagements sont constatées si le contrat de garantie financière avec droit de réutilisation n'est pas arrivé à son terme."
+        }
+      ]
+    },
+    {
+      "id": "qa024",
+      "raison": "hors_perimetre",
+      "question": "Quel est le délai de préavis applicable à un licenciement pour faute grave ?",
+      "passages": [
+        {
+          "record_id": "pcg-322-10-c5@2026-01-01",
+          "article": "322-10",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 2 – Comptabilisation des passifs > Sous-section 2 – Applications",
+          "extrait": "- Indemnités au personnel pour cessation du contrat de travail L'obligation est définie par la loi, le règlement ou le contrat qui régit les licenciements collectifs ou les autres formes d’interruption de contrats de travail. L'obligation e"
+        },
+        {
+          "record_id": "pcg-324-1-c67@2026-01-01",
+          "article": "324-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 4 – Pensions, retraites et versements similaires",
+          "extrait": "Section 8 - Indemnités de rupture de contrat de travail 81 La présente recommandation traite ces indemnités séparément des autres avantages du personnel car l'événement qui génère l'obligation n'est pas l’activité du membre du personnel mai"
+        },
+        {
+          "record_id": "pcg-324-1-c13@2026-01-01",
+          "article": "324-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 4 – Pensions, retraites et versements similaires",
+          "extrait": "Section 3 - Définitions complémentaires Les avantages du personnel désignent toutes formes de contrepartie donnée par une entreprise au titre des services rendus par son personnel. Les avantages à court terme désignent les avantages du pers"
+        },
+        {
+          "record_id": "pcg-811-12@2026-01-01#3",
+          "article": "811-12",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre I – Comptes annuels > Section 1 – Établissement et présentation des comptes annuels",
+          "extrait": "Petites entreprises (article L. 123-16 du code de commerce) Moyennes entreprises* (article L. 123-16 al. 4 du code de commerce) et autres personnes morales Petites entreprises (article L. 123-16 du code de commerce) Moyennes entreprises* (a"
+        },
+        {
+          "record_id": "pcg-324-1-c19@2026-01-01",
+          "article": "324-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 4 – Pensions, retraites et versements similaires",
+          "extrait": "Exemples illustrant le paragraphe 6224 1. Un régime prévoit le paiement d’une indemnité forfaitaire de 1 000 qui est acquise après dix années de service. Le régime ne prévoit aucun autre droit à prestations pour les années de service supplé"
+        },
+        {
+          "record_id": "pcg-323-2-c3@2026-01-01",
+          "article": "323-2",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 3 – Evaluation des passifs > Sous-section 1 – Evaluation des passifs à la date d’entrée",
+          "extrait": "- Existence d'une obligation pour l'entreprise Le dispositif du DIF prévu par la loi n° 2004-391 du 4 mai 2004 crée un droit individuel au profit du salarié à l’égard de l’entreprise, matérialisé par l’information qu’elle doit donner annuel"
+        },
+        {
+          "record_id": "pcg-na-92@2026-01-01",
+          "article": null,
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VI – Dispositions et opérations de nature spécifique > Chapitre I – Dispositions de nature spécifique > Section 4 – Formation professionnelle et apprentissage > Sous-section 2 – Solde de la taxe d’apprentissage reçu par les organismes ou établissements de",
+          "extrait": "droit privé, définis à l’article L. 6241-5 du code du travail, et par les centres de formation d’apprentis"
+        },
+        {
+          "record_id": "pcg-324-1-c12@2026-01-01",
+          "article": "324-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 4 – Pensions, retraites et versements similaires",
+          "extrait": "Section 2 – Définitions Dans la présente annexe, les termes suivants ont la signification indiquée ci-après : Les avantages postérieurs à l'emploi désignent les avantages du personnel (autres que les indemnités de rupture de contrat de trav"
+        },
+        {
+          "record_id": "pcg-na-16@2026-01-01",
+          "article": null,
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre II – Actifs financiers > Section 3 – Opérations sur titres > Sous-section 2 – Opération de désendettement de fait",
+          "extrait": "2 - Constitution des provisions pour grosses réparations Le Comité note que : a) la constitution de provisions pour grosses réparations pour la première fois conduit les entreprises à effectuer en grande partie le travail d’analyse des comp"
+        },
+        {
+          "record_id": "pcg-na-13@2026-01-01",
+          "article": null,
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre II – Actifs financiers > Section 3 – Opérations sur titres > Sous-section 2 – Opération de désendettement de fait",
+          "extrait": "Avis n° 2003-E du 9 juillet 2003 concernant les modalités de première application de la comptabilisation par composants et des dispositions transitoires prévues à l’article 15 du règlement n°02-10 du CRC relatif à l’amortissement et la dépr"
+        }
+      ]
+    },
+    {
+      "id": "qa025",
+      "raison": "hors_perimetre",
+      "question": "Quelles mentions les statuts d'une société par actions simplifiée doivent-ils obligatoirement comporter ?",
+      "passages": [
+        {
+          "record_id": "pcg-311-1-c2@2026-01-01",
+          "article": "311-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre I – Capitaux propres > Section 1 – Capital social",
+          "extrait": "IR3 – Capital des sociétés par actions Pour les sociétés par actions, la valeur nominale des actions est définie comme celle des valeurs mobilières prévues aux articles L228-7 à L228-35-11 du code du commerce et aux articles L212-1 à L212-6"
+        },
+        {
+          "record_id": "pcg-1121-1@2026-01-01",
+          "article": "1121-1",
+          "chemin": "Livre IV : tenue, structure et fonctionnement des comptes > Titre XI – Plan de comptes > Chapitre II – Plan de comptes",
+          "extrait": "Le plan de comptes, visé à l'article 1011-5 et présenté ci-après, est commun au système de base et au système abrégé. Le plan de comptes minimal comprend l’ensemble des comptes imprimés en caractères normaux. Les comptes imprimés en caractè"
+        },
+        {
+          "record_id": "pcg-832-4@2026-01-01",
+          "article": "832-4",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre III – Contenu de l’annexe des comptes annuels > Section 2 – Informations relatives aux postes du bilan et du compte de résultat > Sous-section 1 – Informations relatives à l’actif",
+          "extrait": "Précisions sur certains éléments de l’actif immobilisé L’annexe comporte les informations suivantes dès qu’elles sont significatives : Frais de développement 1. Si inscription à l’actif : mention de la durée retenue pour l’amortissement. 2."
+        },
+        {
+          "record_id": "pcg-811-7@2026-01-01",
+          "article": "811-7",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre I – Comptes annuels > Section 1 – Établissement et présentation des comptes annuels",
+          "extrait": "Exonération d’annexe pour les micro-entreprises Les micro-entreprises définies à l’article L. 123-16-1 du code de commerce peuvent ne pas établir d’annexe à leurs comptes annuels. Dans ce cas, elles mentionnent les informations suivantes à "
+        },
+        {
+          "record_id": "pcg-430-2-c1@2026-01-01",
+          "article": "430-2",
+          "chemin": "Livre V : adaptations du règlement ANC n° 2014- 03 > Titre 6 – Coopératives agricoles (règlement ANC N° 2021-01) > Chapitre 4 – Modèles de comptes annuels > Section 3 – Contenu de l’annexe",
+          "extrait": "IR 1 – Clause statutaire prévoyant la répartition des excédents en fonction des diverses subdivisions du résultat Cette clause est stipulée à l’article 48 des modèles de statuts des coopératives agricoles de collecte vente approuvé par l’ar"
+        },
+        {
+          "record_id": "pcg-624-10@2026-01-01",
+          "article": "624-10",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VI – Dispositions et opérations de nature spécifique > Chapitre II – Opérations de nature spécifique > Section 4 – Plans d’options d’achat ou de souscription d’actions et plans d’attribution d’actions gratuites aux salariés > Sous-section 2 – Fait générateur de l’obligation et conditions d’existence d’un passif",
+          "extrait": "Dans le cas où les actions d’une société mère sont attribuées au personnel d’une filiale, il convient de déterminer si cette dernière a une obligation entraînant une sortie de ressources sans contrepartie au moins équivalente, par exemple d"
+        },
+        {
+          "record_id": "pcg-500-2-c1@2026-01-01",
+          "article": "500-2",
+          "chemin": "Livre V : adaptations du règlement ANC n° 2014- 03 > Titre 6 – Coopératives agricoles (règlement ANC N° 2021-01) > Chapitre 5 – Plan de comptes",
+          "extrait": "IR 3 – Provisions pour responsabilités statutaires des titres de participation Conformément à l’article 55 des modèles de statut des sociétés coopératives agricoles, la responsabilité financière des associés coopérateurs est engagée lorsque"
+        },
+        {
+          "record_id": "pcg-311-1@2026-01-01",
+          "article": "311-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre I – Capitaux propres > Section 1 – Capital social",
+          "extrait": "Dans les sociétés, le capital représente la valeur nominale des actions ou des parts sociales."
+        },
+        {
+          "record_id": "pcg-na-362@2026-01-01",
+          "article": null,
+          "chemin": "Livre V : adaptations du règlement ANC n° 2014- 03 > Titre 4 – Transfert de siège social en France (règlement ANC N° 2019-08) > Chapitre 3 – Modalités d’établissement des premiers états financiers dans le cas de la transformation de la forme sociale de l’entité étrangère > Section 1 – Modalités d’établissement des premiers états financiers",
+          "extrait": "Pour les entités dont le transfert de siège social en France se fait par transformation de la forme juridique étrangère en une forme juridique régie par le droit français, - Pour les sociétés européennes constituées en application du règlem"
+        },
+        {
+          "record_id": "pcg-836-1-c4@2026-01-01",
+          "article": "836-1",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre III – Contenu de l’annexe des comptes annuels > Section 6 – Informations relatives aux opérations et engagements hors bilan",
+          "extrait": "Comptabilisation En ce qui concerne le bilan : Considérant : - que l'article L. 123-12 du code de commerce prévoit que « toute personne physique ou morale ayant la qualité de commerçant doit procéder à l'enregistrement comptable des mouveme"
+        }
+      ]
+    },
+    {
+      "id": "qa026",
+      "raison": "hors_perimetre",
+      "question": "Quel quorum est requis pour qu'une assemblée générale extraordinaire de société anonyme délibère valablement ?",
+      "passages": [
+        {
+          "record_id": "pcg-834-2@2026-01-01",
+          "article": "834-2",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre III – Contenu de l’annexe des comptes annuels > Section 4 – Informations au titre des transactions non conclues aux conditions normales de marché",
+          "extrait": "Informations spécifiques pour les sociétés anonymes Les sociétés anonymes relevant de la catégorie des petites entreprises prévues à l’article L. 123-16 et de la catégorie prévue à l’article L. 123-25 du code de commerce mentionnent dans l'"
+        },
+        {
+          "record_id": "pcg-624-2@2026-01-01",
+          "article": "624-2",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VI – Dispositions et opérations de nature spécifique > Chapitre II – Opérations de nature spécifique > Section 4 – Plans d’options d’achat ou de souscription d’actions et plans d’attribution d’actions gratuites aux salariés > Sous-section 1 – Champ d’application",
+          "extrait": "La présente section s’applique à la comptabilisation et l’évaluation des opérations relatives aux plans d’options d’achat ou de souscription d’actions et aux plans d’attribution d’actions gratuites aux employés, qu’elles soient émises, acqu"
+        },
+        {
+          "record_id": "pcg-751-1@2026-01-01",
+          "article": "751-1",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VII – Comptabilisation et évaluation des opérations de fusions et opérations assimilées > Chapitre V - Événements de la période intercalaire > Section 1 – Traitement de la perte de rétroactivité",
+          "extrait": "L’obligation de libération des apports doit être appréciée à la date de réalisation définitive de l’opération (assemblée générale extraordinaire des entités participant à l’opération)."
+        },
+        {
+          "record_id": "pcg-613-1-c2@2026-01-01",
+          "article": "613-1",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VI – Dispositions et opérations de nature spécifique > Chapitre I – Dispositions de nature spécifique > Section 3 – Indemnités de mutations versées par les sociétés à objet sportif > Sous-section 1 – Définition et conditions de comptabilisation",
+          "extrait": "Avis CNC n° 2004-12 du 23 juin 2004 du 23 novembre 2004 relatif au traitement comptable des indemnités de mutation versées par les sociétés à objet sportif visées à l’article 11 de la loi n° 84-610 du 16 juillet 1984 - Champ d’application L"
+        },
+        {
+          "record_id": "pcg-141-2@2026-01-01",
+          "article": "141-2",
+          "chemin": "Livre V : adaptations du règlement ANC n° 2014- 03 > Titre I du logement social (Règlement ANC n° 2015-04) > Chapitre 4 – Les opérations de fusions et opérations assimilées",
+          "extrait": "- Fusions et opérations assimilées des sociétés anonymes d’habitation à loyer modéré et des sociétés d’économie mixte agréées : Evaluation des apports à la valeur comptable Le patrimoine apporté de la société absorbée ou scindée est inscrit"
+        },
+        {
+          "record_id": "pcg-201-2-c1@2026-01-01",
+          "article": "201-2",
+          "chemin": "Livre V : adaptations du règlement ANC n° 2014- 03 > Titre 6 – Coopératives agricoles (règlement ANC N° 2021-01) > Chapitre 2 – Traitement comptable de certaines opérations > Section 1 – Opérations avec les associés coopérateurs",
+          "extrait": "IR 1 – Elément de contexte juridique Les parts du capital social de la coopérative peuvent recevoir un intérêt. Cet intérêt ne peut être servi que si un résultat excédentaire a été réalisé au cours de l'exercice. Toutefois, les statuts peuv"
+        },
+        {
+          "record_id": "pcg-751-4-c1@2026-01-01",
+          "article": "751-4",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VII – Comptabilisation et évaluation des opérations de fusions et opérations assimilées > Chapitre V - Événements de la période intercalaire > Section 1 – Traitement de la perte de rétroactivité",
+          "extrait": "IR 3 : Calcul du mali en cas de période de rétroactivité L’inscription dans le traité d’apport de la perte intercalaire et des dividendes à verser résulte de l’obligation juridique de libération du capital et du risque de surévaluation des "
+        },
+        {
+          "record_id": "pcg-621-5@2026-01-01",
+          "article": "621-5",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VI – Dispositions et opérations de nature spécifique > Chapitre II – Opérations de nature spécifique > Section 1 – Opérations faites en commun et pour le compte de tiers > Sous-section 2 – GIE",
+          "extrait": "À défaut de dispositions spéciales, la comptabilité des communautés d'intérêt autres que les sociétés en participation et les GIE peut être établie par référence aux règles énoncées aux articles 621-1 et 621-2 pour les sociétés en participa"
+        },
+        {
+          "record_id": "pcg-624-9@2026-01-01",
+          "article": "624-9",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VI – Dispositions et opérations de nature spécifique > Chapitre II – Opérations de nature spécifique > Section 4 – Plans d’options d’achat ou de souscription d’actions et plans d’attribution d’actions gratuites aux salariés > Sous-section 2 – Fait générateur de l’obligation et conditions d’existence d’un passif",
+          "extrait": "La sortie de ressources est probable, voire certaine, lorsque la décision de racheter ou d’affecter des actions existantes résulte des termes du plan d’attribution ou a été prise par l’assemblée générale ou l’organe exécutif. Le caractère p"
+        },
+        {
+          "record_id": "pcg-836-1-c7@2026-01-01",
+          "article": "836-1",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre III – Contenu de l’annexe des comptes annuels > Section 6 – Informations relatives aux opérations et engagements hors bilan",
+          "extrait": "Conséquences sur le périmètre de consolidation Considérant qu'il y a toujours lieu de s'interroger sur la nécessité de comprendre dans le périmètre de consolidation la société dont les titres font l'objet de l'engagement et, éventuellement,"
+        }
+      ]
+    },
+    {
+      "id": "qa027",
+      "raison": "hors_perimetre",
+      "question": "Quelles sanctions pénales un dirigeant encourt-il pour abus de biens sociaux ?",
+      "passages": [
+        {
+          "record_id": "pcg-430-3@2026-01-01",
+          "article": "430-3",
+          "chemin": "Livre V : adaptations du règlement ANC n° 2014- 03 > Titre 6 – Coopératives agricoles (règlement ANC N° 2021-01) > Chapitre 4 – Modèles de comptes annuels > Section 3 – Contenu de l’annexe",
+          "extrait": "- Montant des reports pour parfaire l’intérêt servi aux parts sociales et pour ristournes éventuelles L’annexe comporte une indication, par exercice de constitution, du montant des reports pour parfaire l’intérêt servi aux parts sociales et"
+        },
+        {
+          "record_id": "pcg-122-2-c1@2026-01-01#2",
+          "article": "122-2",
+          "chemin": "Livre V : adaptations du règlement ANC n° 2014- 03 > Titre I du logement social (Règlement ANC n° 2015-04) > Chapitre 2 – Les opérations affectant le bilan des organismes de logement social > Section 2 - Le passif",
+          "extrait": "IR 1 - Les dotations dans les fondations d’habitation à loyer modéré Les dotations des fondations d’utilité publique répondent à la définition de l’article 18 de la loi du 23 juillet 1987 : « l’acte par lequel une ou plusieurs personnes phy"
+        },
+        {
+          "record_id": "pcg-624-11@2026-01-01",
+          "article": "624-11",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VI – Dispositions et opérations de nature spécifique > Chapitre II – Opérations de nature spécifique > Section 4 – Plans d’options d’achat ou de souscription d’actions et plans d’attribution d’actions gratuites aux salariés > Sous-section 2 – Fait générateur de l’obligation et conditions d’existence d’un passif",
+          "extrait": "En l’absence de décision explicite, il convient de rechercher tout au long de la période d’acquisition, l’existence d’indicateurs rendant probable une sortie de ressources pour la société : communication des dirigeants susceptible d’indique"
+        },
+        {
+          "record_id": "pcg-811-12@2026-01-01#3",
+          "article": "811-12",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre I – Comptes annuels > Section 1 – Établissement et présentation des comptes annuels",
+          "extrait": "Petites entreprises (article L. 123-16 du code de commerce) Moyennes entreprises* (article L. 123-16 al. 4 du code de commerce) et autres personnes morales Petites entreprises (article L. 123-16 du code de commerce) Moyennes entreprises* (a"
+        },
+        {
+          "record_id": "pcg-122-2@2026-01-01#2",
+          "article": "122-2",
+          "chemin": "Livre V : adaptations du règlement ANC n° 2014- 03 > Titre I du logement social (Règlement ANC n° 2015-04) > Chapitre 2 – Les opérations affectant le bilan des organismes de logement social > Section 2 - Le passif",
+          "extrait": "- Les dotations des fondations d’habitat à loyer modéré Les biens, droits et ressources, affectés irrévocablement par le ou les donateurs à la création de la fondation, les legs et donations complémentaires affectés de manière irrévocable e"
+        },
+        {
+          "record_id": "pcg-500-2-c1@2026-01-01",
+          "article": "500-2",
+          "chemin": "Livre V : adaptations du règlement ANC n° 2014- 03 > Titre 6 – Coopératives agricoles (règlement ANC N° 2021-01) > Chapitre 5 – Plan de comptes",
+          "extrait": "IR 3 – Provisions pour responsabilités statutaires des titres de participation Conformément à l’article 55 des modèles de statut des sociétés coopératives agricoles, la responsabilité financière des associés coopérateurs est engagée lorsque"
+        },
+        {
+          "record_id": "pcg-500-2@2026-01-01",
+          "article": "500-2",
+          "chemin": "Livre V : adaptations du règlement ANC n° 2014- 03 > Titre 6 – Coopératives agricoles (règlement ANC N° 2021-01) > Chapitre 5 – Plan de comptes",
+          "extrait": "– Comptes spécifiques des coopératives agricoles CLASSE 1 COMPTES DE CAPITAUX 10 Capital et réserves 101 Capital 1011 Capital souscrit - non appelé 10111 Associés coopérateurs 10112 Associés non coopérateurs 1012 Capital souscrit - appelé n"
+        },
+        {
+          "record_id": "pcg-311-1@2026-01-01",
+          "article": "311-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre I – Capitaux propres > Section 1 – Capital social",
+          "extrait": "Dans les sociétés, le capital représente la valeur nominale des actions ou des parts sociales."
+        },
+        {
+          "record_id": "pcg-514-1@2026-01-01",
+          "article": "514-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre V – Charges et produits > Chapitre I – Définitions > Section 4 – Impôts et taxes",
+          "extrait": "Les impôts, taxes et versements assimilés sont des charges correspondant : - d'une part, à des versements obligatoires à l'État et aux collectivités locales pour subvenir aux dépenses publiques ; - d'autre part, à des versements institués p"
+        },
+        {
+          "record_id": "pcg-832-11-c2@2026-01-01",
+          "article": "832-11",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre III – Contenu de l’annexe des comptes annuels > Section 2 – Informations relatives aux postes du bilan et du compte de résultat > Sous-section 2 – Informations relatives au passif",
+          "extrait": "Actions et parts sociales émises pendant l’exercice Nombre d’actions / parts sociales à l’ouverture de l’exercice Augmentations Diminutions Nombre d’actions / parts sociales à la clôture de l’exercice Actions / parts sociales"
+        }
+      ]
+    },
+    {
+      "id": "qa028",
+      "raison": "hors_perimetre",
+      "question": "Quel est le taux horaire brut du SMIC en 2026 ?",
+      "passages": [
+        {
+          "record_id": "pcg-324-1-c56@2026-01-01",
+          "article": "324-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 4 – Pensions, retraites et versements similaires",
+          "extrait": "6240 6040 5530 5472 Les principales hypothèses actuarielles à la date de clôture (exprimées en moyennes pondérées) sont les suivantes : 20X2 20X1 Taux d’actualisation au 31 décembre 10,0% 9,1% Rendement attendu des actifs du régime au 31 dé"
+        },
+        {
+          "record_id": "pcg-na-3@2026-01-01",
+          "article": null,
+          "chemin": "",
+          "extrait": "Ce recueil est mis à jour au regard des modifications apportées au règlement ANC n°2014-03 et le cas échéant, des évolutions des éléments de doctrine. La version du recueil au 1er janvier 2026 reprend l’ensemble des dispositions applicables"
+        },
+        {
+          "record_id": "pcg-na-376@2026-01-01",
+          "article": null,
+          "chemin": "Livre V : adaptations du règlement ANC n° 2014- 03 > Titre 8 – Huissiers de justice (règlement ANC N° 2025-04)",
+          "extrait": "IR3 – Plan de comptes à appliquer pour les exercices ouverts à compter du 1er janvier 2026par les huissiers de justice ne satisfaisant pas aux conditions de formation spécifique à la prfession de commissaires de justice Le règlement ANC n° "
+        },
+        {
+          "record_id": "pcg-833-4-c2@2026-01-01",
+          "article": "833-4",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre III – Contenu de l’annexe des comptes annuels > Section 3 – Informations relatives à la fiscalité",
+          "extrait": "Répartition du montant global des impôts sur les bénéfices Taux d’imposition : % Montant brut Impôt (économie) Montant net Résultat courant - Produits non imposables + Charges non déductibles + Produits non comptabilisés au cours de l’exerc"
+        },
+        {
+          "record_id": "pcg-822-1-c3@2026-01-01",
+          "article": "822-1",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre II – Modèles de bilan et compte de résultat > Section 2 – Système abrégé > Sous-section 1 – Modèle de bilan",
+          "extrait": "IR4 – Exemple de tableau de passage entre le plan de comptes et les rubriques et les postes du bilan L’ensemble des comptes imprimés en caractères normaux à l’article 1121-1 constitue le plan de comptes minimal. A titre indicatif, un tablea"
+        },
+        {
+          "record_id": "pcg-832-1@2026-01-01",
+          "article": "832-1",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre III – Contenu de l’annexe des comptes annuels > Section 2 – Informations relatives aux postes du bilan et du compte de résultat > Sous-section 1 – Informations relatives à l’actif",
+          "extrait": "Mouvements des postes d’immobilisations, amortissements et dépréciations L’annexe détaille les mouvements des postes des comptes relatifs aux immobilisations, aux amortissements et aux dépréciations. Une information est fournie sur : 1. l’u"
+        },
+        {
+          "record_id": "pcg-811-12@2026-01-01#3",
+          "article": "811-12",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre I – Comptes annuels > Section 1 – Établissement et présentation des comptes annuels",
+          "extrait": "Petites entreprises (article L. 123-16 du code de commerce) Moyennes entreprises* (article L. 123-16 al. 4 du code de commerce) et autres personnes morales Petites entreprises (article L. 123-16 du code de commerce) Moyennes entreprises* (a"
+        },
+        {
+          "record_id": "pcg-na-34@2026-01-01",
+          "article": null,
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > Titre II – L’actif > Chapitre II – Actifs financiers > Section 3 – Opérations sur titres > Sous-section 2 – Opération de désendettement de fait",
+          "extrait": "3.1.2 - Le composant a déjà été renouvelé avant la date de la première application au 1er janvier 2003 Soit une immobilisation acquise le 01/01/1989 avec une durée d’amortissement de 20 ans Valeur brute : 100 Amortissements comptabilisés : "
+        },
+        {
+          "record_id": "pcg-1214-42@2026-01-01",
+          "article": "1214-42",
+          "chemin": "Livre IV : tenue, structure et fonctionnement des comptes > Titre XII – Fonctionnement des comptes > Chapitre I – Comptes de bilan > Section 4 – Comptes de tiers (Classe 4)",
+          "extrait": "42 : Personnel et comptes rattachés A la date d’établissement du bulletin de salaire, le compte 421 « Personnel - Rémunérations dues » est crédité des rémunérations brutes à payer au personnel par le débit des comptes de charges intéressés."
+        },
+        {
+          "record_id": "pcg-na-4@2026-01-01",
+          "article": null,
+          "chemin": "",
+          "extrait": "Le recueil de normes comptables françaises s’articule autour d’une architecture générale en 5 grands livres divisés en titres, chapitres, sections, sous-sections : Concernant le Livre V, il s’agit d’intégrer dans le recueil des normes compt"
+        }
+      ]
+    },
+    {
+      "id": "qa029",
+      "raison": "hors_perimetre",
+      "question": "Dans quel délai un dirigeant doit-il déclarer la cessation des paiements de sa société au greffe ?",
+      "passages": [
+        {
+          "record_id": "pcg-626-2@2026-01-01",
+          "article": "626-2",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VI – Dispositions et opérations de nature spécifique > Chapitre II – Opérations de nature spécifique > Section 6 – Opérations avec une entreprise en redressement judiciaire",
+          "extrait": "Les créances non déclarées en cours de redressement judiciaire sont enregistrées ainsi qu'il suit : Le produit chez le débiteur et la charge chez le créancier, correspondant à la créance non déclarée, sont comptabilisés : - si aucune demand"
+        },
+        {
+          "record_id": "pcg-315-1-c3@2026-01-01",
+          "article": "315-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre Ibis – Autres fonds propres > Section 2 – Fonds non remboursables",
+          "extrait": "IR4 – Titres participatifs – Exemple Les dispositions de l’article L228-36 du code de commerce prévoient que « (…) Ces titres ne sont remboursables qu'en cas de liquidation de la société ou, à son initiative, à l'expiration d'un délai qui n"
+        },
+        {
+          "record_id": "pcg-836-1-c4@2026-01-01",
+          "article": "836-1",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre III – Contenu de l’annexe des comptes annuels > Section 6 – Informations relatives aux opérations et engagements hors bilan",
+          "extrait": "Comptabilisation En ce qui concerne le bilan : Considérant : - que l'article L. 123-12 du code de commerce prévoit que « toute personne physique ou morale ayant la qualité de commerçant doit procéder à l'enregistrement comptable des mouveme"
+        },
+        {
+          "record_id": "pcg-na-3@2026-01-01",
+          "article": null,
+          "chemin": "",
+          "extrait": "Ce recueil est mis à jour au regard des modifications apportées au règlement ANC n°2014-03 et le cas échéant, des évolutions des éléments de doctrine. La version du recueil au 1er janvier 2026 reprend l’ensemble des dispositions applicables"
+        },
+        {
+          "record_id": "pcg-324-1-c32@2026-01-01",
+          "article": "324-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 4 – Pensions, retraites et versements similaires",
+          "extrait": "6.4 - Regroupements d’entreprises 641 - Dans un regroupement d’entreprises qui est une acquisition, une entreprise comptabilise les actifs et passifs générés par les avantages postérieurs à l’emploi à la valeur actualisée de l’obligation di"
+        },
+        {
+          "record_id": "pcg-1121-1@2026-01-01",
+          "article": "1121-1",
+          "chemin": "Livre IV : tenue, structure et fonctionnement des comptes > Titre XI – Plan de comptes > Chapitre II – Plan de comptes",
+          "extrait": "Le plan de comptes, visé à l'article 1011-5 et présenté ci-après, est commun au système de base et au système abrégé. Le plan de comptes minimal comprend l’ensemble des comptes imprimés en caractères normaux. Les comptes imprimés en caractè"
+        },
+        {
+          "record_id": "pcg-812-1-c2@2026-01-01",
+          "article": "812-1",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre I – Comptes annuels > Section 2 – Cas particuliers de dépôt des comptes annuels",
+          "extrait": "IR3 - Confidentialité des comptes annuels des micro-entreprises En application de l’article L. 232-25 du code de commerce, lors du dépôt prévu au I des articles L. 232-21 à L. 232-23, les sociétés répondant à la définition des micro-entrepr"
+        },
+        {
+          "record_id": "pcg-324-1-c15@2026-01-01",
+          "article": "324-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 4 – Pensions, retraites et versements similaires",
+          "extrait": "Section 5 - Avantages postérieurs à l'emploi : régimes à cotisations définies 51 - La comptabilisation des régimes à cotisations définies est directe car l'obligation de l'entreprise présentant ses états financiers est déterminée par les mo"
+        },
+        {
+          "record_id": "pcg-na-344@2026-01-01",
+          "article": null,
+          "chemin": "Livre V : adaptations du règlement ANC n° 2014- 03 > Titre 2 – Organismes de gestion collective des droits d’auteur et droits voisins (règlement ANC N° 2017-07) > Chapitre 3 – Documents de synthèse des organismes de gestion collective des droits d’auteurs et des droits voisins",
+          "extrait": "IR3 - Présentation des documents de synthèse – Informations à mentionner en annexe En complément des informations requises par le règlement ANC n° 2014-03 du 5 juin 2014 modifié relatif au plan comptable général, l’annexe des comptes annuel"
+        },
+        {
+          "record_id": "pcg-na-318@2026-01-01",
+          "article": null,
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre IV – Comptes intermédiaires",
+          "extrait": "Recommandation CNC n° 99.R.01 du 18 mars 1999 relative aux comptes intermédiaires Objectif La publication de comptes intermédiaires fiables est un élément important d'une bonne information financière. Elle permet aux investisseurs, aux créa"
+        }
+      ]
+    },
+    {
+      "id": "qa030",
+      "raison": "hors_perimetre",
+      "question": "Quelle est l'étendue de la responsabilité civile du commissaire aux comptes envers les tiers ?",
+      "passages": [
+        {
+          "record_id": "pcg-na-373@2026-01-01",
+          "article": null,
+          "chemin": "Livre V : adaptations du règlement ANC n° 2014- 03 > Titre 7 – Commissaires de justice (règlement ANC N° 2025-03)",
+          "extrait": "Les commissaires de justice appliquent le plan de comptes défini par le règlement n° 2014-03 du 5 juin 2014 modifié de l’Autorité des normes comptables relatif au plan comptable général sous réserve des adaptations suivantes : Classe 1 : co"
+        },
+        {
+          "record_id": "pcg-na-87@2026-01-01",
+          "article": null,
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 5 – Coûts de démantèlement, d’enlèvement et de remise en état de site",
+          "extrait": "- Procès ou litige L’'obligation résulte d'un dommage probable, causé à un tiers avant la clôture de l'exercice, même s'il a été découvert postérieurement. La sortie de ressources est constituée par l'indemnité ou le coût de la réparation d"
+        },
+        {
+          "record_id": "pcg-na-371@2026-01-01",
+          "article": null,
+          "chemin": "Livre V : adaptations du règlement ANC n° 2014- 03 > Titre 7 – Commissaires de justice (règlement ANC N° 2025-03)",
+          "extrait": "IR1 – Contexte La profession de commissaire de justice existe depuis le 1er juillet 2022. Elle résulte de la fusion des professions d'huissier de justice et de commissaires-priseurs judiciaires. Du 1er juillet 2022 au 1er juillet 2026, les "
+        },
+        {
+          "record_id": "pcg-832-20@2026-01-01",
+          "article": "832-20",
+          "chemin": "Livre III : modèles de documents de synthèse > Titre VIII – Comptes annuels et intermédiaires > Chapitre III – Contenu de l’annexe des comptes annuels > Section 2 – Informations relatives aux postes du bilan et du compte de résultat > Sous-section 3 – Informations relatives au compte de résultat",
+          "extrait": "Honoraires des commissaires aux comptes 1. Honoraires des commissaires aux comptes certifiant les comptes Il est indiqué, pour chaque commissaire aux comptes, le montant total des honoraires des commissaires aux comptes figurant au compte d"
+        },
+        {
+          "record_id": "pcg-621-11-c1@2026-01-01",
+          "article": "621-11",
+          "chemin": "Livre II : modalités particulières d’application des principes généraux > Titre VI – Dispositions et opérations de nature spécifique > Chapitre II – Opérations de nature spécifique > Section 1 – Opérations faites en commun et pour le compte de tiers > Sous-section 4 – Opérations faites pour le compte de tiers",
+          "extrait": "IR2 - Traitement des avoirs des majeurs protégés dans les comptes annuels des associations tutélaires (Collège de l’ANC décembre 2025) Interrogée par la Compagnie nationale des commissaires aux comptes, le Collège de l’ANC a lors de sa séan"
+        },
+        {
+          "record_id": "pcg-na-376@2026-01-01",
+          "article": null,
+          "chemin": "Livre V : adaptations du règlement ANC n° 2014- 03 > Titre 8 – Huissiers de justice (règlement ANC N° 2025-04)",
+          "extrait": "IR3 – Plan de comptes à appliquer pour les exercices ouverts à compter du 1er janvier 2026par les huissiers de justice ne satisfaisant pas aux conditions de formation spécifique à la prfession de commissaires de justice Le règlement ANC n° "
+        },
+        {
+          "record_id": "pcg-323-8-c1@2026-01-01",
+          "article": "323-8",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 3 – Evaluation des passifs > Sous-section 1 – Evaluation des passifs à la date d’entrée",
+          "extrait": "Remboursement – Avis CNC n° 00-01 du 20 avril 2000 relatif aux passifs Le principe de non-compensation des actifs et des passifs s'applique pour l'estimation des provisions pour risques et charges. Ainsi, si un actif est attendu en contrepa"
+        },
+        {
+          "record_id": "pcg-500-2@2026-01-01",
+          "article": "500-2",
+          "chemin": "Livre V : adaptations du règlement ANC n° 2014- 03 > Titre 6 – Coopératives agricoles (règlement ANC N° 2021-01) > Chapitre 5 – Plan de comptes",
+          "extrait": "– Comptes spécifiques des coopératives agricoles CLASSE 1 COMPTES DE CAPITAUX 10 Capital et réserves 101 Capital 1011 Capital souscrit - non appelé 10111 Associés coopérateurs 10112 Associés non coopérateurs 1012 Capital souscrit - appelé n"
+        },
+        {
+          "record_id": "pcg-321-2@2026-01-01",
+          "article": "321-2",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 1 – Définition des passifs",
+          "extrait": "L'estimation du passif correspond au montant de la sortie de ressources que l'entité doit supporter pour éteindre son obligation envers le tiers."
+        },
+        {
+          "record_id": "pcg-321-1@2026-01-01",
+          "article": "321-1",
+          "chemin": "Livre I : principes généraux applicables aux différents postes des documents de synthèse > TITRE III – LE PASSIF > Chapitre II – Passifs > Section 1 – Définition des passifs",
+          "extrait": "1. Un passif est un élément du patrimoine ayant une valeur économique négative pour l'entité, c'est-à-dire une obligation de l'entité à l'égard d'un tiers dont il est probable ou certain qu'elle provoquera une sortie de ressources au bénéfi"
+        }
+      ]
+    }
+  ]
+}

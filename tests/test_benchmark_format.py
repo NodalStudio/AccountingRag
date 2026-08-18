@@ -66,3 +66,58 @@ def test_format_et_citations_existantes():
     assert apostrophe_typo >= 20, (
         f"seulement {apostrophe_typo} questions avec l'apostrophe typographique U+2019, 20 attendues au minimum"
     )
+
+
+ABSTENTION = Path("benchmark/abstention.jsonl")
+RAISONS_ABSTENTION = {"hors_corpus", "fiscal_pas_comptable", "hors_perimetre"}
+
+
+def _abstention() -> list[dict]:
+    return [json.loads(l) for l in
+            ABSTENTION.read_text(encoding="utf-8").splitlines() if l.strip()]
+
+
+def test_abstention_format():
+    """Le split d'abstention n'a de sens que si AUCUNE question n'y a de gold.
+
+    Une seule citation attendue trahirait une question dont le corpus porte la réponse, et
+    le taux d'abstention correcte cesserait alors de mesurer une abstention correcte.
+    """
+    lignes = _abstention()
+    assert len(lignes) >= 30, f"{len(lignes)} questions, 30 attendues au minimum"
+    assert all(q["citations"] == [] for q in lignes), \
+        "une question d'abstention porte un gold"
+    assert all(q["attendu"] == "abstention" for q in lignes)
+    assert len({q["id"] for q in lignes}) == len(lignes), "ids dupliqués"
+    assert all(q["categorie"] == "abstention" for q in lignes)
+
+
+def test_abstention_repartition_par_raison():
+    """Les trois raisons testent trois défaillances différentes : un split qui en néglige
+    une mesurerait un système sur deux tiers de son périmètre de sûreté."""
+    import collections
+    raisons = collections.Counter(q["raison"] for q in _abstention())
+    assert set(raisons) == RAISONS_ABSTENTION, f"raisons inattendues : {set(raisons)}"
+    assert min(raisons.values()) >= 8, f"répartition déséquilibrée : {dict(raisons)}"
+
+
+def test_abstention_nempiete_pas_sur_les_autres_splits():
+    """Un id partagé avec dev ou test ferait basculer une question mesurée d'un split à
+    l'autre selon l'ordre de chargement."""
+    autres = set()
+    for f in FILES:
+        autres |= {json.loads(l)["id"] for l in
+                   f.read_text(encoding="utf-8").splitlines() if l.strip()}
+    partages = {q["id"] for q in _abstention()} & autres
+    assert not partages, f"ids partagés avec dev/test : {sorted(partages)}"
+
+
+def test_abstention_chaque_question_justifie_son_absence_du_corpus():
+    """Le champ `notes` porte la preuve que la question n'a pas de réponse dans le corpus.
+
+    Sans lui, une question d'abstention est une affirmation non vérifiable : rien ne
+    distingue « le corpus ne répond pas » de « je n'ai pas cherché ».
+    """
+    for q in _abstention():
+        assert len(q.get("notes", "")) >= 60, \
+            f"{q['id']} : notes trop courtes pour justifier l'absence de réponse"
