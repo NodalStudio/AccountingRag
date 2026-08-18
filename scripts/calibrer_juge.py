@@ -19,24 +19,28 @@ from accounting_rag.judge import Judge, accord
 
 ROOT = Path(__file__).resolve().parent.parent
 CALIBRATION = ROOT / "docs/mesures/jalon4/calibration_juge.json"
-REPONSES = ROOT / "docs/mesures/jalon4/reponses_dev.json"
+SPLITS = ("dev", "abstention")  # le jeu de calibration puise dans les deux
 CACHE_JUGE = ROOT / "data/juge-calibration-cache.json"
 
 
 def charger_reponses() -> dict[str, dict]:
     """Le cache du générateur est indexé par une clé JSON [question, [record_id…]].
 
-    On le réindexe par question_id en relisant le benchmark, seule source qui relie un
-    id de question à son texte.
+    On le réindexe par question_id en relisant les benchmarks, seule source qui relie un
+    id de question à son texte. Les deux splits sont chargés : le jeu de calibration tire
+    ses cas « abstention correcte » du split d'abstention et tous les autres de dev.
     """
     from accounting_rag.evalrag import load_benchmark
-    brut = json.loads(REPONSES.read_text(encoding="utf-8"))
-    par_question = {}
-    for q in load_benchmark(ROOT / "benchmark/dev.jsonl"):
-        for cle, valeur in brut.items():
-            if json.loads(cle)[0] == q["question"]:
-                par_question[q["id"]] = valeur
-                break
+    par_question: dict[str, dict] = {}
+    for split in SPLITS:
+        cache = ROOT / f"docs/mesures/jalon4/reponses_{split}.json"
+        if not cache.is_file():
+            continue
+        brut = json.loads(cache.read_text(encoding="utf-8"))
+        par_texte = {json.loads(cle)[0]: valeur for cle, valeur in brut.items()}
+        for q in load_benchmark(ROOT / f"benchmark/{split}.jsonl"):
+            if q["question"] in par_texte:
+                par_question[q["id"]] = par_texte[q["question"]]
     return par_question
 
 
@@ -45,21 +49,34 @@ def main() -> None:
     seuil = calib["seuil_kappa"]
     reponses = charger_reponses()
 
+    # Deux des cinq cas limites n'ont aucune instance réelle dans la campagne (« fausse
+    # mais bien citée » : 0 citation hallucinée sur 422 ; « abstention excessive » :
+    # l'unique abstention de dev est fondée). Ces cas portent donc une réponse `reponse`
+    # en ligne, fabriquée à partir d'une réponse réelle, et le champ `origine` la
+    # distingue de `campagne`. Un jeu de calibration éprouve la discrimination du juge ;
+    # il n'échantillonne pas le comportement du système.
     manquantes = [c["question_id"] for c in calib["cas"]
-                  if c["question_id"] not in reponses]
+                  if "reponse" not in c and c["question_id"] not in reponses]
     if manquantes:
         print(f"STATUS: BLOCKED — réponses absentes du cache pour {manquantes}. "
-              f"Lancer d'abord scripts/eval_generation.py --split dev.", file=sys.stderr)
+              f"Lancer d'abord scripts/eval_generation.py sur les splits "
+              f"{', '.join(SPLITS)}.", file=sys.stderr)
         raise SystemExit(1)
 
     juge = Judge(cache_path=CACHE_JUGE)
     humaines, notes_juge, detail = {}, {}, []
     for cas in calib["cas"]:
         qid = cas["question_id"]
-        out = juge.noter(cas["question_texte"], reponses[qid], cas["bareme"])
-        humaines[qid] = cas["note_humaine"]
-        notes_juge[qid] = out["note"]
+        reponse = cas.get("reponse") or reponses[qid]
+        out = juge.noter(cas["question_texte"], reponse, cas["bareme"])
+        # Clé = question_id + cas limite : six énoncés apparaissent deux fois, une fois
+        # avec leur réponse réelle et une fois avec une abstention fabriquée. Indexer sur
+        # le seul question_id ferait silencieusement tomber le kappa de 30 cas à 24.
+        cle = f"{qid}|{cas['cas_limite']}"
+        humaines[cle] = cas["note_humaine"]
+        notes_juge[cle] = out["note"]
         detail.append({"question_id": qid, "cas_limite": cas["cas_limite"],
+                       "origine": cas.get("origine", "campagne"),
                        "note_humaine": cas["note_humaine"], "note_juge": out["note"],
                        "sur": out["sur"], "par_critere": out["par_critere"]})
 
@@ -72,6 +89,14 @@ def main() -> None:
             abs(d["note_humaine"] - d["note_juge"]))
     a["ecart_moyen_par_cas_limite"] = {
         k: round(sum(v) / len(v), 4) for k, v in sorted(par_cas.items())}
+
+    # Accord sur le sous-ensemble `campagne` seul : un kappa porté par des cas fabriqués
+    # ne dit pas la même chose qu'un kappa mesuré sur ce que le système produit vraiment.
+    camp = [d for d in detail if d.get("origine", "campagne") == "campagne"]
+    if camp:
+        a["accord_campagne_seule"] = accord(
+            {f"{d['question_id']}|{d['cas_limite']}": d["note_humaine"] for d in camp},
+            {f"{d['question_id']}|{d['cas_limite']}": d["note_juge"] for d in camp})
 
     calib["notes_juge"] = notes_juge          # les notes humaines restent intactes
     calib["accord"] = a

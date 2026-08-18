@@ -148,3 +148,85 @@ class _JugeFixe:
         return {"note": 2, "sur": len(bareme),
                 "par_critere": [{"critere": c, "acquis": True, "justification": "ok"}
                                 for c in bareme]}
+
+
+def test_un_sur_incoherent_leve_meme_quand_la_note_est_dans_les_bornes(tmp_path):
+    """Isole la clause `out["sur"] != len(bareme)` du contrôle de cohérence.
+
+    Relevé par l'implémenteur : le test précédent utilisait `note=5, sur=2` sur un barème
+    de 2 critères, ce qui viole DÉJÀ la seconde clause (`note` hors bornes). La première
+    clause n'avait donc aucun test capable de la faire échouer — un contrôle que personne
+    n'a vu échouer ne prouve rien (loi 5). Ici `note=1` est dans les bornes et seul `sur`
+    est faux.
+    """
+    client = FauxClient({"note": 1, "sur": 3, "par_critere": []})
+    j = Judge(cache_path=tmp_path / "cache.json", client=client)
+    with pytest.raises(RuntimeError, match="incohérente"):
+        j.noter("comment amortir ?", REPONSE, BAREME)
+    assert not (tmp_path / "cache.json").exists()
+
+
+def test_la_calibration_ne_confond_pas_deux_cas_du_meme_enonce(tmp_path, monkeypatch):
+    """Six énoncés du jeu de calibration apparaissent DEUX fois : une fois avec leur
+    réponse réelle, une fois avec une abstention fabriquée. Si la clé d'indexation était
+    le seul `question_id`, la seconde écraserait la première et le kappa porterait
+    silencieusement sur 24 cas au lieu de 30 — un chiffre faux qui ne se signalerait pas.
+    """
+    import importlib.util
+    from pathlib import Path
+    spec = importlib.util.spec_from_file_location(
+        "calibrer_juge",
+        Path(__file__).resolve().parent.parent / "scripts/calibrer_juge.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    calib = tmp_path / "calibration.json"
+    calib.write_text(json.dumps({
+        "seuil_kappa": -2.0,  # volontairement inatteignable par le bas : on teste le n
+        "cas": [
+            {"question_id": "q1", "question_texte": "q ?", "cas_limite": "juste",
+             "origine": "campagne", "bareme": BAREME, "note_humaine": 2},
+            {"question_id": "q1", "question_texte": "q ?", "cas_limite": "abstention_excessive",
+             "origine": "perturbation", "bareme": BAREME, "note_humaine": 0,
+             "reponse": {"abstention": True, "reponse": "rien", "citations": []}},
+        ],
+    }, ensure_ascii=False), encoding="utf-8")
+    monkeypatch.setattr(mod, "CALIBRATION", calib)
+    monkeypatch.setattr(mod, "CACHE_JUGE", tmp_path / "cache.json")
+    monkeypatch.setattr(mod, "charger_reponses", lambda: {"q1": REPONSE})
+    monkeypatch.setattr(mod, "Judge", lambda **kw: _JugeFixe())
+
+    mod.main()
+    ecrit = json.loads(calib.read_text(encoding="utf-8"))
+    assert ecrit["accord"]["n"] == 2, \
+        f"les deux cas du même énoncé ont fusionné : n={ecrit['accord']['n']}"
+    assert ecrit["notes_juge"] == {"q1|juste": 2, "q1|abstention_excessive": 2}
+
+
+def test_une_reponse_en_ligne_dispense_du_cache_de_campagne(tmp_path, monkeypatch):
+    """Un cas fabriqué porte sa réponse : il ne doit pas être déclaré manquant."""
+    import importlib.util
+    from pathlib import Path
+    spec = importlib.util.spec_from_file_location(
+        "calibrer_juge",
+        Path(__file__).resolve().parent.parent / "scripts/calibrer_juge.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    calib = tmp_path / "calibration.json"
+    calib.write_text(json.dumps({
+        "seuil_kappa": -2.0,
+        "cas": [{"question_id": "absente_du_cache", "question_texte": "q ?",
+                 "cas_limite": "fausse_bien_citee", "origine": "perturbation",
+                 "bareme": BAREME, "note_humaine": 0,
+                 "reponse": {"abstention": False, "reponse": "faux", "citations": []}},
+                {"question_id": "q2", "question_texte": "q2 ?", "cas_limite": "juste",
+                 "origine": "campagne", "bareme": BAREME, "note_humaine": 2}],
+    }, ensure_ascii=False), encoding="utf-8")
+    monkeypatch.setattr(mod, "CALIBRATION", calib)
+    monkeypatch.setattr(mod, "CACHE_JUGE", tmp_path / "cache.json")
+    monkeypatch.setattr(mod, "charger_reponses", lambda: {"q2": REPONSE})
+    monkeypatch.setattr(mod, "Judge", lambda **kw: _JugeFixe())
+
+    mod.main()  # ne doit pas lever SystemExit
+    assert json.loads(calib.read_text(encoding="utf-8"))["accord"]["n"] == 2
