@@ -131,3 +131,126 @@ def test_un_taux_sans_denominateur_vaut_none_et_pas_zero(tmp_path, con):
     assert m["taux_correspondance_brute"] is None
     # Celui-là reste défini : il se calcule sur les réponses, pas sur les citations.
     assert m["taux_abstention"] == 1.0
+
+
+@pytest.fixture
+def con_versions(tmp_path):
+    """Base avec un article à version unique et un article à DEUX versions.
+
+    Le corpus réel porte 39 articles à plusieurs versions : l'ambiguïté n'est pas
+    théorique, elle attend le premier corpus historisé.
+    """
+    db = tmp_path / "versions.db"
+    c = sqlite3.connect(db)
+    c.execute("CREATE TABLE records (id TEXT PRIMARY KEY, texte TEXT)")
+    c.executemany("INSERT INTO records VALUES (?, ?)", [
+        ("pcg-1121-1@2026-01-01",
+         "Le compte 698 Intégration fiscale enregistre les charges et produits du groupe."),
+        ("pcg-212-3@2025-01-01", "Un actif est un élément identifiable du patrimoine."),
+        ("pcg-212-3@2026-01-01", "Un actif est un élément identifiable du patrimoine."),
+    ])
+    c.commit()
+    return c
+
+
+EXTRAIT_1121 = "Le compte 698 Intégration fiscale enregistre les charges"
+
+
+def test_identifiant_sans_version_nest_pas_une_hallucination(con_versions):
+    """La leçon de la première campagne : 66 citations comptées « inexistantes »
+    portaient le bon article et un extrait verbatim, seul le @date manquait."""
+    assert verifier_citation(con_versions, "pcg-1121-1", EXTRAIT_1121) == "version_omise"
+
+
+def test_identifiant_sans_version_reste_faux_si_lextrait_ne_porte_pas(con_versions):
+    """Omettre la version ne rachète pas un extrait absent du texte."""
+    assert verifier_citation(
+        con_versions, "pcg-1121-1",
+        "un extrait totalement inventé et de longueur suffisante") == "extrait_absent"
+
+
+def test_article_a_plusieurs_versions_cite_sans_version_est_ambigu(con_versions):
+    """La citation ne dit pas laquelle des deux versions elle invoque : pas traçable."""
+    assert verifier_citation(
+        con_versions, "pcg-212-3",
+        "Un actif est un élément identifiable du patrimoine.") == "version_ambigue"
+
+
+def test_un_article_inexistant_reste_inexistant(con_versions):
+    """Le rattrapage de version ne doit pas absoudre une vraie hallucination."""
+    assert verifier_citation(
+        con_versions, "pcg-999-99", EXTRAIT_1121) == "record_inexistant"
+
+
+def test_un_identifiant_versionne_faux_nest_pas_rattrape(con_versions):
+    """`pcg-999-99@2026-01-01` porte déjà un @ : il ne doit pas passer par le rattrapage,
+    sinon un identifiant versionné inventé deviendrait indétectable."""
+    assert verifier_citation(
+        con_versions, "pcg-999-99@2026-01-01", EXTRAIT_1121) == "record_inexistant"
+
+
+def test_correspond_brut_resout_aussi_la_version(con_versions):
+    """Sinon l'écart entre le taux brut et le taux « ok » mesurerait l'omission de
+    version au lieu de la normalisation."""
+    assert correspond_brut(con_versions, "pcg-1121-1", EXTRAIT_1121) is True
+    assert correspond_brut(con_versions, "pcg-999-99", EXTRAIT_1121) is False
+
+
+def test_les_deux_fautes_ne_sont_jamais_additionnees(tmp_path, con_versions):
+    """Le taux de citations inexistantes et le taux de version omise sont deux chiffres.
+
+    Les additionner est exactement ce qui a fait afficher 15,64 % d'hallucinations là où
+    il n'y en avait aucune.
+    """
+    reponses = {
+        "q1": {"abstention": False, "reponse": "a", "citations": [
+            {"record_id": "pcg-1121-1", "extrait": EXTRAIT_1121}]},
+        "q2": {"abstention": False, "reponse": "b", "citations": [
+            {"record_id": "pcg-999-99", "extrait": EXTRAIT_1121}]},
+    }
+    m = metriques(reponses, tmp_path / "versions.db")
+    assert m["taux_citations_inexistantes"] == 0.5
+    assert m["taux_citations_version_omise"] == 0.5
+    assert m["taux_citations_non_portantes"] == 0.0
+    assert m["par_question"] == {"q1": "version_omise", "q2": "record_inexistant"}
+
+
+# Cas RÉEL, repris tel quel de la première campagne sur dev : l'unique citation classée
+# « non portante » sur 422. Le corpus écrit `l’actif` (apostrophe courbe), le modèle a
+# écrit `l'actif` (droite) tout en écrivant correctement `l’écart d’acquisition` deux mots
+# plus loin. Un caractère d'apostrophe ne fait pas dire autre chose à un article.
+_TEXTE_212_1 = ("Ainsi, le fonds commercial acquis, évalué par différence, est inscrit à "
+                "l’actif dans les comptes individuels; il en est de même de l’écart "
+                "d’acquisition dans les comptes consolidés.")
+_EXTRAIT_212_1 = ("le fonds commercial acquis, évalué par différence, est inscrit à "
+                  "l'actif dans les comptes individuels; il en est de même de l’écart "
+                  "d’acquisition dans les comptes consolidés")
+
+
+@pytest.fixture
+def con_apostrophe(tmp_path):
+    db = tmp_path / "apo.db"
+    c = sqlite3.connect(db)
+    c.execute("CREATE TABLE records (id TEXT PRIMARY KEY, texte TEXT)")
+    c.execute("INSERT INTO records VALUES ('pcg-212-1-c1@2026-01-01', ?)", (_TEXTE_212_1,))
+    c.commit()
+    return c
+
+
+def test_une_apostrophe_droite_ne_rend_pas_une_citation_non_portante(con_apostrophe):
+    assert verifier_citation(
+        con_apostrophe, "pcg-212-1-c1@2026-01-01", _EXTRAIT_212_1) == "ok"
+
+
+def test_le_taux_brut_garde_lapostrophe_visible(con_apostrophe):
+    """Le repli ne doit rien cacher : la correspondance BRUTE reste fausse, donc l'écart
+    entre les deux taux publie exactement ce que la tolérance a laissé passer."""
+    assert correspond_brut(
+        con_apostrophe, "pcg-212-1-c1@2026-01-01", _EXTRAIT_212_1) is False
+
+
+def test_le_repli_dapostrophe_ne_sauve_pas_un_extrait_faux(con_apostrophe):
+    """La tolérance porte sur la typographie, pas sur le contenu."""
+    assert verifier_citation(
+        con_apostrophe, "pcg-212-1-c1@2026-01-01",
+        "le fonds commercial acquis est inscrit en charges de l'exercice") == "extrait_absent"
