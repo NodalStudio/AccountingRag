@@ -1,7 +1,8 @@
 import sqlite3
 import pytest
 from accounting_rag.citations import (
-    EXTRAIT_MINIMUM, metriques, normaliser_pour_comparaison, verifier_citation)
+    EXTRAIT_MINIMUM, correspond_brut, metriques, normaliser_pour_comparaison,
+    verifier_citation)
 
 
 @pytest.fixture
@@ -101,3 +102,32 @@ def test_citations_par_reponse_est_publie(tmp_path, con):
     m = metriques(reponses, tmp_path / "mini.db")
     # Les abstentions ne comptent pas : elles n'ont pas à citer.
     assert m["citations_par_reponse"] == {"min": 1, "median": 2.0, "max": 3, "moyenne": 2.0}
+
+
+def test_un_extrait_trop_court_ne_compte_pas_comme_correspondance_brute(con):
+    """L'écart entre les deux taux doit mesurer la normalisation, et rien d'autre.
+
+    Un extrait de moins de EXTRAIT_MINIMUM caractères présent VERBATIM serait sinon
+    compté brut et refusé par le verdict : l'écart mélangerait alors deux causes et ne
+    dirait plus ce que la normalisation tolère.
+    """
+    court = "Le mode  d'amortissement"
+    assert len(court) < EXTRAIT_MINIMUM
+    assert court in con.execute(
+        "SELECT texte FROM records WHERE id = 'pcg-214-13@2026-01-01'").fetchone()[0]
+    assert verifier_citation(con, "pcg-214-13@2026-01-01", court) == "extrait_trop_court"
+    assert correspond_brut(con, "pcg-214-13@2026-01-01", court) is False
+
+
+def test_un_taux_sans_denominateur_vaut_none_et_pas_zero(tmp_path, con):
+    """Sur un split tout en abstention, « 0,0 citation inexistante » se lirait comme un
+    sans-faute alors que le taux n'est pas défini."""
+    reponses = {"q1": {"abstention": True, "reponse": "le corpus ne le dit pas",
+                       "citations": []}}
+    m = metriques(reponses, tmp_path / "mini.db")
+    assert m["n_citations"] == 0
+    assert m["taux_citations_inexistantes"] is None
+    assert m["taux_citations_non_portantes"] is None
+    assert m["taux_correspondance_brute"] is None
+    # Celui-là reste défini : il se calcule sur les réponses, pas sur les citations.
+    assert m["taux_abstention"] == 1.0

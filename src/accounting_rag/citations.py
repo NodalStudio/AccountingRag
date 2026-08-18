@@ -53,9 +53,16 @@ def correspond_brut(con: sqlite3.Connection, record_id: str, extrait: str) -> bo
     Mesuré à côté du verdict pour rendre visible ce que la normalisation tolère. La sonde
     du jalon (docs/mesures/jalon4/sonde_verbatim.json) donne 77/77 sans normalisation :
     tant que ce taux égale le taux « ok », la tolérance ne fait aucun travail.
+
+    Applique le MÊME refus de principe que `verifier_citation` sur les extraits trop
+    courts. Sans cela, un extrait de dix caractères présent verbatim serait compté ici et
+    refusé là, et l'écart entre les deux taux ne mesurerait plus la normalisation mais un
+    mélange des deux causes — ce qui viderait ce compteur de sa raison d'être.
     """
+    if len(extrait.strip()) < EXTRAIT_MINIMUM:
+        return False
     row = con.execute("SELECT texte FROM records WHERE id = ?", (record_id,)).fetchone()
-    return row is not None and bool(extrait) and extrait in row[0]
+    return row is not None and extrait in row[0]
 
 
 def metriques(reponses: dict[str, dict], db_path: str | Path) -> dict:
@@ -98,8 +105,16 @@ def metriques(reponses: dict[str, dict], db_path: str | Path) -> dict:
     con.close()
 
     total_cit = sum(verdicts.values())
-    def taux(n: int, d: int) -> float:
-        return round(n / d, 4) if d else 0.0
+
+    def taux(n: int, d: int) -> float | None:
+        """`None`, jamais 0,0, quand le dénominateur est nul.
+
+        Sur un split où le système s'abstient partout, il n'y a aucune citation à juger :
+        publier « taux de citations inexistantes : 0,0 » se lirait comme un sans-faute
+        alors que le taux n'est pas défini. C'est exactement le genre de chiffre juste et
+        trompeur que ce dépôt refuse.
+        """
+        return round(n / d, 4) if d else None
 
     return {
         "n": len(reponses),
