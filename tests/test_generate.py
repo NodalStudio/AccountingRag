@@ -15,9 +15,11 @@ class FauxBloc:
 
 
 class FauxMessage:
-    def __init__(self, payload):
-        self.content = [FauxBloc(json.dumps(payload, ensure_ascii=False))]
-        self.stop_reason = "end_turn"
+    def __init__(self, payload, stop_reason="end_turn", texte_brut=None):
+        texte = texte_brut if texte_brut is not None else json.dumps(payload,
+                                                                     ensure_ascii=False)
+        self.content = [FauxBloc(texte)]
+        self.stop_reason = stop_reason
         self.usage = type("U", (), {"input_tokens": 10, "output_tokens": 5})()
 
 
@@ -33,10 +35,12 @@ class FauxClient:
         }
         self.appels = []
         self.messages = self
+        self.stop_reason = "end_turn"
+        self.texte_brut = None
 
     def create(self, **kwargs):
         self.appels.append(kwargs)
-        return FauxMessage(self.payload)
+        return FauxMessage(self.payload, self.stop_reason, self.texte_brut)
 
 
 def test_repondre_rend_une_reponse_citee(tmp_path):
@@ -92,5 +96,30 @@ def test_reponse_vide_leve_au_lieu_detre_mise_en_cache(tmp_path):
     client = FauxClient({"abstention": False, "reponse": "   ", "citations": []})
     g = Generator(cache_path=tmp_path / "cache.json", client=client)
     with pytest.raises(RuntimeError, match="réponse vide"):
+        g.repondre("comment amortir ?", PASSAGES)
+    assert not (tmp_path / "cache.json").exists()
+
+
+def test_troncature_leve_avant_analyse_et_nest_pas_mise_en_cache(tmp_path):
+    """`stop_reason=max_tokens` : le JSON est amputé, il ne doit jamais entrer au cache.
+
+    Cas réel mesuré à max_tokens=2000 sur q001 (cf. sonde_verbatim). Le payload est ici
+    volontairement VALIDE : le contrôle doit tenir sur stop_reason, pas sur l'échec de
+    json.loads, sinon une troncature tombant sur une accolade fermante passerait.
+    """
+    client = FauxClient()
+    client.stop_reason = "max_tokens"
+    g = Generator(cache_path=tmp_path / "cache.json", client=client)
+    with pytest.raises(RuntimeError, match="tronquée"):
+        g.repondre("comment amortir ?", PASSAGES)
+    assert not (tmp_path / "cache.json").exists()
+
+
+def test_json_illisible_leve_une_erreur_diagnosticable(tmp_path):
+    """Un JSON cassé doit dire le modèle, la question et le stop_reason."""
+    client = FauxClient()
+    client.texte_brut = '{"abstention": false, "reponse": "coup'
+    g = Generator(cache_path=tmp_path / "cache.json", client=client)
+    with pytest.raises(RuntimeError, match="JSON illisible"):
         g.repondre("comment amortir ?", PASSAGES)
     assert not (tmp_path / "cache.json").exists()

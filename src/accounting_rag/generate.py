@@ -15,6 +15,13 @@ from pathlib import Path
 
 _DEFAUT = "claude-opus-5"
 
+# Mesuré, pas deviné : à 2000 la première question du benchmark (q001, 10 passages,
+# 6200 tokens d'entrée) sort avec stop_reason=max_tokens et un JSON tronqué — le
+# modèle produit un bloc thinking (le thinking adaptatif est actif par défaut sur les
+# modèles 5, et il partage le budget max_tokens avec le texte) puis 6276 caractères de
+# JSON, soit 2586 tokens de sortie. Cf. docs/mesures/jalon4/sonde_verbatim.json.
+_MAX_TOKENS = 8000
+
 _SCHEMA = {
     "type": "object",
     "properties": {
@@ -118,7 +125,7 @@ class Generator:
             for p in passages)
         reponse = self.client.messages.create(
             model=self.modele,
-            max_tokens=2000,
+            max_tokens=_MAX_TOKENS,
             system=_SYSTEME,
             output_config={"format": {"type": "json_schema", "schema": _SCHEMA}},
             messages=[{"role": "user",
@@ -130,14 +137,30 @@ class Generator:
             self.tokens_entree += getattr(usage, "input_tokens", 0) or 0
             self.tokens_sortie += getattr(usage, "output_tokens", 0) or 0
 
+        stop = getattr(reponse, "stop_reason", None)
+        if stop == "max_tokens":
+            # Une sortie tronquée doit lever AVANT l'analyse : le JSON tronqué est
+            # tantôt illisible (JSONDecodeError opaque), tantôt analysable et donc
+            # silencieusement amputé de ses dernières citations. Ni l'un ni l'autre ne
+            # doit entrer dans le cache, qui est l'ancrage de reproductibilité.
+            raise RuntimeError(
+                f"réponse tronquée par max_tokens={_MAX_TOKENS} pour : {question!r} "
+                f"({getattr(reponse, 'usage', None)}). Augmenter _MAX_TOKENS ; ne pas "
+                f"réduire le nombre de passages, ce serait changer deux variables.")
+
         texte = "".join(b.text for b in reponse.content
                         if getattr(b, "type", None) == "text").strip()
         if not texte:
             raise RuntimeError(
                 f"réponse vide renvoyée par {self.modele} pour : {question!r} "
                 f"(blocs : {[getattr(b, 'type', None) for b in reponse.content]}, "
-                f"stop_reason : {getattr(reponse, 'stop_reason', None)!r})")
-        out = json.loads(texte)
+                f"stop_reason : {stop!r})")
+        try:
+            out = json.loads(texte)
+        except json.JSONDecodeError as e:
+            raise RuntimeError(
+                f"JSON illisible renvoyé par {self.modele} pour : {question!r} "
+                f"(stop_reason : {stop!r}, {len(texte)} caractères, erreur : {e})") from e
         if not out.get("reponse", "").strip():
             # Ne JAMAIS mettre en cache une réponse vide : le cache étant committé,
             # elle serait rejouée silencieusement par toutes les campagnes suivantes.
