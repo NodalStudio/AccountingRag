@@ -22,3 +22,7 @@ data/reecritures-cache.json
 # Cache d'exécution de la sonde verbatim du jalon 4 (les mesures, elles, sont versionnées
 # sous docs/mesures/jalon4/).
 data/sonde-verbatim-cache.json
+
+# Cache d'exécution de la calibration du LLM-juge (la calibration elle-même, avec les
+# notes humaines de référence, est versionnée sous docs/mesures/jalon4/).
+data/juge-calibration-cache.json
