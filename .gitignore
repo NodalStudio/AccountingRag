@@ -18,3 +18,7 @@ build/
 # Cache d'exécution des réécritures (le cache DE MESURE, docs/mesures/jalon3/
 # reecritures.json, est versionné : c'est l'ancrage de reproductibilité des chiffres publiés).
 data/reecritures-cache.json
+
+# Cache d'exécution de la sonde verbatim du jalon 4 (les mesures, elles, sont versionnées
+# sous docs/mesures/jalon4/).
+data/sonde-verbatim-cache.json
