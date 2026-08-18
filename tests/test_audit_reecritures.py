@@ -102,9 +102,29 @@ def test_une_entree_de_cache_non_tracable_fait_echouer_laudit(tmp_path, monkeypa
 
 def test_laudit_couvre_les_deux_splits():
     """L'audit doit charger dev ET test : une fuite dans le split gelé invaliderait le
-    chiffre de clôture aussi sûrement qu'une fuite dans dev."""
+    chiffre de clôture aussi sûrement qu'une fuite dans dev.
+
+    Le garde-fou portait auparavant sur un effectif codé en dur (90). L'extension du
+    benchmark au jalon 4 l'a cassé alors que l'audit était juste : dev + test valent
+    désormais 122 questions, pour 90 réécritures en cache — l'ancrage du jalon 3 ne
+    couvre que le benchmark du jalon 3, ce qui est correct. Un effectif figé mesurait la
+    taille du benchmark, pas le périmètre audité. La bonne assertion est que le périmètre
+    contient les identifiants des DEUX splits, et qu'aucune entrée de cache n'est
+    silencieusement sautée — c'était le défaut I1 du jalon 3, où l'audit affichait
+    « 90 auditées » en n'en examinant que 61.
+    """
     from accounting_rag.evalrag import load_benchmark
-    n_attendu = sum(len(load_benchmark(audit.ROOT / f"benchmark/{s}.jsonl"))
-                    for s in ("dev", "test"))
+    textes = {}
+    for split in ("dev", "test"):
+        for q in load_benchmark(audit.ROOT / f"benchmark/{split}.jsonl"):
+            textes[q["question"]] = split
     assert audit.main() == 0
-    assert n_attendu == 90  # 61 dev + 29 test — garde-fou sur le périmètre audité
+    # Les deux splits sont bien dans le périmètre chargé par l'audit.
+    assert set(textes.values()) == {"dev", "test"}
+    # Toute entrée du cache versionné correspond à une question de ce périmètre : sinon
+    # l'audit en sauterait sans le dire.
+    cache = json.loads(audit.CACHE.read_text(encoding="utf-8"))
+    orphelines = [q for q in cache if q not in textes]
+    assert not orphelines, (
+        f"{len(orphelines)} entrée(s) de cache hors périmètre, donc non auditées : "
+        f"{orphelines[:2]}")
