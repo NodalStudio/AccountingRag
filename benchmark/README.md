@@ -1,12 +1,16 @@
-# Benchmark gold — 90 questions (v2)
+# Benchmark gold — 150 questions goldées + 30 questions d'abstention (v3)
 
 Jeu de 90 questions à réponse ancrée dans le corpus (`data/corpus.db`), avec citations vérifiées manuellement. Objectif : disposer d'un signal minimal, indépendant du système de retrieval, pour mesurer si le pipeline (`src/accounting_rag/search.py`) retrouve bien les bons articles. Les citations gold ont été choisies en lisant directement le texte des `records` en base — **pas** en interrogeant le retrieval — pour éviter tout biais de circularité entre juge et système jugé.
 
-Le jeu est passé de 30 à 90 questions au jalon 2.5 (60 nouvelles questions, `q031`-`q090`), afin de fiabiliser statistiquement les mesures et de muscler la couverture thématique et lexicale (voir « Historique » ci-dessous).
+Le jeu est passé de 30 à 90 questions au jalon 2.5 (`q031`-`q090`), puis de 90 à 150 au jalon 4 (`q1001`-`q1032` en dev et `v001`-`v028` dans un nouveau split de validation), auxquelles s'ajoutent 30 questions d'abstention sans gold. Motif du jalon 4 : à 0,966 sur le split gelé, l'instrument rendait 28 réponses justes sur 29 et ne pouvait plus mesurer un progrès.
+
+**Les chiffres mesurés sur ce benchmark ne sont pas comparables à ceux du jalon 3** : l'effectif a changé.
 
 ## Fichiers
 
 - `dev.jsonl` — 61 questions, utilisables librement pour développer/régler le système (choix d'algorithme, tuning, debug).
+- `validation.jsonl` — 28 questions, **second split gelé**, créé au jalon 4 et jamais exécuté avant la clôture de ce jalon. Il existe parce que la garantie de gel de `test.jsonl` s'use à chaque clôture : ce split a été exécuté deux fois (jalons 2.5 et 3), et il faut pouvoir le retirer du service sans perdre toute mesure non biaisée.
+- `abstention.jsonl` — 30 questions **sans aucun gold**, dont la bonne réponse est de refuser de répondre. Trois raisons, dix questions chacune : `fiscal_pas_comptable`, `hors_corpus`, `hors_perimetre`. Ces questions ne mesurent pas le retrieval — `recall` n'y a aucun sens, et `evalrag.evaluate` y lèverait une division par zéro. Elles mesurent l'honnêteté de la génération.
 - `test.jsonl` — 29 questions, **réservées** : ne jamais s'en servir pour régler le système (paramètres, prompts, seuils…). Elles ne servent qu'à une mesure finale non biaisée. Si une question de `test.jsonl` a été consultée pendant un développement ou une analyse d'erreurs, elle est compromise et doit être remplacée, pas réutilisée.
 
 Le split est **stratifié par catégorie et figé** : une fois tiré, il n'est jamais re-tiré (sous peine de fuite progressive du jeu de test vers le dev). Ajouter des questions ne change pas le split existant, voir « Procédure d'ajout » ci-dessous.
@@ -39,10 +43,42 @@ Répartition dev/test par catégorie (stratifiée, ~70 %/30 %) :
 
 | Catégorie | dev | test | total |
 |---|---|---|---|
-| `reference_directe` | 7 | 3 | 10 |
-| `regle` | 23 | 12 | 35 |
-| `vocabulaire_courant` | 31 | 14 | 45 |
-| **Total** | **61** | **29** | **90** |
+| Catégorie | dev | test | validation | total |
+|---|---|---|---|---|
+| `reference_directe` | 15 | 3 | 7 | 25 |
+| `regle` | 37 | 12 | 12 | 61 |
+| `vocabulaire_courant` | 41 | 14 | 9 | 64 |
+| **Total** | **93** | **29** | **28** | **150** |
+
+Le tableau à deux colonnes ci-dessus est celui du jalon 2.5, conservé pour l'historique.
+
+## La famille d'abstention, et pourquoi ses questions sont difficiles
+
+Une question dont aucun mot ne figure au corpus n'est jamais remontée par le retrieval, et
+s'abstenir ne coûte alors rien. Les questions utiles sont celles où **le corpus cite sa
+source fiscale sans la contenir** : `pcg-na-25` renvoie à l'article 39-1-5° du CGI sans en
+énoncer les conditions, `pcg-515-2-c1` cite l'article 223-A tout en ne traitant que la
+comptabilisation, `pcg-741-2` renvoie la définition du contrôle exclusif à l'article 211-3
+du règlement ANC 2020-01. Le retrieval remonte un passage très pertinent, et le système
+doit reconnaître qu'il ne répond pas.
+
+Chaque question porte dans `notes` la **preuve** de l'absence de réponse dans le corpus :
+le record que le retrieval remontera et ce qui lui manque. Un test l'exige, parce que sans
+elle rien ne distingue « le corpus ne répond pas » de « je n'ai pas cherché ».
+
+Deux questions ont été retirées ou resserrées par l'inspection des passages avant la
+mesure, ce qui était le point de l'inspection : l'une demandait si le mali technique est
+amortissable, ce à quoi `pcg-745-7` répond, et elle a été resserrée sur la seule
+déductibilité ; l'autre portait sur la livraison à soi-même, dont `pcg-191-1-c7` déroule un
+cas concret.
+
+## Les divergences 2058-A, et leur moitié manquante
+
+Huit questions portent le champ `gold_fiscal: "a_completer"`. Elles ont deux réponses : la
+comptable, dans le corpus et goldée normalement, et la fiscale, absente du corpus. La
+moitié manquante est **marquée, jamais inventée**. La métrique signature du projet — la
+confusion fiscal ↔ comptable — se prépare ainsi sans attendre le corpus fiscal, et le gain
+se lira le jour où il arrive.
 
 ## Garde-fou apostrophe (anti-régression C1)
 
@@ -71,6 +107,10 @@ Les questions `q031`-`q090` (jalon 2.5) ajoutent 11 thèmes absents de `q001`-`q
 
 - **2026-08 (jalon 2)** : constitution initiale, 30 questions (21 dev / 9 test), split figé.
 - **2026-08-16 (jalon 2.5)** : ajout de 60 questions (`q031`-`q090`), réparties AVANT toute mesure (re-gel du split) selon le tableau ci-dessus. Les 30 questions `q001`-`q030` et leur répartition dev/test existante ne sont pas modifiées.
+- **2026-08-18 (jalon 4)** : ajout de 60 questions goldées et de 30 questions d'abstention. Trois sources, ordonnées par le risque de **fuite** entre la question et le corpus et non par le coût de goldage : le dossier fusions du DSCG UE4 (Titre VII du Livre II, 117 records dont 81 articles numérotés — 32 questions), les thèmes DCG UE9/UE10 absents du benchmark (20 questions), et les divergences de la liasse 2058-A (8 questions à moitié fiscale marquée). Les rescrits BOFiP sont écartés jusqu'au jalon corpus : la question y est *dans* le document indexé, donc la mesure serait circulaire.
+  - `test.jsonl` n'est **pas** modifié. Sa garantie de gel est dépensée (deux exécutions) et le jalon 4 le remplace par `validation.jsonl` ; y ajouter des questions serait du travail sans valeur de mesure.
+  - `validation.jsonl` est **gelé le 2026-08-18** et n'est exécuté qu'une fois, à la clôture du jalon 4. Sa stratification par catégorie et par source est vérifiée par un test.
+  - Les corrigés DCG/DSCG fournis par l'utilisateur servent de **contre-vérification privée uniquement** : les golds sont rédigés depuis le PCG, puis confrontés. Rien n'en dérive dans le dépôt et ils ne sont pas redistribuables.
 
 ## Procédure d'ajout de questions
 

@@ -1,0 +1,177 @@
+{
+  "[\"Comment retraiter un contrat de location-financement dans les comptes consolidés d'un groupe ?\", [\"pcg-212-5-c1@2026-01-01\", \"pcg-324-1-c3@2026-01-01\", \"pcg-213-9-c2@2026-01-01\", \"pcg-214-13-c3@2026-01-01\", \"pcg-214-9-c1@2026-01-01\", \"pcg-221-4@2026-01-01\", \"pcg-212-5@2026-01-01\", \"pcg-214-13-c2@2026-01-01\", \"pcg-221-1-c6@2026-01-01\", \"pcg-na-25@2026-01-01\"]]": {
+    "abstention": false,
+    "citations": [
+      {
+        "extrait": "Le titulaire d'un contrat de crédit-bail comptabilise en charges les sommes dues au titre de la période de location.\nÀ la levée de l'option d'achat, le titulaire d'un contrat de crédit-bail inscrit l'immobilisation à l'actif de son bilan pour un montant établi conformément aux règles applicables en matière de détermination de la valeur d'entrée.",
+        "record_id": "pcg-212-5@2026-01-01"
+      },
+      {
+        "extrait": "Les immobilisations exploitées dans le cadre d’un contrat de crédit-bail ou de location avec option d’achat défini à l’article L. 313.7 du code monétaire et financier, et des opérations assimilées qui sont retraitées en cas d’établissement de comptes consolidés, selon la comptabilité dite financière en application des dispositions du paragraphe 33 de l’annexe du règlement n° 99-07 du CRC (en vigueur à l’époque), restent comptabilisées à l’actif du crédit bailleur et non du crédit preneur.",
+        "record_id": "pcg-212-5-c1@2026-01-01"
+      },
+      {
+        "extrait": "Cette option permet aux crédits bailleurs d’appliquer le mode d’amortissement financier, initialement prévu pour les créances de location -financement dans les comptes consolidés, aux immobilisations physiques comptabilisées à l’actif dans les comptes individuels.",
+        "record_id": "pcg-214-13-c3@2026-01-01"
+      },
+      {
+        "extrait": "- les charges financières relatives aux contrats de location-financement dans les comptes consolidés ;",
+        "record_id": "pcg-213-9-c2@2026-01-01"
+      },
+      {
+        "extrait": "les durées d’utilisation en matière d’amortissement doivent être identiques dans les deux jeux d’états financiers.",
+        "record_id": "pcg-214-13-c2@2026-01-01"
+      },
+      {
+        "extrait": "Dans les comptes consolidés, ces amortissements dérogatoires devront être retraités et donner lieu à la constatation d’impôts différés.",
+        "record_id": "pcg-214-13-c2@2026-01-01"
+      }
+    ],
+    "reponse": "Les passages fournis ne donnent que les principes généraux ; ils ne détaillent pas les écritures de retraitement, qui relèvent du règlement relatif aux comptes consolidés (règlement ANC n° 2020-01, ex-§ 33 de l'annexe du règlement CRC n° 99-07) auquel le PCG renvoie. Ce qui ressort des textes fournis :\n\n1) Dans les comptes individuels, le titulaire d'un contrat de crédit-bail comptabilise en charges les sommes dues au titre de la période de location, et n'inscrit l'immobilisation à l'actif qu'à la levée de l'option d'achat.\n\n2) Les immobilisations exploitées dans le cadre d'un contrat de crédit-bail ou de location avec option d'achat (article L. 313-7 du code monétaire et financier) et les opérations assimilées « sont retraitées en cas d'établissement de comptes consolidés, selon la comptabilité dite financière » ; dans les comptes individuels, en revanche, elles restent comptabilisées à l'actif du crédit-bailleur et non du crédit-preneur. Cette « comptabilité financière » conduit, du côté du bailleur, à constater une créance de location-financement, l'amortissement financier étant « initialement prévu pour les créances de location-financement dans les comptes consolidés ».\n\n3) Corollaire chez le preneur : les redevances sont décomposées, la part d'intérêts constituant des coûts d'emprunt — le PCG cite expressément parmi les coûts d'emprunt « les charges financières relatives aux contrats de location-financement dans les comptes consolidés ».\n\n4) L'immobilisation ainsi activée est amortie sur sa durée d'utilisation, identique dans les comptes individuels et consolidés ; par ailleurs, les amortissements dérogatoires constatés dans les comptes individuels doivent être retraités dans les comptes consolidés et donner lieu à constatation d'impôts différés.\n\nPour les modalités chiffrées précises (évaluation initiale de l'actif et de la dette, échéancier, traitement du dépôt de garantie, etc.), il faut se référer au règlement sur les comptes consolidés, non reproduit ici."
+  },
+  "[\"Comment se calcule l'indemnité légale de licenciement d'un salarié comptant huit ans d'ancienneté ?\", [\"pcg-322-10-c5@2026-01-01\", \"pcg-324-1-c67@2026-01-01\", \"pcg-324-1-c19@2026-01-01\", \"pcg-324-1-c66@2026-01-01\", \"pcg-324-1-c13@2026-01-01\", \"pcg-324-1-c12@2026-01-01\", \"pcg-323-2-c5@2026-01-01\", \"pcg-324-1@2026-01-01\", \"pcg-203-3@2026-01-01\", \"pcg-831-1-c2@2026-01-01\"]]": {
+    "abstention": true,
+    "citations": [],
+    "reponse": "Les passages fournis, issus du Plan comptable général, traitent uniquement de la comptabilisation et de l'évaluation comptables des indemnités de rupture de contrat de travail (provision, charge, actualisation), et non des règles de calcul du montant de l'indemnité légale de licenciement qui relèvent du code du travail : aucune formule de calcul en fonction de l'ancienneté n'y figure."
+  },
+  "[\"Comment se calcule l'écart d'acquisition dégagé lors de l'entrée d'une filiale dans le périmètre de consolidation ?\", [\"pcg-na-237@2026-01-01\", \"pcg-212-1-c1@2026-01-01\", \"pcg-221-4@2026-01-01\", \"pcg-836-1-c7@2026-01-01\", \"pcg-221-1-c6@2026-01-01\", \"pcg-315-1-c7@2026-01-01\", \"pcg-743-1@2026-01-01\", \"pcg-744-2-c1@2026-01-01\", \"pcg-315-1-c8@2026-01-01\", \"pcg-744-1-c1@2026-01-01\"]]": {
+    "abstention": true,
+    "citations": [],
+    "reponse": "Les passages fournis ne permettent pas d'expliquer le mode de calcul de l'écart d'acquisition : celui-ci relève du règlement ANC n° 2020-01 relatif aux comptes consolidés (auquel les extraits ne font que renvoyer), et les seules indications présentes ici sont incidentes (écart d'acquisition évalué « par différence » et inscrit à l'actif consolidé, intégration des frais d'acquisition nets d'impôts dans le coût d'acquisition des titres) sans définir la formule de détermination lors de l'entrée d'une filiale dans le périmètre. Il manque les articles du règlement sur les comptes consolidés relatifs à l'évaluation des actifs et passifs identifiables et à la détermination de l'écart d'acquisition."
+  },
+  "[\"Comment se calcule un impôt différé actif sur un amortissement dérogatoire retraité en consolidation ?\", [\"pcg-na-291@2026-01-01\", \"pcg-214-27-c2@2026-01-01\", \"pcg-214-27-c3@2026-01-01\", \"pcg-214-8-c1@2026-01-01\", \"pcg-122-3-c2@2026-01-01\", \"pcg-833-4-c2@2026-01-01\", \"pcg-214-13-c2@2026-01-01\", \"pcg-833-4@2026-01-01\", \"pcg-821-1@2026-01-01\", \"pcg-na-36@2026-01-01\"]]": {
+    "abstention": true,
+    "citations": [],
+    "reponse": "Les passages fournis n'indiquent que le principe (dans les comptes consolidés, les amortissements dérogatoires doivent être retraités et donner lieu à la constatation d'impôts différés, cf. article 214-13), mais ils ne contiennent aucune règle de calcul de l'impôt différé actif (base = différence temporaire, taux applicable, conditions de reconnaissance), qui relève des règles relatives aux comptes consolidés et non des passages transmis."
+  },
+  "[\"Comment un groupe comptabilise-t-il l'acquisition d'intérêts minoritaires complémentaires dans une filiale déjà intégrée ?\", [\"pcg-315-1-c8@2026-01-01\", \"pcg-221-8@2026-01-01\", \"pcg-515-2-c1@2026-01-01\", \"pcg-745-2@2026-01-01\", \"pcg-621-5@2026-01-01\", \"pcg-221-1-c6@2026-01-01\", \"pcg-1212-26@2026-01-01\", \"pcg-na-237@2026-01-01\", \"pcg-836-1-c7@2026-01-01\", \"pcg-221-1-c8@2026-01-01\"]]": {
+    "abstention": true,
+    "citations": [],
+    "reponse": "Les passages fournis ne traitent pas de la comptabilisation d'une acquisition complémentaire de titres (intérêts minoritaires) dans une filiale déjà consolidée : cette question relève du règlement ANC n° 2020-01 relatif aux comptes consolidés, dont les dispositions pertinentes ne figurent pas ici (les extraits ne l'évoquent qu'incidemment, à propos des frais d'acquisition ou des instruments remboursables en titres)."
+  },
+  "[\"Dans quel délai l'administration fiscale peut-elle exercer son droit de reprise en matière d'impôt sur les sociétés ?\", [\"pcg-214-27-c3@2026-01-01\", \"pcg-na-39@2026-01-01\", \"pcg-833-4@2026-01-01\", \"pcg-515-2-c1@2026-01-01\", \"pcg-214-18-c1@2026-01-01\", \"pcg-203-3@2026-01-01\", \"pcg-131-3-c2@2026-01-01\", \"pcg-na-79@2026-01-01\", \"pcg-214-14-c2@2026-01-01\", \"pcg-515-2@2026-01-01\"]]": {
+    "abstention": true,
+    "citations": [],
+    "reponse": "Les passages fournis relèvent du Plan comptable général et ne traitent pas du délai de prescription du droit de reprise de l'administration fiscale, qui est une règle de procédure fiscale (livre des procédures fiscales) et non une règle comptable ; aucun élément permettant de répondre ne figure dans les extraits communiqués."
+  },
+  "[\"Dans quel délai un dirigeant doit-il déclarer la cessation des paiements de sa société au greffe ?\", [\"pcg-626-2@2026-01-01\", \"pcg-315-1-c3@2026-01-01\", \"pcg-836-1-c4@2026-01-01\", \"pcg-na-3@2026-01-01\", \"pcg-324-1-c32@2026-01-01\", \"pcg-1121-1@2026-01-01\", \"pcg-812-1-c2@2026-01-01\", \"pcg-324-1-c15@2026-01-01\", \"pcg-na-344@2026-01-01\", \"pcg-na-318@2026-01-01\"]]": {
+    "abstention": true,
+    "citations": [],
+    "reponse": "Les passages fournis ne traitent pas du délai légal de déclaration de la cessation des paiements au greffe (qui relève du droit des entreprises en difficulté, code de commerce, et non du Plan comptable général) : ils n'abordent que le traitement comptable des créances non déclarées en redressement judiciaire."
+  },
+  "[\"La provision constituée au titre des indemnités de fin de carrière est-elle déductible du résultat imposable de l'exercice ?\", [\"pcg-323-4-c1@2026-01-01\", \"pcg-324-1@2026-01-01\", \"pcg-833-4-c2@2026-01-01\", \"pcg-324-1-c3@2026-01-01\", \"pcg-822-2-c6@2026-01-01\", \"pcg-821-2@2026-01-01\", \"pcg-1221-68@2026-01-01\", \"pcg-515-2-c1@2026-01-01\", \"pcg-821-2-c7@2026-01-01\", \"pcg-836-1-c6@2026-01-01\"]]": {
+    "abstention": true,
+    "citations": [],
+    "reponse": "La déductibilité fiscale d'une provision pour indemnités de fin de carrière relève du droit fiscal (CGI) et non du Plan comptable général : les passages fournis traitent uniquement de la comptabilisation de ces engagements sous forme de provision et de l'évaluation des passifs avant effet d'impôt, sans indiquer leur sort au regard du résultat imposable."
+  },
+  "[\"Le mali technique constaté lors d'une fusion est-il déductible du résultat imposable de la société absorbante ?\", [\"pcg-745-4@2026-01-01\", \"pcg-745-4-c1@2026-01-01\", \"pcg-745-3@2026-01-01\", \"pcg-na-308@2026-01-01\", \"pcg-745-4-c2@2026-01-01\", \"pcg-751-4@2026-01-01\", \"pcg-745-10-c2@2026-01-01\", \"pcg-na-309@2026-01-01\", \"pcg-745-6-c1@2026-01-01\", \"pcg-744-3@2026-01-01\"]]": {
+    "abstention": true,
+    "citations": [],
+    "reponse": "La déductibilité fiscale du mali technique relève du droit fiscal (CGI) et non du Plan comptable général : les passages fournis ne traitent que de la définition, de l'affectation, de l'amortissement et de la dépréciation comptables du mali technique, sans indiquer son sort au regard du résultat imposable."
+  },
+  "[\"Quel est le délai de prescription d'une action en responsabilité civile contre un dirigeant de société ?\", [\"pcg-624-2-c1@2026-01-01\", \"pcg-na-87@2026-01-01\", \"pcg-616-18@2026-01-01\", \"pcg-624-11@2026-01-01\", \"pcg-500-2-c1@2026-01-01\", \"pcg-323-2-c5@2026-01-01\", \"pcg-624-2@2026-01-01\", \"pcg-613-1-c2@2026-01-01\", \"pcg-1121-1@2026-01-01\", \"pcg-324-1-c23@2026-01-01\"]]": {
+    "abstention": true,
+    "citations": [],
+    "reponse": "Les passages fournis, extraits du Plan comptable général, ne traitent que du traitement comptable des passifs, provisions et litiges ; ils ne contiennent aucune règle sur le délai de prescription d'une action en responsabilité civile contre un dirigeant, question qui relève du droit des sociétés (code de commerce) et non de la comptabilité."
+  },
+  "[\"Quel est le délai de préavis applicable à un licenciement pour faute grave ?\", [\"pcg-322-10-c5@2026-01-01\", \"pcg-324-1-c67@2026-01-01\", \"pcg-324-1-c13@2026-01-01\", \"pcg-811-12@2026-01-01#3\", \"pcg-323-2-c3@2026-01-01\", \"pcg-na-92@2026-01-01\", \"pcg-324-1-c12@2026-01-01\", \"pcg-832-18-c3@2026-01-01\", \"pcg-838-4@2026-01-01\", \"pcg-832-18-c2@2026-01-01\"]]": {
+    "abstention": true,
+    "citations": [],
+    "reponse": "Les passages fournis relèvent du Plan comptable général (comptabilisation et évaluation des indemnités de rupture de contrat de travail) et ne contiennent aucune règle sur la durée du préavis de licenciement, question qui relève du droit du travail et non de la comptabilité."
+  },
+  "[\"Quel est le plafond de déductibilité fiscale de l'amortissement d'un véhicule de tourisme selon son taux d'émission de CO2 ?\", [\"pcg-na-52@2026-01-01\", \"pcg-214-13@2026-01-01\", \"pcg-na-268@2026-01-01\", \"pcg-214-18-c1@2026-01-01\", \"pcg-na-270@2026-01-01\", \"pcg-214-8-c1@2026-01-01\", \"pcg-na-269@2026-01-01\", \"pcg-214-14-c2@2026-01-01\", \"pcg-838-6@2026-01-01\", \"pcg-838-6-c2@2026-01-01\"]]": {
+    "abstention": true,
+    "citations": [],
+    "reponse": "Les passages fournis relèvent du Plan comptable général (amortissements, dépréciations, quotas de CO2) et ne contiennent aucune disposition sur les plafonds fiscaux de déductibilité de l'amortissement des véhicules de tourisme selon leur taux d'émission de CO2 : cette question relève du code général des impôts (article 39, 4) et non de la réglementation comptable."
+  },
+  "[\"Quel est le taux horaire brut du SMIC en 2026 ?\", [\"pcg-324-1-c56@2026-01-01\", \"pcg-324-1-c38@2026-01-01\", \"pcg-na-3@2026-01-01\", \"pcg-na-376@2026-01-01\", \"pcg-na-319@2026-01-01\", \"pcg-833-4-c2@2026-01-01\", \"pcg-822-1-c3@2026-01-01\", \"pcg-832-1@2026-01-01\", \"pcg-811-12@2026-01-01#3\", \"pcg-na-34@2026-01-01\"]]": {
+    "abstention": true,
+    "citations": [],
+    "reponse": "Les passages fournis relèvent du Plan comptable général (règles de comptabilisation, modèles de documents de synthèse) et ne contiennent aucune information sur le taux horaire brut du SMIC, qui est une donnée de droit du travail fixée par décret et non une règle comptable."
+  },
+  "[\"Quel est le taux réduit d'impôt sur les sociétés applicable aux PME en 2026, et jusqu'à quel montant de bénéfice ?\", [\"pcg-na-320@2026-01-01\", \"pcg-515-1-1@2026-01-01\", \"pcg-833-4@2026-01-01\", \"pcg-na-3@2026-01-01\", \"pcg-833-4-c2@2026-01-01\", \"pcg-na-52@2026-01-01\", \"pcg-na-39@2026-01-01\", \"pcg-na-44@2026-01-01\", \"pcg-515-1@2026-01-01\", \"pcg-515-1-c2@2026-01-01\"]]": {
+    "abstention": true,
+    "citations": [],
+    "reponse": "Les passages fournis relèvent du Plan comptable général (comptabilisation de l'impôt, informations en annexe) et ne contiennent aucune indication sur le taux réduit d'impôt sur les sociétés applicable aux PME ni sur son plafond de bénéfice : cette question est de nature fiscale (Code général des impôts) et non comptable."
+  },
+  "[\"Quel pourcentage de droits de vote fait présumer le contrôle exclusif d'une filiale ?\", [\"pcg-741-2@2026-01-01\", \"pcg-836-1-c7@2026-01-01\", \"pcg-710-2-c1@2026-01-01\", \"pcg-743-1-c2@2026-01-01\", \"pcg-221-4@2026-01-01\", \"pcg-315-1-c8@2026-01-01\", \"pcg-623-7@2026-01-01\", \"pcg-743-1-c1@2026-01-01\", \"pcg-625-3-c1@2026-01-01\", \"pcg-625-3@2026-01-01\"]]": {
+    "abstention": true,
+    "citations": [],
+    "reponse": "Les passages fournis ne contiennent aucun seuil de pourcentage de droits de vote : ils se contentent de renvoyer, pour la définition du contrôle exclusif, à l'article 211-3 du règlement ANC n° 2020-01 relatif aux comptes consolidés, texte qui n'est pas reproduit ici."
+  },
+  "[\"Quel quorum est requis pour qu'une assemblée générale extraordinaire de société anonyme délibère valablement ?\", [\"pcg-624-2@2026-01-01\", \"pcg-751-1@2026-01-01\", \"pcg-613-1-c2@2026-01-01\", \"pcg-na-344@2026-01-01\", \"pcg-831-1-c2@2026-01-01\", \"pcg-1121-1@2026-01-01\", \"pcg-500-2@2026-01-01\", \"pcg-213-3-c2@2026-01-01\", \"pcg-na-340@2026-01-01\", \"pcg-832-11-c3@2026-01-01\"]]": {
+    "abstention": true,
+    "citations": [],
+    "reponse": "Les passages fournis ne traitent pas des règles de quorum des assemblées générales extraordinaires : cette question relève du droit des sociétés (code de commerce) et non du Plan comptable général, qui ne mentionne l'AGE que de façon incidente (attribution d'actions gratuites, date de réalisation définitive d'une fusion)."
+  },
+  "[\"Quelle est l'étendue de la responsabilité civile du commissaire aux comptes envers les tiers ?\", [\"pcg-na-373@2026-01-01\", \"pcg-na-87@2026-01-01\", \"pcg-832-20@2026-01-01\", \"pcg-na-376@2026-01-01\", \"pcg-na-340@2026-01-01\", \"pcg-323-8-c1@2026-01-01\", \"pcg-500-2@2026-01-01\", \"pcg-321-1@2026-01-01\", \"pcg-500-2-c1@2026-01-01\", \"pcg-322-8-c1@2026-01-01\"]]": {
+    "abstention": true,
+    "citations": [],
+    "reponse": "Les passages fournis ne traitent pas de la responsabilité civile du commissaire aux comptes : ils ne portent que sur des règles comptables (définition et comptabilisation des passifs, plans de comptes sectoriels, information en annexe sur les honoraires des commissaires aux comptes). Cette question relève du droit des sociétés (code de commerce) et non du Plan comptable général, aucun passage ne permettant d'en définir l'étendue envers les tiers."
+  },
+  "[\"Quelle norme IFRS régit les regroupements d'entreprises, et selon quelle méthode d'évaluation ?\", [\"pcg-324-1-c32@2026-01-01\", \"pcg-na-20@2026-01-01\", \"pcg-743-1@2026-01-01\", \"pcg-na-18@2026-01-01\", \"pcg-221-8@2026-01-01\", \"pcg-214-24@2026-01-01\", \"pcg-214-15-c2@2026-01-01\", \"pcg-221-4@2026-01-01\", \"pcg-na-318@2026-01-01\", \"pcg-744-2-c1@2026-01-01\"]]": {
+    "abstention": true,
+    "citations": [],
+    "reponse": "Les passages fournis ne mentionnent aucune norme IFRS relative aux regroupements d'entreprises (type IFRS 3) ni sa méthode d'évaluation : ils ne traitent que du référentiel français (évaluation des apports en cas de fusion, avantages postérieurs à l'emploi) et, s'agissant des IFRS, uniquement d'IFRS 1 sur la première application. Il manque donc un passage portant sur la norme IFRS applicable aux regroupements d'entreprises."
+  },
+  "[\"Quelles conditions l'article 39-1-5° du code général des impôts impose-t-il pour qu'une provision pour grosses réparations soit déductible ?\", [\"pcg-na-22@2026-01-01\", \"pcg-122-4-c1@2026-01-01#2\", \"pcg-na-23@2026-01-01\", \"pcg-na-14@2026-01-01\", \"pcg-na-13@2026-01-01\", \"pcg-121-2-c6@2026-01-01\", \"pcg-na-21@2026-01-01\", \"pcg-122-4-c2@2026-01-01\", \"pcg-na-15@2026-01-01\", \"pcg-na-28@2026-01-01\"]]": {
+    "abstention": true,
+    "citations": [],
+    "reponse": "Les passages fournis ne traitent que des règles comptables relatives aux provisions pour grosses réparations ou pour gros entretien et grandes révisions (Plan comptable général) ; ils ne contiennent aucune disposition de l'article 39-1-5° du code général des impôts ni les conditions fiscales de déductibilité, question qui relève de la fiscalité et non de la comptabilité."
+  },
+  "[\"Quelles conditions le régime de faveur des fusions de l'article 210 A du CGI impose-t-il à la société absorbante ?\", [\"pcg-744-3@2026-01-01\", \"pcg-751-2@2026-01-01\", \"pcg-141-2@2026-01-01\", \"pcg-751-3@2026-01-01\", \"pcg-745-4@2026-01-01\", \"pcg-752-3@2026-01-01\", \"pcg-515-2-c1@2026-01-01\", \"pcg-745-4-c1@2026-01-01\", \"pcg-744-3-c1@2026-01-01\", \"pcg-745-4-c2@2026-01-01\"]]": {
+    "abstention": true,
+    "citations": [],
+    "reponse": "Les passages fournis, issus du Plan comptable général, traitent uniquement des aspects comptables des fusions (évaluation des apports, mali/boni, période intercalaire) et ne contiennent aucune disposition relative aux conditions du régime fiscal de faveur de l'article 210 A du CGI, qui relève de la fiscalité et non de la comptabilité."
+  },
+  "[\"Quelles diligences la norme d'exercice professionnel NEP 620 impose-t-elle au commissaire aux comptes recourant aux travaux d'un expert ?\", [\"pcg-na-87@2026-01-01\", \"pcg-122-4-c1@2026-01-01\", \"pcg-213-10-c1@2026-01-01\", \"pcg-622-3@2026-01-01\", \"pcg-836-1-c5@2026-01-01\", \"pcg-191-1-c25@2026-01-01\", \"pcg-1121-1@2026-01-01\", \"pcg-213-22-c2@2026-01-01\", \"pcg-121-2-c5@2026-01-01\", \"pcg-na-318@2026-01-01\"]]": {
+    "abstention": true,
+    "citations": [],
+    "reponse": "Les passages fournis proviennent exclusivement du Plan comptable général (règles de comptabilisation et d'évaluation) et ne contiennent aucune disposition relative aux normes d'exercice professionnel du commissaire aux comptes, en particulier la NEP 620 sur l'utilisation des travaux d'un expert ; il manque donc le texte de la norme d'audit correspondante pour répondre."
+  },
+  "[\"Quelles informations le rapport du commissaire aux comptes doit-il comporter sur la continuité d'exploitation ?\", [\"pcg-832-20@2026-01-01\", \"pcg-121-2@2026-01-01\", \"pcg-121-4@2026-01-01#2\", \"pcg-831-1@2026-01-01\", \"pcg-172-2@2026-01-01\", \"pcg-112-4@2026-01-01\", \"pcg-836-1-c5@2026-01-01\", \"pcg-831-2@2026-01-01\", \"pcg-811-6@2026-01-01\", \"pcg-838-14@2026-01-01\"]]": {
+    "abstention": true,
+    "citations": [],
+    "reponse": "Les passages fournis ne traitent pas du contenu du rapport du commissaire aux comptes : ils concernent le principe de continuité d'activité en comptabilité et les informations à fournir dans l'annexe (dont les honoraires des commissaires aux comptes), mais aucune disposition sur les mentions du rapport du commissaire aux comptes relatives à la continuité d'exploitation — sujet qui relève du code de commerce et des normes d'exercice professionnel, non du Plan comptable général."
+  },
+  "[\"Quelles mentions les statuts d'une société par actions simplifiée doivent-ils obligatoirement comporter ?\", [\"pcg-311-1-c2@2026-01-01\", \"pcg-1121-1@2026-01-01\", \"pcg-811-7@2026-01-01\", \"pcg-430-2-c1@2026-01-01\", \"pcg-624-10@2026-01-01\", \"pcg-311-1@2026-01-01\", \"pcg-624-6@2026-01-01\", \"pcg-na-359@2026-01-01\", \"pcg-na-362@2026-01-01\", \"pcg-836-1-c4@2026-01-01\"]]": {
+    "abstention": true,
+    "citations": [],
+    "reponse": "Les passages fournis relèvent du Plan comptable général et ne traitent pas du contenu obligatoire des statuts d'une société par actions simplifiée, qui est une question de droit des sociétés (code de commerce) : aucune mention statutaire obligatoire de la SAS n'y figure."
+  },
+  "[\"Quelles sanctions pénales un dirigeant encourt-il pour abus de biens sociaux ?\", [\"pcg-616-18@2026-01-01\", \"pcg-na-207@2026-01-01\", \"pcg-811-7@2026-01-01\", \"pcg-616-2-c2@2026-01-01\", \"pcg-122-2-c1@2026-01-01#2\", \"pcg-811-12@2026-01-01#3\", \"pcg-811-12@2026-01-01#2\", \"pcg-na-194@2026-01-01\", \"pcg-500-2@2026-01-01\", \"pcg-514-1@2026-01-01\"]]": {
+    "abstention": true,
+    "citations": [],
+    "reponse": "Les passages fournis relèvent exclusivement du Plan comptable général (comptabilisation de charges, annexe, plans de comptes, actifs des musées) et ne contiennent aucune disposition sur les sanctions pénales encourues par un dirigeant pour abus de biens sociaux, qui relèvent du code de commerce et du droit pénal ; je ne peux donc pas répondre."
+  },
+  "[\"Quelles sociétés peuvent entrer dans le périmètre d'un groupe d'intégration fiscale au sens de l'article 223-A du CGI ?\", [\"pcg-515-2-c1@2026-01-01\", \"pcg-515-2@2026-01-01\", \"pcg-833-4@2026-01-01\", \"pcg-812-1-c3@2026-01-01\", \"pcg-131-3-c1@2026-01-01\", \"pcg-836-1-c7@2026-01-01\", \"pcg-621-5@2026-01-01\", \"pcg-812-1-c1@2026-01-01\", \"pcg-812-1-c2@2026-01-01\", \"pcg-838-14@2026-01-01\"]]": {
+    "abstention": true,
+    "citations": [],
+    "reponse": "Les passages fournis traitent uniquement du traitement comptable du régime d'intégration fiscale (comptabilisation de la dette d'impôt du groupe, provision au titre de l'obligation de restitution des économies d'impôt, informations en annexe) et non des conditions fiscales de détention et d'éligibilité définissant le périmètre d'intégration prévu à l'article 223-A du CGI ; cette question relève de la fiscalité et non du Plan comptable général."
+  },
+  "[\"Quelles sont les trois méthodes de consolidation et à quel niveau de contrôle chacune s'applique-t-elle ?\", [\"pcg-836-1-c7@2026-01-01\", \"pcg-623-7@2026-01-01\", \"pcg-na-17@2026-01-01\", \"pcg-221-4@2026-01-01\", \"pcg-na-179@2026-01-01\", \"pcg-743-1@2026-01-01\", \"pcg-na-289@2026-01-01\", \"pcg-741-2@2026-01-01\", \"pcg-741-1-c1@2026-01-01\", \"pcg-743-1@2026-01-01#2\"]]": {
+    "abstention": true,
+    "citations": [],
+    "reponse": "Les passages fournis ne permettent pas de répondre : ils citent bien, incidemment, les trois méthodes (mise en équivalence, intégration proportionnelle, intégration globale) mais ne définissent pas le niveau de contrôle auquel chacune s'applique, ces règles figurant dans le règlement ANC n° 2020-01 relatif aux comptes consolidés, qui n'est pas reproduit ici."
+  },
+  "[\"Selon quelle méthode convertit-on les comptes d'une filiale située hors de la zone euro ?\", [\"pcg-1011-1@2026-01-01\", \"pcg-420-4@2026-01-01\", \"pcg-420-8@2026-01-01\", \"pcg-420-5@2026-01-01\", \"pcg-na-24@2026-01-01\", \"pcg-na-364@2026-01-01\", \"pcg-na-362@2026-01-01\", \"pcg-420-7@2026-01-01\", \"pcg-322-6@2026-01-01\", \"pcg-420-8-c1@2026-01-01\"]]": {
+    "abstention": true,
+    "citations": [],
+    "reponse": "Les passages fournis ne traitent pas de la conversion des comptes d'une filiale étrangère (méthodes du cours de clôture ou du cours historique, relevant du règlement ANC n° 2020-01 sur les comptes consolidés) : ils portent uniquement sur la conversion d'opérations, créances, dettes, stocks et liquidités en devises dans les comptes individuels, ainsi que sur le transfert de siège social en France."
+  },
+  "[\"Sur combien d'exercices un déficit fiscal est-il reportable en avant, et sous quel plafond ?\", [\"pcg-122-3-c2@2026-01-01\", \"pcg-1211-11@2026-01-01\", \"pcg-na-39@2026-01-01\", \"pcg-833-4-c3@2026-01-01\", \"pcg-122-3-c3@2026-01-01\", \"pcg-na-309@2026-01-01\", \"pcg-833-4@2026-01-01\", \"pcg-1211-12@2026-01-01\", \"pcg-na-320@2026-01-01\", \"pcg-821-2-c7@2026-01-01\"]]": {
+    "abstention": true,
+    "citations": [],
+    "reponse": "Les passages fournis ne traitent que du traitement comptable des déficits fiscaux reportables (information en annexe, effet d'impôt d'un changement de méthode, mali de fusion) et ne contiennent aucune règle sur la durée du report en avant ni sur son plafond, qui relèvent de la législation fiscale (CGI) et non du Plan comptable général."
+  },
+  "[\"À quelles conditions la dépréciation d'une immobilisation corporelle est-elle déductible du résultat imposable ?\", [\"pcg-512-1-c7@2026-01-01\", \"pcg-214-25@2026-01-01\", \"pcg-na-171@2026-01-01\", \"pcg-na-200@2026-01-01\", \"pcg-214-18-c1@2026-01-01\", \"pcg-613-5@2026-01-01\", \"pcg-613-6@2026-01-01\", \"pcg-821-2@2026-01-01\", \"pcg-214-14-c2@2026-01-01\", \"pcg-1212-29@2026-01-01\"]]": {
+    "abstention": true,
+    "citations": [],
+    "reponse": "Les passages fournis relèvent uniquement du Plan comptable général : ils décrivent la constatation et la reprise comptables des dépréciations d'immobilisations (et le mécanisme de transfert en amortissement « pour des raisons fiscales »), mais ne fixent aucune condition de déductibilité du résultat imposable, laquelle relève du droit fiscal (CGI) et non du référentiel comptable ; je ne peux donc pas répondre sur cette base."
+  },
+  "[\"À quelles conditions un contrat de cautionnement souscrit par une personne physique est-il valable ?\", [\"pcg-na-86@2026-01-01\", \"pcg-182-2-c2@2026-01-01\", \"pcg-836-1@2026-01-01\", \"pcg-na-289@2026-01-01\", \"pcg-836-1-c4@2026-01-01\", \"pcg-811-11@2026-01-01\", \"pcg-625-4@2026-01-01\", \"pcg-836-1-c2@2026-01-01\", \"pcg-625-18@2026-01-01\", \"pcg-811-12@2026-01-01#3\"]]": {
+    "abstention": true,
+    "citations": [],
+    "reponse": "Les passages fournis relèvent du Plan comptable général et ne traitent que du traitement comptable des cautionnements (provision, dette, information en annexe) ; ils ne contiennent aucune règle sur les conditions de validité juridique d'un contrat de cautionnement souscrit par une personne physique, question qui relève du droit civil et de la consommation."
+  }
+}

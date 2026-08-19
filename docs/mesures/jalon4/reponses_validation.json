@@ -1,0 +1,870 @@
+{
+  "[\"Comment je sais si ce que j'ai acheté doit aller à l'actif de mon bilan plutôt qu'en charges de l'année ?\", [\"pcg-212-5@2026-01-01\", \"pcg-na-191@2026-01-01\", \"pcg-212-1-c1@2026-01-01\", \"pcg-213-17-c1@2026-01-01\", \"pcg-832-4@2026-01-01\", \"pcg-213-8@2026-01-01\", \"pcg-831-1-c2@2026-01-01\", \"pcg-821-2@2026-01-01\", \"pcg-213-22@2026-01-01\", \"pcg-213-9@2026-01-01\"]]": {
+    "abstention": false,
+    "citations": [
+      {
+        "extrait": "L'existence d'une certitude suffisante que les avantages économiques futurs iront à l'entité demande que l'on s'assure que celle-ci recevra les avantages attachés à cet actif et assumera les risques associés. Cette assurance n'existe en général que lorsque les risques et avantages ont été transférés à l'entité.",
+        "record_id": "pcg-212-1-c1@2026-01-01"
+      },
+      {
+        "extrait": "Pour déterminer si un élément satisfait au premier critère de comptabilisation, une entité a besoin d'apprécier le degré de certitude attaché au flux d'avantages économiques futurs sur la base des indications disponibles lors de la comptabilisation initiale.",
+        "record_id": "pcg-212-1-c1@2026-01-01"
+      },
+      {
+        "extrait": "Le second critère de comptabilisation est, en général, aisément satisfait parce que la transaction d'échange attestant l'acquisition de l'actif permet d'identifier son coût. Dans le cas d'un actif produit par l'entité pour elle-même, une évaluation fiable du coût peut être faite à partir des transactions conclues avec des tiers extérieurs à l'entité pour l'acquisition des matières premières, de la main d'œuvre et autres éléments utilisés au cours du processus de construction.",
+        "record_id": "pcg-212-1-c1@2026-01-01"
+      },
+      {
+        "extrait": "Le titulaire d'un contrat de crédit-bail comptabilise en charges les sommes dues au titre de la période de location.\nÀ la levée de l'option d'achat, le titulaire d'un contrat de crédit-bail inscrit l'immobilisation à l'actif de son bilan",
+        "record_id": "pcg-212-5@2026-01-01"
+      },
+      {
+        "extrait": "son prix d’achat, y compris les droits de douane et taxes non récupérables, après déduction des remises, rabais commerciaux et escomptes de règlement ;\n- de tous les coûts directement attribuables engagés pour mettre l’actif en place et en état de fonctionner selon l’utilisation prévue par la direction.",
+        "record_id": "pcg-213-8@2026-01-01"
+      },
+      {
+        "extrait": "de l’estimation initiale des coûts de démantèlement, d’enlèvement et de restauration du site sur lequel elle est située",
+        "record_id": "pcg-213-8@2026-01-01"
+      },
+      {
+        "extrait": "de tous les coûts directement attribuables à la préparation de cet actif en vue de l’utilisation envisagée.",
+        "record_id": "pcg-213-22@2026-01-01"
+      },
+      {
+        "extrait": "Les frais externes afférents à des formations nécessaires à la mise en service de l’immobilisation peuvent, sur option, être rattachés au coût d’acquisition de l’immobilisation ou comptabilisés en charges.",
+        "record_id": "pcg-213-22@2026-01-01"
+      },
+      {
+        "extrait": "les droits de mutation, honoraires ou commissions et frais d’actes, liés à l’acquisition, peuvent sur option, être rattachés au coût d’acquisition de l’immobilisation ou comptabilisés en charges. Leur rattachement au coût d’acquisition de l’immobilisation constitue la méthode de référence.\nCes deux options peuvent être exercées indépendamment l’une de l’autre.",
+        "record_id": "pcg-213-8@2026-01-01"
+      },
+      {
+        "extrait": "Deux méthodes comptables sont donc autorisées : comptabilisation des coûts d'emprunt en charges ou incorporation au coût de l'actif.\nUn actif éligible est un actif qui exige une longue période de préparation ou de construction avant de pouvoir être utilisé ou vendu.\nLa méthode retenue doit être appliquée, de façon cohérente et permanente, à tous les coûts d’emprunts directement attribuables à l’acquisition ou la production de tous les actifs éligibles de l’entité.",
+        "record_id": "pcg-213-9@2026-01-01"
+      },
+      {
+        "extrait": "Comptabilisation des frais externes afférents à des formations nécessaires à la mise en service des immobilisations incorporelles et corporelles en application de l’article 213-8 ○ Incorporation dans le coût de l’actif ○ Charges",
+        "record_id": "pcg-831-1-c2@2026-01-01"
+      },
+      {
+        "extrait": "Frais de développement 1. Si inscription à l’actif : mention de la durée retenue pour l’amortissement.\n2. Si comptabilisation en charges : mention du montant comptabilisé en charges au cours de l’exercice.",
+        "record_id": "pcg-832-4@2026-01-01"
+      }
+    ],
+    "reponse": "**1. Les deux critères de comptabilisation à l'actif.** Pour savoir si un élément acquis constitue une immobilisation, il faut vérifier deux conditions. D'abord, l'existence d'une certitude suffisante que les avantages économiques futurs iront à l'entité : cela suppose de s'assurer qu'elle recevra les avantages attachés à cet actif et assumera les risques associés, ce qui n'existe en général que lorsque les risques et avantages lui ont été transférés ; ce degré de certitude s'apprécie sur la base des indications disponibles lors de la comptabilisation initiale. Ensuite, le coût doit pouvoir être évalué de façon fiable — critère « en général aisément satisfait parce que la transaction d'échange attestant l'acquisition de l'actif permet d'identifier son coût » (pour un actif produit pour soi-même, l'évaluation se fait à partir des transactions conclues avec des tiers : matières premières, main-d'œuvre, etc.).\n\n**2. Attention au transfert des risques et avantages : l'exemple du crédit-bail.** Un bien financé en crédit-bail n'est pas à l'actif du preneur pendant la location : celui-ci comptabilise en charges les sommes dues au titre de la période de location, et n'inscrit l'immobilisation à l'actif qu'à la levée de l'option d'achat.\n\n**3. Une fois l'actif reconnu, tous les coûts nécessaires suivent le bien.** Le coût d'acquisition d'une immobilisation corporelle comprend le prix d'achat (droits de douane et taxes non récupérables inclus, net des remises, rabais et escomptes) et tous les coûts directement attribuables engagés pour mettre l'actif en place et en état de fonctionner selon l'utilisation prévue par la direction, ainsi que l'estimation initiale des coûts de démantèlement et de restauration du site. Pour une immobilisation incorporelle acquise séparément, ce sont le prix d'achat et tous les coûts directement attribuables à la préparation de l'actif en vue de l'utilisation envisagée.\n\n**4. Certains éléments relèvent d'une option actif/charges.** Les frais externes de formation nécessaires à la mise en service, ainsi que les droits de mutation, honoraires ou commissions et frais d'actes liés à l'acquisition, peuvent, sur option, être rattachés au coût d'acquisition ou comptabilisés en charges — le rattachement au coût étant la méthode de référence pour les seconds ; ces deux options sont indépendantes. De même, les coûts d'emprunt finançant un actif éligible (celui qui exige une longue période de préparation ou de construction) relèvent de deux méthodes autorisées : comptabilisation en charges ou incorporation au coût de l'actif, la méthode retenue devant être appliquée de façon cohérente et permanente à tous les actifs éligibles.\n\n**5. Le choix doit être mentionné en annexe.** L'annexe indique la méthode comptable retenue poste par poste (frais de développement : actif ou charges ; frais de formation : incorporation dans le coût de l'actif ou charges ; droits de mutation ; coûts d'emprunt ; etc.). Pour les frais de développement notamment, l'annexe mentionne la durée d'amortissement en cas d'inscription à l'actif, ou le montant comptabilisé en charges au cours de l'exercice dans le cas inverse."
+  },
+  "[\"Comment le mali technique est-il affecté lorsqu'il excède la somme des plus-values latentes estimées de manière fiable sur les actifs identifiés ?\", [\"pcg-745-5@2026-01-01\", \"pcg-745-5-c1@2026-01-01\", \"pcg-na-308@2026-01-01\", \"pcg-838-14-c1@2026-01-01\", \"pcg-745-4-c1@2026-01-01\", \"pcg-745-4@2026-01-01\", \"pcg-745-4-c2@2026-01-01\", \"pcg-745-7-c1@2026-01-01\", \"pcg-745-8@2026-01-01\", \"pcg-745-6-c1@2026-01-01\"]]": {
+    "abstention": false,
+    "citations": [
+      {
+        "extrait": "si le mali technique est supérieur à la somme des plus-values latentes, estimées de manière fiable, sur les éléments d’actifs identifiés hors fonds commercial, il est affecté aux actifs apportés et le montant résiduel au fonds commercial",
+        "record_id": "pcg-745-5@2026-01-01"
+      },
+      {
+        "extrait": "A la date de l’opération, l’entité procède à l’affectation du mali technique, calculé selon les modalités prévues à l’article 745-4, aux différents actifs apportés concernés, qu’ils soient inscrits ou non dans les comptes de l’absorbée",
+        "record_id": "pcg-745-5@2026-01-01"
+      },
+      {
+        "extrait": "si le mali technique est inférieur à la somme des plus-values latentes, estimées de manière fiable, sur les éléments d’actifs identifiés hors fonds commercial, il est affecté aux actifs apportés au prorata des plus-values latentes.",
+        "record_id": "pcg-745-5@2026-01-01"
+      },
+      {
+        "extrait": "Le mali peut être affecté sur les seuls actifs pour lesquels une plus-value latente existe et peut être estimée de manière fiable: la valeur réelle de l’actif telle que définie à l’article 744-1 du présent règlement est déterminée de manière fiable, soit grâce à un prix de marché, soit par une méthode de calcul basée sur les flux futurs de trésorerie ou toute autre méthode jugée appropriée par le management",
+        "record_id": "pcg-745-5-c1@2026-01-01"
+      },
+      {
+        "extrait": "Les plus-values latentes retenues pour l’affectation du mali sont considérées, le cas échéant, nettes d’impôt si la cession des actifs est envisagée à brève échéance.",
+        "record_id": "pcg-745-5-c1@2026-01-01"
+      },
+      {
+        "extrait": "La quote-part de mali résiduelle affectée à un fonds commercial suit les règles d’amortissement du fonds commercial.",
+        "record_id": "pcg-745-7-c1@2026-01-01"
+      },
+      {
+        "extrait": "Le mali technique résiduel affecté au fonds commercial suit les règles de dépréciation applicables aux fonds commerciaux. S’il fait l’objet d’une dépréciation comptabilisé en conformité avec l’article 214-17, aucune reprise de dépréciation n’est possible.",
+        "record_id": "pcg-745-8@2026-01-01"
+      },
+      {
+        "extrait": "Mali résiduel affecté au fonds commercial (e)",
+        "record_id": "pcg-838-14-c1@2026-01-01"
+      }
+    ],
+    "reponse": "Lorsque le mali technique est supérieur à la somme des plus-values latentes, estimées de manière fiable, sur les éléments d'actifs identifiés hors fonds commercial, il est affecté aux actifs apportés et le montant résiduel est affecté au fonds commercial ; cette affectation est réalisée à la date de l'opération, aux différents actifs apportés concernés, qu'ils soient inscrits ou non dans les comptes de l'absorbée (article 745-5). À l'inverse, si le mali technique est inférieur à cette somme, il est affecté aux actifs apportés au prorata des plus-values latentes.\n\nÀ noter que l'affectation ne peut porter que sur les actifs pour lesquels une plus-value latente existe et peut être estimée de manière fiable (prix de marché, flux futurs de trésorerie ou toute autre méthode jugée appropriée), les plus-values étant retenues nettes d'impôt si la cession est envisagée à brève échéance.\n\nConséquences du suivi ultérieur : la quote-part de mali résiduelle affectée au fonds commercial suit les règles d'amortissement du fonds commercial, et le mali technique résiduel affecté au fonds commercial suit les règles de dépréciation applicables aux fonds commerciaux, sans possibilité de reprise de dépréciation lorsque celle-ci a été comptabilisée conformément à l'article 214-17. Dans l'annexe, ce montant apparaît distinctement sous la ligne « Mali résiduel affecté au fonds commercial »."
+  },
+  "[\"Comment neutralise-t-on le cumul, chez l'absorbante, du résultat de l'absorbée bénéficiaire et des dividendes auxquels elle a droit au titre de l'exercice précédent ?\", [\"pcg-752-5@2026-01-01\", \"pcg-752-4@2026-01-01\", \"pcg-745-2@2026-01-01\", \"pcg-744-3@2026-01-01\", \"pcg-141-3-c1@2026-01-01\", \"pcg-141-3@2026-01-01\", \"pcg-751-4@2026-01-01\", \"pcg-744-3-c1@2026-01-01\", \"pcg-746-2@2026-01-01\", \"pcg-751-3@2026-01-01\"]]": {
+    "abstention": false,
+    "citations": [
+      {
+        "extrait": "Afin d’éviter que l’entité absorbante appréhende à la fois le résultat de l’absorbée (bénéficiaire) au titre de l’exercice de la fusion en application de la clause de rétroactivité, et les dividendes auxquels elle a droit au titre de l’exercice précédant la fusion, il convient d’annuler le produit correspondant à ces derniers par :\n- le crédit du compte prime de fusion ;\n- ou du compte report à nouveau si l’entité souhaite dans l’exercice de l’opération, distribuer un acompte sur dividendes comprenant ces dividendes reçus pendant la période intercalaire.",
+        "record_id": "pcg-752-5@2026-01-01"
+      },
+      {
+        "extrait": "Si la réalisation de l'opération intervient après l'assemblée générale ordinaire de l’entité absorbée ayant approuvé les comptes clos à la date d'effet, afin de répondre à l’obligation juridique de libération du capital, il convient d'inclure les dividendes dans le passif pris en charge. Dans les cas où l’absorbante détient une participation dans l’entité absorbée, les dividendes à verser comptabilisés dans le passif pris en charge incluent ceux revenant à l’absorbante.",
+        "record_id": "pcg-752-4@2026-01-01"
+      }
+    ],
+    "reponse": "Pour éviter que l'absorbante appréhende à la fois le résultat bénéficiaire de l'absorbée au titre de l'exercice de la fusion (par l'effet de la clause de rétroactivité) et les dividendes qui lui reviennent au titre de l'exercice précédant la fusion, on annule le produit correspondant à ces dividendes. Cette annulation se fait par le crédit du compte prime de fusion, ou bien par le crédit du compte report à nouveau si l'entité souhaite, dans l'exercice de l'opération, distribuer un acompte sur dividendes comprenant ces dividendes reçus pendant la période intercalaire. À noter que lorsque l'opération est réalisée après l'assemblée générale ordinaire de l'absorbée ayant approuvé les comptes clos à la date d'effet, les dividendes sont inclus dans le passif pris en charge, y compris ceux revenant à l'absorbante lorsqu'elle détient une participation dans l'absorbée."
+  },
+  "[\"En quoi le mali technique de fusion se distingue-t-il du reste du mali de fusion ?\", [\"pcg-745-4@2026-01-01\", \"pcg-745-6-c1@2026-01-01\", \"pcg-745-3@2026-01-01\", \"pcg-751-4@2026-01-01\", \"pcg-na-308@2026-01-01\", \"pcg-745-4-c1@2026-01-01\", \"pcg-745-4-c2@2026-01-01\", \"pcg-745-10-c2@2026-01-01\", \"pcg-na-309@2026-01-01\", \"pcg-751-4-c1@2026-01-01\"]]": {
+    "abstention": false,
+    "citations": [
+      {
+        "extrait": "Le mali de fusion représente l’écart négatif entre l’actif net, positif ou négatif, reçu par l’entité absorbante, après harmonisation des méthodes comptables telle que défini à l’article 744-3, à hauteur de sa participation dans l’entité absorbée et la valeur comptable de cette participation.",
+        "record_id": "pcg-745-3@2026-01-01"
+      },
+      {
+        "extrait": "Le mali de fusion peut, le cas échéant, être décomposé en deux éléments :",
+        "record_id": "pcg-745-4@2026-01-01"
+      },
+      {
+        "extrait": "le mali technique proprement dit, qui correspond, à hauteur de la participation antérieurement détenue, aux plus-values latentes sur éléments d’actif comptabilisés ou non dans les comptes de l’absorbée (éléments d’actifs identifiés hors fonds commercial, fonds commercial) déduction faite des passifs non comptabilisés dans les comptes de l’entité absorbée en l’absence d’obligation comptable (par exemple provisions pour retraites, impôts différés passifs).",
+        "record_id": "pcg-745-4@2026-01-01"
+      },
+      {
+        "extrait": "Cette composante est généralement constatée pour les fusions ou les opérations de transmission universelle de patrimoine évaluées à la valeur comptable, lorsque la valeur nette des titres de l’entité absorbée figurant à l’actif de l’entité absorbante est supérieure à l’actif net comptable apporté.",
+        "record_id": "pcg-745-4@2026-01-01"
+      },
+      {
+        "extrait": "Les plus-values latentes sur éléments d’actif destinés à être revendus à brève échéance sont évaluées nettes d’impôts. Les passifs reversés à court terme sont évalués net d’impôt.",
+        "record_id": "pcg-745-4@2026-01-01"
+      },
+      {
+        "extrait": "au-delà du mali technique, l’éventuelle dépréciation ou l’éventuel complément de dépréciation de la participation détenue dans l’entité absorbée, nécessaire au moment de la fusion. Cette dépréciation ou ce complément doivent être comptabilisés dans le résultat financier de l’entité absorbante de l’exercice au cours duquel l’opération est réalisée.",
+        "record_id": "pcg-745-4@2026-01-01"
+      },
+      {
+        "extrait": "Il est précisé que le calcul du mali technique peut être réalisé sur la base d’une valeur globale de l’entité absorbée.",
+        "record_id": "pcg-745-4-c1@2026-01-01"
+      },
+      {
+        "extrait": "Le calcul du mali technique n’est limité que par les montants des plus-values latentes nettes sur éléments d’actifs et de passifs comptabilisés ou non, dans la mesure où elles sont justifiées et documentées.",
+        "record_id": "pcg-745-4-c2@2026-01-01"
+      },
+      {
+        "extrait": "en cas d’actif net négatif apporté, le mali technique comptabilisé à l’actif du bilan de l’absorbante pourra être supérieur à la valeur des titres détenus antérieurement à l’opération.",
+        "record_id": "pcg-745-4-c2@2026-01-01"
+      },
+      {
+        "extrait": "Le mali technique est comptabilisé en fonction des différentes natures d’actifs sous-jacents afin de faciliter son suivi dans le temps compte tenu des nouvelles règles d’amortissement prévues à l’article 745-7.",
+        "record_id": "pcg-745-6-c1@2026-01-01"
+      },
+      {
+        "extrait": "- mali de fusion sur actifs incorporels,\n- mali de fusion sur actifs corporels,\n- mali de fusion sur actifs financiers\n- mali de fusion sur actif circulant.",
+        "record_id": "pcg-745-6-c1@2026-01-01"
+      }
+    ],
+    "reponse": "**Le mali de fusion pris globalement** représente l'écart négatif entre l'actif net (positif ou négatif) reçu par l'absorbante, après harmonisation des méthodes comptables, à hauteur de sa participation dans l'absorbée, et la valeur comptable de cette participation. Ce mali global peut, le cas échéant, être décomposé en deux éléments.\n\n**1) Le mali technique proprement dit** correspond, à hauteur de la participation antérieurement détenue, aux plus-values latentes sur éléments d'actif comptabilisés ou non dans les comptes de l'absorbée (éléments d'actifs identifiés hors fonds commercial, fonds commercial), déduction faite des passifs non comptabilisés dans les comptes de l'absorbée en l'absence d'obligation comptable (provisions pour retraites, impôts différés passifs, etc.). Il est généralement constaté pour les fusions ou transmissions universelles de patrimoine évaluées à la valeur comptable, lorsque la valeur nette des titres de l'absorbée figurant à l'actif de l'absorbante excède l'actif net comptable apporté. Les plus-values latentes sur actifs destinés à être revendus à brève échéance, comme les passifs reversés à court terme, sont évaluées nettes d'impôt. Son calcul n'est limité que par le montant des plus-values latentes nettes justifiées et documentées — il n'est notamment pas plafonné à la valeur des titres, si bien qu'en cas d'actif net négatif apporté le mali technique inscrit à l'actif peut dépasser la valeur des titres antérieurement détenus. Ce mali technique est **maintenu à l'actif du bilan**, ventilé par nature d'actifs sous-jacents (mali de fusion sur actifs incorporels, corporels, financiers, sur actif circulant), afin de faciliter son suivi dans le temps compte tenu des règles d'amortissement de l'article 745-7.\n\n**2) Au-delà du mali technique**, le solde correspond à l'éventuelle dépréciation, ou au complément de dépréciation, de la participation détenue dans l'absorbée, nécessaire au moment de la fusion : cette fraction est **comptabilisée en charge dans le résultat financier** de l'absorbante de l'exercice au cours duquel l'opération est réalisée.\n\nLa distinction est donc à la fois de nature (contrepartie de plus-values latentes réelles, d'un côté ; constat d'une perte de valeur de la participation, de l'autre) et de traitement comptable (actif suivi et amorti/déprécié, contre charge financière immédiate)."
+  },
+  "[\"J'ai reçu une aide pour acheter un camion, et je l'ai mise en capitaux propres : quand est-ce qu'elle passe en produit ?\", [\"pcg-512-1-c6@2026-01-01\", \"pcg-312-1@2026-01-01\", \"pcg-131-3-c2@2026-01-01\", \"pcg-203-2@2026-01-01\", \"pcg-625-9@2026-01-01\", \"pcg-625-12@2026-01-01\", \"pcg-821-2@2026-01-01\", \"pcg-1222-76@2026-01-01\", \"pcg-911-1-c7@2026-01-01\", \"pcg-1121-1@2026-01-01\"]]": {
+    "abstention": false,
+    "citations": [
+      {
+        "extrait": "Les subventions d’investissement sont des aides dont bénéficie l’entreprise pour acquérir ou produire des immobilisations. Ces subventions sont comptabilisées à l’origine parmi les capitaux propres au compte 13, dès que la décision de leur octroi est certaine.",
+        "record_id": "pcg-512-1-c6"
+      },
+      {
+        "extrait": "La reprise de la subvention d’investissement qui finance une immobilisation amortissable s’effectue sur la même durée et au même rythme que l’amortissement de la valeur de l’immobilisation acquise ou créée au moyen de la subvention.",
+        "record_id": "pcg-312-1"
+      },
+      {
+        "extrait": "13 Subventions d'investissement 131 Subventions d'investissement octroyées 139 Subventions d'investissement inscrites au compte de résultat",
+        "record_id": "pcg-1121-1"
+      },
+      {
+        "extrait": "747 Quote-part des subventions d’investissement virée au résultat de l’exercice",
+        "record_id": "pcg-1121-1"
+      },
+      {
+        "extrait": "Toutefois, des dérogations aux modalités de détermination de la durée et du rythme de reprise de la subvention mentionnée aux 1 et 2 peuvent être admises si des circonstances particulières le justifient, par exemple le régime juridique de l’entité, l’objet de son activité, les conditions posées ou les engagements demandés par l’autorité ou l’organisme ayant alloué la subvention.",
+        "record_id": "pcg-312-1"
+      }
+    ],
+    "reponse": "Le camion étant une immobilisation amortissable, la subvention d'investissement inscrite en capitaux propres (compte 13 « Subventions d'investissement », dès que la décision d'octroi est certaine) est reprise au compte de résultat au même rythme et sur la même durée que l'amortissement de la valeur du camion financé par la subvention. Autrement dit, chaque exercice, vous virez au résultat une quote-part de subvention proportionnelle à la dotation aux amortissements du véhicule : le compte 139 « Subventions d'investissement inscrites au compte de résultat » est débité par le crédit du compte 747 « Quote-part des subventions d'investissement virée au résultat de l'exercice ». Des dérogations aux modalités de détermination de la durée et du rythme de reprise peuvent toutefois être admises si des circonstances particulières le justifient (régime juridique de l'entité, objet de son activité, conditions posées ou engagements demandés par l'organisme ayant alloué la subvention)."
+  },
+  "[\"Je dois provisionner les indemnités de départ en retraite de mes salariés, ou je peux juste le signaler en annexe ?\", [\"pcg-324-1@2026-01-01\", \"pcg-811-7@2026-01-01\", \"pcg-324-1-c4@2026-01-01\", \"pcg-622-6@2026-01-01\", \"pcg-324-1-c8@2026-01-01\", \"pcg-324-1-c11@2026-01-01\", \"pcg-324-1-c2@2026-01-01\", \"pcg-324-1-c67@2026-01-01\", \"pcg-324-1-c3@2026-01-01\", \"pcg-430-3@2026-01-01\"]]": {
+    "abstention": false,
+    "citations": [
+      {
+        "extrait": "Les passifs relatifs aux engagements de l’entité en matière de pensions, de compléments de retraite, d’indemnités et d’allocations en raison du départ à la retraite ou avantages similaires des membres de son personnel et de ses associés et mandataires sociaux peuvent être, en tout ou en partie, constatés sous forme de provision.",
+        "record_id": "pcg-324-1@2026-01-01"
+      },
+      {
+        "extrait": "La constatation de provisions pour la totalité des engagements à l’égard des membres du personnel actif et retraité, conduisant à une meilleure information financière, est considérée comme la méthode de référence.",
+        "record_id": "pcg-324-1@2026-01-01"
+      },
+      {
+        "extrait": "Lorsque ces engagements ne font pas l'objet d'une provision pour risques et charges dans leur intégralité, une information est portée en annexe sur l'engagement résiduel non couvert par une provision pour risques et charges, avec une mention particulière des engagements contractés au profit des dirigeants.",
+        "record_id": "pcg-324-1-c2@2026-01-01"
+      },
+      {
+        "extrait": "conformément au code de commerce, une entreprise qui ne provisionne pas ses engagements de retraite et avantages similaires, indique dans l’annexe de ses comptes, le montant de son engagement à la clôture de l’exercice et de l’exercice précédent (article L123-13),",
+        "record_id": "pcg-324-1-c8@2026-01-01"
+      },
+      {
+        "extrait": "une entreprise qui provisionne ses engagements de retraite et avantages similaires doit indiquer pour chaque catégorie de provisions (1 de l’article 833-12 du règlement ANC n° 2014-03) :\no la valeur comptable à l’ouverture et à la clôture de l’exercice ;\no le montant des provisions constituées au cours de l’exercice ;\no les montants utilisés au cours de l’exercice ; et o les montants non utilisés repris au cours de l’exercice.",
+        "record_id": "pcg-324-1-c8@2026-01-01"
+      },
+      {
+        "extrait": "les engagements en matière de pension, de compléments de retraite, d’indemnités et d’allocations en raison du départ à la retraite ou avantages similaires des membres de son personnel ou de ses mandataires sociaux ;",
+        "record_id": "pcg-811-7@2026-01-01"
+      },
+      {
+        "extrait": "Pour les entreprises qui choisissent d’indiquer uniquement en annexe le montant de leurs engagements de retraite et avantages similaires, les dispositions de la présente recommandation s’appliquent à leur seule évaluation",
+        "record_id": "pcg-324-1-c11@2026-01-01"
+      }
+    ],
+    "reponse": "Le provisionnement n'est pas obligatoire : les passifs relatifs aux engagements en matière de pensions, compléments de retraite, indemnités et allocations en raison du départ à la retraite ou avantages similaires « peuvent être, en tout ou en partie, constatés sous forme de provision ». Toutefois, la constatation de provisions pour la totalité des engagements à l'égard du personnel actif et retraité est considérée comme la méthode de référence, car elle conduit à une meilleure information financière. Si vous ne provisionnez pas (ou pas intégralement), une information doit être portée en annexe sur l'engagement résiduel non couvert par une provision, avec mention particulière des engagements contractés au profit des dirigeants ; l'ANC rappelle qu'en application de l'article L. 123-13 du code de commerce, l'entreprise qui ne provisionne pas indique en annexe le montant de son engagement à la clôture de l'exercice et de l'exercice précédent. Si vous provisionnez, il faut fournir pour chaque catégorie de provisions la valeur comptable à l'ouverture et à la clôture, les provisions constituées, les montants utilisés et les montants non utilisés repris au cours de l'exercice. Enfin, les micro-entreprises dispensées d'annexe doivent tout de même mentionner à la suite du bilan leurs engagements en matière de pension, de compléments de retraite, d'indemnités et d'allocations en raison du départ à la retraite. À noter que même en cas de simple mention en annexe, l'évaluation de l'engagement doit suivre les dispositions de la recommandation ANC n° 2013-02."
+  },
+  "[\"L'écart en trop que j'ai payé et que j'ai rattaché à un immeuble de la société absorbée : je l'amortis sur quelle durée ?\", [\"pcg-na-33@2026-01-01\", \"pcg-na-309@2026-01-01\", \"pcg-na-36@2026-01-01\", \"pcg-na-38@2026-01-01\", \"pcg-745-3@2026-01-01\", \"pcg-214-13-c2@2026-01-01\", \"pcg-745-7-c1@2026-01-01\", \"pcg-214-13-c3@2026-01-01\", \"pcg-745-7@2026-01-01\", \"pcg-822-1-c1@2026-01-01\"]]": {
+    "abstention": false,
+    "citations": [
+      {
+        "extrait": "Le mali technique est amorti ou rapporté au résultat selon les mêmes règles et dans les mêmes conditions que les actifs sous-jacents auquel il est affecté.",
+        "record_id": "pcg-745-7@2026-01-01"
+      },
+      {
+        "extrait": "La quote-part de mali affectée à des actifs amortissables comme des brevets ou des outillages est amortissable sur la durée d’utilisation résiduelle des actifs.",
+        "record_id": "pcg-745-7-c1@2026-01-01"
+      },
+      {
+        "extrait": "la quote-part de mali affectée à un terrain ou à des titres n’est pas amorti mais fait l’objet, le cas échéant, d’une dépréciation conformément à l’article 745-8 du présent règlement",
+        "record_id": "pcg-745-7-c1@2026-01-01"
+      },
+      {
+        "extrait": "Il en résulte que le mali pourra être pour partie amortissable et pour partie non amortissable selon les actifs sous-jacents auxquels il est affecté.",
+        "record_id": "pcg-745-7-c1@2026-01-01"
+      },
+      {
+        "extrait": "Que l’actif sous-jacent soit amorti ou non, la somme de la valeur nette comptable de l’actif et celle de la quote-part du mali affectée à cet actif est comparée à la valeur actuelle de l’actif au 31/12/N. Si cette dernière est inférieure à la valeur nette comptable de l’actif plus la quote-part du mali, une dépréciation est comptabilisée",
+        "record_id": "pcg-na-309@2026-01-01"
+      }
+    ],
+    "reponse": "La quote-part de mali technique que vous avez affectée à l'immeuble suit le sort comptable de l'actif sous-jacent : elle est amortie « selon les mêmes règles et dans les mêmes conditions que les actifs sous-jacents auquel il est affecté » (art. 745-7). Concrètement, pour un actif amortissable comme une construction, la quote-part de mali est amortissable sur la durée d'utilisation résiduelle de cet actif à la date de la fusion — et non sur sa durée d'origine. Attention toutefois : si une part du mali est affectée à la composante terrain, celle-ci n'est pas amortie mais fait seulement l'objet, le cas échéant, d'une dépréciation ; le mali peut donc être pour partie amortissable et pour partie non amortissable. Par ailleurs, la somme de la valeur nette comptable de l'actif et de la quote-part de mali qui lui est affectée doit être comparée à la valeur actuelle de l'actif à la clôture, une dépréciation étant comptabilisée si elle est inférieure."
+  },
+  "[\"Ma fusion a un effet rétroactif au 1er janvier et la société absorbée a perdu de l'argent entre-temps : est-ce que je dois provisionner quelque chose ?\", [\"pcg-751-2@2026-01-01\", \"pcg-751-3@2026-01-01\", \"pcg-751-4@2026-01-01\", \"pcg-na-309@2026-01-01\", \"pcg-751-4-c1@2026-01-01\", \"pcg-744-3@2026-01-01\", \"pcg-752-5@2026-01-01\", \"pcg-na-308@2026-01-01\", \"pcg-745-4-c1@2026-01-01\", \"pcg-745-3@2026-01-01\"]]": {
+    "abstention": false,
+    "citations": [
+      {
+        "extrait": "En cas d’effet rétroactif, lorsque la valeur des apports à la date d’effet risque de devenir, du fait d’une perte intercalaire, supérieure à la valeur réelle globale de l’entité à la date de réalisation de l’opération, une provision pour perte de rétroactivité est constatée au passif pris en charge dans le traité d’apport, réduisant d’autant le montant des apports pour répondre à l’obligation de libération du capital.",
+        "record_id": "pcg-751-2@2026-01-01"
+      },
+      {
+        "extrait": "L’entité absorbante l’inscrit dans un sous-compte de la prime de fusion, et non en provisions pour risques et charges. En effet, elle ne doit pas reprendre en résultat une provision qui n’a jamais été dotée comptablement.",
+        "record_id": "pcg-751-2@2026-01-01"
+      },
+      {
+        "extrait": "Lors de l’affectation du résultat de l’entité absorbante, la perte de l'entité absorbée constatée durant la période intercalaire est imputée sur le sous compte de la prime de fusion. Après cette imputation, le solde du sous compte de la prime de fusion est intégré à la prime de fusion.",
+        "record_id": "pcg-751-3@2026-01-01"
+      },
+      {
+        "extrait": "Toutefois, l’existence d’une perte intercalaire ne conduit pas systématiquement à la constatation d’une provision",
+        "record_id": "pcg-751-3@2026-01-01"
+      },
+      {
+        "extrait": "lorsque les apports sont évalués à la valeur réelle, la valeur d'utilité de chacun des apports est estimée en tenant compte des flux de trésorerie futurs. Ces prévisions de trésorerie intègrent nécessairement les résultats prévisionnels des quelques mois entre la date d'effet de la fusion et sa date de réalisation. La perte de rétroactivité est par conséquent déjà intégrée dans l'évaluation des apports. Sauf événements significatifs non prévus durant la période intercalaire, qui remettraient en cause les évaluations faites, la provision pour perte ne se justifie pas dans le traité d'apport aux valeurs réelles.",
+        "record_id": "pcg-751-3@2026-01-01"
+      },
+      {
+        "extrait": "constatation d’une perte intercalaire supérieure à la perte estimée ;\nperte exceptionnelle d’un actif ;\n- remise en cause des hypothèses ayant servi à l’évaluation des flux de trésorerie : changement de taux d’actualisation, modification dans la détermination des flux de trésorerie.",
+        "record_id": "pcg-751-3@2026-01-01"
+      },
+      {
+        "extrait": "lorsque les apports sont évalués à la valeur comptable, la valeur totale des apports inscrite dans le traité est en général inférieure à la valeur globale de l’entité absorbée.",
+        "record_id": "pcg-751-3@2026-01-01"
+      },
+      {
+        "extrait": "Le mali de fusion doit être calculé à la date d’effet rétroactif de la fusion. Ainsi, ni la perte intercalaire, ni les dividendes à verser ne sont pris en compte pour son évaluation.",
+        "record_id": "pcg-751-4@2026-01-01"
+      }
+    ],
+    "reponse": "**Pas automatiquement : tout dépend du risque de surévaluation des apports.**\n\n1) **Le principe** : en cas d'effet rétroactif, une provision pour perte de rétroactivité n'est constatée que lorsque la valeur des apports à la date d'effet (1er janvier) risque de devenir, du fait de la perte intercalaire, supérieure à la valeur réelle globale de l'entité absorbée à la date de réalisation de l'opération. Cette provision est alors inscrite au passif pris en charge dans le traité d'apport, ce qui réduit d'autant le montant des apports, pour répondre à l'obligation de libération du capital.\n\n2) **Sa comptabilisation est atypique** : chez l'absorbante, elle est portée dans un sous-compte de la prime de fusion, et non en provisions pour risques et charges, car on ne doit pas reprendre en résultat une provision qui n'a jamais été dotée comptablement. Lors de l'affectation du résultat de l'absorbante, la perte intercalaire de l'absorbée est imputée sur ce sous-compte, dont le solde est ensuite intégré à la prime de fusion.\n\n3) **L'existence d'une perte intercalaire ne conduit pas systématiquement à provisionner** :\n- si les **apports sont évalués à la valeur réelle**, la valeur d'utilité repose sur des flux de trésorerie futurs qui intègrent déjà les résultats prévisionnels de la période entre la date d'effet et la date de réalisation : la perte de rétroactivité est donc déjà prise en compte, et la provision ne se justifie pas, sauf événements significatifs non prévus (perte intercalaire supérieure à la perte estimée, perte exceptionnelle d'un actif, remise en cause des hypothèses d'évaluation des flux — taux d'actualisation, détermination des flux) ;\n- si les **apports sont évalués à la valeur comptable**, la valeur totale des apports inscrite au traité est en général inférieure à la valeur globale de l'absorbée (le risque de surévaluation est donc généralement absent).\n\n4) **Attention au mali** : le mali de fusion se calcule à la date d'effet rétroactif ; ni la perte intercalaire ni les dividendes à verser n'entrent dans son évaluation."
+  },
+  "[\"Ma fusion se réalise après l'assemblée qui a approuvé les comptes de la société absorbée : qu'est-ce que je fais des dividendes qu'elle avait votés ?\", [\"pcg-752-4@2026-01-01\", \"pcg-752-5@2026-01-01\", \"pcg-751-4@2026-01-01\", \"pcg-751-4-c1@2026-01-01\", \"pcg-752-3@2026-01-01\", \"pcg-213-3-c2@2026-01-01\", \"pcg-141-2@2026-01-01\", \"pcg-141-3-c1@2026-01-01\", \"pcg-141-3@2026-01-01\", \"pcg-746-2@2026-01-01\"]]": {
+    "abstention": false,
+    "citations": [
+      {
+        "extrait": "Si la réalisation de l'opération intervient après l'assemblée générale ordinaire de l’entité absorbée ayant approuvé les comptes clos à la date d'effet, afin de répondre à l’obligation juridique de libération du capital, il convient d'inclure les dividendes dans le passif pris en charge.",
+        "record_id": "pcg-752-4@2026-01-01"
+      },
+      {
+        "extrait": "Dans les cas où l’absorbante détient une participation dans l’entité absorbée, les dividendes à verser comptabilisés dans le passif pris en charge incluent ceux revenant à l’absorbante.",
+        "record_id": "pcg-752-4@2026-01-01"
+      },
+      {
+        "extrait": "Afin d’éviter que l’entité absorbante appréhende à la fois le résultat de l’absorbée (bénéficiaire) au titre de l’exercice de la fusion en application de la clause de rétroactivité, et les dividendes auxquels elle a droit au titre de l’exercice précédant la fusion, il convient d’annuler le produit correspondant à ces derniers par :\n- le crédit du compte prime de fusion ;\n- ou du compte report à nouveau si l’entité souhaite dans l’exercice de l’opération, distribuer un acompte sur dividendes comprenant ces dividendes reçus pendant la période intercalaire.",
+        "record_id": "pcg-752-5@2026-01-01"
+      },
+      {
+        "extrait": "Le mali de fusion doit être calculé à la date d’effet rétroactif de la fusion. Ainsi, ni la perte intercalaire, ni les dividendes à verser ne sont pris en compte pour son évaluation.",
+        "record_id": "pcg-751-4@2026-01-01"
+      },
+      {
+        "extrait": "L’inscription dans le traité d’apport de la perte intercalaire et des dividendes à verser résulte de l’obligation juridique de libération du capital et du risque de surévaluation des apports qui doit être apprécié à la date définitive de l’opération (assemblé générale extraordinaire) et non à la date d’effet.",
+        "record_id": "pcg-751-4-c1@2026-01-01"
+      }
+    ],
+    "reponse": "**1. Les dividendes votés doivent être inclus dans le passif pris en charge.** Lorsque la fusion se réalise après l'assemblée générale ordinaire de l'absorbée ayant approuvé les comptes clos à la date d'effet, il faut, pour répondre à l'obligation juridique de libération du capital, inclure les dividendes dans le passif transmis à l'absorbante. Si l'absorbante détenait une participation dans l'absorbée, les dividendes à verser comptabilisés dans ce passif incluent également ceux qui lui reviennent.\n\n**2. Neutralisation du produit de dividendes chez l'absorbante.** Pour éviter que l'absorbante appréhende deux fois le même enrichissement — le résultat bénéficiaire de l'absorbée au titre de l'exercice de fusion (par l'effet de la clause de rétroactivité) et les dividendes auxquels elle a droit au titre de l'exercice précédent — le produit correspondant à ces dividendes est annulé par le crédit du compte prime de fusion, ou par le crédit du compte report à nouveau si l'entité souhaite, dans l'exercice de l'opération, distribuer un acompte sur dividendes comprenant ces dividendes reçus pendant la période intercalaire.\n\n**3. Incidence sur le mali de fusion : aucune.** Le mali de fusion est calculé à la date d'effet rétroactif, sans tenir compte des éléments liés à la libération juridique du capital : ni la perte intercalaire, ni les dividendes à verser n'entrent dans son évaluation. L'inscription des dividendes à verser dans le traité d'apport découle en effet de l'obligation de libération du capital et du risque de surévaluation des apports, apprécié à la date définitive de l'opération (AGE) et non à la date d'effet."
+  },
+  "[\"Ma marque commerciale ne vaut plus grand-chose sur le marché : est-ce que je peux réduire sa valeur dans mes comptes, et qu'est-ce que ça change pour l'amortissement ?\", [\"pcg-214-2-c2@2026-01-01\", \"pcg-214-14@2026-01-01\", \"pcg-214-8-c1@2026-01-01\", \"pcg-214-18-c1@2026-01-01\", \"pcg-214-16-c1@2026-01-01\", \"pcg-214-14-c2@2026-01-01\", \"pcg-214-15@2026-01-01\", \"pcg-214-4-c1@2026-01-01\", \"pcg-832-2@2026-01-01\", \"pcg-613-5@2026-01-01\"]]": {
+    "abstention": false,
+    "citations": [
+      {
+        "extrait": "L'entité doit apprécier à chaque clôture des comptes, s'il existe un indice montrant qu'un actif a pu perdre de sa valeur. Lorsqu'il existe un indice de perte de valeur, un test de dépréciation est effectué : la valeur nette comptable de l'actif est comparée à sa valeur actuelle.",
+        "record_id": "pcg-214-15"
+      },
+      {
+        "extrait": "valeur de marché : durant l’exercice, la valeur de marché d’un actif a diminué (même à titre temporaire) de façon plus importante que du seul effet attendu du passage du temps ou de l’utilisation normale de l’actif",
+        "record_id": "pcg-214-16-c1"
+      },
+      {
+        "extrait": "changements importants : des changements importants, ayant un effet négatif sur l’utilisation de l’actif, sont intervenus au cours de l’exercice ou surviendront dans un proche avenir, dans l’environnement technique, économique ou juridique ou sur le marché dans lequel l’entreprise opère ou auquel l’actif est dévolu",
+        "record_id": "pcg-214-16-c1"
+      },
+      {
+        "extrait": "S’il n’est pas possible de déterminer la valeur actuelle de l’actif pris isolément, il convient de déterminer la valeur actuelle du groupe d’actifs auquel il appartient.",
+        "record_id": "pcg-214-15"
+      },
+      {
+        "extrait": "en cas de dotation ou de reprise de dépréciations résultant de la comparaison entre la valeur actuelle d'un actif immobilisé et sa valeur nette comptable, il convient de modifier de manière prospective la base amortissable",
+        "record_id": "pcg-214-14"
+      },
+      {
+        "extrait": "Toute modification significative de l'utilisation prévue, par exemple durée ou rythme de consommation des avantages économiques attendus, entraîne la révision prospective du plan d'amortissement.",
+        "record_id": "pcg-214-14"
+      },
+      {
+        "extrait": "en cas de décision prise d’arrêter, à une échéance donnée, l’utilisation d’une marque ou tout autre incorporel dont la durée d’utilisation était antérieurement non limitée, cette marque ou cet incorporel deviennent amortissables et le plan d’amortissement commence à compter de cette décision jusqu’à la date d’échéance prévue",
+        "record_id": "pcg-214-2-c2"
+      },
+      {
+        "extrait": "Pour les dépréciations comptabilisées ou reprises au cours de l'exercice pour des montants individuellement significatifs, une information est fournie sur :\n6. la valeur actuelle retenue : valeur vénale ou valeur d'usage",
+        "record_id": "pcg-832-2"
+      },
+      {
+        "extrait": "8. les évènements et circonstances qui ont conduit à comptabiliser ou à reprendre la dépréciation",
+        "record_id": "pcg-832-2"
+      },
+      {
+        "extrait": "Si la dépréciation constatée est considérée comme non déductible fiscalement, la base amortissable demeure inchangée et la dépréciation est reprise à concurrence des amortissements constatés sur la partie dépréciée.",
+        "record_id": "pcg-214-14-c2"
+      },
+      {
+        "extrait": "Le traitement comptable de transfert de la dépréciation en dotations aux amortissements est établi pour des raisons fiscales.",
+        "record_id": "pcg-214-18-c1"
+      }
+    ],
+    "reponse": "**1. Oui, vous pouvez (et devez) constater une dépréciation si la valeur a réellement baissé.** À chaque clôture, l'entité doit apprécier s'il existe un indice montrant qu'un actif a pu perdre de sa valeur ; s'il existe un tel indice, un test de dépréciation est effectué en comparant la valeur nette comptable de l'actif à sa valeur actuelle [pcg-214-15]. La baisse de la valeur de marché fait précisément partie des indices externes de perte de valeur : « durant l'exercice, la valeur de marché d'un actif a diminué (même à titre temporaire) de façon plus importante que du seul effet attendu du passage du temps ou de l'utilisation normale de l'actif », de même que les changements importants défavorables intervenus sur le marché où l'entité opère ou auquel l'actif est dévolu [pcg-214-16-c1]. Si la valeur actuelle de la marque ne peut être déterminée isolément, il faut retenir la valeur actuelle du groupe d'actifs auquel elle appartient [pcg-214-15].\n\n**2. Conséquence sur l'amortissement.** En cas de dotation (ou de reprise) de dépréciation résultant de la comparaison entre la valeur actuelle et la valeur nette comptable, il convient de modifier de manière prospective la base amortissable [pcg-214-14]. Autrement dit, les amortissements futurs sont recalculés sur la nouvelle base, sans retraitement du passé. Plus généralement, toute modification significative de l'utilisation prévue (durée ou rythme de consommation des avantages économiques attendus) entraîne la révision prospective du plan d'amortissement [pcg-214-14].\n\n**3. Cas d'une marque à durée d'utilisation non limitée.** Une marque dont la durée d'utilisation est non limitée n'est pas amortie : elle ne devient amortissable qu'en cas de décision prise d'arrêter son utilisation à une échéance donnée, le plan d'amortissement courant alors de cette décision jusqu'à la date d'échéance prévue [pcg-214-2-c2]. Dans ce cas, la seule perte de valeur de marché se traduit uniquement par une dépréciation, sans effet sur un plan d'amortissement inexistant ; si vous décidez en revanche d'abandonner la marque à terme, elle devient amortissable à compter de cette décision [pcg-214-2-c2].\n\n**4. Informations à donner en annexe.** Pour les dépréciations comptabilisées ou reprises au cours de l'exercice pour des montants individuellement significatifs, l'annexe indique la valeur actuelle retenue (valeur vénale ou valeur d'usage) et ses modalités de détermination, le ou les postes du compte de résultat où figure la dotation, ainsi que les événements et circonstances qui ont conduit à comptabiliser ou reprendre la dépréciation [pcg-832-2].\n\n*Remarque* : les passages fournis évoquent aussi des mécanismes de transfert de la dépréciation en amortissements ou de maintien de la base amortissable, mais ceux-ci sont motivés par des considérations fiscales (déductibilité) et non par la logique comptable [pcg-214-14-c2], [pcg-214-18-c1] ; ce point relève de la fiscalité et devrait être validé avec votre conseil."
+  },
+  "[\"Ma société absorbe une autre société qui appartient au même actionnaire que moi : est-ce que j'évalue les apports à leur valeur de marché ?\", [\"pcg-213-3-c2@2026-01-01\", \"pcg-744-1@2026-01-01\", \"pcg-743-1@2026-01-01\", \"pcg-na-285@2026-01-01\", \"pcg-141-3-c2@2026-01-01\", \"pcg-744-2@2026-01-01\", \"pcg-141-2@2026-01-01\", \"pcg-141-2-c1@2026-01-01\", \"pcg-744-3-c1@2026-01-01\", \"pcg-na-284@2026-01-01\"]]": {
+    "abstention": false,
+    "citations": [
+      {
+        "extrait": "Les apports sont évalués comme suit en fonction de la situation de l’entité absorbante ou de la bénéficiaire des apports et de l’existence ou non d’un contrôle commun entre les entités participant à l’opération :\n- Apports évalués à la valeur comptable\n- (1) et (2). Opérations à l’endroit ou à l’envers impliquant des entités sous contrôle commun.",
+        "record_id": "pcg-743-1@2026-01-01"
+      },
+      {
+        "extrait": "il convient de ne pas réévaluer l’ensemble des actifs et passifs apportés",
+        "record_id": "pcg-743-1@2026-01-01"
+      },
+      {
+        "extrait": "Apports évalués à la valeur réelle (4). Opérations à l’endroit impliquant des entités sous contrôle distinct.",
+        "record_id": "pcg-743-1@2026-01-01"
+      },
+      {
+        "extrait": "Lorsque les apports sont évalués à la valeur comptable, les valeurs comptables individuelles des actifs et passifs apportés correspondent aux valeurs de chaque actif et passif figurant dans les comptes de l’entité absorbée ou apporteuse à la date d'effet de l’opération.",
+        "record_id": "pcg-744-2@2026-01-01"
+      },
+      {
+        "extrait": "L’écart négatif entre la valeur globale de l’apport et la somme des actifs et passifs inscrits dans le traité d’apport fait l’objet d’une mention dans le traité d’apport (constatation d’un « badwill ») et est comptabilisé dans un sous-compte de la prime de fusion lors de la réalisation de l’opération.",
+        "record_id": "pcg-744-2@2026-01-01"
+      },
+      {
+        "extrait": "Les sociétés (B) et (C) étant détenues à 100%, et donc sous contrôle commun au sens des dispositions de l’article 741-1, les apports de la société absorbée (B) à la société absorbante (C) sont évalués à la valeur comptable.",
+        "record_id": "pcg-213-3-c2@2026-01-01"
+      },
+      {
+        "extrait": "les actions de la société absorbante, remises en échange des actions de la société absorbée, sont évaluées à la valeur comptable de ces dernières.",
+        "record_id": "pcg-213-3-c2@2026-01-01"
+      },
+      {
+        "extrait": "Cette position est étendue aux opérations de fusion intervenant entre sociétés détenues à quasi 100%",
+        "record_id": "pcg-213-3-c2@2026-01-01"
+      },
+      {
+        "extrait": "Le patrimoine apporté de la société absorbée ou scindée est inscrit dans les comptes de la société bénéficiaire pour la valeur nette comptable des actifs et des passifs transférés à la date d'effet de l’opération et ce, quelle que soit la situation de contrôle avant et après l’opération et le sens de l’opération.",
+        "record_id": "pcg-141-2@2026-01-01"
+      }
+    ],
+    "reponse": "Non. Lorsque l'absorbante et l'absorbée sont sous contrôle commun (cas de deux sociétés détenues par le même actionnaire), les apports doivent être évalués à la **valeur comptable** et non à la valeur réelle (valeur de marché).\n\n1) **Principe** : l'évaluation dépend du sens de l'opération et de l'existence ou non d'un contrôle commun. Les opérations à l'endroit comme à l'envers impliquant des entités sous contrôle commun sont évaluées à la valeur comptable, car la situation de contrôle est déjà établie avant l'opération : il s'agit d'un renforcement ou d'un maintien de contrôle, et « dans la logique des comptes consolidés, il convient de ne pas réévaluer l'ensemble des actifs et passifs apportés ». La valeur réelle n'est retenue que pour les opérations à l'endroit entre entités sous contrôle **distinct** (prise de contrôle).\n\n2) **Contenu pratique** : les valeurs individuelles retenues sont celles figurant dans les comptes de l'absorbée à la date d'effet de l'opération ; l'écart négatif entre la valeur globale de l'apport et la somme des actifs et passifs inscrits dans le traité d'apport (badwill) est mentionné dans le traité et comptabilisé dans un sous-compte de la prime de fusion.\n\n3) **Illustration** : dans le cas de sociétés détenues à 100 % par la même mère, donc sous contrôle commun, les apports de l'absorbée à l'absorbante sont évalués à la valeur comptable ; les actions de l'absorbante remises en échange à la société mère sont alors évaluées à la valeur comptable des actions annulées (position étendue aux détentions à quasi 100 %).\n\nÀ noter : si vous relevez du secteur du logement social (SA d'HLM, SEM agréées), l'apport est de toute façon inscrit à la valeur nette comptable, quelle que soit la situation de contrôle et le sens de l'opération."
+  },
+  "[\"Ma voiture de fonction, je l'amortis sur cinq ans dans mes comptes : est-ce que je récupère la même chose côté impôts ?\", [\"pcg-214-13@2026-01-01\", \"pcg-na-168@2026-01-01\", \"pcg-214-13-c1@2026-01-01\", \"pcg-na-309@2026-01-01\", \"pcg-214-13-c2@2026-01-01\", \"pcg-na-37@2026-01-01\", \"pcg-214-8-c1@2026-01-01\", \"pcg-214-14-c2@2026-01-01\", \"pcg-214-18-c1@2026-01-01\", \"pcg-1221-68@2026-01-01\"]]": {
+    "abstention": false,
+    "citations": [
+      {
+        "extrait": "L’amortissement est déterminé par le plan d'amortissement établi en fonction de la durée et du mode d’amortissement propres à chaque actif amortissable, tels qu’ils sont déterminés par l’entité.",
+        "record_id": "pcg-214-13@2026-01-01"
+      },
+      {
+        "extrait": "Le mode d’amortissement doit permettre de traduire au mieux le rythme de consommation des avantages économiques attendus de l'actif par l'entité. Il est défini, soit en termes d'unités de temps, soit en termes d’unités d'œuvre. Le mode linéaire est appliqué à défaut de mode mieux adapté.",
+        "record_id": "pcg-214-13@2026-01-01"
+      },
+      {
+        "extrait": "L’amortissement d’une immobilisation corporelle ou incorporelle est mesuré en fonction de la consommation des avantages économiques attendus sur la durée d’utilisation par l’entité et non en fonction de la durée d’usage.",
+        "record_id": "pcg-214-13-c2@2026-01-01"
+      },
+      {
+        "extrait": "La durée d’usage définie à l’article 214-13 est la durée fiscale définie à l’article 39-1-2 du code général des impôts. Des précisions sont apportées dans la doctrine administrative.",
+        "record_id": "pcg-214-13-c1@2026-01-01"
+      },
+      {
+        "extrait": "Dans les comptes individuels, la différence entre la durée d’usage admise au plan fiscal et la durée d’utilisation donnera lieu à la comptabilisation d’un amortissement dérogatoire",
+        "record_id": "pcg-214-13-c2@2026-01-01"
+      },
+      {
+        "extrait": "Les amortissements dérogatoires prescrits ou autorisés par des textes particuliers, fondés soit sur une durée d’amortissement fiscale plus courte que son utilisation (solutions informatiques 213-27 par exemple) ou sur un mode dégressif sans changement de durée (le mode linéaire ayant été retenu dans le plan d’amortissement déduit de la valeur brute), sont comptabilisés au passif dans les comptes des « provisions réglementées ».",
+        "record_id": "pcg-214-8-c1@2026-01-01"
+      },
+      {
+        "extrait": "Les amortissements dérogatoires comptabilisés dans l'exercice sont inscrits au débit d’une subdivision du compte 6872 « Dotations aux provisions réglementées (immobilisations) ».",
+        "record_id": "pcg-1221-68@2026-01-01"
+      },
+      {
+        "extrait": "Les petites entreprises définies à l’article L 123-16 du code de commerce peuvent, dans les comptes individuels, retenir la durée d'usage définie au 2° du 1 de l'article 39 du code général des impôts pour déterminer le plan d'amortissement des immobilisations.",
+        "record_id": "pcg-214-13@2026-01-01"
+      }
+    ],
+    "reponse": "Non, pas nécessairement : le Plan comptable général et la fiscalité ne raisonnent pas sur la même durée.\n\n1) En comptabilité, votre plan d'amortissement doit refléter votre propre utilisation du bien : l'amortissement est déterminé par le plan d'amortissement établi en fonction de la durée et du mode d'amortissement propres à chaque actif, tels que déterminés par l'entité, et le mode doit traduire le rythme de consommation des avantages économiques attendus (le linéaire s'appliquant à défaut de mode mieux adapté). L'amortissement est ainsi mesuré en fonction de la durée d'utilisation par l'entité et non en fonction de la durée d'usage.\n\n2) Côté fiscal, la référence est la « durée d'usage » définie au 2° du 1 de l'article 39 du code général des impôts, précisée par la doctrine administrative ; elle peut donc différer de vos cinq ans comptables.\n\n3) Lorsqu'un écart existe, le PCG prévoit la solution : dans les comptes individuels, la différence entre la durée d'usage admise au plan fiscal et la durée d'utilisation donne lieu à la comptabilisation d'un amortissement dérogatoire, comptabilisé au passif dans les comptes de « provisions réglementées », par le débit d'une subdivision du compte 6872 « Dotations aux provisions réglementées (immobilisations) ». Des amortissements dérogatoires peuvent aussi être constatés en cas de mode dégressif fiscal alors que le linéaire a été retenu dans le plan d'amortissement.\n\n4) Simplification possible : si vous relevez des petites entreprises au sens de l'article L. 123-16 du code de commerce, vous pouvez, dans les comptes individuels, retenir directement la durée d'usage fiscale pour établir le plan d'amortissement — auquel cas comptable et fiscal coïncident et il n'y a pas d'amortissement dérogatoire à constater.\n\nEn revanche, les règles fiscales propres aux véhicules (notamment tout plafonnement de la déduction) ne figurent pas dans les passages du PCG fournis : ce point relève de la fiscalité et doit être vérifié dans le CGI et la doctrine administrative."
+  },
+  "[\"Où l'entité absorbante inscrit-elle la provision pour perte de rétroactivité, et pourquoi pas en provisions pour risques et charges ?\", [\"pcg-751-2@2026-01-01\", \"pcg-751-3@2026-01-01\", \"pcg-751-4-c1@2026-01-01\", \"pcg-744-3@2026-01-01\", \"pcg-na-85@2026-01-01\", \"pcg-na-87@2026-01-01\", \"pcg-751-4@2026-01-01\", \"pcg-752-5@2026-01-01\", \"pcg-838-4@2026-01-01\", \"pcg-838-14@2026-01-01\"]]": {
+    "abstention": false,
+    "citations": [
+      {
+        "extrait": "L’entité absorbante l’inscrit dans un sous-compte de la prime de fusion, et non en provisions pour risques et charges. En effet, elle ne doit pas reprendre en résultat une provision qui n’a jamais été dotée comptablement.",
+        "record_id": "pcg-751-2@2026-01-01"
+      },
+      {
+        "extrait": "une provision pour perte de rétroactivité est constatée au passif pris en charge dans le traité d’apport, réduisant d’autant le montant des apports pour répondre à l’obligation de libération du capital",
+        "record_id": "pcg-751-2@2026-01-01"
+      },
+      {
+        "extrait": "Lors de l’affectation du résultat de l’entité absorbante, la perte de l'entité absorbée constatée durant la période intercalaire est imputée sur le sous compte de la prime de fusion. Après cette imputation, le solde du sous compte de la prime de fusion est intégré à la prime de fusion.",
+        "record_id": "pcg-751-3@2026-01-01"
+      },
+      {
+        "extrait": "lorsqu’une perte intercalaire et/ou un badwill est enregistré, l’entité doit mentionner le montant inscrit dans le sous-compte de la prime de fusion",
+        "record_id": "pcg-838-14@2026-01-01"
+      }
+    ],
+    "reponse": "L'entité absorbante inscrit la provision pour perte de rétroactivité dans un **sous-compte de la prime de fusion**, et non en provisions pour risques et charges. La raison est qu'elle ne doit pas reprendre en résultat une provision qui n'a jamais été dotée comptablement de son côté : cette provision est constatée au passif pris en charge dans le traité d'apport, réduisant d'autant le montant des apports pour répondre à l'obligation de libération du capital (Art. 751-2).\n\nPar la suite, lors de l'affectation du résultat de l'entité absorbante, la perte de l'entité absorbée constatée durant la période intercalaire est imputée sur ce sous-compte de la prime de fusion ; après imputation, le solde du sous-compte est intégré à la prime de fusion (Art. 751-3).\n\nEn matière d'information, lorsqu'une perte intercalaire (et/ou un badwill) est enregistrée, l'entité doit mentionner en annexe le montant inscrit dans le sous-compte de la prime de fusion (Art. 838-14)."
+  },
+  "[\"Quand un plan d'amortissement unique est-il retenu pour plusieurs éléments constitutifs d'un même actif, et quand faut-il les décomposer ?\", [\"pcg-214-9@2026-01-01\", \"pcg-214-13@2026-01-01\", \"pcg-214-14@2026-01-01\", \"pcg-214-13-c2@2026-01-01\", \"pcg-na-73@2026-01-01\", \"pcg-214-9-c2@2026-01-01\", \"pcg-na-18@2026-01-01\", \"pcg-na-26@2026-01-01\", \"pcg-214-9-c1@2026-01-01\", \"pcg-191-1-c10@2026-01-01\"]]": {
+    "abstention": false,
+    "citations": [
+      {
+        "extrait": "Lorsque des éléments constitutifs d’un actif sont exploités de façon indissociable, un plan d’amortissement unique est retenu pour l’ensemble de ces éléments.",
+        "record_id": "pcg-214-9@2026-01-01"
+      },
+      {
+        "extrait": "Cependant, si dès l’origine, un ou plusieurs de ces éléments ont chacun des utilisations différentes, chaque élément est comptabilisé séparément et un plan d’amortissement propre à chacun de ces éléments est retenu.",
+        "record_id": "pcg-214-9@2026-01-01"
+      },
+      {
+        "extrait": "Les éléments principaux d’immobilisations corporelles devant faire l’objet de remplacement à intervalles réguliers, ayant des utilisations différentes ou procurant des avantages économiques à l’entité selon un rythme différent et nécessitant l’utilisation de taux ou de modes d’amortissement propres, doivent être comptabilisés séparément dès l’origine et lors des remplacements.",
+        "record_id": "pcg-214-9@2026-01-01"
+      },
+      {
+        "extrait": "Les composants ainsi que la structure (composant principal) doivent être amortis sur leur durée d’utilisation.",
+        "record_id": "pcg-214-9-c2@2026-01-01"
+      },
+      {
+        "extrait": "Il convient donc d’identifier tous les composants, y compris ceux dont la durée d’utilisation est supérieure à la durée d’usage de la structure (composant principal).",
+        "record_id": "pcg-214-9-c2@2026-01-01"
+      }
+    ],
+    "reponse": "**Plan d'amortissement unique** : lorsque les éléments constitutifs d'un actif sont exploités de façon indissociable, un plan d'amortissement unique est retenu pour l'ensemble de ces éléments.\n\n**Décomposition obligatoire** : en revanche, si dès l'origine un ou plusieurs de ces éléments ont chacun des utilisations différentes, chaque élément est comptabilisé séparément et un plan d'amortissement propre à chacun de ces éléments est retenu. Plus précisément, les éléments principaux d'immobilisations corporelles doivent être comptabilisés séparément dès l'origine et lors des remplacements lorsqu'ils doivent faire l'objet de remplacement à intervalles réguliers, qu'ils ont des utilisations différentes ou procurent des avantages économiques à l'entité selon un rythme différent, et qu'ils nécessitent l'utilisation de taux ou de modes d'amortissement propres.\n\nLes composants ainsi identifiés, comme la structure (composant principal), doivent être amortis sur leur durée d'utilisation ; il convient d'identifier tous les composants, y compris ceux dont la durée d'utilisation est supérieure à la durée d'usage de la structure."
+  },
+  "[\"Que devient la quote-part de mali affectée à un actif sous-jacent lorsque cet actif est cédé ?\", [\"pcg-745-10-c1@2026-01-01\", \"pcg-745-8@2026-01-01\", \"pcg-745-7-c1@2026-01-01\", \"pcg-745-10@2026-01-01\", \"pcg-na-309@2026-01-01\", \"pcg-745-5-c1@2026-01-01\", \"pcg-745-6-c1@2026-01-01\", \"pcg-na-308@2026-01-01\", \"pcg-745-7@2026-01-01\", \"pcg-745-5@2026-01-01\"]]": {
+    "abstention": false,
+    "citations": [
+      {
+        "extrait": "En cas de cession, d’apport ou toute autre opération relative à l’actif sous-jacent auquel le mali est affecté, ce dernier suit le même traitement que l’actif sous-jacent.",
+        "record_id": "pcg-745-10@2026-01-01"
+      },
+      {
+        "extrait": "en cas de sortie d’un actif auquel une quote-part de mali a été affectée, le mali doit être réduit à due concurrence et constitue un élément de la plus ou moins-value de cession de l’actif conformément à l’article 946-67",
+        "record_id": "pcg-745-10-c1@2026-01-01"
+      },
+      {
+        "extrait": "Le mali technique est amorti ou rapporté au résultat selon les mêmes règles et dans les mêmes conditions que les actifs sous-jacents auquel il est affecté.",
+        "record_id": "pcg-745-7@2026-01-01"
+      },
+      {
+        "extrait": "67527 Valeurs comptables du Mali de fusion sur actifs corporels cédés 800 2187 Mali de fusion sur actifs corporels 800 67527 Valeurs comptables du Mali de fusion sur actifs incorporels cédés 334 28081 Amortissement du mali de fusion sur actifs incorporels 333 2081 Mali de fusion sur actifs incorporels 667",
+        "record_id": "pcg-na-309@2026-01-01"
+      }
+    ],
+    "reponse": "Le mali affecté à un actif sous-jacent suit le même traitement que cet actif : « En cas de cession, d'apport ou toute autre opération relative à l'actif sous-jacent auquel le mali est affecté, ce dernier suit le même traitement que l'actif sous-jacent » (art. 745-10). Concrètement, en cas de sortie de l'actif, la quote-part de mali qui lui avait été affectée doit être réduite à due concurrence et constitue un élément de la plus ou moins-value de cession de l'actif, conformément à l'article 946-67. Cette logique est cohérente avec le principe général selon lequel le mali technique est amorti ou rapporté au résultat selon les mêmes règles et dans les mêmes conditions que les actifs sous-jacents auxquels il est affecté. En pratique, la sortie se traduit par la comptabilisation de la valeur comptable du mali de fusion cédé (par exemple : débit « 67527 Valeurs comptables du Mali de fusion sur actifs corporels cédés » par le crédit du compte « 2187 Mali de fusion sur actifs corporels », et, pour un actif incorporel, solde du compte d'amortissement du mali contre le compte 2081)."
+  },
+  "[\"Que se passe-t-il lorsque les apports doivent être évalués à la valeur nette comptable mais que l'actif net comptable apporté est insuffisant pour libérer le capital ?\", [\"pcg-743-3@2026-01-01\", \"pcg-743-3-c1@2026-01-01\", \"pcg-838-14@2026-01-01\", \"pcg-744-2@2026-01-01\", \"pcg-743-1@2026-01-01\", \"pcg-751-4-c1@2026-01-01\", \"pcg-751-2@2026-01-01\", \"pcg-744-3-c1@2026-01-01\", \"pcg-141-2@2026-01-01\", \"pcg-744-1@2026-01-01\"]]": {
+    "abstention": false,
+    "citations": [
+      {
+        "extrait": "Par dérogation, lorsque les apports doivent être évalués à la valeur nette comptable en application des règles prévues par les articles 743-1 et 743-2, et que l'actif net comptable apporté est insuffisant pour permettre la libération du capital, les valeurs réelles des éléments apportés doivent être retenues.",
+        "record_id": "pcg-743-3@2026-01-01"
+      },
+      {
+        "extrait": "Or, les actions d’apport doivent être intégralement libérées dès leur émission. Le respect de cette obligation requiert que le montant des apports effectués au profit de l’entité bénéficiaire soit au moins égal à l’augmentation de capital de cette entité augmentée éventuellement de la prime de fusion ou d’apport, conformément à l’article R 225-8 du code de commerce.",
+        "record_id": "pcg-743-3-c1@2026-01-01"
+      },
+      {
+        "extrait": "Dans ce cas, la libération du capital n’est pas possible si :\n- la valeur comptable des actifs et passifs apportée est négative ;\n- la valeur comptable des actifs et passifs apportés est positive mais inférieure à l’augmentation de capital plus la prime.",
+        "record_id": "pcg-743-3-c1@2026-01-01"
+      },
+      {
+        "extrait": "sous réserve que la valeur réelle des apports soit supérieure à l’augmentation de capital plus la prime, il est précisé par dérogation aux principes généraux, que les actifs et passifs apportés puissent être évalués à leur valeur réelle dans le traité d’apport",
+        "record_id": "pcg-743-3-c1@2026-01-01"
+      },
+      {
+        "extrait": "Si l’actif net comptable apporté est insuffisant mais néanmoins positif, cette dérogation ne s’applique qu’au seul cas d’apport à une entité ayant une activité préexistante, et ne peut pas s’appliquer en cas de création ex-nihilo d’une entité ni en cas d’aménagement d’une entité préexistante.",
+        "record_id": "pcg-743-3@2026-01-01"
+      },
+      {
+        "extrait": "Par ailleurs, cette dérogation ne peut s’appliquer ni aux opérations de dissolution par confusion de patrimoine ni aux fusions et scissions sans échange de titres.",
+        "record_id": "pcg-743-3@2026-01-01"
+      },
+      {
+        "extrait": "- soit réduire le montant du nominal des actions de l’entité bénéficiaire des apports ou absorbante. Le montant de la réduction de capital social a pour contrepartie une augmentation de la prime d’émission ;\n- soit, sous certaines conditions, déterminer un rapport d’échange à partir des seules valeurs comptables.",
+        "record_id": "pcg-743-3-c1@2026-01-01"
+      },
+      {
+        "extrait": "l’entité doit mentionner le contexte de l’opération, les modalités d’évaluation des apports retenues ainsi que l’adoption éventuelle de traitements dérogatoires prévus par le titre VII du livre II (filialisation de branche d’activité et actif net comptable apporté insuffisant pour permettre la libération du capital)",
+        "record_id": "pcg-838-14@2026-01-01"
+      }
+    ],
+    "reponse": "**Principe de la dérogation.** Lorsque les apports devraient être évalués à la valeur nette comptable (opérations sous contrôle commun, en application des articles 743-1 et 743-2) mais que l'actif net comptable apporté est insuffisant pour permettre la libération du capital, il est dérogé aux principes généraux de valorisation : ce sont alors les valeurs réelles des éléments apportés qui doivent être retenues dans le traité d'apport.\n\n**Justification.** Les actions d'apport doivent être intégralement libérées dès leur émission, ce qui exige que le montant des apports soit au moins égal à l'augmentation de capital de l'entité bénéficiaire augmentée, le cas échéant, de la prime de fusion ou d'apport. La libération n'est donc pas possible lorsque la valeur comptable des actifs et passifs apportés est négative, ou lorsqu'elle est positive mais inférieure à l'augmentation de capital plus la prime. La dérogation s'applique sous réserve que la valeur réelle des apports soit supérieure à l'augmentation de capital plus la prime.\n\n**Limites de la dérogation.** Si l'actif net comptable apporté est insuffisant mais néanmoins positif, la dérogation ne joue que pour un apport à une entité ayant une activité préexistante : elle est exclue en cas de création ex-nihilo d'une entité comme en cas d'aménagement d'une entité préexistante. Par ailleurs, la dérogation ne peut s'appliquer ni aux opérations de dissolution par confusion de patrimoine ni aux fusions et scissions sans échange de titres.\n\n**Solutions alternatives.** Pour permettre la faisabilité juridique de l'apport aux valeurs comptables, l'entité absorbante ou bénéficiaire peut notamment soit réduire le nominal de ses actions (la réduction de capital ayant pour contrepartie une augmentation de la prime d'émission), soit, sous certaines conditions, déterminer un rapport d'échange à partir des seules valeurs comptables.\n\n**Information en annexe.** L'adoption de ce traitement dérogatoire (actif net comptable apporté insuffisant pour permettre la libération du capital) doit être mentionnée dans l'annexe des comptes annuels de l'exercice de l'opération, avec le contexte de l'opération et les modalités d'évaluation des apports retenues."
+  },
+  "[\"Quel est le coût d'entrée des titres reçus par la société apporteuse en contrepartie d'un apport partiel d'actif ?\", [\"pcg-221-1@2026-01-01\", \"pcg-221-1-c9@2026-01-01\", \"pcg-747-2-c1@2026-01-01\", \"pcg-213-2@2026-01-01\", \"pcg-na-317@2026-01-01\", \"pcg-710-2-c4@2026-01-01\", \"pcg-747-1-c1@2026-01-01\", \"pcg-na-291@2026-01-01\", \"pcg-na-288@2026-01-01\", \"pcg-na-313@2026-01-01\"]]": {
+    "abstention": false,
+    "citations": [
+      {
+        "extrait": "Le coût d’entrée des titres reçus en contrepartie d’un apport partiel d’actif par la société apporteuse, doit être égal à la valeur des apports retenue dans le traité d’apport.",
+        "record_id": "pcg-221-1@2026-01-01"
+      },
+      {
+        "extrait": "À leur date d’entrée dans le patrimoine de l’entité, les titres immobilisés sont évalués selon les règles générales d’évaluation énoncées aux articles 213-1, 213-2, 213-3, 213-4, 213-5 et 213-8.",
+        "record_id": "pcg-221-1@2026-01-01"
+      },
+      {
+        "extrait": "Les titres reçus en rémunération par la société apporteuse sont comptabilisés à la valeur comptable si les apports ont été évalués à la valeur comptable dans le traité d’apport.",
+        "record_id": "pcg-221-1-c9@2026-01-01"
+      },
+      {
+        "extrait": "Les titres reçus en rémunération par la société apporteuse sont comptabilisés à la valeur réelle si les apports ont été évalués à la valeur réelle dans le traité d’apport.",
+        "record_id": "pcg-221-1-c9@2026-01-01"
+      },
+      {
+        "extrait": "il ne s’agit pas à proprement parler d’un échange mais d’une simple contrepartie de l’apport qui doit être évaluée comme celui-ci et non en fonction de la parité",
+        "record_id": "pcg-221-1-c9@2026-01-01"
+      },
+      {
+        "extrait": "l’entité apporteuse répartira la rémunération des apports entre la part à comptabiliser en titres reçus et celle à comptabiliser dans les comptes de capitaux propres",
+        "record_id": "pcg-747-1-c1@2026-01-01"
+      }
+    ],
+    "reponse": "Le coût d'entrée des titres reçus par la société apporteuse en contrepartie d'un apport partiel d'actif doit être égal à la valeur des apports retenue dans le traité d'apport (les titres immobilisés étant par ailleurs évalués, à leur date d'entrée, selon les règles générales d'évaluation des articles 213-1 à 213-5 et 213-8). En pratique, cela signifie que les titres reçus en rémunération sont comptabilisés à la valeur comptable si les apports ont été évalués à la valeur comptable dans le traité d'apport, et à la valeur réelle si les apports ont été évalués à la valeur réelle dans ce traité. Il ne s'agit en effet pas d'un échange à proprement parler, mais d'une simple contrepartie de l'apport, qui doit être évaluée comme celui-ci et non en fonction de la parité. Lorsque les titres de la société bénéficiaire sont attribués pour partie aux associés de la société apporteuse, l'entité apporteuse répartit la rémunération des apports entre la part à comptabiliser en titres reçus et celle à comptabiliser dans les comptes de capitaux propres."
+  },
+  "[\"Quels retraitements l'entité absorbante doit-elle opérer lorsqu'une opération à la valeur comptable implique une absorbée non soumise au PCG ?\", [\"pcg-744-3@2026-01-01\", \"pcg-744-3-c1@2026-01-01\", \"pcg-745-4@2026-01-01\", \"pcg-743-1@2026-01-01\", \"pcg-838-14@2026-01-01\", \"pcg-710-1-c3@2026-01-01\", \"pcg-745-3@2026-01-01\", \"pcg-745-10-c2@2026-01-01\", \"pcg-745-4-c1@2026-01-01\", \"pcg-745-2@2026-01-01\"]]": {
+    "abstention": false,
+    "citations": [
+      {
+        "extrait": "En cas d’opération réalisée à la valeur comptable impliquant une entité absorbée ou apporteuse non soumise au présent règlement, l’entité absorbante ou bénéficiaire des apports procède aux retraitements nécessaires des actifs et passifs apportés pour se conformer à la définition des actifs et passifs tels que prévus au présent règlement.",
+        "record_id": "pcg-744-3"
+      },
+      {
+        "extrait": "en cas d’opérations transfrontalières, les actifs et passifs apportés résultant des comptes de l’entité étrangère apporteuse ou absorbée peuvent ne pas répondre à la définition des actifs et passifs telle que prévue par le présent règlement",
+        "record_id": "pcg-744-3-c1"
+      },
+      {
+        "extrait": "Cette harmonisation consiste à :\n- sortir du bilan les actifs et passifs apportés qui ne répondent pas à la définition des actifs et passifs donnée par le présent règlement ;\n- constater les actifs et passifs qui doivent être comptabilisés au bilan conformément au présent règlement ;\n- constater ou compléter la provision pour engagements de retraite qui doit être comptabilisée au bilan si telle est la méthode appliquée par l’entité absorbante ou bénéficiaire des apports.",
+        "record_id": "pcg-744-3-c1"
+      },
+      {
+        "extrait": "Lorsque l’entité absorbante ou bénéficiaire des apports provisionne ses engagements de retraite et assimilés conformément à l’article 324-1, elle ajuste sa provision pour tenir compte des droits des membres du personnel de l’entité absorbée ou apporteuse, selon ses propres modalités d’évaluation.",
+        "record_id": "pcg-744-3"
+      },
+      {
+        "extrait": "Ces retraitements sont comptabilisés en contrepartie du mali ou boni de fusion éventuellement constaté.\nA défaut de mali ou boni, ils sont imputés en report à nouveau conformément aux règles sur les changements de méthode.",
+        "record_id": "pcg-744-3"
+      },
+      {
+        "extrait": "Le boni représente l’écart positif entre l’actif net positif reçu par l’entité absorbante, après harmonisation des méthodes comptables telle que défini à l’article 744-3",
+        "record_id": "pcg-745-2"
+      },
+      {
+        "extrait": "Le mali de fusion représente l’écart négatif entre l’actif net, positif ou négatif, reçu par l’entité absorbante, après harmonisation des méthodes comptables telle que défini à l’article 744-3",
+        "record_id": "pcg-745-3"
+      },
+      {
+        "extrait": "Au-delà des retraitements obligatoires prévus aux alinéas précédents, l’entité absorbante ou bénéficiaire des apports peut également harmoniser les méthodes de comptabilisation et d’évaluation des actifs et passifs apportés selon ses propres méthodes. Dans ce cas, les changements en résultant sont traités conformément à l’article 122-2.",
+        "record_id": "pcg-744-3"
+      },
+      {
+        "extrait": "Au-delà des retraitements obligatoires prévus ci-dessus, il n’est pas requis de retraiter rétroactivement les actifs et passifs reçus afin d’harmoniser les règles de comptabilisation et d’évaluation.",
+        "record_id": "pcg-744-3-c1"
+      }
+    ],
+    "reponse": "**Retraitements obligatoires.** Lorsqu'une opération est réalisée à la valeur comptable et implique une entité absorbée (ou apporteuse) non soumise au Plan comptable général — cas typique des opérations transfrontalières —, l'entité absorbante ou bénéficiaire des apports doit procéder aux retraitements nécessaires des actifs et passifs apportés afin de se conformer à la définition des actifs et passifs prévue par le règlement [pcg-744-3]. Concrètement, après avoir comptabilisé le traité d'apport, cette harmonisation minimale consiste à : sortir du bilan les actifs et passifs apportés qui ne répondent pas à la définition du règlement ; constater les actifs et passifs qui doivent y figurer selon le règlement ; constater ou compléter la provision pour engagements de retraite si telle est la méthode de l'absorbante [pcg-744-3-c1].\n\n**Engagements de retraite.** Si l'entité absorbante provisionne ses engagements de retraite et assimilés conformément à l'article 324-1, elle ajuste sa provision pour tenir compte des droits des membres du personnel de l'entité absorbée ou apporteuse, selon ses propres modalités d'évaluation [pcg-744-3].\n\n**Contrepartie comptable.** Ces retraitements sont comptabilisés en contrepartie du mali ou du boni de fusion éventuellement constaté ; à défaut de mali ou de boni, ils sont imputés en report à nouveau conformément aux règles sur les changements de méthode [pcg-744-3]. C'est d'ailleurs sur l'actif net reçu « après harmonisation des méthodes comptables telle que défini à l'article 744-3 » que se calculent le boni [pcg-745-2] et le mali [pcg-745-3].\n\n**Harmonisation facultative.** Au-delà de ces retraitements obligatoires, l'entité absorbante peut également harmoniser les méthodes de comptabilisation et d'évaluation des actifs et passifs apportés selon ses propres méthodes ; les changements qui en résultent sont alors traités comme un changement de méthode conformément à l'article 122-2 [pcg-744-3]. Il n'est en revanche pas requis de retraiter rétroactivement les actifs et passifs reçus au-delà de l'harmonisation minimale [pcg-744-3-c1]."
+  },
+  "[\"Selon l'article 214-17 du PCG, quel effet la comptabilisation d'une dépréciation a-t-elle sur la base amortissable d'un actif amortissable ?\", [\"pcg-214-17@2026-01-01\", \"pcg-613-8@2026-01-01\", \"pcg-214-2@2026-01-01\", \"pcg-214-1@2026-01-01\", \"pcg-745-8@2026-01-01\", \"pcg-214-27-c2@2026-01-01\", \"pcg-214-27-c3@2026-01-01\", \"pcg-214-14@2026-01-01\", \"pcg-214-18-c1@2026-01-01\", \"pcg-214-14-c2@2026-01-01\"]]": {
+    "abstention": false,
+    "citations": [
+      {
+        "extrait": "Si la valeur actuelle d'un actif immobilisé devient inférieure à sa valeur nette comptable, cette dernière est ramenée à la valeur actuelle par le biais d'une dépréciation.",
+        "record_id": "pcg-214-17@2026-01-01"
+      },
+      {
+        "extrait": "Si l’actif considéré est amortissable, la comptabilisation d'une dépréciation modifie de manière prospective la base amortissable.",
+        "record_id": "pcg-214-17@2026-01-01"
+      },
+      {
+        "extrait": "De même, en cas de dotation ou de reprise de dépréciations résultant de la comparaison entre la valeur actuelle d'un actif immobilisé et sa valeur nette comptable, il convient de modifier de manière prospective la base amortissable.",
+        "record_id": "pcg-214-14@2026-01-01"
+      },
+      {
+        "extrait": "Toute modification significative de l'utilisation prévue, par exemple durée ou rythme de consommation des avantages économiques attendus, entraîne la révision prospective du plan d'amortissement.",
+        "record_id": "pcg-214-14@2026-01-01"
+      }
+    ],
+    "reponse": "Selon l'article 214-17 du PCG, lorsque la valeur actuelle d'un actif immobilisé devient inférieure à sa valeur nette comptable, celle-ci est ramenée à la valeur actuelle par le biais d'une dépréciation ; si l'actif considéré est amortissable, la comptabilisation de cette dépréciation modifie de manière prospective la base amortissable, c'est-à-dire pour l'avenir seulement, sans retraitement des amortissements déjà comptabilisés. Ce principe est cohérent avec l'article 214-14, qui prévoit qu'en cas de dotation ou de reprise de dépréciations résultant de la comparaison entre la valeur actuelle d'un actif immobilisé et sa valeur nette comptable, il convient de modifier de manière prospective la base amortissable, le plan d'amortissement étant alors révisé de façon prospective."
+  },
+  "[\"Selon l'article 513-1 du PCG, à quoi le résultat de l'exercice est-il égal ?\", [\"pcg-513-1@2026-01-01\", \"pcg-112-3@2026-01-01\", \"pcg-513-3@2026-01-01\", \"pcg-512-4@2026-01-01\", \"pcg-1211-12@2026-01-01\", \"pcg-513-4@2026-01-01\", \"pcg-511-3@2026-01-01\", \"pcg-na-226@2026-01-01\", \"pcg-513-2@2026-01-01\", \"pcg-833-4-c2@2026-01-01\"]]": {
+    "abstention": false,
+    "citations": [
+      {
+        "extrait": "Le résultat de l'exercice est égal tant à la différence entre les produits et les charges qu'à la variation des capitaux propres entre le début et la fin de l'exercice sauf s'il s'agit d'opérations affectant directement le montant des capitaux propres.",
+        "record_id": "pcg-513-1@2026-01-01"
+      }
+    ],
+    "reponse": "Selon l'article 513-1 du PCG, le résultat de l'exercice est égal, d'une part, à la différence entre les produits et les charges et, d'autre part, à la variation des capitaux propres entre le début et la fin de l'exercice — sauf s'il s'agit d'opérations affectant directement le montant des capitaux propres (par exemple des opérations sur le capital), qui sont exclues de cette équivalence."
+  },
+  "[\"Selon l'article 611-1 du PCG, qu'est-ce qu'une solution informatique ?\", [\"pcg-611-1@2026-01-01\", \"pcg-611-2@2026-01-01\", \"pcg-611-2-c2@2026-01-01\", \"pcg-611-2-c7@2026-01-01\", \"pcg-611-4@2026-01-01\", \"pcg-611-2-c3@2026-01-01\", \"pcg-611-2-c4@2026-01-01\", \"pcg-611-3@2026-01-01\", \"pcg-611-2-c6@2026-01-01\", \"pcg-611-2-c8@2026-01-01\"]]": {
+    "abstention": false,
+    "citations": [
+      {
+        "extrait": "Une solution informatique est un ensemble organisé de fonctionnalités logicielles (programmes, codes, paramétrages…) apte à satisfaire les besoins des utilisateurs en vue notamment de stocker, manipuler, transformer, produire, sécuriser des données, d’y accéder ou encore de les transmettre.",
+        "record_id": "pcg-611-1@2026-01-01"
+      },
+      {
+        "extrait": "Une solution informatique peut être un projet unique ou un ensemble de sous - projets.\nLes solutions informatiques sont sans substance physique.",
+        "record_id": "pcg-611-1@2026-01-01"
+      }
+    ],
+    "reponse": "Selon l'article 611-1 du PCG, une solution informatique est « un ensemble organisé de fonctionnalités logicielles (programmes, codes, paramétrages…) apte à satisfaire les besoins des utilisateurs en vue notamment de stocker, manipuler, transformer, produire, sécuriser des données, d'y accéder ou encore de les transmettre ». Le même article précise qu'une solution informatique peut être un projet unique ou un ensemble de sous-projets, et que les solutions informatiques sont sans substance physique."
+  },
+  "[\"Selon l'article 740-1 du PCG, de quoi dépend l'évaluation des apports à la valeur comptable ou à la valeur réelle ?\", [\"pcg-740-1@2026-01-01\", \"pcg-743-1-c2@2026-01-01\", \"pcg-743-1@2026-01-01\", \"pcg-na-289@2026-01-01\", \"pcg-743-1@2026-01-01#2\", \"pcg-213-3-c2@2026-01-01\", \"pcg-743-3-c1@2026-01-01\", \"pcg-221-1-c9@2026-01-01\", \"pcg-300-1@2026-01-01\", \"pcg-745-10-c2@2026-01-01\"]]": {
+    "abstention": false,
+    "citations": [
+      {
+        "extrait": "Les apports sont évalués à la valeur comptable ou à la valeur réelle, selon la situation de contrôle au moment de l’opération et le sens de l’opération.",
+        "record_id": "pcg-740-1@2026-01-01"
+      },
+      {
+        "extrait": "Les présentes dispositions concernent les modalités d’évaluation des apports et ne visent pas celles retenues pour le calcul de la parité.",
+        "record_id": "pcg-740-1@2026-01-01"
+      },
+      {
+        "extrait": "Les apports sont évalués comme suit en fonction de la situation de l’entité absorbante ou de la bénéficiaire des apports et de l’existence ou non d’un contrôle commun entre les entités participant à l’opération",
+        "record_id": "pcg-743-1@2026-01-01"
+      }
+    ],
+    "reponse": "Selon l'article 740-1 du PCG, les apports sont évalués soit à la valeur comptable, soit à la valeur réelle, en fonction de deux critères : la situation de contrôle au moment de l'opération (contrôle commun ou contrôle distinct entre les entités participantes) et le sens de l'opération (opération « à l'endroit » ou « à l'envers »). Ce même article précise que ces dispositions ne concernent que les modalités d'évaluation des apports et non celles retenues pour le calcul de la parité."
+  },
+  "[\"Selon l'article 745-2 du PCG, comment le boni de fusion est-il comptabilisé ?\", [\"pcg-745-2@2026-01-01\", \"pcg-141-3@2026-01-01\", \"pcg-744-3@2026-01-01\", \"pcg-751-4@2026-01-01\", \"pcg-745-3@2026-01-01\", \"pcg-745-1-c2@2026-01-01\", \"pcg-760-2@2026-01-01\", \"pcg-na-308@2026-01-01\", \"pcg-141-3-c1@2026-01-01\", \"pcg-745-1@2026-01-01\"]]": {
+    "abstention": false,
+    "citations": [
+      {
+        "extrait": "Le boni représente l’écart positif entre l’actif net positif reçu par l’entité absorbante, après harmonisation des méthodes comptables telle que défini à l’article 744-3, à hauteur de sa participation détenue dans l’entité absorbée, et la valeur comptable de cette participation.",
+        "record_id": "pcg-745-2@2026-01-01"
+      },
+      {
+        "extrait": "Le boni est comptabilisé dans le résultat financier à hauteur de la quote-part des résultats accumulés par l’entité absorbée depuis l’acquisition et non distribués et, dans les capitaux propres pour le montant résiduel ou si les résultats accumulés ne peuvent être déterminés de manière fiable.",
+        "record_id": "pcg-745-2@2026-01-01"
+      },
+      {
+        "extrait": "Lorsque l’entité absorbante a acquis des titres de l’entité absorbée antérieurement à la date de l’opération de fusion, un boni ou mali peut apparaître lors de l’annulation de ces titres auxquels se substituent les actifs et passifs de l’entité absorbée.",
+        "record_id": "pcg-745-1@2026-01-01"
+      },
+      {
+        "extrait": "Lorsqu’une société mère fusionne avec plusieurs de ses filiales simultanément dans un même traité de fusion, il ne peut y avoir aucune compensation entre les bonis et malis de chaque opération de fusion. Ils doivent être comptabilisés individuellement.",
+        "record_id": "pcg-745-1-c2@2026-01-01"
+      }
+    ],
+    "reponse": "Selon l'article 745-2 du PCG, le boni correspond à l'écart positif entre l'actif net positif reçu par l'entité absorbante — après harmonisation des méthodes comptables prévue à l'article 744-3 — à hauteur de sa participation détenue dans l'entité absorbée, et la valeur comptable de cette participation. Sa comptabilisation est double : il est enregistré en résultat financier à hauteur de la quote-part des résultats accumulés par l'entité absorbée depuis l'acquisition et non distribués, et en capitaux propres pour le montant résiduel, ou pour la totalité si les résultats accumulés ne peuvent pas être déterminés de manière fiable. À noter que ce boni (comme le mali) n'apparaît que lorsque l'entité absorbante avait acquis des titres de l'entité absorbée antérieurement à la fusion, lors de l'annulation de ces titres. En cas de fusion simultanée de plusieurs filiales avec leur mère dans un même traité, aucune compensation entre bonis et malis n'est possible : ils sont comptabilisés individuellement."
+  },
+  "[\"Selon l'article 745-3 du PCG, comment se définit le mali de fusion ?\", [\"pcg-745-3@2026-01-01\", \"pcg-751-4@2026-01-01\", \"pcg-745-6-c1@2026-01-01\", \"pcg-na-308@2026-01-01\", \"pcg-745-4@2026-01-01\", \"pcg-na-309@2026-01-01\", \"pcg-751-4-c1@2026-01-01\", \"pcg-745-3-c3@2026-01-01\", \"pcg-745-4-c1@2026-01-01\", \"pcg-745-1@2026-01-01\"]]": {
+    "abstention": false,
+    "citations": [
+      {
+        "extrait": "Le mali de fusion représente l’écart négatif entre l’actif net, positif ou négatif, reçu par l’entité absorbante, après harmonisation des méthodes comptables telle que défini à l’article 744-3, à hauteur de sa participation dans l’entité absorbée et la valeur comptable de cette participation.",
+        "record_id": "pcg-745-3@2026-01-01"
+      },
+      {
+        "extrait": "Le cas échéant, le mali est corrigé des ajustements de prix sur les titres de participation, positifs ou négatifs, intervenus postérieurement à la fusion.",
+        "record_id": "pcg-745-3@2026-01-01"
+      },
+      {
+        "extrait": "Lorsqu’une fusion a pour effet de transférer à l’entité absorbante ses propres titres, aucun mali de fusion n’est constaté sur l’annulation de ces derniers.",
+        "record_id": "pcg-745-3@2026-01-01"
+      },
+      {
+        "extrait": "La valeur comptable retenue pour les titres dans le calcul du mali est la valeur comptable défini à l’article 745-3 et s’entend de la valeur comptable nette.",
+        "record_id": "pcg-745-3-c3@2026-01-01"
+      },
+      {
+        "extrait": "Lorsque l’entité absorbante a acquis des titres de l’entité absorbée antérieurement à la date de l’opération de fusion, un boni ou mali peut apparaître lors de l’annulation de ces titres auxquels se substituent les actifs et passifs de l’entité absorbée.",
+        "record_id": "pcg-745-1@2026-01-01"
+      }
+    ],
+    "reponse": "Selon l'article 745-3 du PCG, le mali de fusion est l'écart négatif entre, d'une part, l'actif net — positif ou négatif — reçu par l'entité absorbante après harmonisation des méthodes comptables (au sens de l'article 744-3), à hauteur de sa participation dans l'entité absorbée, et, d'autre part, la valeur comptable de cette participation. Deux précisions complètent cette définition : le mali est, le cas échéant, corrigé des ajustements de prix sur les titres de participation, positifs ou négatifs, survenus postérieurement à la fusion ; et lorsque la fusion a pour effet de transférer à l'entité absorbante ses propres titres, aucun mali de fusion n'est constaté sur l'annulation de ces derniers. La valeur comptable des titres retenue pour ce calcul s'entend de la valeur comptable nette. Ce contexte est celui de l'article 745-1, qui prévoit qu'un boni ou un mali peut apparaître lors de l'annulation des titres de l'absorbée acquis antérieurement à l'opération."
+  },
+  "[\"Selon l'article 752-2 du PCG, dans quelle proportion les créances et dettes réciproques sont-elles éliminées, et qu'advient-il des incidences fiscales ?\", [\"pcg-752-2@2026-01-01\", \"pcg-752-3@2026-01-01\", \"pcg-752-1@2026-01-01\", \"pcg-621-11-c2@2026-01-01\", \"pcg-833-4@2026-01-01\", \"pcg-911-1-c3@2026-01-01\", \"pcg-214-27-c3@2026-01-01\", \"pcg-322-6@2026-01-01\", \"pcg-515-2@2026-01-01\", \"pcg-na-266@2026-01-01\"]]": {
+    "abstention": false,
+    "citations": [
+      {
+        "extrait": "Les créances et dettes réciproques ainsi que les produits et charges réciproques sont éliminés en totalité. Les incidences fiscales des opérations réciproques continuent cependant à être comptabilisées.",
+        "record_id": "pcg-752-2@2026-01-01"
+      },
+      {
+        "extrait": "Les effets à recevoir et les effets à payer s’éliminent réciproquement mais, lorsque l’effet à recevoir est remis à l’escompte, le concours bancaire consenti au groupe est substitué à l’effet à payer.",
+        "record_id": "pcg-752-2@2026-01-01"
+      }
+    ],
+    "reponse": "Selon l'article 752-2 du PCG, les créances et dettes réciproques, ainsi que les produits et charges réciproques, sont éliminés **en totalité**. En revanche, les incidences fiscales des opérations réciproques continuent à être comptabilisées. Le même article précise également que les effets à recevoir et les effets à payer s'éliminent réciproquement, mais que lorsque l'effet à recevoir est remis à l'escompte, le concours bancaire consenti au groupe est substitué à l'effet à payer."
+  },
+  "[\"Sur quelle base un actif acquis à titre onéreux est-il évalué à sa date d'entrée dans le patrimoine ?\", [\"pcg-213-1@2026-01-01\", \"pcg-na-196@2026-01-01\", \"pcg-na-207@2026-01-01\", \"pcg-221-1@2026-01-01\", \"pcg-213-7@2026-01-01\", \"pcg-na-165@2026-01-01\", \"pcg-213-27-c1@2026-01-01\", \"pcg-213-10-c1@2026-01-01\", \"pcg-214-6-c2@2026-01-01\", \"pcg-213-22@2026-01-01\"]]": {
+    "abstention": false,
+    "citations": [
+      {
+        "extrait": "A leur date d'entrée dans le patrimoine de l'entité, la valeur des actifs est déterminée dans les conditions suivantes :\n- les actifs acquis à titre onéreux sont comptabilisés à leur coût d'acquisition ;",
+        "record_id": "pcg-213-1@2026-01-01"
+      },
+      {
+        "extrait": "Les immobilisations corporelles ou incorporelles et les stocks, répondant aux conditions de définition et de comptabilisation définies aux articles 211-1 et suivants et 212-1 et suivants, doivent être évalués initialement à leur coût.",
+        "record_id": "pcg-213-1@2026-01-01"
+      },
+      {
+        "extrait": "- les actifs produits par l'entité sont comptabilisés à leur coût de production ;\n- les actifs acquis à titre gratuit sont comptabilisés à leur valeur vénale ;\n- les actifs acquis par voie d’échange sont comptabilisés à leur valeur vénale.",
+        "record_id": "pcg-213-1@2026-01-01"
+      },
+      {
+        "extrait": "Le coût d’acquisition d’une immobilisation incorporelle acquise séparément est constitué de :\n- son prix d’achat, y compris les droits de douane et taxes non récupérables, après déduction des remises, rabais commerciaux et escomptes de règlement, et\n- de tous les coûts directement attribuables à la préparation de cet actif en vue de l’utilisation envisagée.",
+        "record_id": "pcg-213-22@2026-01-01"
+      },
+      {
+        "extrait": "Les dispositions du présent article ne s’appliquent pas aux immobilisations corporelles constamment renouvelées visées à l’article 212-7.",
+        "record_id": "pcg-213-1@2026-01-01"
+      },
+      {
+        "extrait": "À leur date d’entrée dans le patrimoine de l’entité, les titres immobilisés sont évalués selon les règles générales d’évaluation énoncées aux articles 213-1, 213-2, 213-3, 213-4, 213-5 et 213-8.",
+        "record_id": "pcg-221-1@2026-01-01"
+      }
+    ],
+    "reponse": "À sa date d'entrée dans le patrimoine de l'entité, un actif acquis à titre onéreux est comptabilisé à son **coût d'acquisition**, conformément au principe général selon lequel les immobilisations corporelles ou incorporelles et les stocks doivent être évalués initialement à leur coût (à la différence des actifs produits, évalués au coût de production, et des actifs acquis à titre gratuit ou par échange, évalués à la valeur vénale).\n\nÀ titre d'illustration de la composition de ce coût, pour une immobilisation incorporelle acquise séparément, le coût d'acquisition comprend le prix d'achat (droits de douane et taxes non récupérables inclus, après déduction des remises, rabais commerciaux et escomptes de règlement) et tous les coûts directement attribuables à la préparation de l'actif en vue de l'utilisation envisagée.\n\nÀ noter que ces dispositions ne s'appliquent pas aux immobilisations corporelles constamment renouvelées visées à l'article 212-7. Par ailleurs, les titres immobilisés sont également évalués, à leur date d'entrée, selon ces règles générales d'évaluation."
+  },
+  "[\"Une dépréciation de fonds commercial est-elle comptabilisée, et peut-elle être reprise si la valeur remonte ?\", [\"pcg-214-19@2026-01-01\", \"pcg-745-8@2026-01-01\", \"pcg-214-17-c1@2026-01-01\", \"pcg-214-15@2026-01-01\", \"pcg-214-18-c1@2026-01-01\", \"pcg-214-14-c2@2026-01-01\", \"pcg-214-17@2026-01-01\", \"pcg-214-19-c1@2026-01-01\", \"pcg-214-15-c2@2026-01-01\", \"pcg-832-4@2026-01-01\"]]": {
+    "abstention": false,
+    "citations": [
+      {
+        "extrait": "Si la valeur actuelle d'un actif immobilisé devient inférieure à sa valeur nette comptable, cette dernière est ramenée à la valeur actuelle par le biais d'une dépréciation.",
+        "record_id": "pcg-214-17@2026-01-01"
+      },
+      {
+        "extrait": "Pour les fonds commerciaux dont la durée d’utilisation est non limitée, ce test de dépréciation est réalisé au moins une fois par exercice qu’il existe ou non un indice de perte de valeur.",
+        "record_id": "pcg-214-15@2026-01-01"
+      },
+      {
+        "extrait": "Le fonds commercial est généralement affecté à un groupe d’actifs ou un regroupement de groupes d’actifs pour pouvoir être testé. Pour cette affectation, il convient de retenir le niveau pertinent de l’entité auquel le fonds commercial est géré et ses performances suivies.",
+        "record_id": "pcg-214-15-c2@2026-01-01"
+      },
+      {
+        "extrait": "Lorsqu’une dépréciation est comptabilisée dans un groupe d’actifs, cette dépréciation est allouée, en premier, au fonds commercial puis aux autres actifs appartenant à ce groupe d’actifs.",
+        "record_id": "pcg-214-17-c1@2026-01-01"
+      },
+      {
+        "extrait": "Les dépréciations sont rapportées au résultat quand les raisons qui les ont motivées ont cessé d’exister.\nPar exception, les dépréciations comptabilisées sur le fonds commercial ne sont jamais reprises.",
+        "record_id": "pcg-214-19@2026-01-01"
+      },
+      {
+        "extrait": "Les dépréciations sur le fonds commercial incluent également les dépréciations sur la partie du mali technique affectée au fonds commercial.",
+        "record_id": "pcg-214-19-c1@2026-01-01"
+      },
+      {
+        "extrait": "Le mali technique résiduel affecté au fonds commercial suit les règles de dépréciation applicables aux fonds commerciaux. S’il fait l’objet d’une dépréciation comptabilisé en conformité avec l’article 214-17, aucune reprise de dépréciation n’est possible.",
+        "record_id": "pcg-745-8@2026-01-01"
+      },
+      {
+        "extrait": "Fonds commercial 3. Indication :\n- du montant inscrit au poste « Fonds commercial » ;\n- des modalités d'amortissement et de dépréciation.",
+        "record_id": "pcg-832-4@2026-01-01"
+      }
+    ],
+    "reponse": "**Oui, une dépréciation du fonds commercial est comptabilisée, mais elle ne peut jamais être reprise.**\n\n1. **Comptabilisation** : lorsque la valeur actuelle d'un actif immobilisé devient inférieure à sa valeur nette comptable, celle-ci est ramenée à la valeur actuelle par le biais d'une dépréciation. Pour les fonds commerciaux dont la durée d'utilisation est non limitée, le test de dépréciation est réalisé au moins une fois par exercice, qu'il existe ou non un indice de perte de valeur. Le fonds commercial est généralement affecté à un groupe d'actifs (ou un regroupement de groupes d'actifs) pour pouvoir être testé, au niveau pertinent auquel il est géré et ses performances suivies. Lorsqu'une dépréciation est constatée au niveau d'un groupe d'actifs, elle est allouée en premier au fonds commercial, puis aux autres actifs du groupe.\n\n2. **Absence de reprise** : si la règle générale veut que les dépréciations soient rapportées au résultat quand les raisons qui les ont motivées ont cessé d'exister, le Plan comptable général prévoit une exception expresse : les dépréciations comptabilisées sur le fonds commercial ne sont jamais reprises. Une remontée ultérieure de la valeur ne permet donc aucune reprise. Cette interdiction s'étend à la partie du mali technique affectée au fonds commercial, qui suit les règles de dépréciation des fonds commerciaux : aucune reprise de dépréciation n'est possible.\n\n3. **Information en annexe** : l'annexe indique notamment le montant inscrit au poste « Fonds commercial », les modalités d'amortissement et de dépréciation, les modalités de mise en œuvre du test de dépréciation et les modalités d'affectation à un groupe d'actifs."
+  },
+  "[\"Une provision pour grosses réparations relevant d'un programme pluriannuel est-elle comptabilisée, et à quelles conditions serait-elle déductible ?\", [\"pcg-122-4-c1@2026-01-01#2\", \"pcg-na-23@2026-01-01\", \"pcg-214-10@2026-01-01\", \"pcg-na-28@2026-01-01\", \"pcg-na-14@2026-01-01\", \"pcg-122-4-c2@2026-01-01\", \"pcg-122-4@2026-01-01#2\", \"pcg-na-13@2026-01-01\", \"pcg-na-201@2026-01-01\", \"pcg-na-29@2026-01-01\"]]": {
+    "abstention": false,
+    "citations": [
+      {
+        "extrait": "Le Comité d’urgence considère, pour les comptes individuels et consolidés, que la comptabilisation de provisions pour grosses réparations concernant les dépenses relevant de la 2ème catégorie est obligatoire pour toutes les entreprises à compter du 1er janvier 2003 et maintenue après le 1er janvier 2005, sauf si l’entreprise opte pour la méthode de comptabilisation par composants",
+        "record_id": "pcg-na-23@2026-01-01"
+      },
+      {
+        "extrait": "peuvent être comptabilisées :\n- soit selon l’approche par composants (comptabilisation en tant que composant du coût initial et amortissement de manière spécifique de ces dépenses) ;\n- soit sous forme de provisions pour gros entretien ou grandes révisions.",
+        "record_id": "pcg-122-4-c1@2026-01-01#2"
+      },
+      {
+        "extrait": "La méthode de comptabilisation par composants de gros entretien ou de grandes révisions, exclut la constatation de provisions pour gros entretien ou de grandes révisions.",
+        "record_id": "pcg-214-10@2026-01-01"
+      },
+      {
+        "extrait": "doivent être comptabilisées dès l’origine comme un composant distinct de l’immobilisation, si aucune provision pour gros entretien ou grandes révisions n’a été constatée",
+        "record_id": "pcg-214-10@2026-01-01"
+      },
+      {
+        "extrait": "Les dépenses d’entretien faisant l’objet de programmes pluriannuels de gros entretien ou de grandes révisions en application de lois, règlements ou de pratiques constantes de l’entité",
+        "record_id": "pcg-214-10@2026-01-01"
+      },
+      {
+        "extrait": "L’obligation d’entretien peut résulter de la loi, de règlements ou être implicite du fait de pratiques constantes de l’entité en la matière.",
+        "record_id": "pcg-122-4-c1@2026-01-01#2"
+      },
+      {
+        "extrait": "Quelques opérations isolées de gros entretien, même importantes, ne faisant pas l’objet d’une programmation, ne rentrent pas dans le champ de l’article 214-9 du Plan comptable général.",
+        "record_id": "pcg-122-4-c2@2026-01-01"
+      },
+      {
+        "extrait": "les dépenses d’entretien ayant pour seul objet de vérifier le bon état de fonctionnement des installations et d’y apporter un entretien sans prolonger leur durée de vie au-delà de celle prévue initialement",
+        "record_id": "pcg-214-10@2026-01-01"
+      },
+      {
+        "extrait": "Les dépenses qui ont pour objet de modifier des installations ou de prolonger leur durée de vie ou [1ère catégorie] de remplacer tout ou partie des immobilisations existantes: ces dépenses ont le caractère d’immobilisations et ne peuvent être anticipées par le biais de provisions pour risques et charges",
+        "record_id": "pcg-na-13@2026-01-01"
+      },
+      {
+        "extrait": "Il convient de les distinguer des dépenses d’entretien courant (non susceptibles d’être provisionnées).",
+        "record_id": "pcg-122-4-c2@2026-01-01"
+      },
+      {
+        "extrait": "un passif doit être constaté à hauteur de la quote-part des dépenses futures d’entretien rapportée linéairement à l’usage passé",
+        "record_id": "pcg-na-13@2026-01-01"
+      },
+      {
+        "extrait": "celles-ci doivent être déterminées sur la base des coûts des programmes pluriannuels",
+        "record_id": "pcg-122-4-c1@2026-01-01#2"
+      },
+      {
+        "extrait": "calculent la provision pour chaque immeuble objet de programmes pluriannuels de gros entretien ou grandes révisions",
+        "record_id": "pcg-122-4@2026-01-01#2"
+      }
+    ],
+    "reponse": "**1. La comptabilisation (règles comptables)**\n\nOui, une provision pour gros entretien ou grandes révisions relevant d'un programme pluriannuel est comptabilisable, et même obligatoire, sauf option pour la méthode des composants : le Comité d'urgence considère « que la comptabilisation de provisions pour grosses réparations concernant les dépenses relevant de la 2ème catégorie est obligatoire pour toutes les entreprises à compter du 1er janvier 2003 et maintenue après le 1er janvier 2005, sauf si l'entreprise opte pour la méthode de comptabilisation par composants ». L'entité a donc le choix entre deux traitements : l'approche par composants (comptabilisation en tant que composant du coût initial et amortissement spécifique) ou la provision pour gros entretien ou grandes révisions.\n\nLes deux méthodes sont exclusives l'une de l'autre : la méthode de comptabilisation par composants de gros entretien ou de grandes révisions exclut la constatation de provisions correspondantes, et inversement la comptabilisation dès l'origine d'un composant distinct n'est requise que « si aucune provision pour gros entretien ou grandes révisions n'a été constatée ».\n\n**2. Les conditions de comptabilisation de la provision**\n\n- Existence d'un programme pluriannuel de gros entretien ou de grandes révisions « en application de lois, règlements ou de pratiques constantes de l'entité » ; l'obligation peut donc résulter de la loi, de règlements ou être implicite du fait de pratiques constantes. Des opérations isolées de gros entretien, même importantes, non programmées, n'entrent pas dans le champ du dispositif.\n- Nature des dépenses : il doit s'agir de dépenses ayant « pour seul objet de vérifier le bon état de fonctionnement des installations et d'y apporter un entretien sans prolonger leur durée de vie au-delà de celle prévue initialement ». Sont exclues les dépenses qui modifient les installations, prolongent leur durée de vie ou remplacent tout ou partie des immobilisations (elles ont le caractère d'immobilisations et ne peuvent être anticipées par provisions), ainsi que les dépenses d'entretien courant.\n- Évaluation : le passif est constaté « à hauteur de la quote-part des dépenses futures d'entretien rapportée linéairement à l'usage passé », sur la base des coûts des programmes pluriannuels ; dans le logement social, la provision est calculée pour chaque immeuble objet de programmes pluriannuels.\n\n**3. La déductibilité**\n\nLes passages fournis, qui relèvent exclusivement du Plan comptable général, ne traitent pas des conditions de déductibilité fiscale d'une telle provision : cette question relève du droit fiscal (CGI) et je ne peux pas y répondre sur la base de ces textes."
+  }
+}

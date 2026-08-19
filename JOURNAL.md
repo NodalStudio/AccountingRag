@@ -334,3 +334,99 @@ Fin de jalon, l'utilisateur demande pourquoi le BOFiP n'est pas dans le corpus �
 Ce que la question a surtout révélé, c'est une réserve que je n'avais pas formulée : **le benchmark ne peut pas voir ce qui manque au corpus.** Ses 90 questions ont toutes été écrites depuis le PCG, donc leurs citations attendues existent par construction. « Est-ce déductible ? » n'a pas de gold, n'est pas dans le benchmark, et ne pèse pas dans le 0,877. Le score mesure la capacité à retrouver ce qui est présent, sur une distribution de questions qui exclut précisément ce qui est absent. Un benchmark construit depuis son propre corpus ne peut pas mesurer les limites de ce corpus — c'est structurel, et aucune ablation ne l'aurait montré.
 
 Le corpus, vérifié à cette occasion : Livres I à V du règlement ANC 2014-03. Ni consolidation (règlement 2020-01), ni fusions, ni normes d'exercice professionnel — alors que l'étoile polaire déclarée est le DSCG UE4, « Comptabilité et audit ». Jalon 4 : BOFiP. Jalon 5 : consolidation, fusions, NEP. Et une contrainte technique à porter dès le plan du jalon 4 : le corpus change d'ordre de grandeur, la discriminance des termes avec lui, et l'éviction RRF que q023 documente s'aggrave mécaniquement avec le nombre de candidats consensuels. Le jalon 4 devra re-mesurer le retrieval, pas hériter de ces chiffres.
+
+## Jalon 4 — mesurer ce que le système répond
+
+Trois jalons à améliorer le retrieval, et pas une ligne mesurant la réponse. Le benchmark saturait — 0,966 sur le split gelé, c'est 28 sur 29, un instrument qui ne peut plus voir un progrès — et la métrique signature annoncée au design v1, le taux de confusion fiscal ↔ comptable, n'existait que sur le papier. Le jalon 4 ne cherche donc pas à faire mieux : il construit de quoi savoir.
+
+Résultat central, et il tient en une ligne : **aucun article inventé sur les 779 citations des trois splits.** Sur le split de validation gelé, 175 citations, zéro inexistante, zéro non portante, et la correspondance brute vaut 1,0 — la normalisation de comparaison n'y fait strictement aucun travail. La famille d'abstention rend 29 refus corrects sur 30 avec zéro fabrication. Le juge franchit son seuil à 0,9854 pour 0,60 exigés.
+
+### Le chiffre qui a failli être une catastrophe de communication
+
+La première campagne a affiché **15,64 % de citations inexistantes**. C'est la métrique la plus grave que ce projet publie : un RAG comptable qui cite un article qui n'existe pas est pire qu'inutile. J'avais déjà le chiffre dans mon raisonnement, prêt à devenir la ligne d'ouverture du rapport.
+
+Aucune n'était inventée. Les 69 concernées nommaient le bon article avec un extrait verbatim et avaient seulement perdu le suffixe `@2026-01-01`. Mon contrôle confondait « article inventé » et « identifiant abrégé ». Le vrai taux d'hallucination est zéro.
+
+Les deux fautes restent des fautes — 39 articles du corpus portent plusieurs versions, donc omettre la version perd réellement de la traçabilité — mais ce sont deux fautes différentes, et un rapport qui les additionne ne mesure plus rien. Un test échoue maintenant si on les additionne.
+
+C'est la quatrième occurrence dans ce dépôt du travers que le jalon 3 documentait déjà : **énoncer une explication avant le contrôle qui la départage.** La différence, cette fois, est que le contrôle a précédé la publication. La loi 6 du `CLAUDE.md` a servi exactement à ce pour quoi elle a été écrite.
+
+### Il restait une citation non portante, et elle tenait à un caractère
+
+Après décomposition des verdicts, une seule des 422 citations de la première campagne échouait — celle qui portait sur les 61 questions du dev d'avant extension. Elle divergeait du corpus d'une apostrophe : `l'actif` contre `l’actif`, dans un extrait qui écrivait correctement `l’écart d’acquisition` deux mots plus loin.
+
+Une apostrophe droite ne fait pas dire autre chose à un article. Classer cela « non portant » était une erreur de catégorie — la métrique existe pour attraper une citation qui prête à un texte un propos qu'il ne tient pas. La normalisation replie donc les variantes d'apostrophe, **sur preuve du mécanisme**. Et le repli ne cache rien, parce que le taux de correspondance brute est publié à côté : l'écart entre les deux chiffres *est* cette citation.
+
+Ce compteur-là avait été ajouté avant de savoir qu'il servirait. Ma première décision, après la sonde qui montrait 77 extraits verbatim sur 77, avait été « on compare brut, la normalisation ne sert à rien ». Raisonnement incomplet : le 77/77 prouve que la normalisation ne fait aucun travail sur des réponses honnêtes, donc qu'elle ne masque rien — il ne prouve pas que brut soit préférable. Ce qui départage est le sens de l'erreur. Comparer brut risque un faux « non portant », c'est-à-dire publier un défaut que le système n'a pas.
+
+### Trois contrôles qui rassuraient sans rien vérifier
+
+Le jalon en a produit trois, et c'est le motif le plus instructif de la semaine.
+
+Un garde `if "@" in record_id` écrit pour empêcher qu'un identifiant versionné faux soit rattrapé. Aucune mutation ne pouvait le faire échouer : ajouter `@%` à une chaîne contenant déjà `@` ne correspond à aucun identifiant du corpus. Ligne morte, retirée.
+
+Un garde-fou du jalon 3 qui vérifiait que l'audit d'intégrité couvre les deux splits — en comparant à un effectif codé en dur, 90. L'extension du benchmark l'a cassé alors que l'audit fonctionnait parfaitement. Un effectif figé mesurait la taille du benchmark, pas le périmètre audité.
+
+Et le pire, parce qu'il était le mien et neuf : mon contrôle des chiffres publiés lisait la clé `detail` là où `citations.metriques` rend `details`. **Ma fixture de test portait la même faute**, donc les sept tests passaient sur un schéma qui n'existe pas, et le contrôle plantait sur les artefacts réels dès la première exécution. Il y a maintenant un test qui compare la fixture à la vraie sortie de la fonction. Une fixture qui invente son schéma ne teste rien.
+
+### Ce que la loi 9 interdisait, et pourquoi il a fallu la lire de près
+
+« Un rewriter, generator ou juge ne voit que le texte de la question — jamais les citations gold, le corpus, ou les résultats du retrieval. » Appliquée telle quelle à un juge, cette règle le rend incapable de noter la justesse : il ne lui reste que la cohérence interne.
+
+La résolution est celle d'un jury d'examen. Le juge reçoit un **barème**, pas un corrigé-citations : une liste de critères écrite à la main depuis le PCG, qui porte ce qu'une réponse juste doit contenir sans dire quels `record_id` la portent. La justesse des citations est déjà mesurée sans LLM par la brique précédente. Ce que la loi 9 protège est la circularité — un modèle recevant la réponse qu'il doit trouver — et cela vise le réécriveur et le générateur, pas un correcteur.
+
+### Le juge m'a corrigé, et j'ai laissé ma note fausse
+
+Deux des cinq cas limites du jeu de calibration n'avaient aucune instance réelle : la campagne n'a produit aucune citation hallucinée, et l'unique abstention de dev était fondée. Les douze cas correspondants sont donc fabriqués à partir de réponses réelles, en inversant l'affirmation décisive et en gardant les citations verbatim. On calibre une balance avec des masses connues, pas avec des colis au hasard — mais le champ `origine` sépare les cas fabriqués des cas de campagne, et l'accord est publié des deux façons. Sur les 18 cas réels, il est exact.
+
+Le seul désaccord des 30 va contre moi. Sur une réponse crédit-bail perturbée, j'avais compté un critère comme acquis parce que le bien finit bien à l'actif après la levée d'option. Le juge l'a refusé : dire que le bien y est « déjà » **nie** son entrée à cette date. Il a raison.
+
+La note humaine reste telle qu'écrite. Elle a été fixée avant la mesure, et la récrire après coup viderait la calibration de son sens — c'est la même discipline que le seuil, qui est lu dans le JSON précisément pour ne pas pouvoir être déplacé une fois le résultat connu.
+
+### Les questions d'abstention faciles ne servent à rien
+
+Une question dont aucun mot ne figure au corpus n'est jamais remontée par le retrieval, et s'abstenir ne coûte alors rien. Les questions utiles sont celles où **le corpus cite sa source fiscale sans la contenir** : `pcg-na-25` renvoie à l'article 39-1-5° du CGI sans en énoncer les conditions, `pcg-741-2` renvoie la définition du contrôle exclusif au règlement ANC 2020-01 sans en donner le seuil, et le corpus traite longuement la provision pour licenciement sans jamais donner le barème du code du travail.
+
+L'inspection des passages avant la mesure a retiré deux questions sur trente. L'une demandait si le mali technique est amortissable — `pcg-745-7` y répond mot pour mot. L'autre portait sur la livraison à soi-même, dont un commentaire déroule un cas concret. Une question à moitié répondable ne peut pas départager une abstention correcte d'une chance.
+
+### La seule non-abstention n'était pas une fabrication, et je l'ai dit dans le code
+
+Sur les 30 questions d'abstention, une seule réponse a mis le drapeau à `false`. Elle n'a rien inventé : elle ouvre sur « les passages fournis ne détaillent pas les écritures de retraitement, qui relèvent du règlement ANC n° 2020-01 », cite six extraits tous verbatim et existants, et conclut sur ce qui manque.
+
+Seul le drapeau était faux, et c'est un défaut réel — un appelant qui s'y fie présenterait une réponse à une question sans réponse. Mais l'appeler « réponse inventée », comme le faisait ma première version de la métrique, est une accusation que la mesure ne soutient pas. Le champ s'appelle maintenant `non_abstentions`, et `n_fabrications` est publié à côté. Il vaut zéro.
+
+### Le benchmark a corrigé une affirmation du README
+
+Le jalon 3 publiait une réserve : « le corpus se limite aux Livres I à V — ni consolidation, ni fusions, ni NEP d'audit, ni BOFiP ». Le « ni fusions » était faux. Le Titre VII du Livre II, « Comptabilisation et évaluation des opérations de fusions et assimilées », est là depuis le début : 117 records, dont 81 portent un numéro d'article. C'est de là que viennent 32 des 60 nouvelles questions, y compris tout le dossier fusions du DSCG UE4 — prime de fusion, mali technique, période intercalaire, opérations réciproques.
+
+Et j'ai failli publier 281 à la place de 117. Ma requête écrivait `chemin LIKE 'Livre II%Titre VII%'`, où `'Livre II%'` matche aussi « Livre III » et `'%Titre VII%'` matche aussi « Titre VIII » : deux chevauchements dans un même motif, et 281 = 117 + 164. Aucun gold n'était touché — ils avaient été vérifiés un par un — mais un chiffre de contexte faux dans un rapport reste un chiffre faux.
+
+### Le contrôle de fraîcheur a bloqué ma propre clôture
+
+`eval_generation.py` refuse de dépenser un appel d'API si le retrieval neutre ne rend plus la valeur publiée au jalon 3. L'extension du benchmark a porté dev de 61 à 93 questions, le contrôle a rendu 0,715 au lieu de 0,672, et il a bloqué.
+
+La tentation était évidente : déplacer la constante. Cela aurait détruit le contrôle. Le périmètre est désormais **lu dans le JSON qui porte le chiffre publié**, pas déduit du contenu courant du benchmark — le contrôle reste donc vrai à travers toute extension future, et il bloque en plus si une question du périmètre publié disparaît, auquel cas le chiffre de référence cesserait d'être vérifiable.
+
+### Le GPU est tombé du bus au milieu de la clôture
+
+À la question 77 sur 93 : `CUDA error: unspecified launch failure`, puis `nvidia-smi` ne voit plus aucun périphérique alors que le module est chargé, `/dev/nvidia0` existe et la carte répond en PCI. Décrochage classique d'un dGPU Max-Q sous Linux. Recharger le stack de modules n'a rien récupéré ; seul un redémarrage l'a fait.
+
+La partie payante avait survécu : 80 réponses dans un cache versionné sur disque. J'ai repris sur CPU en attendant — 115 s par question contre 1,5 s, mesurés, ordres de grandeur et pas décimales — et **fixé le contrôle avant de mesurer** : la clé de cache du générateur porte la liste exacte des passages montrés, donc si le retrieval produisait un autre classement, la clé changerait et l'appel serait payant. Sur 93 questions dont 80 en cache, `appels_api` devait valoir exactement 13.
+
+Il a valu 13. Mais il faut dire ce que ce chiffre prouve : la machine a finalement redémarré, la campagne publiée est entièrement sur GPU, et le contrôle établit donc que **le retrieval reproduit à l'identique, après un redémarrage et une réinitialisation du pilote, les dix passages de chacune des 80 questions déjà mesurées.** C'est un meilleur contrôle que celui pour lequel il avait été écrit. Il ne prouve pas l'équivalence CPU/GPU, qui ne repose que sur une sonde à quatre questions et n'est plus nécessaire à la validité de la mesure.
+
+### Ce que mes propres questions ont révélé de mes attentes
+
+Quatre abstentions sur les 93 questions goldées de dev. Trois sont fondées : le gold était absent des dix passages montrés, donc le retrieval a échoué et la génération s'est bien comportée. La clé de cache permet de le trancher sans rien réexécuter.
+
+La quatrième avait son gold parmi les passages. Sauf que l'énoncé est « j'ai déprécié un stock de marchandises qui ne part plus : est-ce que le fisc l'accepte comme charge ? » — une question **purement fiscale**, dont j'avais goldé la moitié comptable. S'abstenir est le comportement juste ; c'est mon attente qui est fausse.
+
+Parmi les huit questions de divergence 2058-A, six demandent explicitement les deux volets et deux sont formulées de façon purement fiscale. Bilan honnête : une seule abstention des 93 est discutable, et elle est discutable à cause de l'énoncé que j'ai écrit. Je ne récris pas les questions maintenant — modifier un énoncé après avoir vu le résultat est exactement ce que ce dépôt s'interdit. La correction appartient au jalon suivant, qui apportera le corpus fiscal et rendra la question entièrement répondable.
+
+### Ce que le jalon laisse ouvert
+
+Le générateur cite en médiane 6 articles par réponse, jusqu'à 15, là où le gold en porte souvent un. Le « taux de réponses sans citation » est donc trivialement nul et la précision diluée. Le chiffre est publié pour que le biais soit lisible dans les mesures et non affirmé en prose — mais il n'est pas traité.
+
+Le seuil de 30 caractères sous lequel un extrait est refusé pénalise les citations de tableaux : les quatre non-portantes qui subsistent sur dev sont toutes des lignes du plan de comptes (`6226 Honoraires`, `Production immobilisée 72`). Le seuil a été fixé avant la mesure et le déplacer maintenant serait substituer un critère après avoir vu le résultat. Il reste à 30, publié comme limite, et vaut un changement mesuré à part.
+
+Et les deux dettes du jalon 3 sont toujours là, intactes : la fusion RRF récompense le consensus plutôt que l'excellence, masquée par la fenêtre du reranker et condamnée à réapparaître sur un corpus plus grand ; la réécriture dégrade trois questions sur soixante-et-une. Le jalon 4 ne les a pas touchées — il a construit de quoi les juger.

@@ -1,0 +1,737 @@
+{
+  "n_questions": 12,
+  "question_ids": [
+    "q001",
+    "q006",
+    "q021",
+    "q002",
+    "q007",
+    "q022",
+    "q003",
+    "q008",
+    "q023",
+    "q004",
+    "q009",
+    "q024"
+  ],
+  "n_abstentions": 0,
+  "n_citations": 77,
+  "modele": "claude-opus-5",
+  "appels_api": 12,
+  "tokens": {
+    "entree": 99305,
+    "sortie": 16673
+  },
+  "par_niveau": {
+    "brut": 77,
+    "espaces": 0,
+    "typographie": 0,
+    "casse_accents": 0,
+    "absent": 0
+  },
+  "taux_par_niveau": {
+    "brut": 1.0,
+    "espaces": 0.0,
+    "typographie": 0.0,
+    "casse_accents": 0.0,
+    "absent": 0.0
+  },
+  "cumule_brut": 1.0,
+  "cumule_espaces": 1.0,
+  "cumule_typographie": 1.0,
+  "detail": [
+    {
+      "question_id": "q001",
+      "record_id": "pcg-214-1@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 261,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Un actif immobilisé dont la durée d’utilisation est limitée fait l’objet d’un amortissement. Le cas échéant, il fait également l’objet d’une dépréciation selon les modalités décrites à l’article 214-15 si les conditions prévues à l’article 214-17 sont remplies."
+    },
+    {
+      "question_id": "q001",
+      "record_id": "pcg-214-1@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 267,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Le caractère limité de la durée d’utilisation d’un actif est déterminé, soit à l’origine, soit en cours d’utilisation, au regard des critères, généralement physiques, techniques, juridiques, ou économiques, inhérents à l’utilisation par l’entité de l’actif considéré."
+    },
+    {
+      "question_id": "q001",
+      "record_id": "pcg-214-1@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 132,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Si plusieurs critères sont pertinents, la durée d’utilisation la plus courte résultant de l'application de ces critères est retenue."
+    },
+    {
+      "question_id": "q001",
+      "record_id": "pcg-214-1-c1@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 244,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "L’usage est limité dans le temps dès lors que l’un des critères suivants, soit à l’origine, soit en cours d’utilisation, est applicable :\n- Physique : l’actif subit une usure physique par l’usage qu’en fait l’entité ou par le passage du temps ;"
+    },
+    {
+      "question_id": "q001",
+      "record_id": "pcg-214-1-c1@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 524,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Technique : l’évolution technique entraîne une obsolescence de l’actif, son utilisation devenant inférieure à celle qui serait fondée sur sa seule usure physique. Il en est notamment ainsi en cas de nouvelle normes de conformité rendant l’actif obsolète;\n- Juridique : l’utilisation est limitée dans le temps pour des raisons légales ou contractuelles, notamment en raison de l’expiration d’une protection ;\n- Économique : l’utilisation est limitée dans le temps en raison du cycle de vie des produits générés par cet actif."
+    },
+    {
+      "question_id": "q001",
+      "record_id": "pcg-214-1-c1@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 150,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Les actifs corporels, physiques par essence, ont généralement une durée d’utilisation limitée. Les terrains font, en général, exception à cette règle."
+    },
+    {
+      "question_id": "q001",
+      "record_id": "pcg-214-1-c1@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 171,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Les actifs incorporels peuvent avoir une durée d’utilisation limitée ou non. Les facteurs suivants sont notamment pris en compte pour déterminer leur durée d’utilisation :"
+    },
+    {
+      "question_id": "q001",
+      "record_id": "pcg-214-2@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 262,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Lorsqu’il n’y a pas de limite prévisible à la durée durant laquelle il est attendu qu’un actif immobilisé procurera des avantages économiques à l’entité, la durée d’utilisation de cet actif est non limitée et l’actif concerné ne fait pas l’objet d’amortissement."
+    },
+    {
+      "question_id": "q006",
+      "record_id": "pcg-214-22@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 200,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "En ce qui concerne les stocks de marchandises et de matières premières, l’éventuelle dépréciation peut être estimée sur la base d’une position globale sur matière première (ou marchandise) documentée."
+    },
+    {
+      "question_id": "q006",
+      "record_id": "pcg-214-22@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 111,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "A l’inventaire, les stocks et les productions en cours sont évalués unité par unité ou catégorie par catégorie."
+    },
+    {
+      "question_id": "q006",
+      "record_id": "pcg-214-22@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 121,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Le prix et les perspectives de vente sont à prendre en considération pour juger des éventuelles dépréciations des stocks."
+    },
+    {
+      "question_id": "q006",
+      "record_id": "pcg-214-22@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 374,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Une position globale sur matière première (ou marchandise) comprend le stock et un ensemble de transactions dans les deux sens, telles que des transactions futures matérialisées par un engagement ferme, des instruments financiers à terme en position ouverte isolée. Elle ne comprend pas les opérations de couverture et les éléments couverts, à hauteur de la partie couverte."
+    },
+    {
+      "question_id": "q006",
+      "record_id": "pcg-214-22@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 102,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Les termes des éléments inclus dans cette position globale doivent être compris dans le même exercice."
+    },
+    {
+      "question_id": "q006",
+      "record_id": "pcg-214-22@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 169,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "La perte latente sur cette position globale est provisionnée sous forme de dépréciation des éléments d’actifs en perte latente et en provision pour risque pour le solde."
+    },
+    {
+      "question_id": "q006",
+      "record_id": "pcg-628-18@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 282,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Lorsque les instruments financiers à terme sont pris en compte dans une position globale sur matières premières (ou marchandises) prévue à l’article 214-22 ou dans une position globale de change prévue à l’article 420-6, les provisions sont évaluées en conformité avec ces articles."
+    },
+    {
+      "question_id": "q006",
+      "record_id": "pcg-838-13-c1@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 218,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "les modalités retenues pour la détermination de la dépréciation des créances et dettes en devises (position globale de change) ou de la dépréciation basée sur une position globale sur marchandises ou matières premières"
+    },
+    {
+      "question_id": "q021",
+      "record_id": "pcg-214-13@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 118,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "L’amortissement d’un actif est la répartition systématique de son montant amortissable en fonction de son utilisation."
+    },
+    {
+      "question_id": "q021",
+      "record_id": "pcg-214-13@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 307,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "L’amortissement est déterminé par le plan d'amortissement établi en fonction de la durée et du mode d’amortissement propres à chaque actif amortissable, tels qu’ils sont déterminés par l’entité.\nLes actifs de même nature ayant des conditions d'utilisation identiques doivent être amortis de la même manière."
+    },
+    {
+      "question_id": "q021",
+      "record_id": "pcg-214-13@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 288,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Le mode d’amortissement doit permettre de traduire au mieux le rythme de consommation des avantages économiques attendus de l'actif par l'entité. Il est défini, soit en termes d'unités de temps, soit en termes d’unités d'œuvre. Le mode linéaire est appliqué à défaut de mode mieux adapté."
+    },
+    {
+      "question_id": "q021",
+      "record_id": "pcg-214-13@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 260,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Les petites entreprises définies à l’article L 123-16 du code de commerce peuvent, dans les comptes individuels, retenir la durée d'usage définie au 2° du 1 de l'article 39 du code général des impôts pour déterminer le plan d'amortissement des immobilisations."
+    },
+    {
+      "question_id": "q021",
+      "record_id": "pcg-831-1-c2@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 167,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Utilisation de la durée d’usage pour déterminer le plan d’amortissement des immobilisations incorporelles et corporelles en application de l’article 214-13 ○ Oui ○ Non"
+    },
+    {
+      "question_id": "q021",
+      "record_id": "pcg-na-27@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 257,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "identifier les éléments principaux d’immobilisations corporelles ;\n- devant faire l’objet de remplacement à intervalles réguliers ;\n- ayant des durées d’utilisation différentes ou procurant des avantages économiques à l’entreprise selon un rythme différent."
+    },
+    {
+      "question_id": "q021",
+      "record_id": "pcg-na-27@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 176,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Une étude préalable doit être faite par les services techniques quant aux possibilités de ventilation des éléments principaux en composants et aux fréquences de renouvellement."
+    },
+    {
+      "question_id": "q021",
+      "record_id": "pcg-na-27@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 149,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Le composant doit être significatif et doit conserver ce caractère au moment du remplacement et de la décomptabilisation (sortie de la valeur nette)."
+    },
+    {
+      "question_id": "q021",
+      "record_id": "pcg-213-17-c1@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 88,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "La dotation aux amortissements pour un exercice est en général comptabilisée en charges."
+    },
+    {
+      "question_id": "q021",
+      "record_id": "pcg-213-17-c1@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 294,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "les avantages économiques représentatifs d'un actif sont intégrés par l'entreprise dans le cadre de la production d'autres actifs, au lieu de constituer une charge. Dans ce cas, la dotation aux amortissements comprend une partie du coût de l'autre actif et est incluse dans sa valeur comptable."
+    },
+    {
+      "question_id": "q002",
+      "record_id": "pcg-214-13@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 288,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Le mode d’amortissement doit permettre de traduire au mieux le rythme de consommation des avantages économiques attendus de l'actif par l'entité. Il est défini, soit en termes d'unités de temps, soit en termes d’unités d'œuvre. Le mode linéaire est appliqué à défaut de mode mieux adapté."
+    },
+    {
+      "question_id": "q007",
+      "record_id": "pcg-212-5@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 116,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Le titulaire d'un contrat de crédit-bail comptabilise en charges les sommes dues au titre de la période de location."
+    },
+    {
+      "question_id": "q007",
+      "record_id": "pcg-1221-61@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 151,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Sont enregistrées au compte 612 « Redevances de crédit-bail » les factures de redevances ou de loyers concernant l'utilisation de biens en crédit-bail."
+    },
+    {
+      "question_id": "q007",
+      "record_id": "pcg-212-5-c1@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 493,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Les immobilisations exploitées dans le cadre d’un contrat de crédit-bail ou de location avec option d’achat défini à l’article L. 313.7 du code monétaire et financier, et des opérations assimilées qui sont retraitées en cas d’établissement de comptes consolidés, selon la comptabilité dite financière en application des dispositions du paragraphe 33 de l’annexe du règlement n° 99-07 du CRC (en vigueur à l’époque), restent comptabilisées à l’actif du crédit bailleur et non du crédit preneur."
+    },
+    {
+      "question_id": "q007",
+      "record_id": "pcg-212-5@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 230,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "À la levée de l'option d'achat, le titulaire d'un contrat de crédit-bail inscrit l'immobilisation à l'actif de son bilan pour un montant établi conformément aux règles applicables en matière de détermination de la valeur d'entrée."
+    },
+    {
+      "question_id": "q007",
+      "record_id": "pcg-836-3@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 236,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Pour les biens pris en crédit-bail, l’entité mentionne les montants des redevances restant à payer ainsi que le prix d’achat résiduel de ces biens stipulé aux contrats en distinguant les opérations de crédit-bail mobilier et immobilier."
+    },
+    {
+      "question_id": "q007",
+      "record_id": "pcg-836-4@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 351,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "1. la valeur des biens pris en crédit-bail au moment de la signature du contrat ;\n2. le montant des redevances afférentes à l'exercice ainsi que le montant cumulé des redevances des exercices précédents ;\n3. les dotations aux amortissements qui auraient été enregistrées pour ces biens au titre de l'exercice clos s'ils avaient été acquis par l’entité"
+    },
+    {
+      "question_id": "q007",
+      "record_id": "pcg-214-9-c1@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 287,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Quand la charge de renouvellement/remplacement incombe contractuellement au crédit preneur, il appartient à ce dernier de comptabiliser, dans les comptes individuels, les composants à la date de leur renouvellement ou remplacement effectif et de les amortir sur leur durée d’utilisation."
+    },
+    {
+      "question_id": "q022",
+      "record_id": "pcg-1214-41@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 244,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Le compte 416 « Clients douteux ou litigieux » est débité par le crédit du compte 411 pour le montant total des créances que l'entité possède à l'encontre de clients dont la solvabilité apparaît douteuse ou avec lesquels l'entité est en litige."
+    },
+    {
+      "question_id": "q022",
+      "record_id": "pcg-1121-1@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 78,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "49 Dépréciations des comptes de tiers 491 Dépréciations des comptes de clients"
+    },
+    {
+      "question_id": "q022",
+      "record_id": "pcg-1121-1@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 95,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "6817 Dotations pour dépréciations des actifs circulants 68173 Stocks et en-cours 68174 Créances"
+    },
+    {
+      "question_id": "q022",
+      "record_id": "pcg-1121-1@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 93,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "7817 Reprises sur dépréciations des actifs circulants 78173 Stocks et en-cours 78174 Créances"
+    },
+    {
+      "question_id": "q022",
+      "record_id": "pcg-1221-65@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 236,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Les pertes sur créances irrécouvrables qui présentent un caractère habituel eu égard notamment à la nature de l'activité ou au volume des affaires traitées sont enregistrées au débit du compte 654 « Pertes sur créances irrécouvrables »."
+    },
+    {
+      "question_id": "q022",
+      "record_id": "pcg-1121-1@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 105,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "654 Pertes sur créances irrécouvrables 6541 Créances de l'exercice 6544 Créances des exercices antérieurs"
+    },
+    {
+      "question_id": "q022",
+      "record_id": "pcg-1121-1@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 35,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "7583 Rentrées sur créances amorties"
+    },
+    {
+      "question_id": "q003",
+      "record_id": "pcg-214-3@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 342,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Dans les comptes individuels, les petites entreprises, définies à l’article L 123-16 du code de commerce, peuvent amortir sur 10 ans tous leurs fonds commerciaux. Cette mesure de simplification peut être adoptée à tout moment. Elle est appliquée de manière prospective à tous les fonds commerciaux inscrits au bilan au moment de son adoption."
+    },
+    {
+      "question_id": "q003",
+      "record_id": "pcg-214-3@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 524,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Lorsque l’entité dépasse les seuils prévus à l’article L.123-16 du code de commerce et qu’elle a pris antérieurement l’option d’amortir sur 10 ans ses fonds commerciaux, elle peut maintenir le plan d’amortissement des fonds commerciaux inscrits à son bilan à la date de dépassement des seuils. En revanche, le plan d’amortissement des fonds commerciaux inscrits au bilan de l’entité postérieurement à la date de dépassement des seuils, est défini conformément aux deuxième, troisième et quatrième alinéas du présent article."
+    },
+    {
+      "question_id": "q003",
+      "record_id": "pcg-214-3@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 168,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Le fonds commercial, tel que défini à l’article 212-3, en ce compris la part du mali technique lui étant affecté, est présumé avoir une durée d’utilisation non limitée."
+    },
+    {
+      "question_id": "q003",
+      "record_id": "pcg-214-3@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 144,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Dans ce cas, le fonds commercial est amorti sur la durée d’utilisation ou, si cette durée ne peut être déterminée de manière fiable, sur 10 ans."
+    },
+    {
+      "question_id": "q003",
+      "record_id": "pcg-618-9-c1@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 108,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Cette mesure de simplification est étendue au fonds agricole résiduel. Elle peut être adoptée à tout moment."
+    },
+    {
+      "question_id": "q008",
+      "record_id": "pcg-313-1@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 214,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Les provisions réglementées sont des provisions constituées en application de textes particuliers de niveau supérieur. Elles ne correspondent pas à la définition d’une provision telle que définie à l’article 321-5."
+    },
+    {
+      "question_id": "q008",
+      "record_id": "pcg-313-1@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 226,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Elles sont comptabilisées suivant un mécanisme analogue à celui des provisions proprement dites. Les conditions de comptabilisation, de reprise et d’évaluation de ces provisions sont définies par les textes qui les ont créées."
+    },
+    {
+      "question_id": "q008",
+      "record_id": "pcg-821-1-c9@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 76,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Provisions pour risques Provisions pour charges 151 152 Total des provisions"
+    },
+    {
+      "question_id": "q008",
+      "record_id": "pcg-1141-1@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 104,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Les comptes de la classe 1 regroupent :\n- les capitaux propres qui correspondent à la somme algébrique :"
+    },
+    {
+      "question_id": "q008",
+      "record_id": "pcg-1141-1@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 30,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "- des provisions réglementées."
+    },
+    {
+      "question_id": "q008",
+      "record_id": "pcg-1141-1@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 81,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Elle exclut :\n- les subventions d'investissement et les provisions réglementées ;"
+    },
+    {
+      "question_id": "q008",
+      "record_id": "pcg-323-12@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 313,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Les provisions sont rapportées en totalité au résultat quand les raisons qui les ont motivées ont cessé d'exister, c'est-à-dire soit quand l'entité n'a plus d'obligation, soit quand il n'est plus probable que celle-ci entraînera une sortie de ressources sans contrepartie au moins équivalente de la part du tiers."
+    },
+    {
+      "question_id": "q008",
+      "record_id": "pcg-1222-78@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 217,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Les amortissements dérogatoires sont réintégrés dans le résultat, en fonction de la durée de vie des immobilisations concernées, par le crédit du compte 7872 « Reprises sur provisions réglementées (immobilisations) »."
+    },
+    {
+      "question_id": "q008",
+      "record_id": "pcg-313-1-c1@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 304,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Ont le caractère de provisions réglementées les provisions :\n- pour hausse des prix ;\n- pour risques afférents aux crédits à moyen terme résultant d'opérations faites à l'étranger ;\n- autorisées spécialement pour certaines professions, par exemple pour la reconstitution de gisements minier et pétrolier."
+    },
+    {
+      "question_id": "q008",
+      "record_id": "pcg-214-8@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 163,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "ces amortissements, bien que ne correspondant pas à l'objet normal d'un amortissement ou d'une dépréciation, sont comptabilisés au sein des provisions réglementées"
+    },
+    {
+      "question_id": "q023",
+      "record_id": "pcg-214-5@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 121,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "La dépréciation d'un actif est la constatation que sa valeur actuelle est devenue inférieure à sa valeur nette comptable."
+    },
+    {
+      "question_id": "q023",
+      "record_id": "pcg-214-22@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 252,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "A la date de clôture de l’exercice, les stocks et les productions en cours sont évalués selon les règles générales d’évaluation énoncées aux articles 214-1 à 214-6 et 214-16 à 214-19, sous réserve des dispositions prévues aux articles 214-23 et 214-24."
+    },
+    {
+      "question_id": "q023",
+      "record_id": "pcg-214-22@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 327,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "A l’inventaire, les stocks et les productions en cours sont évalués unité par unité ou catégorie par catégorie.\nL’unité d’inventaire est la plus petite partie qui peut être inventoriée sous chaque article.\nLe prix et les perspectives de vente sont à prendre en considération pour juger des éventuelles dépréciations des stocks."
+    },
+    {
+      "question_id": "q023",
+      "record_id": "pcg-214-22@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 200,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "En ce qui concerne les stocks de marchandises et de matières premières, l’éventuelle dépréciation peut être estimée sur la base d’une position globale sur matière première (ou marchandise) documentée."
+    },
+    {
+      "question_id": "q023",
+      "record_id": "pcg-214-22@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 169,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "La perte latente sur cette position globale est provisionnée sous forme de dépréciation des éléments d’actifs en perte latente et en provision pour risque pour le solde."
+    },
+    {
+      "question_id": "q023",
+      "record_id": "pcg-214-23@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 362,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "A la date de clôture de l’exercice, la valeur d’entrée est toujours retenue pour les stocks et les productions en cours qui ont fait l’objet d’un contrat de vente ferme dont l’exécution interviendra ultérieurement dès lors que le prix de vente stipulé couvre à la fois cette valeur et la totalité des frais restant à supporter pour la bonne exécution du contrat."
+    },
+    {
+      "question_id": "q023",
+      "record_id": "pcg-821-2-c4@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 54,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Sur actif circulant : dotations aux dépréciations 6817"
+    },
+    {
+      "question_id": "q023",
+      "record_id": "pcg-420-4@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 162,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Des dépréciations sont constituées si la valeur au jour de l’inventaire, compte tenu du cours de change audit jour, est inférieure à la valeur d’entrée en compte."
+    },
+    {
+      "question_id": "q004",
+      "record_id": "pcg-619-1@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 298,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Constitue un jeton tout bien incorporel représentant, sous forme numérique, un ou plusieurs droits, pouvant être émis, inscrits, conservés ou transférés au moyen d’un dispositif d’enregistrement électronique partagé permettant d’identifier, directement ou indirectement, le propriétaire dudit bien."
+    },
+    {
+      "question_id": "q004",
+      "record_id": "pcg-619-1-c1@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 143,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "La définition du jeton est reprise de l’article L 552-2 du code monétaire et financier créé par la loi n° 2019-486 du 22 mai 2019 (dite PACTE)."
+    },
+    {
+      "question_id": "q009",
+      "record_id": "pcg-212-3@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 274,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Sont comptabilisés dans le poste fonds commercial les éléments incorporels du fonds de commerce acquis qui ne font pas l’objet d’une évaluation et d’une comptabilisation séparées au bilan et qui concourent au maintien et au développement du potentiel d’activité de l’entité."
+    },
+    {
+      "question_id": "q009",
+      "record_id": "pcg-212-1-c1@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 108,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Ainsi, le fonds commercial acquis, évalué par différence, est inscrit à l’actif dans les comptes individuels"
+    },
+    {
+      "question_id": "q009",
+      "record_id": "pcg-212-3@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 462,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Les dépenses engagées pour créer en interne des fonds commerciaux, des marques, des titres de journaux et de magazines, des listes de clients et autres éléments similaires en substance, ne peuvent pas être distinguées du coût de développement de l’activité dans son ensemble. Par conséquent, ces éléments ne sont pas comptabilisés en tant qu’immobilisations incorporelles. Il en est de même pour les coûts engagés ultérieurement relatifs à ces dépenses internes."
+    },
+    {
+      "question_id": "q009",
+      "record_id": "pcg-745-4-c1@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 117,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Ces éléments incluent, le cas échéant un fonds commercial dès lors que ce dernier peut être évalué de manière fiable."
+    },
+    {
+      "question_id": "q009",
+      "record_id": "pcg-745-5@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 237,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "si le mali technique est supérieur à la somme des plus-values latentes, estimées de manière fiable, sur les éléments d’actifs identifiés hors fonds commercial, il est affecté aux actifs apportés et le montant résiduel au fonds commercial"
+    },
+    {
+      "question_id": "q024",
+      "record_id": "pcg-212-5-c1@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 493,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Les immobilisations exploitées dans le cadre d’un contrat de crédit-bail ou de location avec option d’achat défini à l’article L. 313.7 du code monétaire et financier, et des opérations assimilées qui sont retraitées en cas d’établissement de comptes consolidés, selon la comptabilité dite financière en application des dispositions du paragraphe 33 de l’annexe du règlement n° 99-07 du CRC (en vigueur à l’époque), restent comptabilisées à l’actif du crédit bailleur et non du crédit preneur."
+    },
+    {
+      "question_id": "q024",
+      "record_id": "pcg-212-5@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 116,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Le titulaire d'un contrat de crédit-bail comptabilise en charges les sommes dues au titre de la période de location."
+    },
+    {
+      "question_id": "q024",
+      "record_id": "pcg-1221-61@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 151,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Sont enregistrées au compte 612 « Redevances de crédit-bail » les factures de redevances ou de loyers concernant l'utilisation de biens en crédit-bail."
+    },
+    {
+      "question_id": "q024",
+      "record_id": "pcg-1221-61@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 112,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Sont comptabilisées dans les comptes 61/62 les charges externes, autres que les achats, en provenance des tiers."
+    },
+    {
+      "question_id": "q024",
+      "record_id": "pcg-821-2-c4@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 113,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "Autres achats et charges externes (1) 604, 605, 606, 608(e), (609(f)), 61 [sauf 619], (619), 62 [sauf 629], (629)"
+    },
+    {
+      "question_id": "q024",
+      "record_id": "pcg-212-5@2026-01-01",
+      "record_existe": true,
+      "niveau": "brut",
+      "longueur_extrait": 230,
+      "extrait_traverse_un_retour_ligne": false,
+      "extrait": "À la levée de l'option d'achat, le titulaire d'un contrat de crédit-bail inscrit l'immobilisation à l'actif de son bilan pour un montant établi conformément aux règles applicables en matière de détermination de la valeur d'entrée."
+    }
+  ]
+}

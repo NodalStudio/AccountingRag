@@ -134,7 +134,7 @@ Trois des quatre questions que le diagnostic fondateur donnait hors d'atteinte p
 
 Méthode, chiffres complets, autopsies et réserves : [`docs/eval-jalon3.md`](docs/eval-jalon3.md).
 
-**Réserve à lire avant de citer ces chiffres** : les 90 questions du benchmark ont toutes été écrites depuis le PCG, donc leurs citations attendues existent dans le corpus par construction. Le corpus se limite aux Livres I à V du règlement ANC 2014-03 — ni consolidation, ni fusions, ni NEP d'audit, ni BOFiP. Ces scores mesurent la capacité à retrouver ce qui est présent, sur une distribution de questions qui exclut ce qui est absent.
+**Réserve à lire avant de citer ces chiffres** : les 90 questions du benchmark ont toutes été écrites depuis le PCG, donc leurs citations attendues existent dans le corpus par construction. Le corpus se limite aux Livres I à V du règlement ANC 2014-03 — ni consolidation, ni NEP d'audit, ni BOFiP. (Cette réserve disait aussi « ni fusions » : **c'était faux**, et le jalon 4 l'a corrigé en allant y chercher 32 questions. Le Titre VII du Livre II, « Comptabilisation et évaluation des opérations de fusions et assimilées », compte 117 records dont 81 articles numérotés.) Ces scores mesurent la capacité à retrouver ce qui est présent, sur une distribution de questions qui exclut ce qui est absent.
 
 ### Configuration livrée par le jalon 3
 
@@ -177,6 +177,34 @@ Reproduire la configuration du jalon 2.5 (~1,5 s/question sur GPU contre ~150 s/
 ```sh
 uv run python scripts/run_eval.py --mode hybrid+rerank --split dev
 ```
+
+## Jalon 4 — mesurer la génération
+
+Trois jalons avaient amélioré le *retrieval* sans jamais mesurer ce que le système **répond**. Le jalon 4 construit l'instrument : un générateur contraint par sortie structurée, la vérification programmatique des citations (aucun LLM), un LLM-juge dont l'accord avec 30 notes humaines est mesuré *avant* qu'il ne publie quoi que ce soit, une famille de questions d'abstention, et l'extension du benchmark de 90 à 150 questions.
+
+### Résultats — benchmark v3
+
+| split | citations inexistantes | non portantes | identifiants sans version | correspondance brute | abstention |
+|---|---|---|---|---|---|
+| dev (n=93, 598 citations) | **0,0** | 0,0067 | 0,1388 | 0,99 | 0,043 |
+| validation (n=28, 175 citations, **gelé**) | **0,0** | **0,0** | 0,1429 | **1,0** | 0,0 |
+| abstention (n=30) | 0,0 | 0,0 | 0,0 | 1,0 | **0,9667** correcte |
+
+**Aucun article inventé sur les 779 citations des trois splits.** Sur le split de validation gelé, la correspondance brute vaut 1,0 : la normalisation de comparaison n'y fait strictement aucun travail. La famille d'abstention rend 29 refus corrects sur 30, avec **zéro fabrication**.
+
+Juge : **kappa pondéré 0,9854** contre 30 notes humaines notées à la main, pour un seuil de **0,60** fixé avant toute mesure et lu dans le JSON de calibration pour qu'il ne puisse pas être déplacé après coup.
+
+**Réserve à lire avant de citer ces chiffres** : ils ne sont **pas comparables** à ceux du jalon 3 — le benchmark est passé de 90 à 150 questions et la métrique a changé de nature. Le générateur cite en médiane 6 articles par réponse là où le gold en porte souvent un, ce qui rend le « taux de réponses sans citation » trivialement nul et dilue la précision. Et la première campagne a affiché **15,64 % de citations hallucinées dont aucune ne l'était** : elles nommaient le bon article avec un extrait verbatim et avaient perdu le suffixe de version. Le contrôle confondait « article inventé » et « identifiant abrégé ».
+
+Méthode, chiffres complets, défauts trouvés et huit réserves : [`docs/eval-jalon4.md`](docs/eval-jalon4.md). Chaque chiffre est recalculable depuis `docs/mesures/jalon4/` par `scripts/controle_chiffres_jalon4.py`, qui vérifie aussi que chaque valeur publiée dans le rapport apparaît littéralement — il a sept tests, un par mode d'échec.
+
+### Le benchmark v3
+
+150 questions goldées (93 `dev`, 29 `test` — retiré du service, 28 `validation` **gelé le 18 août 2026**) et 30 questions d'abstention sans gold. Les sources sont ordonnées par le risque de **fuite** entre la question et le corpus, pas par le coût de goldage : dossier fusions du DSCG UE4, thèmes DCG UE9/UE10, divergences de la liasse 2058-A. Les rescrits BOFiP sont écartés jusqu'au jalon corpus — la question y est *dans* le document indexé, donc la mesure serait circulaire.
+
+Huit questions portent `gold_fiscal: "a_completer"` : leur moitié comptable est goldée, leur moitié fiscale est **marquée, jamais inventée**. La métrique signature du projet — la confusion fiscal ↔ comptable — se prépare ainsi sans attendre le corpus fiscal.
+
+Format, portée thématique et historique des gels : [`benchmark/README.md`](benchmark/README.md).
 
 ## Schéma
 

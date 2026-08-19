@@ -1,0 +1,130 @@
+{
+  "split": "abstention",
+  "n": 30,
+  "config": {
+    "retrieval": "hybrid+rerank",
+    "reranker": "BAAI/bge-reranker-v2-m3",
+    "n_rerank": 25,
+    "pool": 50,
+    "mode_reecriture": "etend",
+    "k": 10
+  },
+  "controle_fraicheur": {
+    "recall@10_neutre_dev": 0.672,
+    "attendu": 0.672
+  },
+  "modele_generation": "claude-opus-5",
+  "metriques": {
+    "n": 30,
+    "n_citations": 6,
+    "verdicts": {
+      "ok": 6
+    },
+    "taux_citations_inexistantes": 0.0,
+    "taux_citations_non_portantes": 0.0,
+    "taux_citations_version_omise": 0.0,
+    "taux_reponses_sans_citation": 0.0,
+    "taux_abstention": 0.9667,
+    "taux_correspondance_brute": 1.0,
+    "citations_par_reponse": {
+      "min": 6,
+      "max": 6,
+      "median": 6,
+      "moyenne": 6.0
+    },
+    "par_question": {
+      "qa001": "abstention",
+      "qa002": "abstention",
+      "qa003": "abstention",
+      "qa004": "abstention",
+      "qa005": "abstention",
+      "qa006": "abstention",
+      "qa007": "abstention",
+      "qa008": "abstention",
+      "qa009": "abstention",
+      "qa010": "abstention",
+      "qa011": "abstention",
+      "qa012": "abstention",
+      "qa013": "abstention",
+      "qa014": "ok",
+      "qa015": "abstention",
+      "qa016": "abstention",
+      "qa017": "abstention",
+      "qa018": "abstention",
+      "qa019": "abstention",
+      "qa020": "abstention",
+      "qa021": "abstention",
+      "qa022": "abstention",
+      "qa023": "abstention",
+      "qa024": "abstention",
+      "qa025": "abstention",
+      "qa026": "abstention",
+      "qa027": "abstention",
+      "qa028": "abstention",
+      "qa029": "abstention",
+      "qa030": "abstention"
+    },
+    "details": {
+      "qa014": [
+        {
+          "record_id": "pcg-212-5@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-212-5-c1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-214-13-c3@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-213-9-c2@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-214-13-c2@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-214-13-c2@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        }
+      ]
+    },
+    "taux_abstention_correcte": 0.9667,
+    "non_abstentions": [
+      "qa014"
+    ],
+    "n_non_abstentions": 1,
+    "non_abstentions_sans_faute_de_citation": [
+      "qa014"
+    ],
+    "n_fabrications": 0,
+    "non_abstentions_par_raison": {
+      "fiscal_pas_comptable": [],
+      "hors_corpus": [
+        "qa014"
+      ],
+      "hors_perimetre": []
+    }
+  },
+  "cout": {
+    "appels_api": 0,
+    "tokens_entree": 0,
+    "tokens_sortie": 0,
+    "reponses_deja_en_cache_avant": 30,
+    "rejeu_depuis_le_cache": true
+  },
+  "reponses_cache": "docs/mesures/jalon4/reponses_abstention.json",
+  "reecritures_cache": "docs/mesures/jalon4/reecritures_abstention.json",
+  "cout_reecriture": {
+    "appels_api": 0
+  }
+}

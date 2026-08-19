@@ -1,0 +1,1194 @@
+{
+  "protocole": "Trente réponses notées à la main AVANT toute exécution du juge. La note humaine est le nombre de critères du barème effectivement acquis, le barème étant écrit depuis le PCG et le champ `notes` du benchmark. Le juge ne voit jamais les citations gold, les passages remontés ni le corpus : il reçoit la question, la réponse et le barème.\nDeux des cinq cas limites n'ont AUCUNE instance réelle dans la campagne : « fausse mais bien citée » (0 citation hallucinée et 0 citation non portante hors seuil sur 422) et « abstention excessive » (l'unique abstention de dev est fondée, son gold étant absent des dix passages montrés). Les douze cas correspondants sont fabriqués à partir de réponses réelles, en inversant l'affirmation décisive ou en substituant une abstention, et en conservant les citations verbatim d'origine. Le champ `origine` distingue `campagne` de `perturbation`, et l'accord est publié à la fois sur les 30 cas et sur le sous-ensemble `campagne` seul : un kappa porté par des cas fabriqués ne dirait pas la même chose qu'un kappa mesuré sur ce que le système produit.",
+  "seuil_kappa": 0.6,
+  "seuil_fixe_le": "2026-08-18, avant toute exécution du juge, et non révisable",
+  "cas": [
+    {
+      "question_id": "q002",
+      "cas_limite": "juste_bien_citee",
+      "origine": "campagne",
+      "question_texte": "Selon l'article 214-13 du PCG, quel mode d'amortissement doit-on appliquer à défaut d'un mode mieux adapté au rythme de consommation des avantages économiques ?",
+      "bareme": [
+        "dit que le mode linéaire s'applique à défaut d'un mode mieux adapté",
+        "rattache la règle à l'article 214-13"
+      ],
+      "note_humaine": 2,
+      "justification_humaine": "réponse complète et exacte sur tous les critères du barème ; citations propres"
+    },
+    {
+      "question_id": "q006",
+      "cas_limite": "juste_bien_citee",
+      "origine": "campagne",
+      "question_texte": "Sur quelle base une entité peut-elle estimer la dépréciation d'un stock de matières premières lorsqu'elle documente une position globale sur cette matière ?",
+      "bareme": [
+        "identifie la position globale documentée sur la matière comme base d'estimation",
+        "dit que la perte latente est traitée en dépréciation des actifs en perte latente",
+        "dit que le solde est traité en provision pour risque"
+      ],
+      "note_humaine": 3,
+      "justification_humaine": "réponse complète et exacte sur tous les critères du barème ; citations propres"
+    },
+    {
+      "question_id": "q010",
+      "cas_limite": "juste_bien_citee",
+      "origine": "campagne",
+      "question_texte": "Une dépréciation comptabilisée sur le fonds commercial peut-elle être reprise ultérieurement si la situation qui l'a motivée s'améliore ?",
+      "bareme": [
+        "répond non",
+        "qualifie l'absence de reprise d'exception propre au fonds commercial"
+      ],
+      "note_humaine": 2,
+      "justification_humaine": "réponse complète et exacte sur tous les critères du barème ; citations propres"
+    },
+    {
+      "question_id": "q021",
+      "cas_limite": "juste_bien_citee",
+      "origine": "campagne",
+      "question_texte": "J'ai acheté une machine pour mon atelier, comment je répartis son coût sur les années où je vais m'en servir ?",
+      "bareme": [
+        "nomme l'amortissement comme répartition du coût sur la durée d'utilisation",
+        "dit que le mode traduit le rythme de consommation des avantages économiques",
+        "dit que le mode linéaire s'applique à défaut d'un mode mieux adapté"
+      ],
+      "note_humaine": 3,
+      "justification_humaine": "réponse complète et exacte sur tous les critères du barème ; citations propres"
+    },
+    {
+      "question_id": "q024",
+      "cas_limite": "juste_bien_citee",
+      "origine": "campagne",
+      "question_texte": "Je loue une voiture de société en leasing avec option d'achat, comment je comptabilise les loyers que je verse chaque mois ?",
+      "bareme": [
+        "dit que les loyers sont comptabilisés en charges pendant la période de location",
+        "dit que le bien n'est pas inscrit à l'actif du preneur",
+        "dit qu'à la levée de l'option le bien entre à l'actif du preneur"
+      ],
+      "note_humaine": 3,
+      "justification_humaine": "réponse complète et exacte sur tous les critères du barème ; citations propres"
+    },
+    {
+      "question_id": "q031",
+      "cas_limite": "juste_bien_citee",
+      "origine": "campagne",
+      "question_texte": "Selon l'article 1222-74 du PCG, quel compte est crédité du montant des subventions d'exploitation acquises à l'entité ?",
+      "bareme": [
+        "désigne le compte 741 « Subventions d'exploitation »",
+        "dit que ce compte est crédité du montant acquis à l'entité"
+      ],
+      "note_humaine": 2,
+      "justification_humaine": "réponse complète et exacte sur tous les critères du barème ; citations propres"
+    },
+    {
+      "question_id": "q014",
+      "cas_limite": "juste_mal_citee",
+      "origine": "campagne",
+      "question_texte": "Comment enregistre-t-on la participation des salariés aux résultats avant son approbation par l'assemblée générale des actionnaires ?",
+      "bareme": [
+        "dit que la participation est une dette provisionnée avant approbation",
+        "désigne le compte 4284 crédité par le débit du compte 691"
+      ],
+      "note_humaine": 2,
+      "justification_humaine": "exacte et complète ; identifiants cités sans leur suffixe de version"
+    },
+    {
+      "question_id": "q025",
+      "cas_limite": "juste_mal_citee",
+      "origine": "campagne",
+      "question_texte": "J'ai racheté le fonds de commerce d'un confrère qui part à la retraite, comment j'enregistre ça dans mes comptes ?",
+      "bareme": [
+        "dit que le rachat s'inscrit à l'actif en immobilisations incorporelles",
+        "regroupe les éléments incorporels non séparément évalués au poste fonds commercial"
+      ],
+      "note_humaine": 2,
+      "justification_humaine": "exacte ; identifiants sans suffixe de version, et deux extraits sous le seuil de 30 caractères"
+    },
+    {
+      "question_id": "q053",
+      "cas_limite": "juste_mal_citee",
+      "origine": "campagne",
+      "question_texte": "Qu’enregistre le compte 72 « Production immobilisée », et par quel compte est-il débité en contrepartie ?",
+      "bareme": [
+        "dit que le compte 72 enregistre le coût des travaux faits par l'entité pour elle-même",
+        "dit qu'il est crédité par le débit du compte 23",
+        "dit qu'il peut l'être directement par le débit des comptes d'immobilisations"
+      ],
+      "note_humaine": 3,
+      "justification_humaine": "exacte sur les trois critères ; un extrait de 25 caractères sous le seuil"
+    },
+    {
+      "question_id": "q085",
+      "cas_limite": "juste_mal_citee",
+      "origine": "campagne",
+      "question_texte": "J’ai un bâtiment que mes propres équipes ont commencé à construire mais qui n’est pas fini à la clôture, et un autre tout juste terminé cette année : je les traite différemment dans mes comptes ?",
+      "bareme": [
+        "dit que l'immobilisation non terminée est suivie au compte 23",
+        "dit que le coût est viré aux comptes 20/21 à l'achèvement",
+        "traite les deux volets de la question"
+      ],
+      "note_humaine": 3,
+      "justification_humaine": "exacte sur les deux volets ; un extrait de 25 caractères sous le seuil"
+    },
+    {
+      "question_id": "q057",
+      "cas_limite": "juste_mal_citee",
+      "origine": "campagne",
+      "question_texte": "On me demande de donner une valeur à ce qui est en train d'être fabriqué dans l'atelier mais qui n'est pas encore terminé à la fin de l'année : comment on appelle ça et à quoi ça correspond exactement ?",
+      "bareme": [
+        "nomme les en-cours de production",
+        "donne la définition d'un stock au sens de l'article 211-7 : un actif détenu pour être vendu ou en cours de production pour une telle vente",
+        "dit qu'ils sont valorisés au coût de production"
+      ],
+      "note_humaine": 2,
+      "justification_humaine": "nomme les en-cours et donne la valorisation, mais ne donne la définition de l'article 211-7 qu'incidemment, en fin de réponse et par contraste avec le compte 23 : critère 2 NON acquis"
+    },
+    {
+      "question_id": "q086",
+      "cas_limite": "juste_mal_citee",
+      "origine": "campagne",
+      "question_texte": "J’ai reçu deux aides différentes cette année : une pour m’aider à payer mes charges courantes, et une autre pour financer l’achat d’une machine neuve. Est-ce qu’elles se comptabilisent au même endroit dans mes comptes ?",
+      "bareme": [
+        "dit que la subvention d'exploitation est un produit de l'exercice au compte 741",
+        "dit que la subvention d'investissement entre en capitaux propres au compte 13",
+        "dit que sa reprise suit le rythme de l'amortissement de l'immobilisation financée"
+      ],
+      "note_humaine": 3,
+      "justification_humaine": "exacte sur les trois critères ; identifiants sans suffixe de version"
+    },
+    {
+      "question_id": "q002",
+      "cas_limite": "fausse_bien_citee",
+      "origine": "perturbation",
+      "question_texte": "Selon l'article 214-13 du PCG, quel mode d'amortissement doit-on appliquer à défaut d'un mode mieux adapté au rythme de consommation des avantages économiques ?",
+      "bareme": [
+        "dit que le mode linéaire s'applique à défaut d'un mode mieux adapté",
+        "rattache la règle à l'article 214-13"
+      ],
+      "note_humaine": 1,
+      "justification_humaine": "critère 2 acquis (article correctement rattaché), critère 1 faux : le PCG impose le linéaire",
+      "reponse": {
+        "abstention": false,
+        "reponse": "Selon l'article 214-13 du PCG, c'est le mode dégressif qui est appliqué à défaut d'un mode mieux adapté au rythme de consommation des avantages économiques.",
+        "citations": [
+          {
+            "extrait": "Le mode d’amortissement doit permettre de traduire au mieux le rythme de consommation des avantages économiques attendus de l'actif par l'entité. Il est défini, soit en termes d'unités de temps, soit en termes d’unités d'œuvre. Le mode linéaire est appliqué à défaut de mode mieux adapté.",
+            "record_id": "pcg-214-13@2026-01-01"
+          }
+        ]
+      }
+    },
+    {
+      "question_id": "q010",
+      "cas_limite": "fausse_bien_citee",
+      "origine": "perturbation",
+      "question_texte": "Une dépréciation comptabilisée sur le fonds commercial peut-elle être reprise ultérieurement si la situation qui l'a motivée s'améliore ?",
+      "bareme": [
+        "répond non",
+        "qualifie l'absence de reprise d'exception propre au fonds commercial"
+      ],
+      "note_humaine": 0,
+      "justification_humaine": "les deux critères manqués : la réponse inverse l'exception expresse du PCG",
+      "reponse": {
+        "abstention": false,
+        "reponse": "Oui. Comme toute dépréciation, celle du fonds commercial est rapportée au résultat dès lors que les raisons qui l'ont motivée ont cessé d'exister.",
+        "citations": [
+          {
+            "extrait": "Les dépréciations sont rapportées au résultat quand les raisons qui les ont motivées ont cessé d’exister.\nPar exception, les dépréciations comptabilisées sur le fonds commercial ne sont jamais reprises.",
+            "record_id": "pcg-214-19@2026-01-01"
+          }
+        ]
+      }
+    },
+    {
+      "question_id": "q031",
+      "cas_limite": "fausse_bien_citee",
+      "origine": "perturbation",
+      "question_texte": "Selon l'article 1222-74 du PCG, quel compte est crédité du montant des subventions d'exploitation acquises à l'entité ?",
+      "bareme": [
+        "désigne le compte 741 « Subventions d'exploitation »",
+        "dit que ce compte est crédité du montant acquis à l'entité"
+      ],
+      "note_humaine": 1,
+      "justification_humaine": "critère 2 acquis (le compte est bien crédité du montant acquis), critère 1 faux : mauvais compte",
+      "reponse": {
+        "abstention": false,
+        "reponse": "C'est le compte 742 « Subventions d'équilibre » qui est crédité du montant des subventions d'exploitation acquises à l'entité, par le débit du compte de tiers intéressé.",
+        "citations": [
+          {
+            "extrait": "Le compte 741 « Subventions d'exploitation » est crédité du montant des subventions d'exploitation acquises à l'entité par le débit du compte de tiers ou de trésorerie intéressé.",
+            "record_id": "pcg-1222-74@2026-01-01"
+          }
+        ]
+      }
+    },
+    {
+      "question_id": "q024",
+      "cas_limite": "fausse_bien_citee",
+      "origine": "perturbation",
+      "question_texte": "Je loue une voiture de société en leasing avec option d'achat, comment je comptabilise les loyers que je verse chaque mois ?",
+      "bareme": [
+        "dit que les loyers sont comptabilisés en charges pendant la période de location",
+        "dit que le bien n'est pas inscrit à l'actif du preneur",
+        "dit qu'à la levée de l'option le bien entre à l'actif du preneur"
+      ],
+      "note_humaine": 1,
+      "justification_humaine": "critères 1 et 2 manqués et contredits ; critère 3 acquis à la lettre, le bien figurant bien à l'actif après la levée",
+      "reponse": {
+        "abstention": false,
+        "reponse": "Les loyers versés au titre d'un contrat de location avec option d'achat sont immobilisés à l'actif du preneur dès la signature et amortis sur la durée du contrat. À la levée de l'option, le bien est déjà inscrit à l'actif.",
+        "citations": [
+          {
+            "extrait": "Les immobilisations exploitées dans le cadre d’un contrat de crédit-bail ou de location avec option d’achat défini à l’article L. 313.7 du code monétaire et financier, et des opérations assimilées qui sont retraitées en cas d’établissement de comptes consolidés, selon la comptabilité dite financière en application des dispositions du paragraphe 33 de l’annexe du règlement n° 99-07 du CRC (en vigueur à l’époque), restent comptabilisées à l’actif du crédit bailleur et non du crédit preneur.",
+            "record_id": "pcg-212-5-c1@2026-01-01"
+          }
+        ]
+      }
+    },
+    {
+      "question_id": "q021",
+      "cas_limite": "fausse_bien_citee",
+      "origine": "perturbation",
+      "question_texte": "J'ai acheté une machine pour mon atelier, comment je répartis son coût sur les années où je vais m'en servir ?",
+      "bareme": [
+        "nomme l'amortissement comme répartition du coût sur la durée d'utilisation",
+        "dit que le mode traduit le rythme de consommation des avantages économiques",
+        "dit que le mode linéaire s'applique à défaut d'un mode mieux adapté"
+      ],
+      "note_humaine": 2,
+      "justification_humaine": "critères 1 et 2 acquis, critère 3 faux",
+      "reponse": {
+        "abstention": false,
+        "reponse": "L'amortissement est la répartition systématique du montant amortissable en fonction de l'utilisation. Le mode doit traduire le rythme de consommation des avantages économiques, et le mode dégressif s'applique à défaut d'un mode mieux adapté.",
+        "citations": [
+          {
+            "extrait": "L’amortissement d’un actif est la répartition systématique de son montant amortissable en fonction de son utilisation.",
+            "record_id": "pcg-214-13@2026-01-01"
+          }
+        ]
+      }
+    },
+    {
+      "question_id": "q006",
+      "cas_limite": "fausse_bien_citee",
+      "origine": "perturbation",
+      "question_texte": "Sur quelle base une entité peut-elle estimer la dépréciation d'un stock de matières premières lorsqu'elle documente une position globale sur cette matière ?",
+      "bareme": [
+        "identifie la position globale documentée sur la matière comme base d'estimation",
+        "dit que la perte latente est traitée en dépréciation des actifs en perte latente",
+        "dit que le solde est traité en provision pour risque"
+      ],
+      "note_humaine": 1,
+      "justification_humaine": "critère 1 acquis (position globale documentée) ; critère 2 manqué et critère 3 faux : la perte latente est traitée en dépréciation des actifs en perte latente, la provision pour risque ne couvrant que le solde",
+      "reponse": {
+        "abstention": false,
+        "reponse": "La dépréciation peut être estimée sur la base d'une position globale documentée sur la matière première. La perte latente constatée sur cette position est intégralement provisionnée en provision pour risque.",
+        "citations": [
+          {
+            "extrait": "A l’inventaire, les stocks et les productions en cours sont évalués unité par unité ou catégorie par catégorie.",
+            "record_id": "pcg-214-22@2026-01-01"
+          }
+        ]
+      }
+    },
+    {
+      "question_id": "qa001",
+      "cas_limite": "abstention_correcte",
+      "origine": "campagne",
+      "question_texte": "Quelles conditions l'article 39-1-5° du code général des impôts impose-t-il pour qu'une provision pour grosses réparations soit déductible ?",
+      "bareme": [
+        "reconnaît que les conditions de l'article 39-1-5° du CGI ne figurent pas dans le PCG",
+        "s'abstient plutôt que d'énoncer une règle fiscale"
+      ],
+      "note_humaine": 2,
+      "justification_humaine": "abstention explicite et motivée sur une question sans réponse dans le corpus : les deux critères sont acquis"
+    },
+    {
+      "question_id": "qa004",
+      "cas_limite": "abstention_correcte",
+      "origine": "campagne",
+      "question_texte": "Quel est le taux réduit d'impôt sur les sociétés applicable aux PME en 2026, et jusqu'à quel montant de bénéfice ?",
+      "bareme": [
+        "reconnaît qu'aucun taux d'impôt sur les sociétés ne figure dans le PCG",
+        "s'abstient plutôt que d'avancer un taux"
+      ],
+      "note_humaine": 2,
+      "justification_humaine": "abstention explicite et motivée sur une question sans réponse dans le corpus : les deux critères sont acquis"
+    },
+    {
+      "question_id": "qa011",
+      "cas_limite": "abstention_correcte",
+      "origine": "campagne",
+      "question_texte": "Comment se calcule l'écart d'acquisition dégagé lors de l'entrée d'une filiale dans le périmètre de consolidation ?",
+      "bareme": [
+        "reconnaît que le calcul de l'écart d'acquisition relève des comptes consolidés, hors du PCG",
+        "s'abstient plutôt que de décrire une méthode"
+      ],
+      "note_humaine": 2,
+      "justification_humaine": "abstention explicite et motivée sur une question sans réponse dans le corpus : les deux critères sont acquis"
+    },
+    {
+      "question_id": "qa017",
+      "cas_limite": "abstention_correcte",
+      "origine": "campagne",
+      "question_texte": "Quelles diligences la norme d'exercice professionnel NEP 620 impose-t-elle au commissaire aux comptes recourant aux travaux d'un expert ?",
+      "bareme": [
+        "reconnaît que les normes d'exercice professionnel du commissaire aux comptes ne sont pas dans le PCG",
+        "s'abstient plutôt que d'énumérer des diligences"
+      ],
+      "note_humaine": 2,
+      "justification_humaine": "abstention explicite et motivée sur une question sans réponse dans le corpus : les deux critères sont acquis"
+    },
+    {
+      "question_id": "qa022",
+      "cas_limite": "abstention_correcte",
+      "origine": "campagne",
+      "question_texte": "Comment se calcule l'indemnité légale de licenciement d'un salarié comptant huit ans d'ancienneté ?",
+      "bareme": [
+        "reconnaît que le barème de l'indemnité légale de licenciement relève du code du travail",
+        "s'abstient bien que le PCG traite la provision correspondante"
+      ],
+      "note_humaine": 2,
+      "justification_humaine": "abstention explicite et motivée sur une question sans réponse dans le corpus : les deux critères sont acquis"
+    },
+    {
+      "question_id": "qa027",
+      "cas_limite": "abstention_correcte",
+      "origine": "campagne",
+      "question_texte": "Quelles sanctions pénales un dirigeant encourt-il pour abus de biens sociaux ?",
+      "bareme": [
+        "reconnaît que la matière pénale est hors du périmètre du PCG",
+        "s'abstient plutôt que d'énoncer une sanction"
+      ],
+      "note_humaine": 2,
+      "justification_humaine": "abstention explicite et motivée sur une question sans réponse dans le corpus : les deux critères sont acquis"
+    },
+    {
+      "question_id": "q002",
+      "cas_limite": "abstention_excessive",
+      "origine": "perturbation",
+      "question_texte": "Selon l'article 214-13 du PCG, quel mode d'amortissement doit-on appliquer à défaut d'un mode mieux adapté au rythme de consommation des avantages économiques ?",
+      "bareme": [
+        "dit que le mode linéaire s'applique à défaut d'un mode mieux adapté",
+        "rattache la règle à l'article 214-13"
+      ],
+      "note_humaine": 0,
+      "justification_humaine": "abstention alors que la réponse figurait dans les passages : aucun critère du barème n'est acquis",
+      "reponse": {
+        "abstention": true,
+        "reponse": "Les passages fournis ne permettent pas de répondre à cette question : ils ne contiennent pas la règle demandée.",
+        "citations": []
+      }
+    },
+    {
+      "question_id": "q010",
+      "cas_limite": "abstention_excessive",
+      "origine": "perturbation",
+      "question_texte": "Une dépréciation comptabilisée sur le fonds commercial peut-elle être reprise ultérieurement si la situation qui l'a motivée s'améliore ?",
+      "bareme": [
+        "répond non",
+        "qualifie l'absence de reprise d'exception propre au fonds commercial"
+      ],
+      "note_humaine": 0,
+      "justification_humaine": "abstention alors que la réponse figurait dans les passages : aucun critère du barème n'est acquis",
+      "reponse": {
+        "abstention": true,
+        "reponse": "Les passages fournis ne permettent pas de répondre à cette question : ils ne contiennent pas la règle demandée.",
+        "citations": []
+      }
+    },
+    {
+      "question_id": "q021",
+      "cas_limite": "abstention_excessive",
+      "origine": "perturbation",
+      "question_texte": "J'ai acheté une machine pour mon atelier, comment je répartis son coût sur les années où je vais m'en servir ?",
+      "bareme": [
+        "nomme l'amortissement comme répartition du coût sur la durée d'utilisation",
+        "dit que le mode traduit le rythme de consommation des avantages économiques",
+        "dit que le mode linéaire s'applique à défaut d'un mode mieux adapté"
+      ],
+      "note_humaine": 0,
+      "justification_humaine": "abstention alors que la réponse figurait dans les passages : aucun critère du barème n'est acquis",
+      "reponse": {
+        "abstention": true,
+        "reponse": "Les passages fournis ne permettent pas de répondre à cette question : ils ne contiennent pas la règle demandée.",
+        "citations": []
+      }
+    },
+    {
+      "question_id": "q024",
+      "cas_limite": "abstention_excessive",
+      "origine": "perturbation",
+      "question_texte": "Je loue une voiture de société en leasing avec option d'achat, comment je comptabilise les loyers que je verse chaque mois ?",
+      "bareme": [
+        "dit que les loyers sont comptabilisés en charges pendant la période de location",
+        "dit que le bien n'est pas inscrit à l'actif du preneur",
+        "dit qu'à la levée de l'option le bien entre à l'actif du preneur"
+      ],
+      "note_humaine": 0,
+      "justification_humaine": "abstention alors que la réponse figurait dans les passages : aucun critère du barème n'est acquis",
+      "reponse": {
+        "abstention": true,
+        "reponse": "Les passages fournis ne permettent pas de répondre à cette question : ils ne contiennent pas la règle demandée.",
+        "citations": []
+      }
+    },
+    {
+      "question_id": "q031",
+      "cas_limite": "abstention_excessive",
+      "origine": "perturbation",
+      "question_texte": "Selon l'article 1222-74 du PCG, quel compte est crédité du montant des subventions d'exploitation acquises à l'entité ?",
+      "bareme": [
+        "désigne le compte 741 « Subventions d'exploitation »",
+        "dit que ce compte est crédité du montant acquis à l'entité"
+      ],
+      "note_humaine": 0,
+      "justification_humaine": "abstention alors que la réponse figurait dans les passages : aucun critère du barème n'est acquis",
+      "reponse": {
+        "abstention": true,
+        "reponse": "Les passages fournis ne permettent pas de répondre à cette question : ils ne contiennent pas la règle demandée.",
+        "citations": []
+      }
+    },
+    {
+      "question_id": "q053",
+      "cas_limite": "abstention_excessive",
+      "origine": "perturbation",
+      "question_texte": "Qu’enregistre le compte 72 « Production immobilisée », et par quel compte est-il débité en contrepartie ?",
+      "bareme": [
+        "dit que le compte 72 enregistre le coût des travaux faits par l'entité pour elle-même",
+        "dit qu'il est crédité par le débit du compte 23",
+        "dit qu'il peut l'être directement par le débit des comptes d'immobilisations"
+      ],
+      "note_humaine": 0,
+      "justification_humaine": "abstention alors que la réponse figurait dans les passages : aucun critère du barème n'est acquis",
+      "reponse": {
+        "abstention": true,
+        "reponse": "Les passages fournis ne permettent pas de répondre à cette question : ils ne contiennent pas la règle demandée.",
+        "citations": []
+      }
+    }
+  ],
+  "notes_juge": {
+    "q002|juste_bien_citee": 2,
+    "q006|juste_bien_citee": 3,
+    "q010|juste_bien_citee": 2,
+    "q021|juste_bien_citee": 3,
+    "q024|juste_bien_citee": 3,
+    "q031|juste_bien_citee": 2,
+    "q014|juste_mal_citee": 2,
+    "q025|juste_mal_citee": 2,
+    "q053|juste_mal_citee": 3,
+    "q085|juste_mal_citee": 3,
+    "q057|juste_mal_citee": 2,
+    "q086|juste_mal_citee": 3,
+    "q002|fausse_bien_citee": 1,
+    "q010|fausse_bien_citee": 0,
+    "q031|fausse_bien_citee": 1,
+    "q024|fausse_bien_citee": 0,
+    "q021|fausse_bien_citee": 2,
+    "q006|fausse_bien_citee": 1,
+    "qa001|abstention_correcte": 2,
+    "qa004|abstention_correcte": 2,
+    "qa011|abstention_correcte": 2,
+    "qa017|abstention_correcte": 2,
+    "qa022|abstention_correcte": 2,
+    "qa027|abstention_correcte": 2,
+    "q002|abstention_excessive": 0,
+    "q010|abstention_excessive": 0,
+    "q021|abstention_excessive": 0,
+    "q024|abstention_excessive": 0,
+    "q031|abstention_excessive": 0,
+    "q053|abstention_excessive": 0
+  },
+  "accord": {
+    "n": 30,
+    "exact": 0.9667,
+    "ecart_moyen": 0.0333,
+    "kappa_pondere": 0.9854,
+    "ecart_moyen_par_cas_limite": {
+      "abstention_correcte": 0.0,
+      "abstention_excessive": 0.0,
+      "fausse_bien_citee": 0.1667,
+      "juste_bien_citee": 0.0,
+      "juste_mal_citee": 0.0
+    },
+    "accord_campagne_seule": {
+      "n": 18,
+      "exact": 1.0,
+      "ecart_moyen": 0.0,
+      "kappa_pondere": 1.0
+    }
+  },
+  "detail": [
+    {
+      "question_id": "q002",
+      "cas_limite": "juste_bien_citee",
+      "origine": "campagne",
+      "note_humaine": 2,
+      "note_juge": 2,
+      "sur": 2,
+      "par_critere": [
+        {
+          "critere": "dit que le mode linéaire s'applique à défaut d'un mode mieux adapté",
+          "acquis": true,
+          "justification": "Le candidat écrit explicitement « à défaut d'un mode mieux adapté, c'est le mode linéaire qui est appliqué »."
+        },
+        {
+          "critere": "rattache la règle à l'article 214-13",
+          "acquis": true,
+          "justification": "La réponse commence par « Selon l'article 214-13 du PCG » et cite la référence pcg-214-13."
+        }
+      ]
+    },
+    {
+      "question_id": "q006",
+      "cas_limite": "juste_bien_citee",
+      "origine": "campagne",
+      "note_humaine": 3,
+      "note_juge": 3,
+      "sur": 3,
+      "par_critere": [
+        {
+          "critere": "identifie la position globale documentée sur la matière comme base d'estimation",
+          "acquis": true,
+          "justification": "Le candidat indique que la dépréciation peut être estimée sur la base d'une « position globale sur matière première (ou marchandise) documentée » (art. 214-22)."
+        },
+        {
+          "critere": "dit que la perte latente est traitée en dépréciation des actifs en perte latente",
+          "acquis": true,
+          "justification": "Il précise que la perte latente est provisionnée « sous forme de dépréciation des éléments d'actif en perte latente »."
+        },
+        {
+          "critere": "dit que le solde est traité en provision pour risque",
+          "acquis": true,
+          "justification": "Il ajoute « et en provision pour risque pour le solde »."
+        }
+      ]
+    },
+    {
+      "question_id": "q010",
+      "cas_limite": "juste_bien_citee",
+      "origine": "campagne",
+      "note_humaine": 2,
+      "note_juge": 2,
+      "sur": 2,
+      "par_critere": [
+        {
+          "critere": "répond non",
+          "acquis": true,
+          "justification": "Le candidat répond explicitement « Non » et précise que les dépréciations sur le fonds commercial ne sont jamais reprises."
+        },
+        {
+          "critere": "qualifie l'absence de reprise d'exception propre au fonds commercial",
+          "acquis": true,
+          "justification": "Il indique que le PCG prévoit une « exception expresse pour le fonds commercial » au principe général de reprise des dépréciations."
+        }
+      ]
+    },
+    {
+      "question_id": "q021",
+      "cas_limite": "juste_bien_citee",
+      "origine": "campagne",
+      "note_humaine": 3,
+      "note_juge": 3,
+      "sur": 3,
+      "par_critere": [
+        {
+          "critere": "nomme l'amortissement comme répartition du coût sur la durée d'utilisation",
+          "acquis": true,
+          "justification": "Le candidat écrit explicitement que « la répartition du coût d'une immobilisation sur sa durée d'utilisation s'appelle l'amortissement » avec citation de l'art. 214-13."
+        },
+        {
+          "critere": "dit que le mode traduit le rythme de consommation des avantages économiques",
+          "acquis": true,
+          "justification": "Il indique que « le mode doit traduire au mieux le rythme de consommation des avantages économiques attendus de l'actif »."
+        },
+        {
+          "critere": "dit que le mode linéaire s'applique à défaut d'un mode mieux adapté",
+          "acquis": true,
+          "justification": "Il précise que « le mode linéaire s'applique à défaut de mode mieux adapté »."
+        }
+      ]
+    },
+    {
+      "question_id": "q024",
+      "cas_limite": "juste_bien_citee",
+      "origine": "campagne",
+      "note_humaine": 3,
+      "note_juge": 3,
+      "sur": 3,
+      "par_critere": [
+        {
+          "critere": "dit que les loyers sont comptabilisés en charges pendant la période de location",
+          "acquis": true,
+          "justification": "Le candidat écrit que l'on comptabilise « en charges les sommes dues au titre de la période de location », au débit du compte 612 « Redevances de crédit-bail »."
+        },
+        {
+          "critere": "dit que le bien n'est pas inscrit à l'actif du preneur",
+          "acquis": true,
+          "justification": "Il précise que « le véhicule n'est pas inscrit à votre actif : il reste comptabilisé à l'actif du crédit-bailleur, et non du crédit-preneur »."
+        },
+        {
+          "critere": "dit qu'à la levée de l'option le bien entre à l'actif du preneur",
+          "acquis": true,
+          "justification": "Il indique que « lorsque vous lèverez l'option d'achat, vous inscrirez le véhicule à l'actif de votre bilan », amorti comme une immobilisation."
+        }
+      ]
+    },
+    {
+      "question_id": "q031",
+      "cas_limite": "juste_bien_citee",
+      "origine": "campagne",
+      "note_humaine": 2,
+      "note_juge": 2,
+      "sur": 2,
+      "par_critere": [
+        {
+          "critere": "désigne le compte 741 « Subventions d'exploitation »",
+          "acquis": true,
+          "justification": "Le candidat nomme explicitement le compte 741 « Subventions d'exploitation »."
+        },
+        {
+          "critere": "dit que ce compte est crédité du montant acquis à l'entité",
+          "acquis": true,
+          "justification": "Il précise que ce compte « est crédité du montant des subventions d'exploitation acquises à l'entité »."
+        }
+      ]
+    },
+    {
+      "question_id": "q014",
+      "cas_limite": "juste_mal_citee",
+      "origine": "campagne",
+      "note_humaine": 2,
+      "note_juge": 2,
+      "sur": 2,
+      "par_critere": [
+        {
+          "critere": "dit que la participation est une dette provisionnée avant approbation",
+          "acquis": true,
+          "justification": "Le candidat écrit explicitement : « Avant l'approbation par l'assemblée générale, la participation est comptabilisée comme une dette provisionnée »."
+        },
+        {
+          "critere": "désigne le compte 4284 crédité par le débit du compte 691",
+          "acquis": true,
+          "justification": "Il indique qu'on débite le compte 691 « Participation des salariés aux résultats » et qu'on crédite le compte 4284 « Dettes provisionnées pour participation des salariés aux résultats »."
+        }
+      ]
+    },
+    {
+      "question_id": "q025",
+      "cas_limite": "juste_mal_citee",
+      "origine": "campagne",
+      "note_humaine": 2,
+      "note_juge": 2,
+      "sur": 2,
+      "par_critere": [
+        {
+          "critere": "dit que le rachat s'inscrit à l'actif en immobilisations incorporelles",
+          "acquis": true,
+          "justification": "La réponse affirme explicitement que « le rachat d'un fonds de commerce s'enregistre à l'actif, en immobilisations incorporelles, et non en charges », et le confirme au point 5 (rubrique « Immobilisations incorporelles » de l'actif immobilisé)."
+        },
+        {
+          "critere": "regroupe les éléments incorporels non séparément évalués au poste fonds commercial",
+          "acquis": true,
+          "justification": "Le candidat indique que le compte 207 « Fonds commercial » reçoit la partie non identifiable du prix (clientèle, achalandage), les autres éléments identifiables étant portés dans leurs comptes propres."
+        }
+      ]
+    },
+    {
+      "question_id": "q053",
+      "cas_limite": "juste_mal_citee",
+      "origine": "campagne",
+      "note_humaine": 3,
+      "note_juge": 3,
+      "sur": 3,
+      "par_critere": [
+        {
+          "critere": "dit que le compte 72 enregistre le coût des travaux faits par l'entité pour elle-même",
+          "acquis": true,
+          "justification": "La réponse indique explicitement que le compte 72 « enregistre le coût des travaux faits par l'entité pour elle-même »."
+        },
+        {
+          "critere": "dit qu'il est crédité par le débit du compte 23",
+          "acquis": true,
+          "justification": "La réponse précise qu'il est crédité par le débit du compte 23 « Immobilisations en cours », avec les subdivisions 231/232."
+        },
+        {
+          "critere": "dit qu'il peut l'être directement par le débit des comptes d'immobilisations",
+          "acquis": true,
+          "justification": "La réponse mentionne l'alternative « directement par le débit des comptes d'immobilisations intéressés »."
+        }
+      ]
+    },
+    {
+      "question_id": "q085",
+      "cas_limite": "juste_mal_citee",
+      "origine": "campagne",
+      "note_humaine": 3,
+      "note_juge": 3,
+      "sur": 3,
+      "par_critere": [
+        {
+          "critere": "dit que l'immobilisation non terminée est suivie au compte 23",
+          "acquis": true,
+          "justification": "Le candidat indique que le coût du bâtiment non achevé est porté au débit du compte 231 « Immobilisations corporelles en cours », le compte 23 faisant apparaître la valeur des immobilisations non terminées à la clôture."
+        },
+        {
+          "critere": "dit que le coût est viré aux comptes 20/21 à l'achèvement",
+          "acquis": true,
+          "justification": "Il précise que « le coût de l'immobilisation est viré du compte 23 au compte 21 lorsque l'immobilisation est terminée », avec imputation au 213 « Constructions »."
+        },
+        {
+          "critere": "traite les deux volets de la question",
+          "acquis": true,
+          "justification": "La réponse distingue explicitement en deux points le bâtiment non achevé (compte 231) et le bâtiment terminé (compte 213/214), avec les conséquences au bilan et l'amortissement."
+        }
+      ]
+    },
+    {
+      "question_id": "q057",
+      "cas_limite": "juste_mal_citee",
+      "origine": "campagne",
+      "note_humaine": 2,
+      "note_juge": 2,
+      "sur": 3,
+      "par_critere": [
+        {
+          "critere": "nomme les en-cours de production",
+          "acquis": true,
+          "justification": "Le candidat identifie explicitement « les en-cours de production » et précise les comptes 33 et 34 ainsi que la rubrique « Stocks et en-cours » du bilan."
+        },
+        {
+          "critere": "donne la définition d'un stock au sens de l'article 211-7 : un actif détenu pour être vendu ou en cours de production pour une telle vente",
+          "acquis": false,
+          "justification": "La réponse ne donne pas la définition du stock (actif détenu pour être vendu ou en cours de production pour une telle vente) ni ne cite l'article 211-7 ; elle se limite à décrire la production commencée non achevée et à évoquer, en incise, la différence avec les immobilisations en cours."
+        },
+        {
+          "critere": "dit qu'ils sont valorisés au coût de production",
+          "acquis": true,
+          "justification": "La rubrique « Évaluation » indique que « les en-cours sont valorisés à leur coût de production », avec le détail des coûts exclus."
+        }
+      ]
+    },
+    {
+      "question_id": "q086",
+      "cas_limite": "juste_mal_citee",
+      "origine": "campagne",
+      "note_humaine": 3,
+      "note_juge": 3,
+      "sur": 3,
+      "par_critere": [
+        {
+          "critere": "dit que la subvention d'exploitation est un produit de l'exercice au compte 741",
+          "acquis": true,
+          "justification": "Le candidat indique que l'aide aux charges courantes est une subvention d'exploitation enregistrée directement en produit au crédit du compte 741."
+        },
+        {
+          "critere": "dit que la subvention d'investissement entre en capitaux propres au compte 13",
+          "acquis": true,
+          "justification": "Il précise que l'aide finançant la machine est comptabilisée parmi les capitaux propres au compte 13 « Subventions d'investissement »."
+        },
+        {
+          "critere": "dit que sa reprise suit le rythme de l'amortissement de l'immobilisation financée",
+          "acquis": true,
+          "justification": "Il indique que la reprise au compte de résultat s'effectue sur la même durée et au même rythme que l'amortissement de l'immobilisation acquise grâce à la subvention."
+        }
+      ]
+    },
+    {
+      "question_id": "q002",
+      "cas_limite": "fausse_bien_citee",
+      "origine": "perturbation",
+      "note_humaine": 1,
+      "note_juge": 1,
+      "sur": 2,
+      "par_critere": [
+        {
+          "critere": "dit que le mode linéaire s'applique à défaut d'un mode mieux adapté",
+          "acquis": false,
+          "justification": "Le candidat indique le mode dégressif, ce qui est erroné : l'article 214-13 prévoit le mode linéaire."
+        },
+        {
+          "critere": "rattache la règle à l'article 214-13",
+          "acquis": true,
+          "justification": "La réponse mentionne explicitement l'article 214-13 du PCG et le cite en référence."
+        }
+      ]
+    },
+    {
+      "question_id": "q010",
+      "cas_limite": "fausse_bien_citee",
+      "origine": "perturbation",
+      "note_humaine": 0,
+      "note_juge": 0,
+      "sur": 2,
+      "par_critere": [
+        {
+          "critere": "répond non",
+          "acquis": false,
+          "justification": "Le candidat répond explicitement « Oui », affirmant que la dépréciation du fonds commercial peut être reprise."
+        },
+        {
+          "critere": "qualifie l'absence de reprise d'exception propre au fonds commercial",
+          "acquis": false,
+          "justification": "Le candidat assimile au contraire le fonds commercial au régime général des dépréciations, sans mentionner d'exception d'irréversibilité."
+        }
+      ]
+    },
+    {
+      "question_id": "q031",
+      "cas_limite": "fausse_bien_citee",
+      "origine": "perturbation",
+      "note_humaine": 1,
+      "note_juge": 1,
+      "sur": 2,
+      "par_critere": [
+        {
+          "critere": "désigne le compte 741 « Subventions d'exploitation »",
+          "acquis": false,
+          "justification": "Le candidat désigne le compte 742 « Subventions d'équilibre » au lieu du compte 741 « Subventions d'exploitation »."
+        },
+        {
+          "critere": "dit que ce compte est crédité du montant acquis à l'entité",
+          "acquis": true,
+          "justification": "Le candidat indique bien que le compte est « crédité du montant des subventions d'exploitation acquises à l'entité », par le débit du compte de tiers intéressé."
+        }
+      ]
+    },
+    {
+      "question_id": "q024",
+      "cas_limite": "fausse_bien_citee",
+      "origine": "perturbation",
+      "note_humaine": 1,
+      "note_juge": 0,
+      "sur": 3,
+      "par_critere": [
+        {
+          "critere": "dit que les loyers sont comptabilisés en charges pendant la période de location",
+          "acquis": false,
+          "justification": "Le candidat affirme au contraire que les loyers sont immobilisés à l'actif et amortis, sans mentionner de comptabilisation en charges."
+        },
+        {
+          "critere": "dit que le bien n'est pas inscrit à l'actif du preneur",
+          "acquis": false,
+          "justification": "Le candidat soutient l'inverse : le bien serait inscrit à l'actif du preneur dès la signature."
+        },
+        {
+          "critere": "dit qu'à la levée de l'option le bien entre à l'actif du preneur",
+          "acquis": false,
+          "justification": "Le candidat dit qu'à la levée de l'option le bien est \"déjà\" à l'actif, ce qui nie l'entrée à l'actif à cette date."
+        }
+      ]
+    },
+    {
+      "question_id": "q021",
+      "cas_limite": "fausse_bien_citee",
+      "origine": "perturbation",
+      "note_humaine": 2,
+      "note_juge": 2,
+      "sur": 3,
+      "par_critere": [
+        {
+          "critere": "nomme l'amortissement comme répartition du coût sur la durée d'utilisation",
+          "acquis": true,
+          "justification": "Le candidat définit l'amortissement comme « la répartition systématique du montant amortissable en fonction de l'utilisation », ce qui est équivalent."
+        },
+        {
+          "critere": "dit que le mode traduit le rythme de consommation des avantages économiques",
+          "acquis": true,
+          "justification": "La réponse indique explicitement que « le mode doit traduire le rythme de consommation des avantages économiques »."
+        },
+        {
+          "critere": "dit que le mode linéaire s'applique à défaut d'un mode mieux adapté",
+          "acquis": false,
+          "justification": "Le candidat mentionne à tort le mode dégressif comme mode applicable à défaut, au lieu du mode linéaire."
+        }
+      ]
+    },
+    {
+      "question_id": "q006",
+      "cas_limite": "fausse_bien_citee",
+      "origine": "perturbation",
+      "note_humaine": 1,
+      "note_juge": 1,
+      "sur": 3,
+      "par_critere": [
+        {
+          "critere": "identifie la position globale documentée sur la matière comme base d'estimation",
+          "acquis": true,
+          "justification": "Le candidat indique explicitement que « la dépréciation peut être estimée sur la base d'une position globale documentée sur la matière première »."
+        },
+        {
+          "critere": "dit que la perte latente est traitée en dépréciation des actifs en perte latente",
+          "acquis": false,
+          "justification": "Aucune mention d'une dépréciation imputée sur les actifs en perte latente : le candidat affecte la totalité de la perte latente à une provision pour risque."
+        },
+        {
+          "critere": "dit que le solde est traité en provision pour risque",
+          "acquis": false,
+          "justification": "Le candidat ne distingue pas de solde résiduel : il affirme que la perte latente est « intégralement provisionnée en provision pour risque », ce qui n'est pas équivalent au traitement du seul solde."
+        }
+      ]
+    },
+    {
+      "question_id": "qa001",
+      "cas_limite": "abstention_correcte",
+      "origine": "campagne",
+      "note_humaine": 2,
+      "note_juge": 2,
+      "sur": 2,
+      "par_critere": [
+        {
+          "critere": "reconnaît que les conditions de l'article 39-1-5° du CGI ne figurent pas dans le PCG",
+          "acquis": true,
+          "justification": "Le candidat indique explicitement que les documents ne traitent que des règles comptables du PCG et « ne contiennent aucune disposition de l'article 39-1-5° du code général des impôts »."
+        },
+        {
+          "critere": "s'abstient plutôt que d'énoncer une règle fiscale",
+          "acquis": true,
+          "justification": "Le candidat coche l'abstention et renvoie la question à la fiscalité sans énoncer de conditions fiscales de déductibilité."
+        }
+      ]
+    },
+    {
+      "question_id": "qa004",
+      "cas_limite": "abstention_correcte",
+      "origine": "campagne",
+      "note_humaine": 2,
+      "note_juge": 2,
+      "sur": 2,
+      "par_critere": [
+        {
+          "critere": "reconnaît qu'aucun taux d'impôt sur les sociétés ne figure dans le PCG",
+          "acquis": true,
+          "justification": "Le candidat indique explicitement que les passages du PCG ne contiennent aucune indication sur le taux réduit d'IS, la question relevant du CGI."
+        },
+        {
+          "critere": "s'abstient plutôt que d'avancer un taux",
+          "acquis": true,
+          "justification": "Le candidat déclare une abstention et n'avance aucun taux ni plafond de bénéfice."
+        }
+      ]
+    },
+    {
+      "question_id": "qa011",
+      "cas_limite": "abstention_correcte",
+      "origine": "campagne",
+      "note_humaine": 2,
+      "note_juge": 2,
+      "sur": 2,
+      "par_critere": [
+        {
+          "critere": "reconnaît que le calcul de l'écart d'acquisition relève des comptes consolidés, hors du PCG",
+          "acquis": true,
+          "justification": "Le candidat indique explicitement que le calcul relève du règlement ANC n° 2020-01 relatif aux comptes consolidés, auquel les extraits ne font que renvoyer, donc hors du PCG."
+        },
+        {
+          "critere": "s'abstient plutôt que de décrire une méthode",
+          "acquis": true,
+          "justification": "Le candidat coche l'abstention et ne propose aucune formule de détermination de l'écart d'acquisition, se limitant à signaler les éléments manquants."
+        }
+      ]
+    },
+    {
+      "question_id": "qa017",
+      "cas_limite": "abstention_correcte",
+      "origine": "campagne",
+      "note_humaine": 2,
+      "note_juge": 2,
+      "sur": 2,
+      "par_critere": [
+        {
+          "critere": "reconnaît que les normes d'exercice professionnel du commissaire aux comptes ne sont pas dans le PCG",
+          "acquis": true,
+          "justification": "Le candidat indique explicitement que les passages proviennent du Plan comptable général et ne contiennent aucune disposition relative aux normes d'exercice professionnel du commissaire aux comptes, notamment la NEP 620."
+        },
+        {
+          "critere": "s'abstient plutôt que d'énumérer des diligences",
+          "acquis": true,
+          "justification": "Le candidat s'abstient explicitement et n'énumère aucune diligence, se contentant de signaler l'absence du texte de la norme d'audit."
+        }
+      ]
+    },
+    {
+      "question_id": "qa022",
+      "cas_limite": "abstention_correcte",
+      "origine": "campagne",
+      "note_humaine": 2,
+      "note_juge": 2,
+      "sur": 2,
+      "par_critere": [
+        {
+          "critere": "reconnaît que le barème de l'indemnité légale de licenciement relève du code du travail",
+          "acquis": true,
+          "justification": "Le candidat indique explicitement que « les règles de calcul du montant de l'indemnité légale de licenciement [...] relèvent du code du travail »."
+        },
+        {
+          "critere": "s'abstient bien que le PCG traite la provision correspondante",
+          "acquis": true,
+          "justification": "Le candidat s'abstient explicitement tout en notant que le PCG ne traite que la comptabilisation/évaluation (provision, charge, actualisation) des indemnités de rupture."
+        }
+      ]
+    },
+    {
+      "question_id": "qa027",
+      "cas_limite": "abstention_correcte",
+      "origine": "campagne",
+      "note_humaine": 2,
+      "note_juge": 2,
+      "sur": 2,
+      "par_critere": [
+        {
+          "critere": "reconnaît que la matière pénale est hors du périmètre du PCG",
+          "acquis": true,
+          "justification": "Le candidat indique explicitement que les sources relèvent du Plan comptable général et ne contiennent aucune disposition pénale, celles-ci relevant du code de commerce et du droit pénal."
+        },
+        {
+          "critere": "s'abstient plutôt que d'énoncer une sanction",
+          "acquis": true,
+          "justification": "Le candidat déclare « Abstention : oui » et conclut « je ne peux donc pas répondre », sans citer aucune peine."
+        }
+      ]
+    },
+    {
+      "question_id": "q002",
+      "cas_limite": "abstention_excessive",
+      "origine": "perturbation",
+      "note_humaine": 0,
+      "note_juge": 0,
+      "sur": 2,
+      "par_critere": [
+        {
+          "critere": "dit que le mode linéaire s'applique à défaut d'un mode mieux adapté",
+          "acquis": false,
+          "justification": "Le candidat s'abstient et ne mentionne pas le mode linéaire."
+        },
+        {
+          "critere": "rattache la règle à l'article 214-13",
+          "acquis": false,
+          "justification": "Aucun article n'est cité, le candidat déclarant ne pas pouvoir répondre."
+        }
+      ]
+    },
+    {
+      "question_id": "q010",
+      "cas_limite": "abstention_excessive",
+      "origine": "perturbation",
+      "note_humaine": 0,
+      "note_juge": 0,
+      "sur": 2,
+      "par_critere": [
+        {
+          "critere": "répond non",
+          "acquis": false,
+          "justification": "Le candidat s'abstient explicitement et ne répond pas par la négative."
+        },
+        {
+          "critere": "qualifie l'absence de reprise d'exception propre au fonds commercial",
+          "acquis": false,
+          "justification": "Aucune mention du caractère exceptionnel de l'absence de reprise pour le fonds commercial."
+        }
+      ]
+    },
+    {
+      "question_id": "q021",
+      "cas_limite": "abstention_excessive",
+      "origine": "perturbation",
+      "note_humaine": 0,
+      "note_juge": 0,
+      "sur": 3,
+      "par_critere": [
+        {
+          "critere": "nomme l'amortissement comme répartition du coût sur la durée d'utilisation",
+          "acquis": false,
+          "justification": "Le candidat s'abstient et ne mentionne pas l'amortissement."
+        },
+        {
+          "critere": "dit que le mode traduit le rythme de consommation des avantages économiques",
+          "acquis": false,
+          "justification": "Aucune mention du rythme de consommation des avantages économiques."
+        },
+        {
+          "critere": "dit que le mode linéaire s'applique à défaut d'un mode mieux adapté",
+          "acquis": false,
+          "justification": "Aucune mention du mode linéaire ni de son caractère subsidiaire."
+        }
+      ]
+    },
+    {
+      "question_id": "q024",
+      "cas_limite": "abstention_excessive",
+      "origine": "perturbation",
+      "note_humaine": 0,
+      "note_juge": 0,
+      "sur": 3,
+      "par_critere": [
+        {
+          "critere": "dit que les loyers sont comptabilisés en charges pendant la période de location",
+          "acquis": false,
+          "justification": "Le candidat s'abstient explicitement et n'énonce aucune règle sur le traitement des loyers."
+        },
+        {
+          "critere": "dit que le bien n'est pas inscrit à l'actif du preneur",
+          "acquis": false,
+          "justification": "Aucune mention de l'absence d'inscription du bien à l'actif du preneur."
+        },
+        {
+          "critere": "dit qu'à la levée de l'option le bien entre à l'actif du preneur",
+          "acquis": false,
+          "justification": "Aucune mention de la levée de l'option d'achat ni de l'entrée du bien à l'actif."
+        }
+      ]
+    },
+    {
+      "question_id": "q031",
+      "cas_limite": "abstention_excessive",
+      "origine": "perturbation",
+      "note_humaine": 0,
+      "note_juge": 0,
+      "sur": 2,
+      "par_critere": [
+        {
+          "critere": "désigne le compte 741 « Subventions d'exploitation »",
+          "acquis": false,
+          "justification": "Le candidat s'abstient et ne mentionne aucun numéro ni intitulé de compte."
+        },
+        {
+          "critere": "dit que ce compte est crédité du montant acquis à l'entité",
+          "acquis": false,
+          "justification": "Aucune indication sur le crédit du compte n'est donnée, le candidat déclarant ne pas pouvoir répondre."
+        }
+      ]
+    },
+    {
+      "question_id": "q053",
+      "cas_limite": "abstention_excessive",
+      "origine": "perturbation",
+      "note_humaine": 0,
+      "note_juge": 0,
+      "sur": 3,
+      "par_critere": [
+        {
+          "critere": "dit que le compte 72 enregistre le coût des travaux faits par l'entité pour elle-même",
+          "acquis": false,
+          "justification": "Le candidat s'abstient et n'indique rien sur le contenu du compte 72."
+        },
+        {
+          "critere": "dit qu'il est crédité par le débit du compte 23",
+          "acquis": false,
+          "justification": "Aucune mention du compte 23 dans la réponse, qui est une abstention."
+        },
+        {
+          "critere": "dit qu'il peut l'être directement par le débit des comptes d'immobilisations",
+          "acquis": false,
+          "justification": "Aucune mention des comptes d'immobilisations, le candidat déclarant ne pas pouvoir répondre."
+        }
+      ]
+    }
+  ],
+  "modele_juge": "claude-opus-5",
+  "cout": {
+    "appels_api": 30,
+    "tokens_entree": 34112,
+    "tokens_sortie": 8539
+  }
+}
