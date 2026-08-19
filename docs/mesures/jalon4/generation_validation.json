@@ -1,0 +1,1012 @@
+{
+  "split": "validation",
+  "n": 28,
+  "config": {
+    "retrieval": "hybrid+rerank",
+    "reranker": "BAAI/bge-reranker-v2-m3",
+    "n_rerank": 25,
+    "pool": 50,
+    "mode_reecriture": "etend",
+    "k": 10
+  },
+  "controle_fraicheur": {
+    "recall@10_neutre_dev": 0.672,
+    "attendu": 0.672
+  },
+  "modele_generation": "claude-opus-5",
+  "metriques": {
+    "n": 28,
+    "n_citations": 175,
+    "verdicts": {
+      "ok": 150,
+      "version_omise": 25
+    },
+    "taux_citations_inexistantes": 0.0,
+    "taux_citations_non_portantes": 0.0,
+    "taux_citations_version_omise": 0.1429,
+    "taux_reponses_sans_citation": 0.0,
+    "taux_abstention": 0.0,
+    "taux_correspondance_brute": 1.0,
+    "citations_par_reponse": {
+      "min": 1,
+      "max": 13,
+      "median": 5.5,
+      "moyenne": 6.25
+    },
+    "par_question": {
+      "v001": "ok",
+      "v002": "ok",
+      "v003": "ok",
+      "v004": "ok",
+      "v005": "ok",
+      "v006": "ok",
+      "v007": "version_omise",
+      "v008": "version_omise",
+      "v009": "ok",
+      "v010": "ok",
+      "v011": "ok",
+      "v012": "ok",
+      "v013": "ok",
+      "v014": "ok",
+      "v015": "ok",
+      "v016": "ok",
+      "v017": "ok",
+      "v018": "ok",
+      "v019": "ok",
+      "v020": "ok",
+      "v021": "version_omise",
+      "v022": "ok",
+      "v023": "ok",
+      "v024": "ok",
+      "v025": "ok",
+      "v026": "ok",
+      "v027": "ok",
+      "v028": "ok"
+    },
+    "details": {
+      "v001": [
+        {
+          "record_id": "pcg-214-17@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-214-17@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-214-14@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-214-14@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        }
+      ],
+      "v002": [
+        {
+          "record_id": "pcg-513-1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        }
+      ],
+      "v003": [
+        {
+          "record_id": "pcg-611-1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-611-1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        }
+      ],
+      "v004": [
+        {
+          "record_id": "pcg-214-9@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-214-9@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-214-9@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-214-9-c2@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-214-9-c2@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        }
+      ],
+      "v005": [
+        {
+          "record_id": "pcg-221-1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-221-1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-221-1-c9@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-221-1-c9@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-221-1-c9@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-747-1-c1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        }
+      ],
+      "v006": [
+        {
+          "record_id": "pcg-213-1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-213-1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-213-1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-213-22@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-213-1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-221-1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        }
+      ],
+      "v007": [
+        {
+          "record_id": "pcg-512-1-c6",
+          "verdict": "version_omise",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-312-1",
+          "verdict": "version_omise",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-1121-1",
+          "verdict": "version_omise",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-1121-1",
+          "verdict": "version_omise",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-312-1",
+          "verdict": "version_omise",
+          "correspond_brut": true
+        }
+      ],
+      "v008": [
+        {
+          "record_id": "pcg-214-15",
+          "verdict": "version_omise",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-214-16-c1",
+          "verdict": "version_omise",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-214-16-c1",
+          "verdict": "version_omise",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-214-15",
+          "verdict": "version_omise",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-214-14",
+          "verdict": "version_omise",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-214-14",
+          "verdict": "version_omise",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-214-2-c2",
+          "verdict": "version_omise",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-832-2",
+          "verdict": "version_omise",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-832-2",
+          "verdict": "version_omise",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-214-14-c2",
+          "verdict": "version_omise",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-214-18-c1",
+          "verdict": "version_omise",
+          "correspond_brut": true
+        }
+      ],
+      "v009": [
+        {
+          "record_id": "pcg-212-1-c1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-212-1-c1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-212-1-c1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-212-5@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-213-8@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-213-8@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-213-22@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-213-22@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-213-8@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-213-9@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-831-1-c2@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-832-4@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        }
+      ],
+      "v010": [
+        {
+          "record_id": "pcg-324-1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-324-1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-324-1-c2@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-324-1-c8@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-324-1-c8@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-811-7@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-324-1-c11@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        }
+      ],
+      "v011": [
+        {
+          "record_id": "pcg-740-1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-740-1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-743-1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        }
+      ],
+      "v012": [
+        {
+          "record_id": "pcg-745-2@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-745-2@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-745-1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-745-1-c2@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        }
+      ],
+      "v013": [
+        {
+          "record_id": "pcg-752-2@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-752-2@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        }
+      ],
+      "v014": [
+        {
+          "record_id": "pcg-745-3@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-745-3@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-745-3@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-745-3-c3@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-745-1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        }
+      ],
+      "v015": [
+        {
+          "record_id": "pcg-743-3@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-743-3-c1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-743-3-c1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-743-3-c1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-743-3@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-743-3@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-743-3-c1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-838-14@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        }
+      ],
+      "v016": [
+        {
+          "record_id": "pcg-745-3@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-745-4@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-745-4@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-745-4@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-745-4@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-745-4@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-745-4-c1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-745-4-c2@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-745-4-c2@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-745-6-c1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-745-6-c1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        }
+      ],
+      "v017": [
+        {
+          "record_id": "pcg-745-10@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-745-10-c1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-745-7@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-na-309@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        }
+      ],
+      "v018": [
+        {
+          "record_id": "pcg-751-2@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-751-2@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-751-3@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-838-14@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        }
+      ],
+      "v019": [
+        {
+          "record_id": "pcg-752-5@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-752-4@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        }
+      ],
+      "v020": [
+        {
+          "record_id": "pcg-745-5@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-745-5@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-745-5@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-745-5-c1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-745-5-c1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-745-7-c1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-745-8@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-838-14-c1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        }
+      ],
+      "v021": [
+        {
+          "record_id": "pcg-744-3",
+          "verdict": "version_omise",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-744-3-c1",
+          "verdict": "version_omise",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-744-3-c1",
+          "verdict": "version_omise",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-744-3",
+          "verdict": "version_omise",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-744-3",
+          "verdict": "version_omise",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-745-2",
+          "verdict": "version_omise",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-745-3",
+          "verdict": "version_omise",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-744-3",
+          "verdict": "version_omise",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-744-3-c1",
+          "verdict": "version_omise",
+          "correspond_brut": true
+        }
+      ],
+      "v022": [
+        {
+          "record_id": "pcg-751-2@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-751-2@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-751-3@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-751-3@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-751-3@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-751-3@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-751-3@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-751-4@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        }
+      ],
+      "v023": [
+        {
+          "record_id": "pcg-745-7@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-745-7-c1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-745-7-c1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-745-7-c1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-na-309@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        }
+      ],
+      "v024": [
+        {
+          "record_id": "pcg-743-1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-743-1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-743-1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-744-2@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-744-2@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-213-3-c2@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-213-3-c2@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-213-3-c2@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-141-2@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        }
+      ],
+      "v025": [
+        {
+          "record_id": "pcg-752-4@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-752-4@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-752-5@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-751-4@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-751-4-c1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        }
+      ],
+      "v026": [
+        {
+          "record_id": "pcg-214-17@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-214-15@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-214-15-c2@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-214-17-c1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-214-19@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-214-19-c1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-745-8@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-832-4@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        }
+      ],
+      "v027": [
+        {
+          "record_id": "pcg-na-23@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-122-4-c1@2026-01-01#2",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-214-10@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-214-10@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-214-10@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-122-4-c1@2026-01-01#2",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-122-4-c2@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-214-10@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-na-13@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-122-4-c2@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-na-13@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-122-4-c1@2026-01-01#2",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-122-4@2026-01-01#2",
+          "verdict": "ok",
+          "correspond_brut": true
+        }
+      ],
+      "v028": [
+        {
+          "record_id": "pcg-214-13@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-214-13@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-214-13-c2@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-214-13-c1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-214-13-c2@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-214-8-c1@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-1221-68@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        },
+        {
+          "record_id": "pcg-214-13@2026-01-01",
+          "verdict": "ok",
+          "correspond_brut": true
+        }
+      ]
+    }
+  },
+  "cout": {
+    "appels_api": 28,
+    "tokens_entree": 196492,
+    "tokens_sortie": 40118,
+    "reponses_deja_en_cache_avant": 0,
+    "rejeu_depuis_le_cache": false
+  },
+  "reponses_cache": "docs/mesures/jalon4/reponses_validation.json",
+  "reecritures_cache": "docs/mesures/jalon4/reecritures_validation.json",
+  "cout_reecriture": {
+    "appels_api": 28
+  }
+}

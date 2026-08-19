@@ -118,7 +118,13 @@
   "cout": {
     "appels_api": 0,
     "tokens_entree": 0,
-    "tokens_sortie": 0
+    "tokens_sortie": 0,
+    "reponses_deja_en_cache_avant": 30,
+    "rejeu_depuis_le_cache": true
   },
-  "reponses_cache": "docs/mesures/jalon4/reponses_abstention.json"
+  "reponses_cache": "docs/mesures/jalon4/reponses_abstention.json",
+  "reecritures_cache": "docs/mesures/jalon4/reecritures_abstention.json",
+  "cout_reecriture": {
+    "appels_api": 0
+  }
 }
