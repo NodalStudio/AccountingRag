@@ -263,3 +263,49 @@ def run_grilles(split: str, contextes: list[str], grilles: list[str],
                for n, r in cfgs.items() if r.get("adopte")]
     sortie["configurations_adoptees"] = adoptes
     return sortie
+
+
+# --- dérivations d'anatomie : relire une campagne sans la remesurer -------------------
+# Partagées entre les correctifs pour la même raison que le reste de ce module : ce sont
+# elles qui produisent les chiffres publiés que le tableau agrégé laisse ambigus, et une
+# copie par correctif dériverait en silence.
+
+def vecteurs_identiques(configs: dict, cle: str) -> list[list[str]]:
+    """Groupes de configurations dont le vecteur `cle` est identique, valeur par valeur."""
+    groupes: dict[str, list[str]] = {}
+    for nom, res in configs.items():
+        source = res[cle] if cle in res else res["marge"]["rangs"]
+        empreinte = json.dumps(source, sort_keys=True)
+        groupes.setdefault(empreinte, []).append(nom)
+    return [sorted(noms) for noms in groupes.values() if len(noms) > 1]
+
+
+def marge_parmi_les_golds_presents(marge: dict) -> dict:
+    """La seule décomposition qui parle de la RÈGLE DE FUSION.
+
+    `part_au_dela_de_25` mélange deux causes qui n'ont rien à voir : un gold absent du
+    pool (défaut de COUVERTURE, que la fusion ne peut pas corriger) et un gold présent
+    mais mal classé (défaut de CLASSEMENT, le sujet de ce correctif). Le jalon 3 avait
+    déjà nommé ce découplage sur la couverture du pool ; l'oublier ici referait la même
+    erreur d'un cran plus loin.
+    """
+    presents = [r for r in marge["rangs"].values() if r is not None]
+    n = len(presents)
+    return {
+        "n_golds_presents_dans_la_fusion": n,
+        "n_golds_absents_du_pool": marge["n_gold_absent_de_la_fusion"],
+        "rang_median": statistics.median(presents) if presents else None,
+        "rang_moyen": round(statistics.fmean(presents), 2) if presents else None,
+        "rang_max": max(presents) if presents else None,
+        "part_au_dela_de_10": round(sum(r > 10 for r in presents) / n, 4) if n else None,
+        "part_au_dela_de_25": round(sum(r > 25 for r in presents) / n, 4) if n else None,
+        "n_au_dela_de_25": sum(r > 25 for r in presents),
+    }
+
+
+def bascules(ref: dict, cfg: dict) -> dict:
+    """Questions dont le recall@10 change entre la référence et une configuration."""
+    gagnees = sorted(q for q in ref if cfg[q] > ref[q])
+    perdues = sorted(q for q in ref if cfg[q] < ref[q])
+    return {"gagnees": gagnees, "perdues": perdues,
+            "n_gagnees": len(gagnees), "n_perdues": len(perdues)}

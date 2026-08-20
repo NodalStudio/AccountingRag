@@ -82,10 +82,10 @@ def _artefact() -> dict:
     }
 
 
-def _ecrit(tmp_path, monkeypatch, artefact, rapport="") -> None:
+def _ecrit(tmp_path, monkeypatch, artefact, rapport="", nom_campagne="fusion") -> None:
     mesures = tmp_path / "mesures"
     mesures.mkdir()
-    (mesures / "fusion_dev.json").write_text(json.dumps(artefact), encoding="utf-8")
+    (mesures / f"{nom_campagne}_dev.json").write_text(json.dumps(artefact), encoding="utf-8")
     rap = tmp_path / "rapport.md"
     rap.write_text(rapport, encoding="utf-8")
     monkeypatch.setattr(ctrl, "MESURES", mesures)
@@ -197,3 +197,22 @@ def test_un_negatif_ecrit_avec_le_moins_typographique_est_reconnu():
 def test_le_tiret_ascii_reste_reconnu():
     trouves, _ = ctrl.confronter_au_rapport([-0.0122], "delta -0,0122")
     assert trouves == 1
+
+
+# --- couverture des campagnes ---------------------------------------------------------
+
+def test_la_campagne_de_reecriture_est_controlee_comme_celle_de_fusion(tmp_path, monkeypatch):
+    """Le trou le plus dangereux serait une campagne HORS contrôle : elle se lirait comme
+    un contrôle vert. Ce test corrompt l'artefact de l'autre campagne et exige le refus."""
+    a = _artefact()
+    a["contextes"]["hybrid"]["reference"]["recall@10"] = 0.9
+    _ecrit(tmp_path, monkeypatch, a, nom_campagne="reecriture")
+    with pytest.raises(SystemExit) as e:
+        ctrl.main()
+    assert e.value.code == 1
+
+
+def test_chaque_campagne_declare_son_fichier_danatomie():
+    assert set(ctrl.CAMPAGNES) == {"fusion", "reecriture"}
+    for gabarit in ctrl.CAMPAGNES.values():
+        assert "{split}" in gabarit
