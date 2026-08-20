@@ -183,3 +183,17 @@ def test_la_fixture_porte_le_meme_schema_de_marge_que_la_vraie_mesure():
     assert vraie["rangs"] == {"q1": 2, "q2": None}
     assert vraie["n_gold_absent_de_la_fusion"] == 1
     assert "part_au_dela_de_25" in vraie and "n_exposees" in vraie
+
+
+def test_un_negatif_ecrit_avec_le_moins_typographique_est_reconnu():
+    """Le rapport écrit « −0,0122 » (U+2212), pas « -0,0122 ». Sans cette équivalence le
+    contrôle signalait comme absent un chiffre bel et bien publié, et un contrôle qui
+    crie au loup finit par ne plus être lu."""
+    trouves, manquants = ctrl.confronter_au_rapport(
+        [-0.0122], "pire catégorie −0,0122 sur vocabulaire_courant")
+    assert trouves == 1 and manquants == []
+
+
+def test_le_tiret_ascii_reste_reconnu():
+    trouves, _ = ctrl.confronter_au_rapport([-0.0122], "delta -0,0122")
+    assert trouves == 1

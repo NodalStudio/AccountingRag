@@ -116,6 +116,13 @@ def recalculer_anatomie(ana: dict, brut: dict) -> list[float]:
     return publiables
 
 
+# Le rapport écrit ses négatifs avec le signe moins typographique (U+2212), pas avec le
+# tiret ASCII. Sans cette équivalence, le contrôle signalait `-0,0122` comme absent d'un
+# rapport qui le portait bel et bien — un faux négatif qui, répété, apprend à lire
+# « 73 sur 74 » comme un succès et vide le contrôle de sa valeur.
+_MOINS = "\u2212"
+
+
 def _formats(x: float) -> set[str]:
     """Écritures françaises acceptables d'un chiffre publié."""
     out = {str(x), f"{x}".replace(".", ",")}
@@ -124,6 +131,7 @@ def _formats(x: float) -> set[str]:
         out.add(f"{round(x, n):.{n}f}".rstrip("0").rstrip(".").replace(".", ","))
     if float(x).is_integer():
         out.add(str(int(x)))
+    out |= {s.replace("-", _MOINS) for s in out if s.startswith("-")}
     return {s for s in out if s}
 
 
