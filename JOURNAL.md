@@ -430,3 +430,130 @@ Le générateur cite en médiane 6 articles par réponse, jusqu'à 15, là où l
 Le seuil de 30 caractères sous lequel un extrait est refusé pénalise les citations de tableaux : les quatre non-portantes qui subsistent sur dev sont toutes des lignes du plan de comptes (`6226 Honoraires`, `Production immobilisée 72`). Le seuil a été fixé avant la mesure et le déplacer maintenant serait substituer un critère après avoir vu le résultat. Il reste à 30, publié comme limite, et vaut un changement mesuré à part.
 
 Et les deux dettes du jalon 3 sont toujours là, intactes : la fusion RRF récompense le consensus plutôt que l'excellence, masquée par la fenêtre du reranker et condamnée à réapparaître sur un corpus plus grand ; la réécriture dégrade trois questions sur soixante-et-une. Le jalon 4 ne les a pas touchées — il a construit de quoi les juger.
+
+## Correctif du jalon 3 — réparer un défaut réel pour découvrir qu'on ne le voit plus
+
+Le jalon 4 s'était terminé sur une phrase que je viens de prendre au mot : « les
+deux dettes du jalon 3 sont toujours là, intactes ». J'ai ouvert la première.
+
+Le défaut est propre : la somme RRF récompense le consensus, pas l'excellence. Sur
+q023, le 2ᵉ meilleur candidat lexical du corpus entier — absent du canal dense —
+perd contre un candidat 5ᵉ et 6ᵉ, parce que deux contributions médiocres
+additionnées pèsent plus qu'une excellente isolée. Le jalon 3 l'avait fermé sur un
+argument exact : le reranker rattrape le cas. Exact et insuffisant, parce qu'il
+décrivait un rattrapage sans jamais mesurer sa marge.
+
+### Le paramètre a une valeur neutre, et c'est tout le design
+
+`score = max + poids_consensus × (somme − max)`. À 1,0 c'est la somme RRF
+historique, à 0 seule l'excellence compte. Un scalaire, une grille, un défaut qui
+reproduit la baseline publiée. C'est la loi 8 du dépôt appliquée avant même de
+savoir si le levier sert à quelque chose — le rejet est le cas nominal, pas
+l'exception.
+
+### Trois fois où vérifier a coûté moins cher que supposer
+
+**Le court-circuit qui n'a jamais existé.** J'avais prévu une branche spéciale à
+`poids_consensus = 1,0`, au motif que `max + 1,0 × (somme − max)` ne serait pas
+bit à bit égal à `somme` — et l'égalité bit à bit compte, un ULP d'écart peut
+faire basculer un ex aequo et rendre le contrôle de fraîcheur menteur par
+intermittence. Vérification exhaustive sur les 802 000 couples que le code peut
+atteindre : aucune divergence, parce que la fusion ne porte que deux canaux. J'ai
+retiré la branche au lieu de l'écrire. Une ligne qu'aucune mutation ne peut mettre
+en défaut ne protège rien — même leçon que la garde morte de `citations.py` au
+jalon 4, mais apprise avant de l'écrire cette fois.
+
+**Mon propre test se contredisait.** Sa docstring affirmait qu'un gold absent de
+la fusion compte au-delà de tous les seuils ; le code ne le comptait pas. C'est le
+code qui avait tort : un gold introuvable est aussi hors de portée du reranker
+qu'un gold au rang 300, et l'omettre faisait sous-estimer précisément le risque
+que la métrique existe pour rendre visible.
+
+**Le contrôle qui criait au loup.** À la première exécution : 73 chiffres publiés
+sur 74 retrouvés dans le rapport. Le manquant, `−0,0122`, y figurait — avec le
+signe moins typographique là où mon contrôle cherchait un tiret ASCII. Un
+faux négatif de ce genre, répété, apprend à lire « 73 sur 74 » comme un succès, et
+un contrôle qu'on apprend à ignorer ne vaut pas mieux qu'un contrôle absent.
+
+### Le résultat, et pourquoi il tient en deux phrases contradictoires
+
+**Le levier fonctionne. Il n'est pas adopté.**
+
+En fusion nue, il répare trois questions sur 93 sans en casser une seule
+(0,715 → 0,747, `p = 0,9537`). Le rang du gold de q023 descend de 11 à 4. Dans la
+configuration livrée, il gagne une demi-question, `p = 0,6356`, très loin du seuil
+de 0,95 fixé d'avance.
+
+La raison ne s'invoque pas, elle se nomme. Les trois questions que la fusion
+réparerait — q023, q054, q1032 — **valent déjà 1,0 dans la configuration livrée**.
+Le cross-encoder les remonte tout seul. On ne répare pas deux fois la même
+question.
+
+### Ce que la coïncidence a failli me faire écrire
+
+`poids_consensus = 0,10` et `rrf_k = 5` rendaient le même recall, le même delta et
+le même `p` à la quatrième décimale. La conclusion tentante — « les deux leviers
+sont équivalents » — aurait été fausse. Un `p` identique impose des deltas par
+question identiques ; il n'impose rien sur les classements. Comparés séparément,
+les vecteurs de recall sont identiques et les classements ne le sont **jamais**.
+La métrique est trop grossière pour distinguer les deux leviers ; les rangs ne le
+sont pas.
+
+J'avais aussi écrit, dans le protocole committé avant la mesure, que `rrf_k`
+serait « disqualifié d'avance » parce qu'il faudrait `rrf_k ≤ 1` pour renverser le
+duel de q023. Le calcul était juste sur le duel et faux sur la grille : `rrf_k=5`
+fait exactement aussi bien que le meilleur poids. J'avais généralisé à une grille
+un calcul portant sur une question. C'est exactement pour ça que je l'avais mis
+dans la grille au lieu de le publier comme mécanisme.
+
+Symétriquement, ma prédiction sur `poids_consensus` méritait d'être relue plutôt
+que déclarée confirmée : q023 ne passe devant son vainqueur nommé qu'à 0,025,
+comme calculé, mais elle entre dans le top-10 dès 0,5 — parce qu'elle n'a pas
+besoin de le battre, il suffit que les autres candidats bi-canaux perdent du
+terrain. Battre un rival et entrer dans le top-10 sont deux choses différentes.
+
+### Le chiffre qui compte n'est pas celui qui décide
+
+La marge avant éviction, décomposée, dit ce que le recall cache. Sur 93 questions,
+15 sont routées et 78 exposées à la fusion. En configuration livrée : 4 golds
+absents du pool — un défaut de couverture, qu'aucune règle de fusion ne peut
+corriger — et **2 seulement présents mais au-delà de la fenêtre du reranker**.
+
+En fusion nue, le chiffre brut de 0,2179 se décompose en 14 + 3 sur 78 : il est à
+82 % un défaut de couverture. La réécriture, elle, divise ce défaut par plus de
+trois. Une métrique publiée sans sa décomposition aurait fait porter à la fusion
+la responsabilité d'un problème de corpus.
+
+Et un recoupement que je n'attendais pas : deux des quatre golds absents du pool,
+q089 et q1031, sont exactement deux des quatre abstentions que le générateur avait
+produites au jalon 4 et que j'y avais jugées bien fondées. Deux mesures
+indépendantes — ce que le modèle répond, où le gold se situe — nomment les mêmes
+questions. L'abstention correcte du générateur y est bien la conséquence d'un
+défaut de retrieval, pas d'une prudence excessive.
+
+### La loi 7 prise en flagrant délit
+
+La configuration livrée a mis 12,28 s par question. Le jalon 3 en publiait 1,87.
+Même machine, même carte, deux jours d'écart. Le GPU est resté bloqué en P8 à
+300 MHz sur 2100 pendant les deux heures et demie de campagne, drapeaux
+`SW Power Cap` et `SW Thermal Slowdown` actifs en continu — à 50 °C et 13,7 W sur
+une enveloppe de 30 W. Aucun recall n'en dépend ; aucune latence de ce rapport
+n'est comparable à celle d'un autre. « Une latence n'est pas une propriété du
+système » n'est pas une précaution de style.
+
+### Ce que je n'ai pas fait
+
+Je n'ai pas exécuté le split gelé : le protocole ne le prévoyait qu'en cas
+d'adoption. Je n'ai pas combiné les deux grilles, aucun levier n'ayant été adopté
+seul. Je n'ai pas cherché le maximum entre 0,10 et 0,025, où le recall passe par
+un sommet non localisé — le chercher sur dev reviendrait à régler un paramètre sur
+le split de mesure, pour quelques dixièmes de question dans le contexte qui décide.
+
+Et je n'ai pas déplacé le contexte d'adoption. `poids_consensus = 0,10` franchit
+0,95 en fusion nue. La fusion nue n'est exécutée par personne — ni la démo, ni les
+campagnes, ni le jalon 4. Substituer après coup le contexte qui arrange le
+résultat serait la même faute que substituer la métrique qui l'arrange, et elle
+serait plus difficile à repérer.
+
+Reste donc la seconde dette du jalon 3, intacte : la réécriture dégrade trois
+questions sur soixante-et-une.

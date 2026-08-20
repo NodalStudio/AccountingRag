@@ -17,7 +17,8 @@ class Searcher:
                  poids_chemin: float = 1.0, boost_commentaire: float = 1.0,
                  reranker=None, df_max: float | None = None,
                  pool: int = 50, dedup_termes: bool = False, n_rerank: int = 25,
-                 rewriter=None, mode_reecriture: str = "etend"):
+                 rewriter=None, mode_reecriture: str = "etend",
+                 poids_consensus: float = 1.0, rrf_k: int = _RRF_K):
         if not Path(db_path).exists():
             raise FileNotFoundError(
                 f"corpus introuvable : {db_path} — lancez scripts/download_data.py, "
@@ -79,6 +80,34 @@ class Searcher:
         # ADOPTÉ après mesure (ablation G, jalon 3 : 0,852 contre 0,803 pour "remplace",
         # et meilleur sur les trois catégories) — le défaut ne doit pas être le mode
         # rejeté. N'a d'effet que si `rewriter` est fourni.
+        # poids_consensus / rrf_k : les deux leviers de la RÈGLE DE FUSION (correctif du
+        # jalon 3). Le défaut du jalon 3 qu'ils adressent est nommé et mesuré dans
+        # docs/eval-jalon3.md, § « Anatomie de q023 » : la somme RRF récompense le
+        # consensus, pas l'excellence — un candidat moyen dans les DEUX canaux accumule
+        # plus de masse de rang qu'un candidat excellent dans un seul, et le meilleur
+        # candidat lexical du corpus (rang 2 sur 1 653) sort du top-10 fusionné.
+        #
+        # `poids_consensus` pondère tout ce qui dépasse la meilleure contribution :
+        #     score = max(contributions) + poids_consensus * (somme - max)
+        # 1.0 = la somme RRF actuelle, à l'identité arithmétique près (cf. `_rrf`) ;
+        # 0 = seule l'excellence dans un canal compte, le consensus ne sert plus qu'à
+        # départager. La valeur neutre est le défaut : `Searcher()` sans argument
+        # reproduit la baseline publiée (loi 8).
+        #
+        # `rrf_k` est la constante d'escompte de rang, jusqu'ici figée à 60. Elle est
+        # exposée parce qu'un calcul mécanistique la désigne comme le levier ATTENDU et
+        # la disqualifie : sur les chiffres persistés de q023, il faudrait `rrf_k <= 1`
+        # pour que le gold repasse devant son vainqueur (à k=2 il reperd). Une prédiction
+        # de ce genre ne se publie pas sans la mesurer (loi 6) — d'où la grille.
+        if float(poids_consensus) < 0:
+            raise ValueError(
+                f"poids_consensus doit être >= 0 (reçu {poids_consensus!r}) : "
+                "un poids négatif PÉNALISERAIT la présence dans un second canal, "
+                "ce qui sort de la famille de règles mesurée.")
+        if int(rrf_k) < 0:
+            raise ValueError(f"rrf_k doit être >= 0 (reçu {rrf_k!r})")
+        self.poids_consensus = float(poids_consensus)
+        self.rrf_k = int(rrf_k)
         if mode_reecriture not in _MODES_REECRITURE:
             raise ValueError(
                 f"mode_reecriture inconnu : {mode_reecriture!r} "
@@ -232,13 +261,36 @@ class Searcher:
         return scores
 
     @staticmethod
-    def _rrf(rankings: list[dict[str, float]]) -> dict[str, float]:
-        fused: dict[str, float] = {}
+    def _rrf(rankings: list[dict[str, float]], k: int = _RRF_K,
+             poids_consensus: float = 1.0) -> dict[str, float]:
+        """Fusion des canaux : `max(contributions) + poids_consensus * (somme - max)`.
+
+        À `poids_consensus=1.0` (défaut), cela vaut la somme RRF historique — et pas
+        seulement « à l'arrondi près ». L'égalité `max + 1.0 * (somme - max) == somme`
+        est vérifiée BIT À BIT, exhaustivement, sur tout le domaine que ce code peut
+        atteindre : deux canaux, rangs 0 à 400, `k` dans {60, 20, 5, 1, 0}
+        (`tests/test_fusion.py::test_le_neutre_reproduit_la_somme_rrf_bit_a_bit`).
+
+        Le design de ce correctif prévoyait un court-circuit `if poids_consensus == 1.0:`
+        pour garantir cette identité, en supposant un écart flottant. La vérification l'a
+        démentie et le court-circuit a été retiré : aucune mutation n'aurait pu le mettre
+        en défaut, et une branche qu'aucun test ne peut faire échouer ne protège rien
+        (même raison que la garde morte retirée de `citations._sans_version` au jalon 4).
+        L'identité tient parce que la fusion ne porte que DEUX canaux, où `somme - max`
+        redonne exactement le second terme ; elle n'est pas garantie à trois canaux, et
+        un troisième canal devra donc ré-exécuter ce test avant de s'y fier.
+
+        L'ordre d'insertion est celui de la somme historique — premier canal d'abord,
+        puis les identifiants que lui seul n'a pas vus — donc le départage des ex aequo
+        par le tri stable de `search()` est inchangé.
+        """
+        contributions: dict[str, list[float]] = {}
         for scores in rankings:
             ordered = sorted(scores, key=scores.get, reverse=True)
             for rank, rid in enumerate(ordered):
-                fused[rid] = fused.get(rid, 0.0) + 1.0 / (_RRF_K + rank + 1)
-        return fused
+                contributions.setdefault(rid, []).append(1.0 / (k + rank + 1))
+        return {rid: (meilleure := max(c)) + poids_consensus * (sum(c) - meilleure)
+                for rid, c in contributions.items()}
 
     def _expand_graph(self, results: list[dict], k: int) -> list[dict]:
         seen = {r["record_id"] for r in results}
@@ -259,7 +311,19 @@ class Searcher:
         merged.sort(key=lambda x: x["score"], reverse=True)
         return merged[:k]
 
-    def search(self, query: str, k: int = 10, mode: str = "hybrid") -> list[dict]:
+    def avant_rerank(self, query: str, mode: str = "hybrid") -> tuple[list[dict], list[str], dict[str, float]]:
+        """État du classement AVANT reranking : `(routés, ids classés, scores)`.
+
+        Extrait de `search()`, qui l'appelle — ce n'est donc pas une reconstitution
+        parallèle susceptible de diverger, mais le chemin réellement exécuté. Publique
+        parce que la mesure de la **marge avant éviction** (correctif du jalon 3) a
+        besoin du rang du gold dans la fusion, et pas seulement du top-10 final : c'est
+        ce rang, comparé à `n_rerank`, qui dit si le reranker peut encore rattraper un
+        gold évincé par la règle de fusion. Le rapport de clôture du jalon 3 tenait ce
+        rattrapage pour acquis sans jamais mesurer sa marge.
+
+        Les résultats routés sont exclus de la liste classée, comme dans `search()`.
+        """
         if mode not in _MODES:
             raise ValueError(f"mode inconnu : {mode}")
         # Le routeur de référence d'article lit TOUJOURS la question ORIGINALE (jamais
@@ -280,8 +344,16 @@ class Searcher:
         elif mode == "dense":
             scores = self._dense(requete_canaux, self.pool)
         else:
-            scores = self._rrf([self._bm25(requete_canaux, self.pool), self._dense(requete_canaux, self.pool)])
-        ranked = sorted(scores, key=scores.get, reverse=True)
+            scores = self._rrf(
+                [self._bm25(requete_canaux, self.pool),
+                 self._dense(requete_canaux, self.pool)],
+                self.rrf_k, self.poids_consensus)
+        ranked = [rid for rid in sorted(scores, key=scores.get, reverse=True)
+                  if rid not in routed_ids]
+        return routed, ranked, scores
+
+    def search(self, query: str, k: int = 10, mode: str = "hybrid") -> list[dict]:
+        routed, ranked, scores = self.avant_rerank(query, mode)
         source = "fusion" if mode.startswith("hybrid") else mode
         n_restants = max(k - len(routed), 0)
         if mode == "hybrid+rerank":
@@ -291,16 +363,12 @@ class Searcher:
             # jalon 3 — 25 = comportement jalon 2.5 inchangé) puis rerankée, tronquée
             # à n_restants.
             candidates = [
-                self._record(rid, scores[rid], source)
-                for rid in ranked
-                if rid not in routed_ids
+                self._record(rid, scores[rid], source) for rid in ranked
             ][:self.n_rerank]
             results = self.reranker.rerank(query, candidates, top_k=n_restants)
         else:
             results = [
-                self._record(rid, scores[rid], source)
-                for rid in ranked
-                if rid not in routed_ids
+                self._record(rid, scores[rid], source) for rid in ranked
             ][:n_restants]
         out = routed + results
         if mode == "hybrid+graph":

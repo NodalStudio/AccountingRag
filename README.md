@@ -130,7 +130,7 @@ Le jalon 3 attaque le fossé lexical chiffré au jalon 2 : les questions posées
 
 Bootstrap apparié contre la configuration du jalon 2.5 : dev +0,1393 (`p = 0,9945`), test gelé +0,2069 (`p = 0,9984`). **Le chiffre à retenir est celui du dev (0,877)** : le split gelé (29 questions) confirme la direction avec un intervalle de confiance presque deux fois plus large, il ne raffine pas l'estimation. Sur dev, la réécriture améliore 12 questions (dont dix réparations complètes et deux demi-réparations), en dégrade 3, et 4 résistent aux deux configurations — soit +9 questions en compte pour +8,5 points de recall — l'écart vient des deux demi-réparations.
 
-Trois des quatre questions que le diagnostic fondateur donnait hors d'atteinte passent de 0 à 1 — dont celle dont le gold était au 88ᵉ percentile de son classement lexical. La quatrième (`q023`) résiste **en mode `hybrid` sans reranking**, et son autopsie livre une piste pour la suite : son gold est le **2ᵉ meilleur candidat lexical sur 1 653** mais absent du canal dense, et la somme RRF le fait perdre contre un candidat 5ᵉ et 6ᵉ — la fusion récompense le consensus, pas l'excellence. Le gold ressort au rang 11, donc à portée des 25 candidats soumis au cross-encoder, qui le rattrape : q023 réussit dans la configuration livrée. Le défaut de fusion est réel mais aujourd'hui compensé par la fenêtre du reranker — une compensation qui n'est pas garantie sur un corpus plus grand.
+Trois des quatre questions que le diagnostic fondateur donnait hors d'atteinte passent de 0 à 1 — dont celle dont le gold était au 88ᵉ percentile de son classement lexical. La quatrième (`q023`) résiste **en mode `hybrid` sans reranking**, et son autopsie livre une piste pour la suite : son gold est le **2ᵉ meilleur candidat lexical sur 1 653** mais absent du canal dense, et la somme RRF le fait perdre contre un candidat 5ᵉ et 6ᵉ — la fusion récompense le consensus, pas l'excellence. Le gold ressort au rang 11, donc à portée des 25 candidats soumis au cross-encoder, qui le rattrape : q023 réussit dans la configuration livrée. Le défaut de fusion est réel mais aujourd'hui compensé par la fenêtre du reranker — une compensation qui n'est pas garantie sur un corpus plus grand. **Ce défaut a depuis été mesuré et la compensation quantifiée** : voir [`docs/eval-jalon3-fix.md`](docs/eval-jalon3-fix.md).
 
 Méthode, chiffres complets, autopsies et réserves : [`docs/eval-jalon3.md`](docs/eval-jalon3.md).
 
@@ -177,6 +177,40 @@ Reproduire la configuration du jalon 2.5 (~1,5 s/question sur GPU contre ~150 s/
 ```sh
 uv run python scripts/run_eval.py --mode hybrid+rerank --split dev
 ```
+
+## Correctif du jalon 3 — la règle de fusion, mesurée puis laissée en place
+
+Le jalon 3 avait nommé un défaut sans le traiter : la somme RRF récompense le
+consensus, pas l'excellence. Deux leviers ont été exposés sur `Searcher`, chacun
+neutre à sa valeur par défaut — `poids_consensus` (le poids de tout ce qui dépasse
+la meilleure contribution d'un canal) et `rrf_k` (l'escompte de rang, jusque-là
+figé à 60) — puis mesurés sur deux grilles fixées avant la première exécution.
+
+**Le levier fonctionne, et il n'est pas adopté.** Les deux affirmations tiennent
+ensemble, et c'est le résultat.
+
+| contexte | meilleur réglage | recall@10 | delta | p_amélioration |
+|---|---|---|---|---|
+| `hybrid` nu (le mécanisme) | `poids_consensus=0,10` | 0,715 → **0,747** | +0,0323 | 0,9537 |
+| configuration livrée (celle qui décide) | `poids_consensus=0,10` | 0,866 → 0,871 | +0,0054 | 0,6356 |
+
+En fusion nue, le levier répare trois questions sur 93 sans en casser une seule.
+Dans la configuration livrée, il en gagne une demi — parce que **le reranker
+rattrape déjà exactement les questions que la fusion réparerait** : q023, q054 et
+q1032 valent 1,0 dans la configuration livrée avant tout changement de fusion. On
+ne répare pas deux fois la même question. Les deux leviers restent donc à leur
+valeur neutre, et `Searcher()` sans argument reproduit la configuration du jalon 3.
+
+Le livrable central n'est pas ce recall mais la **marge avant éviction** — le rang
+du gold dans la fusion, avant reranking. Sur les 93 questions dev, 15 sont routées
+et 78 exposées à la fusion ; dans la configuration livrée, 4 golds sont absents du
+pool (défaut de couverture, hors de portée de toute règle de fusion) et **2
+seulement sont présents mais au-delà de la fenêtre `n_rerank=25`** (q057 au rang
+54, q1009 au rang 40). Le rattrapage a donc une marge large aujourd'hui. C'est
+cette marge, et non le recall, qu'il faudra re-mesurer quand le corpus grandira :
+le recall ne dirait qu'après coup que la compensation a cédé.
+
+Détail, contrôles et réserves : [`docs/eval-jalon3-fix.md`](docs/eval-jalon3-fix.md).
 
 ## Jalon 4 — mesurer la génération
 

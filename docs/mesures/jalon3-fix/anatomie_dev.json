@@ -1,0 +1,433 @@
+{
+  "contextes": {
+    "hybrid": {
+      "configurations_au_classement_identique": [],
+      "configurations_au_vecteur_de_recall_identique": [
+        [
+          "poids_consensus=0.1",
+          "rrf_k=5"
+        ],
+        [
+          "poids_consensus=0.25",
+          "rrf_k=20"
+        ]
+      ],
+      "par_configuration": {
+        "poids_consensus=0.025": {
+          "adopte": false,
+          "bascules": {
+            "gagnees": [
+              "q023",
+              "q054",
+              "q1032"
+            ],
+            "n_gagnees": 3,
+            "n_perdues": 3,
+            "perdues": [
+              "q022",
+              "q067",
+              "q1007"
+            ]
+          },
+          "marge_parmi_les_golds_presents": {
+            "n_au_dela_de_25": 4,
+            "n_golds_absents_du_pool": 14,
+            "n_golds_presents_dans_la_fusion": 64,
+            "part_au_dela_de_10": 0.1719,
+            "part_au_dela_de_25": 0.0625,
+            "rang_max": 90,
+            "rang_median": 1.0,
+            "rang_moyen": 6.45
+          },
+          "p_amelioration": 0.5341,
+          "rang_de_q023_dans_la_fusion": 3,
+          "recall@10": 0.72
+        },
+        "poids_consensus=0.1": {
+          "adopte": true,
+          "bascules": {
+            "gagnees": [
+              "q023",
+              "q054",
+              "q1032"
+            ],
+            "n_gagnees": 3,
+            "n_perdues": 0,
+            "perdues": []
+          },
+          "marge_parmi_les_golds_presents": {
+            "n_au_dela_de_25": 3,
+            "n_golds_absents_du_pool": 14,
+            "n_golds_presents_dans_la_fusion": 64,
+            "part_au_dela_de_10": 0.125,
+            "part_au_dela_de_25": 0.0469,
+            "rang_max": 90,
+            "rang_median": 1.0,
+            "rang_moyen": 6.2
+          },
+          "p_amelioration": 0.9537,
+          "rang_de_q023_dans_la_fusion": 4,
+          "recall@10": 0.747
+        },
+        "poids_consensus=0.25": {
+          "adopte": false,
+          "bascules": {
+            "gagnees": [
+              "q023",
+              "q054"
+            ],
+            "n_gagnees": 2,
+            "n_perdues": 0,
+            "perdues": []
+          },
+          "marge_parmi_les_golds_presents": {
+            "n_au_dela_de_25": 3,
+            "n_golds_absents_du_pool": 14,
+            "n_golds_presents_dans_la_fusion": 64,
+            "part_au_dela_de_10": 0.1406,
+            "part_au_dela_de_25": 0.0469,
+            "rang_max": 90,
+            "rang_median": 1.0,
+            "rang_moyen": 6.03
+          },
+          "p_amelioration": 0.8695,
+          "rang_de_q023_dans_la_fusion": 6,
+          "recall@10": 0.737
+        },
+        "poids_consensus=0.5": {
+          "adopte": false,
+          "bascules": {
+            "gagnees": [
+              "q023"
+            ],
+            "n_gagnees": 1,
+            "n_perdues": 0,
+            "perdues": []
+          },
+          "marge_parmi_les_golds_presents": {
+            "n_au_dela_de_25": 3,
+            "n_golds_absents_du_pool": 14,
+            "n_golds_presents_dans_la_fusion": 64,
+            "part_au_dela_de_10": 0.1562,
+            "part_au_dela_de_25": 0.0469,
+            "rang_max": 90,
+            "rang_median": 1.0,
+            "rang_moyen": 6.31
+          },
+          "p_amelioration": 0.6294,
+          "rang_de_q023_dans_la_fusion": 10,
+          "recall@10": 0.726
+        },
+        "reference": {
+          "marge_parmi_les_golds_presents": {
+            "n_au_dela_de_25": 3,
+            "n_golds_absents_du_pool": 14,
+            "n_golds_presents_dans_la_fusion": 64,
+            "part_au_dela_de_10": 0.1719,
+            "part_au_dela_de_25": 0.0469,
+            "rang_max": 90,
+            "rang_median": 1.0,
+            "rang_moyen": 6.31
+          },
+          "rang_de_q023_dans_la_fusion": 11,
+          "recall@10": 0.715
+        },
+        "rrf_k=1": {
+          "adopte": false,
+          "bascules": {
+            "gagnees": [
+              "q023",
+              "q054",
+              "q1032"
+            ],
+            "n_gagnees": 3,
+            "n_perdues": 1,
+            "perdues": [
+              "q067"
+            ]
+          },
+          "marge_parmi_les_golds_presents": {
+            "n_au_dela_de_25": 3,
+            "n_golds_absents_du_pool": 14,
+            "n_golds_presents_dans_la_fusion": 64,
+            "part_au_dela_de_10": 0.1406,
+            "part_au_dela_de_25": 0.0469,
+            "rang_max": 90,
+            "rang_median": 1.0,
+            "rang_moyen": 6.28
+          },
+          "p_amelioration": 0.7751,
+          "rang_de_q023_dans_la_fusion": 3,
+          "recall@10": 0.737
+        },
+        "rrf_k=20": {
+          "adopte": false,
+          "bascules": {
+            "gagnees": [
+              "q023",
+              "q054"
+            ],
+            "n_gagnees": 2,
+            "n_perdues": 0,
+            "perdues": []
+          },
+          "marge_parmi_les_golds_presents": {
+            "n_au_dela_de_25": 3,
+            "n_golds_absents_du_pool": 14,
+            "n_golds_presents_dans_la_fusion": 64,
+            "part_au_dela_de_10": 0.1406,
+            "part_au_dela_de_25": 0.0469,
+            "rang_max": 90,
+            "rang_median": 1.0,
+            "rang_moyen": 6.09
+          },
+          "p_amelioration": 0.8695,
+          "rang_de_q023_dans_la_fusion": 8,
+          "recall@10": 0.737
+        },
+        "rrf_k=5": {
+          "adopte": true,
+          "bascules": {
+            "gagnees": [
+              "q023",
+              "q054",
+              "q1032"
+            ],
+            "n_gagnees": 3,
+            "n_perdues": 0,
+            "perdues": []
+          },
+          "marge_parmi_les_golds_presents": {
+            "n_au_dela_de_25": 3,
+            "n_golds_absents_du_pool": 14,
+            "n_golds_presents_dans_la_fusion": 64,
+            "part_au_dela_de_10": 0.125,
+            "part_au_dela_de_25": 0.0469,
+            "rang_max": 90,
+            "rang_median": 1.0,
+            "rang_moyen": 6.02
+          },
+          "p_amelioration": 0.9537,
+          "rang_de_q023_dans_la_fusion": 4,
+          "recall@10": 0.747
+        }
+      }
+    },
+    "livree": {
+      "configurations_au_classement_identique": [],
+      "configurations_au_vecteur_de_recall_identique": [
+        [
+          "poids_consensus=0.1",
+          "poids_consensus=0.25",
+          "rrf_k=1",
+          "rrf_k=20",
+          "rrf_k=5"
+        ],
+        [
+          "poids_consensus=0.5",
+          "reference"
+        ]
+      ],
+      "par_configuration": {
+        "poids_consensus=0.025": {
+          "adopte": false,
+          "bascules": {
+            "gagnees": [
+              "q008"
+            ],
+            "n_gagnees": 1,
+            "n_perdues": 1,
+            "perdues": [
+              "q1022"
+            ]
+          },
+          "marge_parmi_les_golds_presents": {
+            "n_au_dela_de_25": 2,
+            "n_golds_absents_du_pool": 4,
+            "n_golds_presents_dans_la_fusion": 74,
+            "part_au_dela_de_10": 0.0811,
+            "part_au_dela_de_25": 0.027,
+            "rang_max": 54,
+            "rang_median": 1.0,
+            "rang_moyen": 4.18
+          },
+          "p_amelioration": 0.3441,
+          "rang_de_q023_dans_la_fusion": 6,
+          "recall@10": 0.866
+        },
+        "poids_consensus=0.1": {
+          "adopte": false,
+          "bascules": {
+            "gagnees": [
+              "q008"
+            ],
+            "n_gagnees": 1,
+            "n_perdues": 0,
+            "perdues": []
+          },
+          "marge_parmi_les_golds_presents": {
+            "n_au_dela_de_25": 2,
+            "n_golds_absents_du_pool": 4,
+            "n_golds_presents_dans_la_fusion": 74,
+            "part_au_dela_de_10": 0.0811,
+            "part_au_dela_de_25": 0.027,
+            "rang_max": 54,
+            "rang_median": 1.0,
+            "rang_moyen": 4.35
+          },
+          "p_amelioration": 0.6356,
+          "rang_de_q023_dans_la_fusion": 9,
+          "recall@10": 0.871
+        },
+        "poids_consensus=0.25": {
+          "adopte": false,
+          "bascules": {
+            "gagnees": [
+              "q008"
+            ],
+            "n_gagnees": 1,
+            "n_perdues": 0,
+            "perdues": []
+          },
+          "marge_parmi_les_golds_presents": {
+            "n_au_dela_de_25": 2,
+            "n_golds_absents_du_pool": 4,
+            "n_golds_presents_dans_la_fusion": 74,
+            "part_au_dela_de_10": 0.0946,
+            "part_au_dela_de_25": 0.027,
+            "rang_max": 54,
+            "rang_median": 1.0,
+            "rang_moyen": 4.45
+          },
+          "p_amelioration": 0.6356,
+          "rang_de_q023_dans_la_fusion": 12,
+          "recall@10": 0.871
+        },
+        "poids_consensus=0.5": {
+          "adopte": false,
+          "bascules": {
+            "gagnees": [],
+            "n_gagnees": 0,
+            "n_perdues": 0,
+            "perdues": []
+          },
+          "marge_parmi_les_golds_presents": {
+            "n_au_dela_de_25": 2,
+            "n_golds_absents_du_pool": 4,
+            "n_golds_presents_dans_la_fusion": 74,
+            "part_au_dela_de_10": 0.1081,
+            "part_au_dela_de_25": 0.027,
+            "rang_max": 54,
+            "rang_median": 1.0,
+            "rang_moyen": 4.54
+          },
+          "p_amelioration": 0.0,
+          "rang_de_q023_dans_la_fusion": 14,
+          "recall@10": 0.866
+        },
+        "reference": {
+          "marge_parmi_les_golds_presents": {
+            "n_au_dela_de_25": 2,
+            "n_golds_absents_du_pool": 4,
+            "n_golds_presents_dans_la_fusion": 74,
+            "part_au_dela_de_10": 0.1081,
+            "part_au_dela_de_25": 0.027,
+            "rang_max": 54,
+            "rang_median": 1.0,
+            "rang_moyen": 4.54
+          },
+          "rang_de_q023_dans_la_fusion": 14,
+          "recall@10": 0.866
+        },
+        "rrf_k=1": {
+          "adopte": false,
+          "bascules": {
+            "gagnees": [
+              "q008"
+            ],
+            "n_gagnees": 1,
+            "n_perdues": 0,
+            "perdues": []
+          },
+          "marge_parmi_les_golds_presents": {
+            "n_au_dela_de_25": 2,
+            "n_golds_absents_du_pool": 4,
+            "n_golds_presents_dans_la_fusion": 74,
+            "part_au_dela_de_10": 0.0811,
+            "part_au_dela_de_25": 0.027,
+            "rang_max": 54,
+            "rang_median": 1.0,
+            "rang_moyen": 4.08
+          },
+          "p_amelioration": 0.6356,
+          "rang_de_q023_dans_la_fusion": 6,
+          "recall@10": 0.871
+        },
+        "rrf_k=20": {
+          "adopte": false,
+          "bascules": {
+            "gagnees": [
+              "q008"
+            ],
+            "n_gagnees": 1,
+            "n_perdues": 0,
+            "perdues": []
+          },
+          "marge_parmi_les_golds_presents": {
+            "n_au_dela_de_25": 2,
+            "n_golds_absents_du_pool": 4,
+            "n_golds_presents_dans_la_fusion": 74,
+            "part_au_dela_de_10": 0.0946,
+            "part_au_dela_de_25": 0.027,
+            "rang_max": 54,
+            "rang_median": 1.0,
+            "rang_moyen": 4.46
+          },
+          "p_amelioration": 0.6356,
+          "rang_de_q023_dans_la_fusion": 12,
+          "recall@10": 0.871
+        },
+        "rrf_k=5": {
+          "adopte": false,
+          "bascules": {
+            "gagnees": [
+              "q008"
+            ],
+            "n_gagnees": 1,
+            "n_perdues": 0,
+            "perdues": []
+          },
+          "marge_parmi_les_golds_presents": {
+            "n_au_dela_de_25": 2,
+            "n_golds_absents_du_pool": 4,
+            "n_golds_presents_dans_la_fusion": 74,
+            "part_au_dela_de_10": 0.0811,
+            "part_au_dela_de_25": 0.027,
+            "rang_max": 54,
+            "rang_median": 1.0,
+            "rang_moyen": 4.26
+          },
+          "p_amelioration": 0.6356,
+          "rang_de_q023_dans_la_fusion": 9,
+          "recall@10": 0.871
+        }
+      }
+    }
+  },
+  "decision": {
+    "adoptees_dans_le_contexte_qui_decide": [],
+    "contexte_qui_decide": "livree",
+    "franchissent_le_seuil_dans_le_contexte_mecanisme": [
+      "poids_consensus=0.1",
+      "rrf_k=5"
+    ],
+    "pourquoi": "le critère d'adoption porte sur la configuration livrée au jalon 3, seule configuration réellement exécutée ; le contexte `hybrid` mesure le MÉCANISME et n'adopte rien."
+  },
+  "q023_publie_au_jalon3": {
+    "gold": "pcg-214-22",
+    "note": "le rang publié au jalon 3 vaut pour le mode `hybrid` SANS réécriture, sur le pool de 81 candidats de la sonde — il n'est comparable qu'au contexte `hybrid` ci-dessus, et seulement à titre indicatif : dev compte 93 questions ici contre 61 au jalon 3, mais q023 est la même question et son gold le même record.",
+    "rang_apres_fusion_publie": 11
+  },
+  "source": "fusion_dev.json",
+  "split": "dev"
+}
