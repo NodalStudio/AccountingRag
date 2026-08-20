@@ -671,3 +671,70 @@ trancher un effet de trois questions.
 
 La seconde mérite d'être re-soumise au même critère quand `dev` aura grandi. Sans
 toucher à sa grille, et sans la remesurer entre-temps pour voir.
+
+### Toutes les directions essayées, y compris celles qui n'ont jamais atteint le code
+
+Les sections ci-dessus racontent ce qui a été mesuré. Voici ce qui a été envisagé
+puis écarté, avec la raison et le moment où la décision a été prise — parce qu'une
+piste abandonnée pour une bonne raison est une information, et qu'un rapport qui
+ne montre que le chemin retenu laisse croire qu'il était évident.
+
+**Quelle dette attaquer en premier.** Le jalon 3 en laissait deux. J'ai choisi la
+fusion et écarté la réécriture, au motif que la piste du jalon 3 pour cette
+dernière — conditionner la réécriture à un signal de recouvrement — introduisait
+un seuil qu'il faudrait calibrer sur le split de mesure, pour un net déjà positif.
+La raison était bonne. Elle n'était pas la bonne : quand j'y suis revenu, la piste
+s'est révélée inapplicable pour un motif entièrement différent, que seule la
+lecture des questions cassées pouvait révéler.
+
+**Trois règles de fusion, dont deux jamais mesurées.** Le jalon 3 suggérait
+« maximum au lieu de somme, normalisation des scores, bonus explicite au rang 1 ».
+
+- *Maximum pur* : écarté comme paramètre discret. Deux documents au même rang dans
+  deux canaux différents obtiennent exactement le même score, donc le maximum
+  produit des ex aequo en masse, départagés par l'ordre d'insertion — arbitraire et
+  invisible. Récupéré autrement : `poids_consensus → 0` est le maximum comme
+  **limite continue**, où la somme résiduelle sert de départage.
+- *Normalisation des scores par canal* (min-max puis somme) : écartée **sans
+  mesure**, et c'est une réserve assumée. BM25 et distance cosinus ne vivent pas sur
+  la même échelle ; une normalisation min-max dépend de la composition du pool,
+  donc bouger la règle bougerait aussi implicitement le pool — deux variables.
+- *Bonus au rang 1* : couvert par la grille, c'est un cas particulier de
+  `poids_consensus` faible.
+
+**Trois hypothèses successives sur la cause de la casse par réécriture.**
+
+1. *Dérive de l'embedding.* Ma première, et elle était séduisante : la réécriture
+   de q080 emmène la requête vers le vocabulaire de la consolidation, donc le
+   vecteur dérive. **Fausse.** Le canal dense ne trouve jamais ce gold, réécriture
+   ou non, jusqu'au rang 400.
+2. *Filtrer les termes de fréquence documentaire nulle* — un `df_min`, exactement
+   l'inverse du `df_max` mesuré et rejeté au jalon 3. Écarté **avant de coder** :
+   un terme absent de l'index ne matche rien dans FTS5, il ne peut donc pas diluer
+   BM25. Le levier n'aurait rien fait, et l'aurait fait de façon convaincante.
+3. *Dilution lexicale.* Confirmée par sonde, table des rangs à l'appui. C'est la
+   seule des trois qui ait été mesurée, et la seule vraie.
+
+**Corriger le prompt du rewriter plutôt que le contrepeser.** La réécriture de
+q080 est objectivement fausse pour ce corpus — elle répond consolidation à une
+question de fusion. La corriger à la source invaliderait le cache versionné de 93
+réécritures, donc une campagne payante à refaire et un protocole neuf. Écarté pour
+ce correctif, consigné en réserve.
+
+**Trois façons de partager la machinerie de mesure.** Dupliquer les fonctions dans
+un second script (rejeté : c'est la reconstitution parallèle qui dérive, l'argument
+que j'avais moi-même employé pour extraire `avant_rerank`). Renommer le script de
+fusion en script générique (rejeté : il a produit un artefact publié, et le rapport
+doit pouvoir nommer le script qui l'a produit). Extraire dans le paquet — retenu,
+avec un contrôle de reproduction qui rejoue la grille et exige zéro écart.
+
+**Chercher `poids_question=4`.** Le recall passe par un maximum entre 3 et 5 et un
+réglage intermédiaire franchirait peut-être le seuil d'adoption. Écarté, et c'est
+le seul écart de cette liste qui m'a coûté quelque chose : chercher ce réglage-là
+serait régler un paramètre sur le split de mesure pour atteindre un seuil.
+
+**Un test qui passait chez moi et échouait sur le runner.** Le contrôle du
+contexte `reecriture` construisait un `Searcher` sur `data/corpus.db`, gitignoré
+donc absent en CI. Toutes mes exécutions locales l'avaient. Récrit sur base
+synthétique, puis vérifié en masquant le corpus pour reproduire les conditions du
+runner — 297 tests, 7 ignorés, comme sur la CI.

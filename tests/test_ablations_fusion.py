@@ -269,11 +269,30 @@ def test_les_trois_contextes_sont_declares_de_facon_coherente():
     assert machinerie.MODE["reecriture"] == "hybrid"
 
 
-def test_le_contexte_reecriture_attache_bien_un_rewriter():
+def test_le_contexte_reecriture_attache_bien_un_rewriter(tmp_path, monkeypatch):
+    """Sur base synthétique : `data/corpus.db` est gitignoré, donc absent en CI. Une
+    première version de ce test construisait un `Searcher` sur le corpus réel — elle
+    passait sur ma machine et échouait sur le runner, ce qui est exactement le genre de
+    test qui ne prouve rien là où on en a le plus besoin.
+    """
+    from accounting_rag.db import write_db
+    from accounting_rag.index import build_index
+    from conftest import _rec
+    from test_search import FakeEmbedder
+
+    db = tmp_path / "contexte.db"
+    write_db([_rec("pcg-1-1@2026-01-01", "1-1", texte="x")], db)
+    build_index(db, embedder=FakeEmbedder())
+    monkeypatch.setattr(machinerie, "DB", db)
+
     class FauxRewriter:
         def reecrire(self, q):
             return "reecrit"
 
     r = FauxRewriter()
-    s = machinerie.searcher_du_contexte("reecriture", None, None, r)
+    s = machinerie.searcher_du_contexte("reecriture", FakeEmbedder(), None, r)
     assert s.rewriter is r and s.mode_reecriture == "etend" and s._reranker is None
+    # Et le contexte livré, lui, attache bien le reranker — sans quoi les deux contextes
+    # seraient indiscernables et la grille mesurerait deux fois la même chose.
+    livree = machinerie.searcher_du_contexte("livree", FakeEmbedder(), "un-reranker", r)
+    assert livree._reranker == "un-reranker" and livree.n_rerank == 25
