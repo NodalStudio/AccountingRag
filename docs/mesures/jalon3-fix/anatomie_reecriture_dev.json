@@ -1,0 +1,329 @@
+{
+  "contextes": {
+    "livree": {
+      "configurations_au_classement_identique": [],
+      "configurations_au_vecteur_de_recall_identique": [],
+      "par_configuration": {
+        "poids_question=2": {
+          "adopte": false,
+          "bascules": {
+            "gagnees": [
+              "q025",
+              "q1009"
+            ],
+            "n_gagnees": 2,
+            "n_perdues": 0,
+            "perdues": []
+          },
+          "marge_parmi_les_golds_presents": {
+            "n_au_dela_de_25": 1,
+            "n_golds_absents_du_pool": 4,
+            "n_golds_presents_dans_la_fusion": 74,
+            "part_au_dela_de_10": 0.0946,
+            "part_au_dela_de_25": 0.0135,
+            "rang_max": 46,
+            "rang_median": 1.0,
+            "rang_moyen": 4.11
+          },
+          "p_amelioration": 0.862,
+          "rangs_des_temoins": {
+            "q008": 1,
+            "q025": 19,
+            "q080": 46
+          },
+          "recall@10": 0.887
+        },
+        "poids_question=3": {
+          "adopte": false,
+          "bascules": {
+            "gagnees": [
+              "q025",
+              "q080",
+              "q1009",
+              "q1028"
+            ],
+            "n_gagnees": 4,
+            "n_perdues": 1,
+            "perdues": [
+              "q065"
+            ]
+          },
+          "marge_parmi_les_golds_presents": {
+            "n_au_dela_de_25": 0,
+            "n_golds_absents_du_pool": 4,
+            "n_golds_presents_dans_la_fusion": 74,
+            "part_au_dela_de_10": 0.1081,
+            "part_au_dela_de_25": 0.0,
+            "rang_max": 22,
+            "rang_median": 1.0,
+            "rang_moyen": 3.8
+          },
+          "p_amelioration": 0.8809,
+          "rangs_des_temoins": {
+            "q008": 1,
+            "q025": 13,
+            "q080": 22
+          },
+          "recall@10": 0.898
+        },
+        "poids_question=5": {
+          "adopte": false,
+          "bascules": {
+            "gagnees": [
+              "q008",
+              "q025",
+              "q080",
+              "q1009",
+              "q1028"
+            ],
+            "n_gagnees": 5,
+            "n_perdues": 3,
+            "perdues": [
+              "q021",
+              "q065",
+              "q086"
+            ]
+          },
+          "marge_parmi_les_golds_presents": {
+            "n_au_dela_de_25": 1,
+            "n_golds_absents_du_pool": 4,
+            "n_golds_presents_dans_la_fusion": 74,
+            "part_au_dela_de_10": 0.1216,
+            "part_au_dela_de_25": 0.0135,
+            "rang_max": 30,
+            "rang_median": 1.0,
+            "rang_moyen": 4.14
+          },
+          "p_amelioration": 0.7577,
+          "rangs_des_temoins": {
+            "q008": 1,
+            "q025": 10,
+            "q080": 14
+          },
+          "recall@10": 0.887
+        },
+        "poids_question=8": {
+          "adopte": false,
+          "bascules": {
+            "gagnees": [
+              "q008",
+              "q025",
+              "q080",
+              "q1009",
+              "q1028"
+            ],
+            "n_gagnees": 5,
+            "n_perdues": 4,
+            "perdues": [
+              "q021",
+              "q026",
+              "q065",
+              "q086"
+            ]
+          },
+          "marge_parmi_les_golds_presents": {
+            "n_au_dela_de_25": 0,
+            "n_golds_absents_du_pool": 5,
+            "n_golds_presents_dans_la_fusion": 73,
+            "part_au_dela_de_10": 0.1233,
+            "part_au_dela_de_25": 0.0,
+            "rang_max": 22,
+            "rang_median": 1,
+            "rang_moyen": 4.01
+          },
+          "p_amelioration": 0.6119,
+          "rangs_des_temoins": {
+            "q008": 1,
+            "q025": 9,
+            "q080": 14
+          },
+          "recall@10": 0.876
+        },
+        "reference": {
+          "marge_parmi_les_golds_presents": {
+            "n_au_dela_de_25": 2,
+            "n_golds_absents_du_pool": 4,
+            "n_golds_presents_dans_la_fusion": 74,
+            "part_au_dela_de_10": 0.1081,
+            "part_au_dela_de_25": 0.027,
+            "rang_max": 54,
+            "rang_median": 1.0,
+            "rang_moyen": 4.54
+          },
+          "rangs_des_temoins": {
+            "q008": 1,
+            "q025": 22,
+            "q080": null
+          },
+          "recall@10": 0.866
+        }
+      }
+    },
+    "reecriture": {
+      "configurations_au_classement_identique": [],
+      "configurations_au_vecteur_de_recall_identique": [],
+      "par_configuration": {
+        "poids_question=2": {
+          "adopte": false,
+          "bascules": {
+            "gagnees": [
+              "q027"
+            ],
+            "n_gagnees": 1,
+            "n_perdues": 0,
+            "perdues": []
+          },
+          "marge_parmi_les_golds_presents": {
+            "n_au_dela_de_25": 1,
+            "n_golds_absents_du_pool": 4,
+            "n_golds_presents_dans_la_fusion": 74,
+            "part_au_dela_de_10": 0.0946,
+            "part_au_dela_de_25": 0.0135,
+            "rang_max": 46,
+            "rang_median": 1.0,
+            "rang_moyen": 4.11
+          },
+          "p_amelioration": 0.6288,
+          "rangs_des_temoins": {
+            "q008": 1,
+            "q025": 19,
+            "q080": 46
+          },
+          "recall@10": 0.866
+        },
+        "poids_question=3": {
+          "adopte": false,
+          "bascules": {
+            "gagnees": [
+              "q027"
+            ],
+            "n_gagnees": 1,
+            "n_perdues": 1,
+            "perdues": [
+              "q060"
+            ]
+          },
+          "marge_parmi_les_golds_presents": {
+            "n_au_dela_de_25": 0,
+            "n_golds_absents_du_pool": 4,
+            "n_golds_presents_dans_la_fusion": 74,
+            "part_au_dela_de_10": 0.1081,
+            "part_au_dela_de_25": 0.0,
+            "rang_max": 22,
+            "rang_median": 1.0,
+            "rang_moyen": 3.8
+          },
+          "p_amelioration": 0.3488,
+          "rangs_des_temoins": {
+            "q008": 1,
+            "q025": 13,
+            "q080": 22
+          },
+          "recall@10": 0.855
+        },
+        "poids_question=5": {
+          "adopte": false,
+          "bascules": {
+            "gagnees": [
+              "q025",
+              "q027",
+              "q063"
+            ],
+            "n_gagnees": 3,
+            "n_perdues": 4,
+            "perdues": [
+              "q021",
+              "q060",
+              "q065",
+              "q1025"
+            ]
+          },
+          "marge_parmi_les_golds_presents": {
+            "n_au_dela_de_25": 1,
+            "n_golds_absents_du_pool": 4,
+            "n_golds_presents_dans_la_fusion": 74,
+            "part_au_dela_de_10": 0.1216,
+            "part_au_dela_de_25": 0.0135,
+            "rang_max": 30,
+            "rang_median": 1.0,
+            "rang_moyen": 4.14
+          },
+          "p_amelioration": 0.2828,
+          "rangs_des_temoins": {
+            "q008": 1,
+            "q025": 10,
+            "q080": 14
+          },
+          "recall@10": 0.844
+        },
+        "poids_question=8": {
+          "adopte": false,
+          "bascules": {
+            "gagnees": [
+              "q025",
+              "q027",
+              "q063"
+            ],
+            "n_gagnees": 3,
+            "n_perdues": 5,
+            "perdues": [
+              "q021",
+              "q060",
+              "q065",
+              "q086",
+              "q1025"
+            ]
+          },
+          "marge_parmi_les_golds_presents": {
+            "n_au_dela_de_25": 0,
+            "n_golds_absents_du_pool": 5,
+            "n_golds_presents_dans_la_fusion": 73,
+            "part_au_dela_de_10": 0.1233,
+            "part_au_dela_de_25": 0.0,
+            "rang_max": 22,
+            "rang_median": 1,
+            "rang_moyen": 4.01
+          },
+          "p_amelioration": 0.2515,
+          "rangs_des_temoins": {
+            "q008": 1,
+            "q025": 9,
+            "q080": 14
+          },
+          "recall@10": 0.839
+        },
+        "reference": {
+          "marge_parmi_les_golds_presents": {
+            "n_au_dela_de_25": 2,
+            "n_golds_absents_du_pool": 4,
+            "n_golds_presents_dans_la_fusion": 74,
+            "part_au_dela_de_10": 0.1081,
+            "part_au_dela_de_25": 0.027,
+            "rang_max": 54,
+            "rang_median": 1.0,
+            "rang_moyen": 4.54
+          },
+          "rangs_des_temoins": {
+            "q008": 1,
+            "q025": 22,
+            "q080": null
+          },
+          "recall@10": 0.855
+        }
+      }
+    }
+  },
+  "decision": {
+    "adoptees_dans_le_contexte_qui_decide": [],
+    "contexte_qui_decide": "livree",
+    "franchissent_le_seuil_dans_le_contexte_mecanisme": [],
+    "pourquoi": "le critère d'adoption porte sur la configuration livrée au jalon 3, seule configuration réellement exécutée ; le contexte `reecriture` mesure le MÉCANISME et n'adopte rien."
+  },
+  "questions_temoins": [
+    "q008",
+    "q025",
+    "q080"
+  ],
+  "source": "reecriture_dev.json",
+  "split": "dev"
+}

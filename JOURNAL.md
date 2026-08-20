@@ -557,3 +557,117 @@ serait plus difficile à repérer.
 
 Reste donc la seconde dette du jalon 3, intacte : la réécriture dégrade trois
 questions sur soixante-et-une.
+
+## Seconde dette du jalon 3 — le meilleur chiffre du projet, et je ne le livre pas
+
+La première dette s'était close sur un résultat propre : le levier marchait, le
+reranker le rendait inutile, rejet sans regret. La seconde s'est close sur
+l'inverse exact, et c'est beaucoup plus inconfortable.
+
+### La piste laissée par le jalon 3 était fausse, et je l'ai su avant d'écrire du code
+
+Le rapport proposait de conditionner la réécriture à un signal de recouvrement
+faible. J'ai regardé quelles questions cassaient avant de concevoir quoi que ce
+soit — q008, q025, q080 — et la piste s'est effondrée en une ligne : q080 est la
+question la plus familière du benchmark (« j'ai avalé une boîte »), donc toute
+porte fondée sur le recouvrement se déclencherait précisément là où la réécriture
+casse.
+
+C'est la première fois dans ce projet qu'une piste laissée par un jalon précédent
+se révèle inapplicable, et le seul moyen de le voir était de regarder les
+questions au lieu de la phrase qui les résumait. « La réécriture dégrade trois
+questions » cachait trois mécanismes différents : un gold qui sort du pool, un
+gold que le reranker voit et rejette, et un troisième qui ne bouge dans aucun
+canal parce qu'il relève de l'autre dette. Les deux dettes du jalon 3 se
+recoupaient sur une question, et personne ne l'avait remarqué.
+
+### Une hypothèse séduisante, vraie sur les faits, fausse sur la cause
+
+La réécriture de q080 parle consolidation : « écart d'acquisition », « goodwill »,
+« regroupement d'entreprises ». Ces trois termes figurent dans **zéro** record du
+corpus, alors que le gold s'intitule « Traitement du mali de fusion ». Le modèle a
+donné la réponse des comptes consolidés à une question de fusion — une vraie
+confusion comptable, exactement le genre que ce projet existe pour attraper.
+
+Et ce n'est pas la cause de l'échec. Le canal dense, seul à pouvoir souffrir d'un
+vocabulaire absent de l'index, ne trouvait déjà pas ce gold. Un terme de fréquence
+documentaire nulle ne pèse rien en BM25. J'aurais publié un mécanisme juste sur
+les faits et faux sur la causalité, et il aurait été impossible à démentir en
+lisant le rapport.
+
+### Le refus
+
+`poids_question=3` donne **0,898 de recall@10 sur dev** — le meilleur chiffre que
+ce projet ait jamais mesuré. Il améliore les deux catégories non triviales, ne
+coûte rien en latence, répare deux des trois questions que la réécriture cassait,
+et ramène à zéro le nombre de golds présents dans la fusion mais hors de portée du
+reranker.
+
+`p_amelioration = 0,8809`. Le critère est 0,95. Il a été fixé avant la mesure.
+L'IC95 contient zéro.
+
+Je n'adopte pas. Et je n'ai pas mesuré `poids_question=4`, alors que le recall
+passe par un maximum entre 3 et 5 et qu'un réglage intermédiaire franchirait
+peut-être le seuil. Chercher ce réglage-là, maintenant, serait régler un paramètre
+sur le split de mesure pour atteindre un seuil — la forme la plus directe du
+sur-ajustement, et la plus facile à se justifier à soi-même parce que le chiffre
+est beau.
+
+C'est la première fois que la discipline de ce dépôt me coûte un résultat que
+j'avais envie de garder. Le rapport publie donc explicitement ce que le refus
+laisse sur la table, ligne par ligne, pour que le prochain jalon puisse le
+reprendre sans avoir à me croire sur parole.
+
+### Le reranker collabore, au lieu d'absorber
+
+Le premier correctif avait établi que le reranker absorbe intégralement une
+amélioration de la fusion. J'avais enregistré, avant de mesurer, la prédiction
+inverse pour ce levier-ci : la fusion réordonne l'intérieur du pool, celui-ci
+change sa composition, et un candidat absent du pool est hors de portée de tout
+reranker.
+
+La prédiction tient, et le contrôle est plus net que je n'espérais : les quatre
+questions réparées dans la configuration livrée ne sont réparées par le levier
+seul dans **aucun** cas. Il amène leur gold assez près pour que le cross-encoder
+finisse le travail. L'effet est trois fois plus grand avec reranking que sans —
+l'inverse exact du correctif précédent, pour une raison structurelle et non par
+accident de mesure.
+
+### L'agrégat stable qui recouvrait une substitution complète
+
+Le nombre de golds hors du pool ne bouge pas : 4 avant, 4 après. Lu seul, il dit
+que rien n'a changé au sujet même du correctif. En réalité q080 rentre — c'est le
+but atteint — et q057 sort. La composition change entièrement sous un compte
+identique.
+
+C'est la deuxième fois en deux correctifs qu'un agrégat stable cache un mouvement
+complet, après la part de golds au-delà du rang 25 du premier. Je commence à
+penser que publier un compte sans sa composition est, dans ce projet, une faute
+par défaut plutôt qu'une omission occasionnelle.
+
+### Trois erreurs de méthode, dont deux dans mes propres outils
+
+Mon `pkill -f pytest` tuait le shell qui lançait pytest, sa propre ligne de
+commande contenant « pytest ». Les modifications de tests n'avaient jamais été
+appliquées et j'ai cru qu'elles l'étaient.
+
+Après avoir extrait la machinerie de mesure dans le paquet — pour ne pas la
+recopier d'un correctif à l'autre — un test patchait encore l'espace de noms du
+script. Il lançait donc une **vraie campagne** sous un test unitaire. J'avais
+identifié ce risque en concevant l'extraction ; l'avoir prévu ne l'a pas empêché.
+
+Et rien n'empêchait `--contexte hybrid` d'écraser un ancrage publié par un
+artefact amputé, qui se lit exactement comme un artefact complet. Le trou est
+apparu parce que j'avais besoin de cette commande pour contrôler l'extraction. La
+garde qui le refuse existe maintenant, et l'extraction elle-même est prouvée
+neutre : huit configurations rejouées, zéro écart, vecteurs de rangs compris.
+
+### Où en sont les deux dettes
+
+Mesurées, exposées à valeur neutre, non adoptées — un résultat négatif chacune,
+pour deux raisons opposées. La fusion échoue parce que le reranker fait déjà son
+travail. La réécriture échoue de peu, parce que 93 questions ne suffisent pas à
+trancher un effet de trois questions.
+
+La seconde mérite d'être re-soumise au même critère quand `dev` aura grandi. Sans
+toucher à sa grille, et sans la remesurer entre-temps pour voir.

@@ -89,7 +89,9 @@ def _ecrit(tmp_path, monkeypatch, artefact, rapport="", nom_campagne="fusion") -
     rap = tmp_path / "rapport.md"
     rap.write_text(rapport, encoding="utf-8")
     monkeypatch.setattr(ctrl, "MESURES", mesures)
-    monkeypatch.setattr(ctrl, "RAPPORT", rap)
+    monkeypatch.setattr(ctrl, "ROOT", tmp_path)
+    monkeypatch.setattr(ctrl, "CAMPAGNES",
+                        {nom_campagne: ("anatomie_{split}.json", "rapport.md")})
 
 
 def test_un_artefact_coherent_passe(tmp_path, monkeypatch):
@@ -212,7 +214,46 @@ def test_la_campagne_de_reecriture_est_controlee_comme_celle_de_fusion(tmp_path,
     assert e.value.code == 1
 
 
-def test_chaque_campagne_declare_son_fichier_danatomie():
+def test_chaque_campagne_declare_son_anatomie_et_son_rapport():
+    """Une campagne confrontée au rapport d'une AUTRE campagne validerait des chiffres
+    publiés ailleurs — un contrôle vert sur une prose qui ne les porte pas."""
     assert set(ctrl.CAMPAGNES) == {"fusion", "reecriture"}
-    for gabarit in ctrl.CAMPAGNES.values():
+    for gabarit, rapport in ctrl.CAMPAGNES.values():
         assert "{split}" in gabarit
+        assert (ctrl.ROOT / rapport).is_file(), rapport
+    assert len({r for _, r in ctrl.CAMPAGNES.values()}) == len(ctrl.CAMPAGNES)
+
+
+def test_une_anatomie_sans_question_temoin_connue_est_refusee():
+    """Le `if` qui saute en silence est pire qu'un contrôle absent : il rend du vert."""
+    brut = _artefact()
+    rangs = brut["contextes"]["hybrid"]["reference"]["marge"]["rangs"]
+    presents = [v for v in rangs.values() if v is not None]
+    ana = {"contextes": {"hybrid": {"par_configuration": {"reference": {
+        # Tout le reste est JUSTE : seule la forme des questions témoins manque, pour que
+        # le test porte sur elle et pas sur un agrégat faux au passage.
+        "marge_parmi_les_golds_presents": {
+            "n_golds_presents_dans_la_fusion": len(presents),
+            "n_au_dela_de_25": sum(v > 25 for v in presents),
+            "part_au_dela_de_25": round(sum(v > 25 for v in presents) / len(presents), 4),
+            "rang_max": max(presents)},
+        # ni `rang_de_q023_dans_la_fusion`, ni `rangs_des_temoins`
+    }}}}}
+    with pytest.raises(ctrl.Ecart, match="témoin"):
+        ctrl.recalculer_anatomie(ana, brut)
+
+
+def test_un_rang_de_temoin_faux_est_refuse():
+    brut = _artefact()
+    rangs = brut["contextes"]["hybrid"]["reference"]["marge"]["rangs"]
+    presents = [v for v in rangs.values() if v is not None]
+    ana = {"contextes": {"hybrid": {"par_configuration": {"reference": {
+        "marge_parmi_les_golds_presents": {
+            "n_golds_presents_dans_la_fusion": len(presents),
+            "n_au_dela_de_25": sum(v > 25 for v in presents),
+            "part_au_dela_de_25": round(sum(v > 25 for v in presents) / len(presents), 4),
+            "rang_max": max(presents)},
+        "rangs_des_temoins": {"q1": 999},   # faux : q1 est au rang 1
+    }}}}}
+    with pytest.raises(ctrl.Ecart, match="témoin q1"):
+        ctrl.recalculer_anatomie(ana, brut)
