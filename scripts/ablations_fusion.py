@@ -61,6 +61,15 @@ from accounting_rag.rewrite import Rewriter
 from accounting_rag.search import Searcher
 
 ROOT = Path(__file__).resolve().parent.parent
+
+
+def _affiche(chemin: Path) -> str:
+    """Chemin relatif au dépôt quand c'est possible — un test qui redirige la sortie
+    vers un `tmp_path` ne doit pas faire échouer un simple message d'information."""
+    try:
+        return str(chemin.relative_to(ROOT))
+    except ValueError:
+        return str(chemin)
 DB = ROOT / "data/corpus.db"
 OUT_DIR = ROOT / "docs/mesures/jalon3-fix"
 # Ancrages en LECTURE SEULE (loi 10) : ce script ne réécrit jamais docs/mesures/**
@@ -279,7 +288,7 @@ def main() -> None:
     chemin = OUT_DIR / f"fusion_{args.split}.json"
     chemin.write_text(json.dumps(sortie, ensure_ascii=False, indent=2, sort_keys=True),
                       encoding="utf-8")
-    print(f"\n[ablations_fusion] écrit {chemin.relative_to(ROOT)}")
+    print(f"\n[ablations_fusion] écrit {_affiche(chemin)}")
     print(f"configurations franchissant le critère d'adoption : "
           f"{sortie['configurations_adoptees'] or 'AUCUNE'}")
 

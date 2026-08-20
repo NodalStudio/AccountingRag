@@ -121,3 +121,44 @@ def test_la_fixture_de_marge_porte_les_memes_cles_que_la_vraie_mesure():
     assert set(fixture) <= set(vraie), set(fixture) - set(vraie)
     # Et la fonction consommatrice tourne sur la VRAIE structure, pas seulement la fixture.
     assert ana.marge_parmi_les_golds_presents(vraie)["n_golds_presents_dans_la_fusion"] == 1
+
+
+# --- quel contexte décide -------------------------------------------------------------
+
+def test_le_contexte_qui_decide_est_la_configuration_livree(tmp_path, monkeypatch):
+    """`fusion_<split>.json` mêle les deux contextes dans `configurations_adoptees`.
+    Laisser cette liste parler seule ferait lire une adoption là où le contexte `hybrid`
+    ne mesure qu'un mécanisme — une fusion nue que personne n'exécute."""
+    brut = {
+        "split": "dev", "n": 1,
+        "contextes": {
+            "hybrid": {
+                "reference": {"recall@10": 0.5, "par_question": {"q1": 0.5},
+                              "marge": _marge({"q1": 1})},
+                "poids_consensus=0.1": {
+                    "recall@10": 1.0, "par_question": {"q1": 1.0},
+                    "marge": _marge({"q1": 1}),
+                    "bootstrap_vs_reference": {"p_amelioration": 0.99}, "adopte": True},
+            },
+            "livree": {
+                "reference": {"recall@10": 1.0, "par_question": {"q1": 1.0},
+                              "marge": _marge({"q1": 1})},
+                "poids_consensus=0.1": {
+                    "recall@10": 1.0, "par_question": {"q1": 1.0},
+                    "marge": _marge({"q1": 1}),
+                    "bootstrap_vs_reference": {"p_amelioration": 0.0}, "adopte": False},
+            },
+        },
+    }
+    mes = tmp_path / "m"
+    mes.mkdir()
+    (mes / "fusion_dev.json").write_text(json.dumps(brut), encoding="utf-8")
+    monkeypatch.setattr(ana, "IN_DIR", mes)
+    monkeypatch.setattr(ana, "OUT_DIR", mes)
+    monkeypatch.setattr("sys.argv", ["anatomie_fusion.py", "--split", "dev"])
+    ana.main()
+    out = json.loads((mes / "anatomie_dev.json").read_text(encoding="utf-8"))
+    assert out["decision"]["contexte_qui_decide"] == "livree"
+    assert out["decision"]["adoptees_dans_le_contexte_qui_decide"] == []
+    assert out["decision"]["franchissent_le_seuil_dans_le_contexte_mecanisme"] == \
+        ["poids_consensus=0.1"]
