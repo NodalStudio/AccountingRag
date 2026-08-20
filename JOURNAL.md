@@ -335,7 +335,7 @@ Ce que la question a surtout révélé, c'est une réserve que je n'avais pas fo
 
 Le corpus, vérifié à cette occasion : Livres I à V du règlement ANC 2014-03. Ni consolidation (règlement 2020-01), ni fusions, ni normes d'exercice professionnel — alors que l'étoile polaire déclarée est le DSCG UE4, « Comptabilité et audit ». Jalon 4 : BOFiP. Jalon 5 : consolidation, fusions, NEP. Et une contrainte technique à porter dès le plan du jalon 4 : le corpus change d'ordre de grandeur, la discriminance des termes avec lui, et l'éviction RRF que q023 documente s'aggrave mécaniquement avec le nombre de candidats consensuels. Le jalon 4 devra re-mesurer le retrieval, pas hériter de ces chiffres.
 
-## Jalon 4 — mesurer ce que le système répond
+## Sessions des 17-19 août 2026 — Jalon 4 : mesurer ce que le système répond
 
 Trois jalons à améliorer le retrieval, et pas une ligne mesurant la réponse. Le benchmark saturait — 0,966 sur le split gelé, c'est 28 sur 29, un instrument qui ne peut plus voir un progrès — et la métrique signature annoncée au design v1, le taux de confusion fiscal ↔ comptable, n'existait que sur le papier. Le jalon 4 ne cherche donc pas à faire mieux : il construit de quoi savoir.
 
@@ -431,7 +431,7 @@ Le seuil de 30 caractères sous lequel un extrait est refusé pénalise les cita
 
 Et les deux dettes du jalon 3 sont toujours là, intactes : la fusion RRF récompense le consensus plutôt que l'excellence, masquée par la fenêtre du reranker et condamnée à réapparaître sur un corpus plus grand ; la réécriture dégrade trois questions sur soixante-et-une. Le jalon 4 ne les a pas touchées — il a construit de quoi les juger.
 
-## Correctif du jalon 3 — réparer un défaut réel pour découvrir qu'on ne le voit plus
+## Session du 20 août 2026 — Correctif du jalon 3 : réparer un défaut réel pour découvrir qu'on ne le voit plus
 
 Le jalon 4 s'était terminé sur une phrase que je viens de prendre au mot : « les
 deux dettes du jalon 3 sont toujours là, intactes ». J'ai ouvert la première.
@@ -558,7 +558,7 @@ serait plus difficile à repérer.
 Reste donc la seconde dette du jalon 3, intacte : la réécriture dégrade trois
 questions sur soixante-et-une.
 
-## Seconde dette du jalon 3 — le meilleur chiffre du projet, et je ne le livre pas
+## Session du 20 août 2026 — Seconde dette du jalon 3 : le meilleur chiffre du projet, et je ne le livre pas
 
 La première dette s'était close sur un résultat propre : le levier marchait, le
 reranker le rendait inutile, rejet sans regret. La seconde s'est close sur
@@ -738,3 +738,58 @@ contexte `reecriture` construisait un `Searcher` sur `data/corpus.db`, gitignor�
 donc absent en CI. Toutes mes exécutions locales l'avaient. Récrit sur base
 synthétique, puis vérifié en masquant le corpus pour reproduire les conditions du
 runner — 297 tests, 7 ignorés, comme sur la CI.
+
+---
+
+## Index des leviers mesurés — vue d'ensemble, du jalon 2.5 à aujourd'hui
+
+Ce tableau n'existait nulle part : chaque rapport porte ses propres ablations, mais
+rien ne donnait la vue d'ensemble. Il se recalcule depuis les rapports cités.
+
+| levier | jalon | verdict | valeur aujourd'hui |
+|---|---|---|---|
+| `poids_chemin` (pondération du chemin hiérarchique) | 2.5, ablation A | rejeté | 1.0 (neutre) |
+| `boost_commentaire` (pénalisation des commentaires ANC) | 2.5, ablation A | rejeté | 1.0 (neutre) |
+| reranker cross-encoder | 2.5, ablation B | **adopté** | `bge-reranker-v2-m3` |
+| dictionnaire de synonymes piloté par les échecs | 2.5, ablation C | rejeté | non activé |
+| `df_max` (filtrage des tokens peu discriminants) | 3, ablation D | rejeté | `None` (neutre) |
+| `pool` (largeur des candidats avant fusion) | 3, ablation E | rejeté | 50 (neutre) |
+| `dedup_termes` (déduplication des termes du MATCH) | 3, ablation E | rejeté | `False` (neutre) |
+| `n_rerank` (candidats soumis au cross-encoder) | 3, ablation F | rejeté | 25 (neutre) |
+| réécriture de requête par LLM | 3, ablation G | **adoptée** | mode `etend` |
+| `mode_reecriture='remplace'` | 3, ablation G | rejeté | `etend` retenu |
+| `poids_consensus` (poids du consensus dans la fusion) | correctif 1 | rejeté | 1.0 (neutre) |
+| `rrf_k` (escompte de rang de la fusion) | correctif 1 | rejeté | 60 (neutre) |
+| `poids_question` (poids de la question face à sa réécriture) | correctif 2 | rejeté | 1 (neutre) |
+
+**Treize leviers mesurés, deux adoptés.** `Searcher` expose aujourd'hui dix
+paramètres, dont huit sont des rejets mesurés maintenus à leur valeur neutre — ce
+qui est la loi 8 du dépôt prise au mot : un levier rejeté reste exposé, pour que
+`Searcher()` sans argument reproduise la baseline publiée et que n'importe qui
+puisse re-mesurer le rejet sans écrire une ligne.
+
+Sources : `docs/eval-jalon25.md`, `docs/eval-jalon3.md`,
+`docs/eval-jalon3-fix.md`, `docs/eval-jalon3-fix-reecriture.md`.
+
+## Ce que ce journal ne contient pas
+
+Trois réserves, pour qu'on ne le lise pas pour plus qu'il n'est.
+
+**La densité est très inégale, et elle raconte l'évolution de ma discipline plus
+que celle du projet.** Les jalons 1, 2 et 2.5 tiennent en 30, 24 et 14 lignes ;
+les deux derniers correctifs en 126 et 179. Ce n'est pas que les premiers jalons
+aient été plus simples — c'est que je n'y consignais que le résultat et les
+erreurs publiées, pas le raisonnement.
+
+**Les directions écartées avant d'atteindre le code ne sont tracées que pour les
+deux derniers correctifs.** Pour les jalons 1 à 4, le journal et les rapports
+gardent les leviers *mesurés puis rejetés* — le tableau ci-dessus les liste tous —
+mais pas les pistes abandonnées en trente secondes de réflexion, qui n'ont laissé
+aucune trace écrite. **Je ne les reconstitue pas de mémoire** : ce serait inventer
+une délibération après coup, dans un dépôt dont toute la valeur tient à ce que ses
+affirmations soient vérifiables. Ce qui est perdu est perdu ; la règle vaut à
+partir de maintenant.
+
+**Les dates des trois dernières sections ont été ajoutées après coup**, lues dans
+l'historique git (spec du jalon 4 le 17 août, clôture le 19, les deux correctifs
+le 20) et non de mémoire.
