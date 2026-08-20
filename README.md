@@ -212,6 +212,46 @@ le recall ne dirait qu'après coup que la compensation a cédé.
 
 Détail, contrôles et réserves : [`docs/eval-jalon3-fix.md`](docs/eval-jalon3-fix.md).
 
+## Second correctif du jalon 3 — la réécriture, contrepesée et non adoptée
+
+La réécriture adoptée au jalon 3 répare douze questions et en casse trois. La
+piste laissée alors — conditionner la réécriture à un signal de recouvrement
+faible — **ne correspondait pas au mécanisme** : q080 est la question la plus
+familière du benchmark, donc toute porte fondée sur le recouvrement se
+déclencherait précisément là où la réécriture casse.
+
+Les trois questions cassées ont trois causes distinctes. Deux sont lexicales : le
+gold de q080 tombe du rang bm25 7 au rang 84, donc **hors du pool de 50**, où
+aucun reranker ne peut plus l'atteindre ; celui de q025 tombe de 1 à 13. Le canal
+dense est hors de cause — il ne trouve jamais le gold de q080, réécriture ou non.
+La troisième, q008, ne bouge dans aucun canal : elle relève de l'éviction par la
+fusion, l'autre dette.
+
+Le levier mesuré, `poids_question`, répète les tokens de la question devant la
+réécriture dans la requête **lexicale seulement** — répéter côté dense
+déplacerait aussi l'embedding, donc deux variables.
+
+| contexte | meilleur réglage | recall@10 | delta | p_amélioration |
+|---|---|---|---|---|
+| réécriture sans reranking (le mécanisme) | `poids_question=2` | 0,855 → 0,866 | +0,0108 | 0,6288 |
+| configuration livrée (celle qui décide) | `poids_question=3` | 0,866 → **0,898** | +0,0323 | 0,8809 |
+
+**Non adopté, et c'est le refus le plus coûteux du projet.** `poids_question=3`
+donne le meilleur recall@10 jamais mesuré sur dev, améliore les deux catégories
+non triviales, ne coûte rien en latence (1,56 → 1,59 s/question) et ramène à
+**zéro** le nombre de golds présents dans la fusion mais hors de la fenêtre du
+reranker. `p_amelioration` vaut 0,8809 pour un critère de 0,95, fixé avant la
+mesure, avec un IC95 qui contient zéro.
+
+Contrairement au correctif de fusion, **le reranker amplifie ce levier au lieu de
+l'absorber** : les quatre questions réparées dans la configuration livrée ne le
+sont pas par le levier seul. Il amène leur gold assez près pour que le
+cross-encoder finisse — d'où un effet trois fois plus grand avec reranking que
+sans.
+
+Détail, contrôles et réserves :
+[`docs/eval-jalon3-fix-reecriture.md`](docs/eval-jalon3-fix-reecriture.md).
+
 ## Jalon 4 — mesurer la génération
 
 Trois jalons avaient amélioré le *retrieval* sans jamais mesurer ce que le système **répond**. Le jalon 4 construit l'instrument : un générateur contraint par sortie structurée, la vérification programmatique des citations (aucun LLM), un LLM-juge dont l'accord avec 30 notes humaines est mesuré *avant* qu'il ne publie quoi que ce soit, une famille de questions d'abstention, et l'extension du benchmark de 90 à 150 questions.

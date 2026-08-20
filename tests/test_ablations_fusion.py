@@ -22,6 +22,9 @@ _spec = importlib.util.spec_from_file_location(
     "ablations_fusion", ROOT / "scripts/ablations_fusion.py")
 abl = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(abl)
+# La machinerie partagée vit dans le paquet depuis qu'un second correctif en a eu
+# besoin ; c'est LUI qu'il faut patcher, pas l'espace de noms du script.
+import accounting_rag.ablation as machinerie
 
 
 class FauxSearcher:
@@ -110,14 +113,19 @@ def test_la_marge_utilise_le_meme_appariement_que_le_recall():
 # --- contrôle de fraîcheur : loi 5, on le fait échouer --------------------------------
 
 def _fraicheur_avec(monkeypatch, valeurs: dict):
-    monkeypatch.setattr(abl, "_searcher", lambda *a, **k: object())
-    appels = iter(["hybrid", "livree"])
+    # Patcher `abl` (le script) laisserait la vraie fonction du paquet s'exécuter, et une
+    # campagne réelle partirait sous un test unitaire — constaté à l'extraction.
+    monkeypatch.setattr(machinerie, "searcher_du_contexte", lambda *a, **k: object())
+    # L'ordre des appels suit `contextes`, qu'on passe explicitement : sans cela, ajouter
+    # un troisième contexte à la machinerie décalerait silencieusement les valeurs
+    # factices et ferait échouer un test qui ne parle pas de ce contexte-là.
+    appels = iter(list(valeurs))
 
     def faux_evaluate(searcher, questions, mode, k=10):
         return {"recall@10": valeurs[next(appels)]}
 
-    monkeypatch.setattr(abl, "evaluate", faux_evaluate)
-    return abl.controle_fraicheur(None, None, None)
+    monkeypatch.setattr(machinerie, "evaluate", faux_evaluate)
+    return machinerie.controle_fraicheur(None, None, None, contextes=list(valeurs))
 
 
 def test_le_controle_passe_quand_les_chiffres_publies_sont_redonnes(monkeypatch):
@@ -146,9 +154,9 @@ def test_le_controle_BLOQUE_si_une_question_du_perimetre_a_disparu(monkeypatch, 
     publie["configs"]["A_hybrid_neutre"]["par_question"]["q_fantome"] = 1.0
     faux = tmp_path / "perimetre.json"
     faux.write_text(json.dumps(publie), encoding="utf-8")
-    monkeypatch.setattr(abl, "PERIMETRE_JALON3", faux)
+    monkeypatch.setattr(machinerie, "PERIMETRE_JALON3", faux)
     with pytest.raises(SystemExit) as e:
-        abl.controle_fraicheur(None, None, None)
+        machinerie.controle_fraicheur(None, None, None)
     assert e.value.code == 1
 
 
@@ -196,7 +204,95 @@ def test_pire_perte_categorie_rend_zero_quand_rien_ne_regresse():
 def test_les_reecritures_sont_lues_dans_un_ancrage_versionne():
     """Loi 10 : `docs/mesures/**` est en lecture seule à l'exécution. Ce script ne doit
     jamais pouvoir faire grossir l'ancrage du jalon 4 ni appeler l'API payante."""
-    source = (ROOT / "scripts/ablations_fusion.py").read_text(encoding="utf-8")
-    assert "ecrire_cache=False" in source
-    assert source.count("Rewriter(") == source.count("ecrire_cache=False")
+    sources = {f: (ROOT / f).read_text(encoding="utf-8") for f in
+               ("scripts/ablations_fusion.py", "src/accounting_rag/ablation.py")}
+    for nom, source in sources.items():
+        # Aucun `Rewriter(` sans `ecrire_cache=False`, dans CHAQUE fichier qui en
+        # construit un — script comme machinerie partagée.
+        assert source.count("Rewriter(") == source.count("ecrire_cache=False"), nom
+    assert any("ecrire_cache=False" in s for s in sources.values())
     assert abl.CACHE_REECRITURES.is_file()
+
+
+# --- garde contre l'écrasement d'un ancrage publié par une exécution partielle ---------
+
+def test_une_execution_partielle_refuse_decrire_sans_sortie_explicite(monkeypatch):
+    """Un artefact amputé se lit exactement comme un artefact complet.
+
+    `--contexte hybrid` seul écrirait `fusion_dev.json` sans la moitié qui décide de
+    l'adoption, par-dessus l'ancrage publié. La garde existe parce que j'ai eu besoin de
+    rejouer une seule grille pour contrôler une extraction de code, et que rien
+    n'empêchait alors la commande de détruire la mesure qu'elle devait vérifier.
+    """
+    monkeypatch.setattr("sys.argv", ["ablations_fusion.py", "--contexte", "hybrid"])
+    with pytest.raises(SystemExit) as e:
+        abl.main()
+    assert "BLOCKED" in str(e.value)
+
+
+def test_une_execution_partielle_est_permise_avec_sortie(monkeypatch, tmp_path):
+    """La garde ne doit pas interdire le contrôle, seulement l'écrasement."""
+    vu = {}
+    monkeypatch.setattr(abl, "run_grilles",
+                        lambda *a, **k: vu.setdefault("appele", True) and {} or
+                        {"configurations_adoptees": []})
+    monkeypatch.setattr("sys.argv", ["ablations_fusion.py", "--contexte", "hybrid",
+                                     "--sortie", str(tmp_path)])
+    abl.main()
+    assert (tmp_path / "fusion_dev.json").is_file()
+    assert vu["appele"]
+
+
+def test_une_execution_complete_ecrit_le_chemin_canonique(monkeypatch, tmp_path):
+    monkeypatch.setattr(abl, "run_grilles", lambda *a, **k: {"configurations_adoptees": []})
+    monkeypatch.setattr(abl, "OUT_DIR", tmp_path / "canonique")
+    monkeypatch.setattr("sys.argv", ["ablations_fusion.py"])
+    abl.main()
+    assert (tmp_path / "canonique" / "fusion_dev.json").is_file()
+
+
+# --- le contexte mécanisme des leviers de requête -------------------------------------
+
+def test_le_contexte_reecriture_lit_son_chiffre_dans_lablation_g():
+    """Le levier `poids_question` est inerte dans `hybrid` nu, faute de réécriture à
+    pondérer. Son contexte mécanisme est celui de l'ablation G, dont le chiffre publié
+    vit dans un fichier de forme DIFFÉRENTE — `configs` y est une liste, pas un dict.
+    Indexer au hasard y aurait rendu un chiffre plausible pour la mauvaise configuration.
+    """
+    attendu, ids = machinerie.PUBLIE["reecriture"]()
+    assert attendu == 0.852
+    assert len(ids) == 61
+
+
+def test_les_trois_contextes_sont_declares_de_facon_coherente():
+    assert set(machinerie.PUBLIE) == set(machinerie.MODE)
+    assert machinerie.MODE["reecriture"] == "hybrid"
+
+
+def test_le_contexte_reecriture_attache_bien_un_rewriter(tmp_path, monkeypatch):
+    """Sur base synthétique : `data/corpus.db` est gitignoré, donc absent en CI. Une
+    première version de ce test construisait un `Searcher` sur le corpus réel — elle
+    passait sur ma machine et échouait sur le runner, ce qui est exactement le genre de
+    test qui ne prouve rien là où on en a le plus besoin.
+    """
+    from accounting_rag.db import write_db
+    from accounting_rag.index import build_index
+    from conftest import _rec
+    from test_search import FakeEmbedder
+
+    db = tmp_path / "contexte.db"
+    write_db([_rec("pcg-1-1@2026-01-01", "1-1", texte="x")], db)
+    build_index(db, embedder=FakeEmbedder())
+    monkeypatch.setattr(machinerie, "DB", db)
+
+    class FauxRewriter:
+        def reecrire(self, q):
+            return "reecrit"
+
+    r = FauxRewriter()
+    s = machinerie.searcher_du_contexte("reecriture", FakeEmbedder(), None, r)
+    assert s.rewriter is r and s.mode_reecriture == "etend" and s._reranker is None
+    # Et le contexte livré, lui, attache bien le reranker — sans quoi les deux contextes
+    # seraient indiscernables et la grille mesurerait deux fois la même chose.
+    livree = machinerie.searcher_du_contexte("livree", FakeEmbedder(), "un-reranker", r)
+    assert livree._reranker == "un-reranker" and livree.n_rerank == 25

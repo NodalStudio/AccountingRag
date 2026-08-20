@@ -24,7 +24,17 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 MESURES = ROOT / "docs/mesures/jalon3-fix"
-RAPPORT = ROOT / "docs/eval-jalon3-fix.md"
+
+# Les campagnes de correctif du jalon 3, et le fichier d'anatomie de chacune. La liste
+# est EXPLICITE plutôt qu'un glob : un glob trop large ramasserait les fichiers
+# d'anatomie eux-mêmes, et un glob trop étroit laisserait une campagne hors contrôle
+# sans que rien ne le signale — ce dernier cas est le plus dangereux, parce qu'il se lit
+# comme un contrôle vert.
+CAMPAGNES = {
+    "fusion": ("anatomie_{split}.json", "docs/eval-jalon3-fix.md"),
+    "reecriture": ("anatomie_reecriture_{split}.json",
+                   "docs/eval-jalon3-fix-reecriture.md"),
+}
 
 SEUIL_ADOPTION = 0.95
 GARDE_CATEGORIE = -0.05
@@ -110,8 +120,22 @@ def recalculer_anatomie(ana: dict, brut: dict) -> list[float]:
             else:
                 _verifier(m["part_au_dela_de_25"] is None,
                           f"{etiquette} : part non définie publiée à une valeur")
-            _verifier(e["rang_de_q023_dans_la_fusion"] == rangs.get("q023"),
-                      f"{etiquette} : rang de q023")
+            # Chaque anatomie publie ses questions témoins sous une forme qui lui est
+            # propre. On exige qu'il y en ait UNE — sans cette exigence, une anatomie
+            # dont la clé changerait de nom passerait le contrôle sans qu'aucun témoin
+            # ne soit vérifié, et le vert serait mensonger.
+            formes = {"rang_de_q023_dans_la_fusion", "rangs_des_temoins"} & set(e)
+            _verifier(len(formes) == 1,
+                      f"{etiquette} : aucune forme connue de question témoin "
+                      f"(clés : {sorted(e)})")
+            if "rang_de_q023_dans_la_fusion" in e:
+                _verifier(e["rang_de_q023_dans_la_fusion"] == rangs.get("q023"),
+                          f"{etiquette} : rang de q023")
+            else:
+                for q, publie_rang in e["rangs_des_temoins"].items():
+                    _verifier(publie_rang == rangs.get(q, "routée"),
+                              f"{etiquette} : rang du témoin {q} publié {publie_rang!r}, "
+                              f"recalculé {rangs.get(q, 'routée')!r}")
             publiables.append(m["n_au_dela_de_25"])
     return publiables
 
@@ -153,17 +177,24 @@ def confronter_au_rapport(chiffres: list[float], texte: str) -> tuple[int, list[
 
 
 def main() -> None:
-    fichiers = sorted(MESURES.glob("fusion_*.json"))
+    fichiers = [(campagne, f) for campagne in CAMPAGNES
+                for f in sorted(MESURES.glob(f"{campagne}_*.json"))]
     if not fichiers:
-        print(f"STATUS: BLOCKED — aucun artefact `fusion_*.json` sous {MESURES}")
+        print(f"STATUS: BLOCKED — aucun artefact de campagne sous {MESURES} "
+              f"(préfixes attendus : {', '.join(CAMPAGNES)})")
         sys.exit(1)
-    texte = RAPPORT.read_text(encoding="utf-8") if RAPPORT.is_file() else ""
     total = 0
     try:
-        for f in fichiers:
+        for campagne, f in fichiers:
             brut = json.loads(f.read_text(encoding="utf-8"))
             chiffres = recalculer_campagne(brut)
-            ana_path = MESURES / f"anatomie_{brut['split']}.json"
+            gabarit, rapport = CAMPAGNES[campagne]
+            # Chaque campagne est confrontée à SON rapport, pas à la concaténation des
+            # deux : un chiffre retrouvé dans le mauvais document ne prouve rien.
+            chemin_rapport = ROOT / rapport
+            texte = (chemin_rapport.read_text(encoding="utf-8")
+                     if chemin_rapport.is_file() else "")
+            ana_path = MESURES / gabarit.format(split=brut["split"])
             if ana_path.is_file():
                 chiffres += recalculer_anatomie(
                     json.loads(ana_path.read_text(encoding="utf-8")), brut)

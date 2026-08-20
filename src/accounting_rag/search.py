@@ -18,7 +18,8 @@ class Searcher:
                  reranker=None, df_max: float | None = None,
                  pool: int = 50, dedup_termes: bool = False, n_rerank: int = 25,
                  rewriter=None, mode_reecriture: str = "etend",
-                 poids_consensus: float = 1.0, rrf_k: int = _RRF_K):
+                 poids_consensus: float = 1.0, rrf_k: int = _RRF_K,
+                 poids_question: int = 1):
         if not Path(db_path).exists():
             raise FileNotFoundError(
                 f"corpus introuvable : {db_path} — lancez scripts/download_data.py, "
@@ -108,6 +109,38 @@ class Searcher:
             raise ValueError(f"rrf_k doit être >= 0 (reçu {rrf_k!r})")
         self.poids_consensus = float(poids_consensus)
         self.rrf_k = int(rrf_k)
+        # poids_question : nombre de répétitions des tokens de la question ORIGINALE
+        # devant la réécriture, dans la requête LEXICALE seulement (second correctif du
+        # jalon 3). 1 = le mode `etend` actuel, inchangé.
+        #
+        # Le défaut visé est mesuré : la réécriture répare 12 questions et en casse 3, et
+        # sur les deux qui cassent pour une raison lexicale le dégât est un glissement de
+        # rang bm25 — q080 passe du rang 7 au rang 84, donc hors du pool de 50, où aucun
+        # reranker ne peut plus la rattraper ; q025 du rang 1 au rang 13. Le canal dense
+        # n'y est pour rien : il ne trouve jamais le gold de q080, réécriture ou non.
+        #
+        # Le levier exploite une propriété déjà mesurée au jalon 3 : `bm25()` de FTS5
+        # pondère la MULTIPLICITÉ des termes de l'expression MATCH (cf. `_termes_match`
+        # et `dedup_termes`). C'est la seule pondération par terme que FTS5 offre, d'où
+        # un entier et non un flottant.
+        #
+        # LEXICAL SEULEMENT, et c'est une contrainte de méthode, pas une commodité :
+        # répéter la question dans le texte soumis au canal dense déplacerait aussi
+        # l'embedding, donc mesurerait deux variables à la fois (loi 2).
+        if int(poids_question) < 1:
+            raise ValueError(
+                f"poids_question doit être >= 1 (reçu {poids_question!r}) : 0 reviendrait "
+                "à supprimer la question de la requête lexicale, ce qui est le mode "
+                "`remplace` pour un seul canal — une autre expérience, pas ce levier.")
+        if int(poids_question) != 1 and mode_reecriture == "remplace":
+            # Un paramètre silencieusement inerte est un piège : en mode `remplace` la
+            # question originale n'est pas envoyée aux canaux, il n'y a donc rien à
+            # pondérer contre la réécriture.
+            raise ValueError(
+                "poids_question n'a pas de sens avec mode_reecriture='remplace' : la "
+                "question originale n'est pas transmise aux canaux, il n'y a rien à "
+                "pondérer. Utilisez mode_reecriture='etend'.")
+        self.poids_question = int(poids_question)
         if mode_reecriture not in _MODES_REECRITURE:
             raise ValueError(
                 f"mode_reecriture inconnu : {mode_reecriture!r} "
@@ -332,21 +365,26 @@ class Searcher:
         routed = self._route(query)
         routed_ids = {r["record_id"] for r in routed}
         if self.rewriter is None:
-            requete_canaux = query
+            requete_dense = requete_lexicale = query
         else:
             reecriture = self.rewriter.reecrire(query)
-            requete_canaux = (
-                reecriture if self.mode_reecriture == "remplace"
-                else f"{query} {reecriture}"
-            )
+            if self.mode_reecriture == "remplace":
+                requete_dense = requete_lexicale = reecriture
+            else:
+                requete_dense = f"{query} {reecriture}"
+                # `poids_question` répétitions de la question devant la réécriture. À 1,
+                # cette chaîne est exactement `requete_dense` — les deux canaux
+                # reçoivent alors le même texte, comme avant l'introduction du levier.
+                requete_lexicale = " ".join(
+                    [query] * self.poids_question + [reecriture])
         if mode == "bm25":
-            scores = self._bm25(requete_canaux, self.pool)
+            scores = self._bm25(requete_lexicale, self.pool)
         elif mode == "dense":
-            scores = self._dense(requete_canaux, self.pool)
+            scores = self._dense(requete_dense, self.pool)
         else:
             scores = self._rrf(
-                [self._bm25(requete_canaux, self.pool),
-                 self._dense(requete_canaux, self.pool)],
+                [self._bm25(requete_lexicale, self.pool),
+                 self._dense(requete_dense, self.pool)],
                 self.rrf_k, self.poids_consensus)
         ranked = [rid for rid in sorted(scores, key=scores.get, reverse=True)
                   if rid not in routed_ids]
